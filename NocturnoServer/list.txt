@@ -1,19 +1,24 @@
 Idée:
 
-Ajouter Blacklist
-Ajouter email
-Ajouter un système de trade
-Ajouter un capcha a chaque création de compte
-Ajouter un système d'amis
-Ajouter un système de quete
-FAIRE LE PHP DANS LE HTML
-Faire que chaque top 10: 250 vbucks, et top 25: 100 vbucks.
+[IN WORK] Ajouter Blacklist
+[TO DO] Ajouter email
+[TO DO] Ajouter un système de trade
+[TO DO] Ajouter un capcha a chaque création de compte
+[TO DO] Ajouter un système d'amis  
+[TO DO (NOPE)] Ajouter un système de quete
+[OP] FAIRE LE PHP DANS LE HTML
+[OP] Faire que chaque top 10: 250 vbucks, et top 25: 100 vbucks.
 
 
 IMPORTANT:
 
-FAIRE LE SITE AVEC L'API
-FAIRE NOCTURNOSERVER CONNECTER A L'API
+[IN WORK] FAIRE LE GAMESERVER
+[IN WORK] FINIR LES TESTS ET LA CORRECTIONS DES BUGS DE L'API
+[OP] FAIRE LE SITE AVEC L'API
+[IN WORK] FAIRE NOCTURNOSERVER CONNECTER A L'API
+
+
+CODE: 
 
 Pour changer le message de bienvenue:
 
