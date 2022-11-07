@@ -1,0 +1,442 @@
+Idée:
+
+Ajouter Blacklist
+Ajouter email
+Ajouter un système de trade
+Ajouter un capcha a chaque création de compte
+Ajouter un système d'amis
+Ajouter un système de quete
+FAIRE LE PHP DANS LE HTML
+Faire que chaque top 10: 250 vbucks, et top 25: 100 vbucks.
+
+
+IMPORTANT:
+
+FAIRE LE SITE AVEC L'API
+FAIRE NOCTURNOSERVER CONNECTER A L'API
+
+Pour changer le message de bienvenue:
+
+{
+  "_title": "Fortnite Game",
+  "_activeDate": "2017-08-30T03:20:48.050Z",
+  "lastModified": "2019-11-01T17:33:35.346Z",
+  "_locale": "en-US",
+  "loginmessage": {
+    "_title": "LoginMessage",
+    "loginmessage": {
+      "_type": "CommonUI Simple Message",
+      "message": {
+        "_type": "CommonUI Simple Message Base",
+        "title": "Project Nocturno",
+        "body": "Bienvenue sur Nocturno !\n\nPatch Notes:\n\nImportant:\n- Ajout saison 1\n- Fix du bug de l'inventaire\n- Fix du bus\n- Fix du loot\n- Ajout d'un serveur pour les statistique\n- Ajout d'un site web\n\nDiscord: https://discord.gg/GrrB3s5CXC\nTiktok: project.nocturno"
+      }
+    },
+    "_activeDate": "2017-07-19T13:14:04.490Z",
+    "lastModified": "2018-03-15T07:10:22.222Z",
+    "_locale": "en-US"
+  }
+}
+
+Pour mettre une actus:
+
+{
+  "battleroyalenews": {
+    "news": {
+      "_type": "Battle Royale News",
+      "motds": [
+        {
+          "entryType": "Website",
+          "image": "https://fortnite-public-service-prod11.ol.epicgames.com/images/motd.png",
+          "tileImage": "https://fortnite-public-service-prod11.ol.epicgames.com/images/motd-s.png",
+          "videoMute": false,
+          "hidden": false,
+          "tabTitleOverride": "NocturnoServer",
+          "_type": "CommonUI Simple Message MOTD",
+          "title": {
+            "en": "Welcome to NocturnoServer!",
+            "de": "Willkommen bei NocturnoServer!",
+            "es": "¡Bienvenidos a NocturnoServer!",
+            "es-419": "¡Bienvenidos a NocturnoServer!",
+            "fr": "Bienvenue sur NocturnoServer !",
+            "it": "Benvenuto in NocturnoServer!",
+            "ja": "NocturnoServerへようこそ！",
+            "ko": "NocturnoServer에 오신 것을 환영합니다!",
+            "pl": "Witaj w NocturnoServerze!",
+            "pt-BR": "Bem-vindo ao NocturnoServer!",
+            "ru": "Добро пожаловать в NocturnoServer!",
+            "tr": "LavinServer'a Hoş Geldiniz!"
+          },
+          "body": {
+            "en": "Have a phenomenal gaming experience!",
+            "de": "Wünsche allen ein wunderbares Spielerlebnis!",
+            "es": "¡Que disfrutes de tu experiencia de videojuegos!",
+            "es-419": "¡Ten una experiencia de juego espectacular!",
+            "fr": "Un bon jeu à toutes et à tous !",
+            "it": "Ti auguriamo un'esperienza di gioco fenomenale!",
+            "ja": "驚きの体験をしよう！",
+            "ko": "게임에서 환상적인 경험을 해보세요!",
+            "pl": "Życzymy fenomenalnej gry!",
+            "pt-BR": "Tenha uma experiência de jogo fenomenal!",
+            "ru": "Желаю невероятно приятной игры!",
+            "tr": "Muhteşem bir oyun deneyimi yaşamanı dileriz!"
+          },
+          "offerAction": "ShowOfferDetails",
+          "videoLoop": false,
+          "videoStreamingEnabled": false,
+          "sortingPriority": 90,
+          "websiteButtonText": "Discord",
+          "websiteURL": "https://discord.gg/GrrB3s5CXC",
+          "id": "61fb3dd8-f23d-45cc-9058-058ab223ba5c",
+          "videoAutoplay": false,
+          "videoFullscreen": false,
+          "spotlight": false
+        }
+      ],
+      "messages": [
+        {
+          "image": "https://cdn.discordapp.com/attachments/735984479906037845/1020084668512620544/unknown_69_1.png",
+          "hidden": false,
+          "_type": "CommonUI Simple Message Base",
+          "adspace": "Bienvenue !",
+          "title": "Bienvenue sur Fortnite saison 1",
+          "body": "https://discord.gg/GrrB3s5CXC",
+          "spotlight": false
+        },
+        {
+          "image": "https://cdn.discordapp.com/attachments/735984479906037845/1020085432660271166/channels4_profile_1_1.jpg",
+          "hidden": false,
+          "_type": "CommonUI Simple Message Base",
+          "adspace": "En dev !",
+          "title": "Le serveur est en developement",
+          "body": "By Heliato & 4lxprime",
+          "spotlight": false
+        }
+      ]
+    },
+    "_title": "battleroyalenews",
+    "header": "",
+    "style": "SpecialEvent",
+    "_noIndex": false,
+    "alwaysShow": false,
+    "_activeDate": "2018-08-17T16:00:00.000Z",
+    "lastModified": "2019-10-31T20:29:39.334Z",
+    "_locale": "en-US"
+  }
+}
+
+
+V-Bucks apres saison:
+
+common_core: Lignes: 32-38
+
+V-Bucks avanta saison:
+
+profile0: Lignes: 1027-1034
+
+{
+    "daily1": {
+        "itemGrants": ["AthenaCharacter:CID_021_Athena_Commando_F"],
+        "price": 1200
+    },
+    "daily2": {
+        "itemGrants": ["AthenaGlider:Glider_Prismatic"],
+        "price": 800
+    },
+    "daily3": {
+        "itemGrants": ["AthenaPickaxe:HalloweenScythe"],
+        "price": 2500
+    },
+    "daily4": {
+        "itemGrants": ["AthenaCharacter:CID_024_Athena_Commando_F"],
+        "price": 1200
+    },
+    "daily5": {
+        "itemGrants": ["AthenaPickaxe:BoltonPickaxe"],
+        "price": 800
+    },
+    "daily6": {
+        "itemGrants": ["AthenaCharacter:CID_022_Athena_Commando_F"],
+        "price": 1200
+    },
+    "featured1": {
+        "itemGrants": ["AthenaCharacter:CID_030_Athena_Commando_M_Halloween"],
+        "price": 1500
+    },
+    "featured2": {
+        "itemGrants": ["AthenaCharacter:CID_029_Athena_Commando_F_Halloween"],
+        "price": 1200
+    }
+}
+
+---
+
+(Pour le message quand tu lance le jeu) "lemesagequadnonlancelejeu"
+
+  "_title": "Fortnite Game",
+  "_activeDate": "2017-08-30T03:20:48.050Z",
+  "lastModified": "2019-11-01T17:33:35.346Z",
+  "_locale": "en-US",
+  "loginmessage": {
+    "_title": "LoginMessage",
+    "loginmessage": {
+      "_type": "CommonUI Simple Message",
+      "message": {
+        "_type": "CommonUI Simple Message Base",
+        "title": "Project Nocturno",
+        "body": "Bienvenue sur Nocturno !\n\nPatch Notes:\n\nImportant:\n- Ajout saison 1\n- Fix du bug de l'inventaire\n- Fix du bus\n- Fix du loot\n- Ajout d'un serveur pour les statistique\n- Ajout d'un site web\n\nDiscord: https://discord.gg/GrrB3s5CXC\nTiktok: project.nocturno"
+      }
+    },
+    "_activeDate": "2017-07-19T13:14:04.490Z",
+    "lastModified": "2018-03-15T07:10:22.222Z",
+    "_locale": "en-US"
+  },
+  
+
+CREATE TABLE IF NOT EXISTS `users` (
+  `token` text NOT NULL,
+  `username` text NOT NULL,
+  `id` int NOT NULL,
+  `password` text NOT NULL,
+  `mtx` int NOT NULL,
+  `item` text NOT NULL,
+  `status` text NOT NULL,
+  `ip` text NOT NULL,
+  `date` text NOT NULL,
+  `level` int NOT NULL,
+  `exp` int NOT NULL
+)
+
+Skins:
+renegade_raider - 10000 - CID_028_Athena_Commando_F - s1
+assault_trooper - 1200 - CID_017_Athena_Commando_M - s1
+skull_trooper - 1500 - CID_030_Athena_Commando_M_Halloween - s1
+ghoul_trooper - 1500 - CID_029_Athena_Commando_F_Halloween - s1
+recon_specialist - 1200 - CID_024_Athena_Commando_F - s1
+brawler - 1200 - CID_021_Athena_Commando_F - s1
+racon_expert - 1200 - CID_022_Athena_Commando_F - s1
+royale_knight - BP - CID_033_Athena_Commando_F_Medieval - s2
+blue_squire - BP - CID_032_Athena_Commando_M_Medieval - s2
+sparkle_specialist - BP - CID_039_Athena_Commando_F_Disco - s2
+black_knight - BP - CID_035_Athena_Commando_M_Medieval - s2
+love_ranger - 2000 - CID_070_Athena_Commando_M_Cupid - s2
+cuddle_team_leader - 2000 - CID_069_Athena_Commando_F_PinkBear - s2
+e.l.f - 1200 - CID_051_Athena_Commando_M_HolidayElf - s2
+merry_marauder - 1500 - CID_049_Athena_Commando_M_HolidayGingerbread - s2
+ginger_gunner - 1500  - CID_048_Athena_Commando_F_HolidayGingerbread - s2
+nog_ops - 800 - CID_046_Athena_Commando_F_HolidaySweater - s2
+funk_ops - 1500 - CID_038_Athena_Commando_M_Disco - s2
+red-nosed_raider - 1200 - CID_047_Athena_Commando_F_HolidayReindeer - s2
+yuletide_ranger - 800 - CID_045_Athena_Commando_M_HolidaySweater - s2
+brite_bomber - 1200 - CID_044_Athena_Commando_F_SciPop - s2
+crackshot - 2000 - CID_050_Athena_Commando_M_HolidayNutcracker - s2
+artic_assassin - 1200 - CID_037_Athena_Commando_F_WinterCamo - s2
+blue_team_leader - 1200 - CID_052_Athena_Commando_F_PSBlue - s2
+dazzle - 1200 - CID_076_Athena_Commando_F_Sup - s2
+jungle_scout - 800 - CID_074_Athena_Commando_F_Stripe - s2
+mogul_master - 1500 - CID_065_Athena_Commando_F_SkiGirl_FRA - s2
+sash_sergeant - 1200 - CID_072_Athena_Commando_M_Scout - s2
+default_skin - 0 - CID_001_Athena_Commando_F_Default - Default
+
+- 
+
+Pickaxe:
+reaper - 2500 - HalloweenScythe - s1
+raider_revenge - 5000 - Pickaxe_Lockjaw - s1
+close_shave - 800 - BoltonPickaxe - s1
+death_valley - 1500 - Pickaxe_Deathvalley - s1
+pusle_axe - BP - Pickaxe_ID_012_District - s2
+axecalibur - BP - Pickaxe_ID_011_Medieval - s2
+ac_dc - BP - Pickaxe_ID_013_Teslacoil - s2
+candy_axe - 1500 - Pickaxe_ID_015_HolidayCandyCane - s2
+disco_brawl - 1500 - Pickaxe_ID_016_Disco - s2
+ice_breaker - 500 - Pickaxe_ID_014_WinterCamo - s2
+chomp_jr - 1500 - Pickaxe_ID_017_Shark - s2
+plunja - 800 - Pickaxe_ID_024_Plunger - s2
+tat_axe - 800 - Pickaxe_ID_019_Heart - s2
+batsickle - 800 - SickleBatPickaxe - s2
+Default_Pickaxe - 0 - DefaultPickaxe - Default
+
+-
+
+Glider:
+mako - 500 - Glider_Warthog - s1
+prismatic - 800 - Glider_Prismatic - s1
+the_brave - BP - Glider_ID_002_Medieval - s2
+royale_x - BP - Glider_ID_003_District - s2
+get_down - BP - Glider_ID_004_Disco - s2
+gum_drop - 800 - Glider_ID_009_CandyCoat - s2
+cozy_coaster - 800 - Glider_ID_005_HolidaySweater - s2
+cloud_strike - 1200 - Glider_ID_010_Storm - s2
+voyager - 800 - Glider_Voyager - s2
+snowflake - TOP1 - Umbrella_Snowflake - s2
+umbrella - 0 - Solo_Umbrella - Default
+default_glider - 0 - DefaultGlider - Default
+
+-
+
+Dance:
+true_love - 200 - EID_TrueLove - s2
+electro_shuffle - 800 - EID_ElectroShuffle - s2
+fresh - 800 - EID_Fresh - s2
+slow_clap - 200 - EID_SlowClap - s2
+finger_guns - 200 - EID_FingerGuns - s2
+gun_show - 200 - EID_Flex - s2
+pure_salt - 500 - EID_PureSalt - s2
+kiss_kiss - 500 - EID_KissKiss - s2
+flapper - 500 - EID_Flapper - s2
+wave - BP - EID_Wave - s2
+the_worm - BP - EID_Worm - s2
+ride_the_pony - BP - EID_RideThePony_Athena - s2
+floss - BP - EID_Floss - s2
+baited - BP - Emoji_Baited - s2
+bullseye - BP - Emoji_Bullseye - s2
+clapping - BP - Emoji_Clapping - s2
+dance_party - BP - Emoji_Disco - s2
+exclamation - BP - Emoji_Exclamation - s2
+flex - BP - Emoji_ArmFlex - s2
+heart_hands - BP -  Emoji_HeartHands- s2
+lol - BP - Emoji_LOL - s2
+mvp - BP - Emoji_MVP - s2
+on_fire - BP - Emoji_OnFire - s2
+peace - BP - Emoji_PeaceSign - s2
+potato_aim - BP - Emoji_PotatoAim - s2
+rage - BP - Emoji_Rage - s2
+rip - BP - Emoji_RIP - s2
+salty - BP - Emoji_Salty - s2
+stealthy - BP - Emoji_Stealthy - s2
+fist_bump - BP - Emoji_FistBump - s2
+i_see_you - BP - Emoji_ISeeYou - s2
+lucky - BP - Emoji_Lucky - s2
+pickaxe - BP - Emoji_PickAxe - s2
+shield_potion - BP - Emoji_Potion - s2
+default_dance - 0 - eid_dancemoves - Default
+
+------------------------------------------------------------------------------------------------------------
+
+Pack Bug Saison 1:
+
+Skin:
+first_strike_specialist - BUG - CID_025_Athena_Commando_M - s1
+
+-
+
+Pickaxe:
+lucky - BUG - HappyPickaxe - s1
+
+-
+
+Glider:
+voyager - BUG - Glider_Voyager - s1
+
+-
+
+MTX:
++ 2500 vbucks
+
+------------------------------------------------------------------------------------------------------------
+
+Pack Bug Saison 2:
+
+Skin:
+circuit_breaker - BUG - CID_042_Athena_Commando_M_Cyberpunk
+
+-
+
+Pickaxe:
+shouldnt_have - BUG - Pickaxe_ID_022_HolidayGiftWrap
+
+-
+
+Glider:
+zephyr - BUG - Glider_ID_008_Graffiti
+
+-
+
+Dance:
+dab - BUG - EID_Dab
+
+-
+
+MTX:
++ 2500 vbucks
+
+------------------------------------------------------------------------------------------------------------
+
+Pack Bug Saison 3:
+
+Skin:
+havoc - BUG - CID_089_Athena_Commando_M_RetroGrey
+
+-
+
+Pickaxe:
+empire_axe - BUG - Pickaxe_ID_030_ArtDeco
+
+-
+
+Glider:
+planetary_probe - BUG - Glider_ID_027_Satelite
+
+-
+
+Dance:
+confused - BUG - EID_Confused
+
+-
+
+MTX:
++ 2500 vbucks
+
+
+
+
+CREATE TABLE IF NOT EXISTS `item` (
+  `item_name` text NOT NULL,
+  `item_price` int NOT NULL,
+  `item_id` text NOT NULL
+)
+
+INSERT INTO `item` (`item_name`, `item_price`, `item_id`) VALUES
+('renegade_raider', 100000, 'CID_028_Athena_Commando_F'),
+('assault_trooper', 1200, 'CID_017_Athena_Commando_M'),
+('skull_trooper', 1500, 'CID_030_Athena_Commando_M_Halloween'),
+('ghoul_trooper', 1500, 'CID_029_Athena_Commando_F_Halloween'),
+('recon_specialist', 1200, 'CID_024_Athena_Commando_F'),
+('brawler', 1200, 'CID_021_Athena_Commando_F'),
+('racon_expert', 1200, 'CID_022_Athena_Commando_F'),
+('reaper', 2500, 'HalloweenScythe'),
+('raider_revenge', 5000, 'Pickaxe_Lockjaw'),
+('close_shave', 800, 'BoltonPickaxe'),
+('death_valley', 1500, 'Pickaxe_Deathvalley'),
+('mako', 500, 'Glider_Warthog'),
+('prismatic', 800, 'Glider_Prismatic');
+
+
+CREATE TABLE IF NOT EXISTS `stat` (
+  `top1` int NOT NULL,
+  `top10` int NOT NULL,
+  `top25` int NOT NULL,
+  `kills` int NOT NULL,
+  `username` text NOT NULL,
+  `token` text NOT NULL
+)
+
+CREATE TABLE IF NOT EXISTS `users` (
+  `token` text NOT NULL,
+  `username` text NOT NULL,
+  `id` int NOT NULL,
+  `password` text NOT NULL,
+  `mtx` int NOT NULL,
+  `item` text NOT NULL,
+  `status` text NOT NULL,
+  `ip` text NOT NULL,
+  `date` text NOT NULL,
+  `level` int NOT NULL,
+  `exp` int NOT NULL
+)
+
+Début d'énoncé inattendu. (near "`item_name`" at position 149)
+Début d'énoncé inattendu. (near "`item_price`" at position 162)
+Début d'énoncé inattendu. (near "`item_id`" at position 176)
+Type d'énoncé non reconnu. (near "VALUES" at position 187)

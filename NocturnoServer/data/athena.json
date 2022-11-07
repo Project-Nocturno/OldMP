@@ -1,0 +1,4879 @@
+{
+  "created": "0001-01-01T00:00:00.000Z",
+  "updated": "0001-01-01T00:00:00.000Z",
+  "rvn": 238,
+  "wipeNumber": 1,
+  "accountId": "NocturnoServer",
+  "profileId": "athena",
+  "version": "no_version",
+  "items": {
+    "ettrr4h-2wedfgbn-8i9jsghj-lpw9t2to-loadout1": {
+      "templateId": "CosmeticLocker:cosmeticlocker_athena",
+      "attributes": {
+        "locker_slots_data": {
+          "slots": {
+            "MusicPack": {
+              "items": [
+                "AthenaMusicPack:MusicPack_119_CH1_DefaultMusic"
+              ]
+            },
+            "Character": {
+              "items": [
+                ""
+              ],
+              "activeVariants": [
+                ""
+              ]
+            },
+            "Backpack": {
+              "items": [
+                ""
+              ],
+              "activeVariants": [
+                ""
+              ]
+            },
+            "SkyDiveContrail": {
+              "items": [
+                ""
+              ],
+              "activeVariants": [
+                ""
+              ]
+            },
+            "Dance": {
+              "items": [
+                "AthenaDance:eid_dancemoves"
+              ]
+            },
+            "LoadingScreen": {
+              "items": [
+                ""
+              ]
+            },
+            "Pickaxe": {
+              "items": [
+                "AthenaPickaxe:DefaultPickaxe"
+              ],
+              "activeVariants": [
+                ""
+              ]
+            },
+            "Glider": {
+              "items": [
+                "AthenaGlider:DefaultGlider"
+              ],
+              "activeVariants": [
+                ""
+              ]
+            },
+            "ItemWrap": {
+              "items": [
+                ""
+              ],
+              "activeVariants": [
+                ""
+              ]
+            }
+          }
+        },
+        "use_count": 0,
+        "banner_icon_template": "StandardBanner1",
+        "banner_color_template": "DefaultColor1",
+        "locker_name": "LawinServer",
+        "item_seen": false,
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_001_Cattus": {
+      "templateId": "BannerToken:BannerToken_001_Cattus",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_002_Doggus": {
+      "templateId": "BannerToken:BannerToken_002_Doggus",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_003_2019WorldCup": {
+      "templateId": "BannerToken:BannerToken_003_2019WorldCup",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_005_BlackMonday": {
+      "templateId": "BannerToken:BannerToken_005_BlackMonday",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_006_StormKing": {
+      "templateId": "BannerToken:BannerToken_006_StormKing",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_007_S11_TreeSymbol": {
+      "templateId": "BannerToken:BannerToken_007_S11_TreeSymbol",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_008_S11_DiamondShapes": {
+      "templateId": "BannerToken:BannerToken_008_S11_DiamondShapes",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_009_S11_EightBall": {
+      "templateId": "BannerToken:BannerToken_009_S11_EightBall",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_010_S11_Toadstool": {
+      "templateId": "BannerToken:BannerToken_010_S11_Toadstool",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_011_S11_Pawmark": {
+      "templateId": "BannerToken:BannerToken_011_S11_Pawmark",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_012_S11_Fishhook": {
+      "templateId": "BannerToken:BannerToken_012_S11_Fishhook",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_013_S11_ToxicMask": {
+      "templateId": "BannerToken:BannerToken_013_S11_ToxicMask",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_014_S11_WaterWaves": {
+      "templateId": "BannerToken:BannerToken_014_S11_WaterWaves",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_015_GalileoA_0W6VH": {
+      "templateId": "BannerToken:BannerToken_015_GalileoA_0W6VH",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_016_GalileoB_ZF42Y": {
+      "templateId": "BannerToken:BannerToken_016_GalileoB_ZF42Y",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_017_GalileoC_CKB0B": {
+      "templateId": "BannerToken:BannerToken_017_GalileoC_CKB0B",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_018_GalileoD_5XXFQ": {
+      "templateId": "BannerToken:BannerToken_018_GalileoD_5XXFQ",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_019_XmasSweaterB": {
+      "templateId": "BannerToken:BannerToken_019_XmasSweaterB",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_020_Flake": {
+      "templateId": "BannerToken:BannerToken_020_Flake",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_021_SockMonkey": {
+      "templateId": "BannerToken:BannerToken_021_SockMonkey",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_022_S11_Badge_01": {
+      "templateId": "BannerToken:BannerToken_022_S11_Badge_01",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_023_S11_Badge_02": {
+      "templateId": "BannerToken:BannerToken_023_S11_Badge_02",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_024_S11_Badge_03": {
+      "templateId": "BannerToken:BannerToken_024_S11_Badge_03",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_025_S11_Badge_04": {
+      "templateId": "BannerToken:BannerToken_025_S11_Badge_04",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_026_S11_Badge_05": {
+      "templateId": "BannerToken:BannerToken_026_S11_Badge_05",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_027_LoveAndWar_Love": {
+      "templateId": "BannerToken:BannerToken_027_LoveAndWar_Love",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_028_LoveAndWar_War": {
+      "templateId": "BannerToken:BannerToken_028_LoveAndWar_War",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_029_S12_Cowboy": {
+      "templateId": "BannerToken:BannerToken_029_S12_Cowboy",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_030_S12_Grenade": {
+      "templateId": "BannerToken:BannerToken_030_S12_Grenade",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_031_S12_Kitty": {
+      "templateId": "BannerToken:BannerToken_031_S12_Kitty",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_032_S12_Roses": {
+      "templateId": "BannerToken:BannerToken_032_S12_Roses",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_033_S12_Skull": {
+      "templateId": "BannerToken:BannerToken_033_S12_Skull",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_034_S12_WingedCritter": {
+      "templateId": "BannerToken:BannerToken_034_S12_WingedCritter",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_035_S12_Badge_1": {
+      "templateId": "BannerToken:BannerToken_035_S12_Badge_1",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_036_S12_Badge_2": {
+      "templateId": "BannerToken:BannerToken_036_S12_Badge_2",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_037_S12_Badge_3": {
+      "templateId": "BannerToken:BannerToken_037_S12_Badge_3",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_038_S12_Badge_4": {
+      "templateId": "BannerToken:BannerToken_038_S12_Badge_4",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_039_S12_Badge_5": {
+      "templateId": "BannerToken:BannerToken_039_S12_Badge_5",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_040_S12_Midas": {
+      "templateId": "BannerToken:BannerToken_040_S12_Midas",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_041_S12_CycloneA": {
+      "templateId": "BannerToken:BannerToken_041_S12_CycloneA",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_043_S12_Donut": {
+      "templateId": "BannerToken:BannerToken_043_S12_Donut",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_044_S12_BananaAgent": {
+      "templateId": "BannerToken:BannerToken_044_S12_BananaAgent",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_045_S12_BrazilToucan": {
+      "templateId": "BannerToken:BannerToken_045_S12_BrazilToucan",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_046_S12_BrazilDrum": {
+      "templateId": "BannerToken:BannerToken_046_S12_BrazilDrum",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_047_S13_BlackKnight": {
+      "templateId": "BannerToken:BannerToken_047_S13_BlackKnight",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_048_S13_MechanicalEngineer": {
+      "templateId": "BannerToken:BannerToken_048_S13_MechanicalEngineer",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_049_S13_OceanRider": {
+      "templateId": "BannerToken:BannerToken_049_S13_OceanRider",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_050_S13_ProfessorPup": {
+      "templateId": "BannerToken:BannerToken_050_S13_ProfessorPup",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_051_S13_RacerZero": {
+      "templateId": "BannerToken:BannerToken_051_S13_RacerZero",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_052_S13_SandCastle": {
+      "templateId": "BannerToken:BannerToken_052_S13_SandCastle",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_053_S13_SpaceWanderer": {
+      "templateId": "BannerToken:BannerToken_053_S13_SpaceWanderer",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_054_S13_TacticalScuba": {
+      "templateId": "BannerToken:BannerToken_054_S13_TacticalScuba",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_055_S13_Yonezu": {
+      "templateId": "BannerToken:BannerToken_055_S13_Yonezu",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_056_S14_HighTowerDate": {
+      "templateId": "BannerToken:BannerToken_056_S14_HighTowerDate",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_057_S14_HighTowerGrape": {
+      "templateId": "BannerToken:BannerToken_057_S14_HighTowerGrape",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_058_S14_HighTowerHoneyDew": {
+      "templateId": "BannerToken:BannerToken_058_S14_HighTowerHoneyDew",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_059_S14_HighTowerMango": {
+      "templateId": "BannerToken:BannerToken_059_S14_HighTowerMango",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_060_S14_HighTowerRadish": {
+      "templateId": "BannerToken:BannerToken_060_S14_HighTowerRadish",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_061_S14_HighTowerSquash": {
+      "templateId": "BannerToken:BannerToken_061_S14_HighTowerSquash",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_062_S14_HighTowerTapas": {
+      "templateId": "BannerToken:BannerToken_062_S14_HighTowerTapas",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_063_S14_HighTowerTomato": {
+      "templateId": "BannerToken:BannerToken_063_S14_HighTowerTomato",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_064_S14_HighTowerWasabi": {
+      "templateId": "BannerToken:BannerToken_064_S14_HighTowerWasabi",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_065_S14_PS_PlusPack_11": {
+      "templateId": "BannerToken:BannerToken_065_S14_PS_PlusPack_11",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_066_S15_AncientGladiator": {
+      "templateId": "BannerToken:BannerToken_066_S15_AncientGladiator",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_067_S15_Shapeshifter": {
+      "templateId": "BannerToken:BannerToken_067_S15_Shapeshifter",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_068_S15_Lexa": {
+      "templateId": "BannerToken:BannerToken_068_S15_Lexa",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_069_S15_FutureSamurai": {
+      "templateId": "BannerToken:BannerToken_069_S15_FutureSamurai",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_070_S15_Flapjack": {
+      "templateId": "BannerToken:BannerToken_070_S15_Flapjack",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_071_S15_SpaceFighter": {
+      "templateId": "BannerToken:BannerToken_071_S15_SpaceFighter",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_072_S15_CosmosA": {
+      "templateId": "BannerToken:BannerToken_072_S15_CosmosA",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_073_S15_CosmosB": {
+      "templateId": "BannerToken:BannerToken_073_S15_CosmosB",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_074_S15_CosmosC": {
+      "templateId": "BannerToken:BannerToken_074_S15_CosmosC",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_075_S20_JourneyMentor": {
+      "templateId": "BannerToken:BannerToken_075_S20_JourneyMentor",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_076_S20_Lyrical": {
+      "templateId": "BannerToken:BannerToken_076_S20_Lyrical",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_077_S20_NeonCatSpeed": {
+      "templateId": "BannerToken:BannerToken_077_S20_NeonCatSpeed",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_STW001_Starlight1": {
+      "templateId": "BannerToken:BannerToken_STW001_Starlight1",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_STW002_Starlight5": {
+      "templateId": "BannerToken:BannerToken_STW002_Starlight5",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_STW003_Starlight3": {
+      "templateId": "BannerToken:BannerToken_STW003_Starlight3",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_STW004_Starlight4": {
+      "templateId": "BannerToken:BannerToken_STW004_Starlight4",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_STW005_Starlight2": {
+      "templateId": "BannerToken:BannerToken_STW005_Starlight2",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_STW006_Starlight6": {
+      "templateId": "BannerToken:BannerToken_STW006_Starlight6",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_STW007_StarlightScience": {
+      "templateId": "BannerToken:BannerToken_STW007_StarlightScience",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_TBD_S13_Badge_1": {
+      "templateId": "BannerToken:BannerToken_TBD_S13_Badge_1",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_TBD_S13_Badge_2": {
+      "templateId": "BannerToken:BannerToken_TBD_S13_Badge_2",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_TBD_S13_Badge_3": {
+      "templateId": "BannerToken:BannerToken_TBD_S13_Badge_3",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_TBD_S13_Badge_4": {
+      "templateId": "BannerToken:BannerToken_TBD_S13_Badge_4",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_TBD_S13_Badge_5": {
+      "templateId": "BannerToken:BannerToken_TBD_S13_Badge_5",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_TBD_S13_SeasonBanner1": {
+      "templateId": "BannerToken:BannerToken_TBD_S13_SeasonBanner1",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_TBD_S13_SeasonBanner2": {
+      "templateId": "BannerToken:BannerToken_TBD_S13_SeasonBanner2",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "BannerToken:BannerToken_TBD_S13_SpraySweater": {
+      "templateId": "BannerToken:BannerToken_TBD_S13_SpraySweater",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "AthenaGlider:DefaultGlider": {
+      "templateId": "AthenaGlider:DefaultGlider",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "AthenaDance:eid_dancemoves": {
+      "templateId": "AthenaDance:eid_dancemoves",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "AthenaPickaxe:DefaultPickaxe": {
+      "templateId": "AthenaPickaxe:DefaultPickaxe",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "Quest:quest_s11_discover_landmarks": {
+      "templateId": "Quest:quest_s11_discover_landmarks",
+      "attributes": {
+        "creation_time": "2018-04-30T00:00:00.000Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Claimed",
+        "bucket": "",
+        "last_state_change_time": "2018-04-30T00:00:00.000Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_visit_landmark_crashedairplane": 2,
+        "completion_visit_landmark_angryapples": 1,
+        "completion_visit_landmark_campcod": 2,
+        "completion_visit_landmark_coralcove": 2,
+        "completion_visit_landmark_lighthouse": 2,
+        "completion_visit_landmark_fortruin": 2,
+        "completion_visit_landmark_beachsidemansion": 2,
+        "completion_visit_landmark_digsite": 1,
+        "completion_visit_landmark_bonfirecampsite": 2,
+        "completion_visit_landmark_riskyreels": 4,
+        "completion_visit_landmark_radiostation": 1,
+        "completion_visit_landmark_scrapyard": 2,
+        "completion_visit_landmark_powerdam": 2,
+        "completion_visit_landmark_weatherstation": 1,
+        "completion_visit_landmark_islandlodge": 1,
+        "completion_visit_landmark_waterfallgorge": 2,
+        "completion_visit_landmark_canoerentals": 1,
+        "completion_visit_landmark_mountainvault": 1,
+        "completion_visit_landmark_swampville": 2,
+        "completion_visit_landmark_cliffsideruinedhouses": 1,
+        "completion_visit_landmark_sawmill": 2,
+        "completion_visit_landmark_pipeplayground": 2,
+        "completion_visit_landmark_pipeperson": 1,
+        "completion_visit_landmark_hayhillbilly": 1,
+        "completion_visit_landmark_lawnmowerraces": 1,
+        "completion_visit_landmark_shipwreckcove": 1,
+        "completion_visit_landmark_tallestmountain": 1,
+        "completion_visit_landmark_beachbus": 2,
+        "completion_visit_landmark_bobsbluff": 2,
+        "completion_visit_landmark_buoyboat": 1,
+        "completion_visit_landmark_chair": 1,
+        "completion_visit_landmark_forkknifetruck": 1,
+        "completion_visit_landmark_durrrburgertruck": 1,
+        "completion_visit_landmark_snowconetruck": 1,
+        "completion_visit_landmark_pizzapetetruck": 1,
+        "completion_visit_landmark_beachrentals": 2,
+        "completion_visit_landmark_overgrownheads": 2,
+        "completion_visit_landmark_loverslookout": 1,
+        "completion_visit_landmark_toiletthrone": 1,
+        "completion_visit_landmark_hatch_a": 2,
+        "completion_visit_landmark_hatch_b": 1,
+        "completion_visit_landmark_hatch_c": 2,
+        "completion_visit_landmark_bigbridgeblue": 1,
+        "completion_visit_landmark_bigbridgered": 1,
+        "completion_visit_landmark_bigbridgeyellow": 1,
+        "completion_visit_landmark_bigbridgegreen": 1,
+        "completion_visit_landmark_bigbridgepurple": 2,
+        "completion_visit_landmark_captaincarpstruck": 1,
+        "completion_visit_landmark_mountf8": 1,
+        "completion_visit_landmark_mounth7": 1,
+        "completion_visit_landmark_basecamphotel": 1,
+        "completion_visit_landmark_basecampfoxtrot": 1,
+        "completion_visit_landmark_basecampgolf": 1,
+        "completion_visit_landmark_lazylakeisland": 2,
+        "completion_visit_landmark_boatlaunch": 1,
+        "completion_visit_landmark_crashedcargo": 2,
+        "completion_visit_landmark_homelyhills": 1,
+        "completion_visit_landmark_flopperpond": 2,
+        "completion_visit_landmark_hilltophouse": 1,
+        "completion_visit_landmark_stackshack": 1,
+        "completion_visit_landmark_unremarkableshack": 2,
+        "completion_visit_landmark_rapidsrest": 1,
+        "completion_visit_landmark_stumpyridge": 1,
+        "completion_visit_landmark_corruptedisland": 1,
+        "completion_visit_landmark_bushface": 1,
+        "completion_visit_landmark_mountaindanceclub": 1,
+        "completion_visit_landmark_icechair": 1,
+        "completion_visit_landmark_icehotel": 1,
+        "completion_visit_landmark_toyfactory": 1,
+        "completion_visit_landmark_iceblockfactory": 1,
+        "completion_visit_landmark_crackshotscabin": 1,
+        "completion_visit_landmark_agencyhq": 1,
+        "completion_visit_landmark_spybase_undergroundsoccerfield": 1,
+        "completion_visit_landmark_spybase_undergroundgasstation": 1,
+        "completion_visit_landmark_suburban_abandonedhouse": 1,
+        "completion_visit_landmark_remotehouse": 1,
+        "completion_visit_landmark_fishfarm": 1,
+        "completion_visit_landmark_sirenisland": 1,
+        "completion_visit_landmark_boatsales": 1,
+        "completion_visit_landmark_boatrace": 1,
+        "completion_visit_landmark_theyacht2": 1,
+        "completion_visit_landmark_toilettitan": 1,
+        "completion_visit_landmark_highhoop": 1,
+        "completion_visit_landmark_pizzapitbarge": 1,
+        "completion_visit_landmark_trophy": 1,
+        "completion_visit_namedpoi_spybase_oilrig": 2,
+        "completion_visit_namedpoi_spybase_yacht": 2,
+        "completion_visit_namedpoi_spybase_mountainbase": 1,
+        "completion_visit_namedpoi_spybase_shark": 2,
+        "completion_visit_landmark_spybase_undergroundradiostation": 1,
+        "completion_visit_landmark_spybase_boxfactory": 1,
+        "completion_visit_landmark_spybase_teddybearspies": 1,
+        "completion_visit_landmark_spybase_recruitmentofficeego": 1,
+        "completion_visit_landmark_spybase_recruitmentofficealter": 1,
+        "completion_visit_landmark_spybase_spyobstaclecourse": 1,
+        "completion_visit_landmark_sharkremains": 1,
+        "completion_visit_landmark_restaurantgas": 2,
+        "completion_visit_landmark_carman": 1,
+        "completion_visit_landmark_spybase_grottoruins": 1,
+        "completion_visit_landmark_sentinelgraveyard": 1,
+        "completion_visit_landmark_tantorsphere": 1,
+        "completion_visit_landmark_bigdoghouse": 1,
+        "completion_visit_landmark_onyxsphere": 1,
+        "completion_visit_landmark_dateroom": 1,
+        "completion_visit_landmark_awakestatue": 1,
+        "completion_visit_landmark_datehouse": 1,
+        "completion_visit_landmark_throne": 1,
+        "completion_visit_landmark_lawoffice": 1,
+        "completion_visit_landmark_ruin": 1,
+        "completion_visit_landmark_friendmonument": 1,
+        "completion_visit_landmark_workshop": 1,
+        "completion_visit_landmark_heroespark": 1,
+        "completion_visit_landmark_turbo": 1,
+        "completion_visit_landmark_jetlanding_01": 1,
+        "completion_visit_landmark_jetlanding_02": 1,
+        "completion_visit_landmark_jetlanding_04": 1,
+        "completion_visit_landmark_jetlanding_05": 1,
+        "completion_visit_landmark_jetlanding_06": 1,
+        "completion_visit_landmark_jetlanding_07": 1,
+        "completion_visit_landmark_jetlanding_08": 1,
+        "completion_visit_landmark_jetlanding_09": 1,
+        "completion_visit_landmark_jetlanding_10": 1,
+        "completion_visit_landmark_jetlanding_11": 1,
+        "completion_visit_landmark_jetlanding_12": 1,
+        "completion_visit_landmark_jetlanding_13": 1,
+        "completion_visit_landmark_jetlanding_14": 1,
+        "completion_visit_landmark_jetlanding_15": 1,
+        "completion_visit_landmark_jetlanding_16": 1,
+        "completion_visit_landmark_jetlanding_17": 1,
+        "completion_visit_landmark_bstore": 1,
+        "completion_visit_landmark_cabin": 1,
+        "completion_visit_landmark_flushfactory": 1,
+        "completion_visit_landmark_steelfarm": 1,
+        "completion_visit_landmark_tomatotown": 1,
+        "completion_visit_landmark_greasygrove": 1,
+        "completion_visit_landmark_vikingvillage": 1,
+        "completion_visit_landmark_sheriffoffice": 1,
+        "completion_visit_landmark_cosmoscrashsite": 1,
+        "completion_visit_landmark_dustydepot": 1,
+        "completion_visit_landmark_butterbarn": 1,
+        "completion_visit_landmark_zpoint": 1,
+        "completion_visit_landmark_noahhouse": 1,
+        "completion_visit_landmark_kitskantina": 1,
+        "completion_visit_landmark_iohub_d1": 1,
+        "completion_visit_landmark_iohub_e6": 1,
+        "completion_visit_landmark_iohub_f4": 1,
+        "completion_visit_landmark_crashedhelicopter": 1,
+        "completion_visit_landmark_arenafloor4": 1,
+        "completion_visit_landmark_arenafloor3": 1,
+        "completion_visit_landmark_arenafloor1": 1,
+        "completion_visit_landmark_arenafloor5": 1,
+        "completion_visit_landmark_holidaystore": 1,
+        "completion_visit_landmark_outpost_alpha": 1,
+        "completion_visit_landmark_outpost_beta": 1,
+        "completion_visit_landmark_outpost_charlie": 1,
+        "completion_visit_landmark_outpost_delta": 1,
+        "completion_visit_landmark_outpost_echo": 1,
+        "completion_visit_landmark_outpost_outsidetower1": 1,
+        "completion_visit_landmark_outpost_outsidetower2": 1,
+        "completion_visit_landmark_outpost_outsidetower3": 1,
+        "completion_visit_landmark_outpost_outsidetower4": 1,
+        "completion_visit_landmark_outpost_outsidetower5": 1,
+        "completion_visit_landmark_outpost_outsidetower6": 1,
+        "completion_visit_landmark_outpost_primalpond": 1,
+        "completion_visit_landmark_outpost_rockface": 1,
+        "completion_visit_landmark_outpost_cattycornergarage": 1,
+        "completion_visit_landmark_outpost_goldenisland": 1,
+        "completion_visit_landmark_radardish_01": 1,
+        "completion_visit_landmark_radardish_02": 1,
+        "completion_visit_landmark_radardish_03": 1,
+        "completion_visit_landmark_radardish_04": 1,
+        "completion_visit_landmark_radardish_05": 1,
+        "completion_visit_landmark_radardish_06": 1,
+        "completion_visit_landmark_radardish_07": 1,
+        "completion_visit_landmark_towerruins": 2,
+        "completion_visit_landmark_hiddenufo_01": 1,
+        "completion_visit_landmark_hiddenufo_02": 1,
+        "completion_visit_landmark_hiddenufo_03": 1,
+        "completion_visit_landmark_hiddenufo_04": 1,
+        "completion_visit_landmark_hiddenufo_05": 1,
+        "completion_visit_landmark_crashsite_01": 1,
+        "completion_visit_landmark_crashsite_02": 1,
+        "completion_visit_landmark_crashsite_03": 1,
+        "completion_visit_landmark_crashsite_04": 1,
+        "completion_visit_landmark_crashsite_05": 1,
+        "completion_visit_landmark_friendlycube": 1,
+        "completion_visit_landmark_outpost_01": 1,
+        "completion_visit_landmark_outpost_02": 1,
+        "completion_visit_landmark_outpost_03": 1,
+        "completion_visit_landmark_outpost_04": 1,
+        "completion_visit_landmark_outpost_05": 1,
+        "completion_visit_landmark_convoy_01": 1,
+        "completion_visit_landmark_convoy_02": 1,
+        "completion_visit_landmark_convoy_03": 1,
+        "completion_visit_landmark_convoy_04": 1,
+        "completion_visit_landmark_convoy_05": 1,
+        "completion_visit_landmark_convoy_06": 1,
+        "completion_visit_landmark_convoy_07": 1,
+        "completion_visit_landmark_convoy_08": 1,
+        "completion_visit_landmark_convoy_09": 1,
+        "completion_visit_landmark_convoy_10": 1,
+        "completion_visit_namedpoi_glasscases": 1,
+        "completion_visit_namedpoi_tomatosphere": 1,
+        "completion_visit_namedpoi_tomatowater": 1,
+        "completion_visit_namedpoi_tomatohouse": 1,
+        "completion_visit_papaya_theater": 1,
+        "completion_visit_papaya_thehub": 1,
+        "completion_visit_papaya_mainstage": 1,
+        "completion_visit_papaya_soccerfield": 1,
+        "completion_visit_papaya_fishingpond": 1,
+        "completion_visit_papaya_secretbeach": 1,
+        "completion_visit_papaya_giantskeleton": 1,
+        "completion_visit_papaya_boatramps": 1,
+        "completion_visit_papaya_piratecove": 1,
+        "completion_visit_papaya_boatraceeast": 1,
+        "completion_visit_papaya_boatracesouth": 1,
+        "completion_visit_papaya_gliderdrop": 1,
+        "completion_visit_papaya_obstaclecourse": 1,
+        "completion_visit_papaya_racecenter": 1,
+        "completion_visit_papaya_mountainpeak": 1,
+        "completion_visit_boogieboat": 1,
+        "completion_impossible_landmark_of_permanence": 9001
+      },
+      "quantity": 1
+    },
+    "Quest:quest_s11_discover_namedlocations": {
+      "templateId": "Quest:quest_s11_discover_namedlocations",
+      "attributes": {
+        "creation_time": "2018-04-30T00:00:00.000Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Claimed",
+        "bucket": "",
+        "last_state_change_time": "2018-04-30T00:00:00.000Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_visit_location_beachybluffs": 2,
+        "completion_visit_location_dirtydocks": 2,
+        "completion_visit_location_frenzyfarm": 2,
+        "completion_visit_location_hollyhedges": 1,
+        "completion_visit_location_hollyhedgesupdate": 1,
+        "completion_visit_location_lazylake": 1,
+        "completion_visit_location_mountainmeadow": 1,
+        "completion_visit_location_powerplant": 2,
+        "completion_visit_location_slurpyswamp": 2,
+        "completion_visit_location_sunnyshores": 3,
+        "completion_visit_location_weepingwoods": 3,
+        "completion_visit_location_retailrow": 1,
+        "completion_visit_location_saltysprings": 2,
+        "completion_visit_location_pleasantpark": 3,
+        "completion_visit_location_fortilla": 1,
+        "completion_visit_location_oilrigislands": 1,
+        "completion_visit_location_shadowagency": 2,
+        "completion_visit_location_cattycorner": 1,
+        "completion_visit_location_carl": 1,
+        "completion_visit_location_tomatolab": 1,
+        "completion_visit_location_nightmarejungle": 1,
+        "completion_visit_location_thecoliseum": 1,
+        "completion_visit_location_huntershaven": 1,
+        "completion_visit_location_saltytowers": 2,
+        "completion_visit_location_heroesharvest": 1,
+        "completion_visit_location_maintower": 1,
+        "completion_visit_location_governmentcomplex": 1,
+        "completion_impossible_poi_of_permanence": 9001
+      },
+      "quantity": 1
+    },
+    "b310c589-11f6-41a5-8e76-7c7f484aa0f6": {
+      "templateId": "Quest:AthenaDaily_Solo_Top25",
+      "attributes": {
+        "creation_time": "2022-09-15T19:00:24.094Z",
+        "level": -1,
+        "item_seen": false,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-15T19:00:24.094Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_daily_athena_solo_top25_v2": 0
+      },
+      "quantity": 1
+    },
+    "39077c1a-6057-4818-ab6d-cd669a072ddc": {
+      "templateId": "Quest:AthenaDaily_Outlive_Squad",
+      "attributes": {
+        "creation_time": "2022-09-16T13:25:19.261Z",
+        "level": -1,
+        "item_seen": false,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-16T13:25:19.261Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_daily_athena_outlive_squad_players_v2": 0
+      },
+      "quantity": 1
+    },
+    "1533b854-100b-4843-a98c-07e6582a7d6c": {
+      "templateId": "Quest:AthenaDaily_Squad_Top6",
+      "attributes": {
+        "creation_time": "2022-09-19T11:24:34.156Z",
+        "level": -1,
+        "item_seen": false,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-19T11:24:34.156Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_daily_athena_squad_top6_v2": 0
+      },
+      "quantity": 1
+    },
+    "AthenaCharacter:CID_025_Athena_Commando_M": {
+      "templateId": "AthenaCharacter:CID_025_Athena_Commando_M",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "AthenaPickaxe:HappyPickaxe": {
+      "templateId": "AthenaPickaxe:HappyPickaxe",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "AthenaGlider:Glider_Voyager": {
+      "templateId": "AthenaGlider:Glider_Voyager",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "AthenaCharacter:CID_022_Athena_Commando_F": {
+      "templateId": "AthenaCharacter:CID_022_Athena_Commando_F",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": false,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "AthenaGlider:Glider_Prismatic": {
+      "templateId": "AthenaGlider:Glider_Prismatic",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": false,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "AthenaPickaxe:BoltonPickaxe": {
+      "templateId": "AthenaPickaxe:BoltonPickaxe",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": false,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "AthenaCharacter:CID_028_Athena_Commando_F": {
+      "templateId": "AthenaCharacter:CID_028_Athena_Commando_F",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "AthenaPickaxe:Pickaxe_Lockjaw": {
+      "templateId": "AthenaPickaxe:Pickaxe_Lockjaw",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "AthenaPickaxe:HalloweenScythe": {
+      "templateId": "AthenaPickaxe:HalloweenScythe",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "AthenaCharacter:CID_017_Athena_Commando_M": {
+      "templateId": "AthenaCharacter:CID_017_Athena_Commando_M",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": false,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "AthenaCharacter:CID_021_Athena_Commando_F": {
+      "templateId": "AthenaCharacter:CID_021_Athena_Commando_F",
+      "attributes": {
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "variants": [],
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "S4-ChallengeBundleSchedule:Season4_Challenge_Schedule": {
+      "templateId": "ChallengeBundleSchedule:Season4_Challenge_Schedule",
+      "attributes": {
+        "unlock_epoch": "2022-09-24T19:35:05.739Z",
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "favorite": false,
+        "granted_bundles": [
+          "S4-ChallengeBundle:QuestBundle_S4_Cumulative",
+          "S4-ChallengeBundle:QuestBundle_S4_ProgressiveA",
+          "S4-ChallengeBundle:QuestBundle_S4_Week_001",
+          "S4-ChallengeBundle:QuestBundle_S4_Week_002",
+          "S4-ChallengeBundle:QuestBundle_S4_Week_003",
+          "S4-ChallengeBundle:QuestBundle_S4_Week_004",
+          "S4-ChallengeBundle:QuestBundle_S4_Week_005",
+          "S4-ChallengeBundle:QuestBundle_S4_Week_006",
+          "S4-ChallengeBundle:QuestBundle_S4_Week_007",
+          "S4-ChallengeBundle:QuestBundle_S4_Week_008",
+          "S4-ChallengeBundle:QuestBundle_S4_Week_009",
+          "S4-ChallengeBundle:QuestBundle_S4_Week_010"
+        ]
+      },
+      "quantity": 1
+    },
+    "S4-ChallengeBundleSchedule:Season4_ProgressiveB_Schedule": {
+      "templateId": "ChallengeBundleSchedule:Season4_ProgressiveB_Schedule",
+      "attributes": {
+        "unlock_epoch": "2022-09-24T19:35:05.739Z",
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "favorite": false,
+        "granted_bundles": [
+          "S4-ChallengeBundle:QuestBundle_S4_ProgressiveB"
+        ]
+      },
+      "quantity": 1
+    },
+    "S4-ChallengeBundleSchedule:Season4_StarterChallenge_Schedule": {
+      "templateId": "ChallengeBundleSchedule:Season4_StarterChallenge_Schedule",
+      "attributes": {
+        "unlock_epoch": "2022-09-24T19:35:05.739Z",
+        "max_level_bonus": 0,
+        "level": 1,
+        "item_seen": true,
+        "xp": 0,
+        "favorite": false,
+        "granted_bundles": [
+          "S4-ChallengeBundle:QuestBundle_S4_Starter"
+        ]
+      },
+      "quantity": 1
+    },
+    "S4-ChallengeBundle:QuestBundle_S4_Cumulative": {
+      "templateId": "ChallengeBundle:QuestBundle_S4_Cumulative",
+      "attributes": {
+        "has_unlock_by_completion": false,
+        "num_quests_completed": 0,
+        "level": 0,
+        "grantedquestinstanceids": [
+          "S4-Quest:Quest_BR_S4_Cumulative_CollectTokens_01",
+          "S4-Quest:Quest_BR_S4_Cumulative_CollectTokens_02",
+          "S4-Quest:Quest_BR_S4_Cumulative_CollectTokens_03",
+          "S4-Quest:Quest_BR_S4_Cumulative_CollectTokens_04",
+          "S4-Quest:Quest_BR_S4_Cumulative_CollectTokens_05",
+          "S4-Quest:Quest_BR_S4_Cumulative_CollectTokens_06",
+          "S4-Quest:Quest_BR_S4_Cumulative_CollectTokens_07"
+        ],
+        "item_seen": true,
+        "max_allowed_bundle_level": 0,
+        "num_granted_bundle_quests": 7,
+        "max_level_bonus": 0,
+        "challenge_bundle_schedule_id": "S4-ChallengeBundleSchedule:Season4_Challenge_Schedule",
+        "num_progress_quests_completed": 0,
+        "xp": 0,
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "S4-ChallengeBundle:QuestBundle_S4_ProgressiveA": {
+      "templateId": "ChallengeBundle:QuestBundle_S4_ProgressiveA",
+      "attributes": {
+        "has_unlock_by_completion": false,
+        "num_quests_completed": 0,
+        "level": 0,
+        "grantedquestinstanceids": [
+          "S4-Quest:Quest_BR_LevelUp_SeasonLevel_ProgressiveA_01",
+          "S4-Quest:Quest_BR_LevelUp_SeasonLevel_ProgressiveA_02",
+          "S4-Quest:Quest_BR_LevelUp_SeasonLevel_ProgressiveA_03",
+          "S4-Quest:Quest_BR_LevelUp_SeasonLevel_ProgressiveA_04",
+          "S4-Quest:Quest_BR_LevelUp_SeasonLevel_ProgressiveA_05"
+        ],
+        "item_seen": true,
+        "max_allowed_bundle_level": 0,
+        "num_granted_bundle_quests": 5,
+        "max_level_bonus": 0,
+        "challenge_bundle_schedule_id": "S4-ChallengeBundleSchedule:Season4_Challenge_Schedule",
+        "num_progress_quests_completed": 0,
+        "xp": 0,
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "S4-ChallengeBundle:QuestBundle_S4_Week_001": {
+      "templateId": "ChallengeBundle:QuestBundle_S4_Week_001",
+      "attributes": {
+        "has_unlock_by_completion": false,
+        "num_quests_completed": 0,
+        "level": 0,
+        "grantedquestinstanceids": [
+          "S4-Quest:Quest_BR_Damage_SniperRifle",
+          "S4-Quest:Quest_BR_Interact_Chests_Location_HauntedHills",
+          "S4-Quest:Quest_BR_Use_PortaFort",
+          "S4-Quest:Quest_BR_Interact_FORTNITE",
+          "S4-Quest:Quest_BR_Interact_ScavengerHunt_TreasureMap_01",
+          "S4-Quest:Quest_BR_Eliminate_Weapon_Pistol",
+          "S4-Quest:Quest_BR_Eliminate_Location_FlushFactory",
+          "S4-Quest:Quest_BR_S4W1_Cumulative_CompleteAll"
+        ],
+        "item_seen": true,
+        "max_allowed_bundle_level": 0,
+        "num_granted_bundle_quests": 8,
+        "max_level_bonus": 0,
+        "challenge_bundle_schedule_id": "S4-ChallengeBundleSchedule:Season4_Challenge_Schedule",
+        "num_progress_quests_completed": 0,
+        "xp": 0,
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "S4-ChallengeBundle:QuestBundle_S4_Week_002": {
+      "templateId": "ChallengeBundle:QuestBundle_S4_Week_002",
+      "attributes": {
+        "has_unlock_by_completion": false,
+        "num_quests_completed": 0,
+        "level": 0,
+        "grantedquestinstanceids": [
+          "S4-Quest:Quest_BR_Interact_Chests_Location_GreasyGrove",
+          "S4-Quest:Quest_BR_Interact_GravityStones",
+          "S4-Quest:Quest_BR_Damage_SuppressedWeapon",
+          "S4-Quest:Quest_BR_Dance_ScavengerHunt_Cameras",
+          "S4-Quest:Quest_BR_Interact_ScavengerHunt_Triangulate_01",
+          "S4-Quest:Quest_BR_Eliminate_ExplosiveWeapon",
+          "S4-Quest:Quest_BR_Eliminate_Location_TomatoTown",
+          "S4-Quest:Quest_BR_S4W2_Cumulative_CompleteAll"
+        ],
+        "item_seen": true,
+        "max_allowed_bundle_level": 0,
+        "num_granted_bundle_quests": 8,
+        "max_level_bonus": 0,
+        "challenge_bundle_schedule_id": "S4-ChallengeBundleSchedule:Season4_Challenge_Schedule",
+        "num_progress_quests_completed": 0,
+        "xp": 0,
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "S4-ChallengeBundle:QuestBundle_S4_Week_003": {
+      "templateId": "ChallengeBundle:QuestBundle_S4_Week_003",
+      "attributes": {
+        "has_unlock_by_completion": false,
+        "num_quests_completed": 0,
+        "level": 0,
+        "grantedquestinstanceids": [
+          "S4-Quest:Quest_BR_Revive",
+          "S4-Quest:Quest_BR_Damage_Pistol",
+          "S4-Quest:Quest_BR_Interact_Chests_Location_LonelyLodge",
+          "S4-Quest:Quest_BR_Interact_RubberDuckies",
+          "S4-Quest:Quest_BR_Interact_ScavengerHunt_TreasureMap_02",
+          "S4-Quest:Quest_BR_Eliminate_Weapon_SniperRifle",
+          "S4-Quest:Quest_BR_Eliminate_Location_TiltedTowers",
+          "S4-Quest:Quest_BR_S4W3_Cumulative_CompleteAll"
+        ],
+        "item_seen": true,
+        "max_allowed_bundle_level": 0,
+        "num_granted_bundle_quests": 8,
+        "max_level_bonus": 0,
+        "challenge_bundle_schedule_id": "S4-ChallengeBundleSchedule:Season4_Challenge_Schedule",
+        "num_progress_quests_completed": 0,
+        "xp": 0,
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "S4-ChallengeBundle:QuestBundle_S4_Week_004": {
+      "templateId": "ChallengeBundle:QuestBundle_S4_Week_004",
+      "attributes": {
+        "has_unlock_by_completion": false,
+        "num_quests_completed": 0,
+        "level": 0,
+        "grantedquestinstanceids": [
+          "S4-Quest:Quest_BR_Damage_AssaultRifle",
+          "S4-Quest:Quest_BR_Interact_Chests_Location_WailingWoods",
+          "S4-Quest:Quest_BR_Interact_AmmoBoxes_SingleMatch",
+          "S4-Quest:Quest_BR_Visit_ScavengerHunt_StormCircles",
+          "S4-Quest:Quest_BR_Interact_ScavengerHunt_Triangulate_02",
+          "S4-Quest:Quest_BR_Eliminate_Trap",
+          "S4-Quest:Quest_BR_Eliminate_Location_SnobbyShores",
+          "S4-Quest:Quest_BR_S4W4_Cumulative_CompleteAll"
+        ],
+        "item_seen": true,
+        "max_allowed_bundle_level": 0,
+        "num_granted_bundle_quests": 8,
+        "max_level_bonus": 0,
+        "challenge_bundle_schedule_id": "S4-ChallengeBundleSchedule:Season4_Challenge_Schedule",
+        "num_progress_quests_completed": 0,
+        "xp": 0,
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "S4-ChallengeBundle:QuestBundle_S4_Week_005": {
+      "templateId": "ChallengeBundle:QuestBundle_S4_Week_005",
+      "attributes": {
+        "has_unlock_by_completion": false,
+        "num_quests_completed": 0,
+        "level": 0,
+        "grantedquestinstanceids": [
+          "S4-Quest:Quest_BR_Damage_SMG",
+          "S4-Quest:Quest_BR_Interact_Chests_Location_DustyDivot",
+          "S4-Quest:Quest_BR_Use_VendingMachine",
+          "S4-Quest:Quest_BR_Dance_ScavengerHunt_Platforms",
+          "S4-Quest:Quest_BR_Interact_ScavengerHunt_TreasureMap_03",
+          "S4-Quest:Quest_BR_Eliminate_Weapon_MinigunLMG",
+          "S4-Quest:Quest_BR_Eliminate_Location_LuckyLanding",
+          "S4-Quest:Quest_BR_S4W5_Cumulative_CompleteAll"
+        ],
+        "item_seen": true,
+        "max_allowed_bundle_level": 0,
+        "num_granted_bundle_quests": 8,
+        "max_level_bonus": 0,
+        "challenge_bundle_schedule_id": "S4-ChallengeBundleSchedule:Season4_Challenge_Schedule",
+        "num_progress_quests_completed": 0,
+        "xp": 0,
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "S4-ChallengeBundle:QuestBundle_S4_Week_006": {
+      "templateId": "ChallengeBundle:QuestBundle_S4_Week_006",
+      "attributes": {
+        "has_unlock_by_completion": false,
+        "num_quests_completed": 0,
+        "level": 0,
+        "grantedquestinstanceids": [
+          "S4-Quest:Quest_BR_Interact_SupplyDrops",
+          "S4-Quest:Quest_BR_Damage_Shotgun",
+          "S4-Quest:Quest_BR_Interact_Chests_Location_LootLake",
+          "S4-Quest:Quest_BR_Spray_SpecificTargets",
+          "S4-Quest:Quest_BR_Interact_ScavengerHunt_Triangulate_03",
+          "S4-Quest:Quest_BR_Eliminate_Weapon_SMG",
+          "S4-Quest:Quest_BR_Eliminate_Location_RetailRow",
+          "S4-Quest:Quest_BR_S4W6_Cumulative_CompleteAll"
+        ],
+        "item_seen": true,
+        "max_allowed_bundle_level": 0,
+        "num_granted_bundle_quests": 8,
+        "max_level_bonus": 0,
+        "challenge_bundle_schedule_id": "S4-ChallengeBundleSchedule:Season4_Challenge_Schedule",
+        "num_progress_quests_completed": 0,
+        "xp": 0,
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "S4-ChallengeBundle:QuestBundle_S4_Week_007": {
+      "templateId": "ChallengeBundle:QuestBundle_S4_Week_007",
+      "attributes": {
+        "has_unlock_by_completion": false,
+        "num_quests_completed": 0,
+        "level": 0,
+        "grantedquestinstanceids": [
+          "S4-Quest:Quest_BR_Damage_Pickaxe",
+          "S4-Quest:Quest_BR_Interact_Chests_Location_RiskyReels",
+          "S4-Quest:Quest_BR_Interact_ForagedItems",
+          "S4-Quest:Quest_BR_Score_Goals",
+          "S4-Quest:Quest_BR_Interact_ScavengerHunt_TreasureMap_04",
+          "S4-Quest:Quest_BR_Eliminate_Weapon_AssaultRifle",
+          "S4-Quest:Quest_BR_Eliminate_Location_ShiftyShafts",
+          "S4-Quest:Quest_BR_S4W7_Cumulative_CompleteAll"
+        ],
+        "item_seen": true,
+        "max_allowed_bundle_level": 0,
+        "num_granted_bundle_quests": 8,
+        "max_level_bonus": 0,
+        "challenge_bundle_schedule_id": "S4-ChallengeBundleSchedule:Season4_Challenge_Schedule",
+        "num_progress_quests_completed": 0,
+        "xp": 0,
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "S4-ChallengeBundle:QuestBundle_S4_Week_008": {
+      "templateId": "ChallengeBundle:QuestBundle_S4_Week_008",
+      "attributes": {
+        "has_unlock_by_completion": false,
+        "num_quests_completed": 0,
+        "level": 0,
+        "grantedquestinstanceids": [
+          "S4-Quest:Quest_BR_Damage_Headshot",
+          "S4-Quest:Quest_BR_Interact_Chests_Location_SaltySprings",
+          "S4-Quest:Quest_BR_Interact_Chests_SingleMatch",
+          "S4-Quest:Quest_BR_Interact_GniceGnomes",
+          "S4-Quest:Quest_BR_Interact_ScavengerHunt_Triangulate_04",
+          "S4-Quest:Quest_BR_Eliminate_SuppressedWeapon",
+          "S4-Quest:Quest_BR_Eliminate_Location_PleasantPark",
+          "S4-Quest:Quest_BR_S4W8_Cumulative_CompleteAll"
+        ],
+        "item_seen": true,
+        "max_allowed_bundle_level": 0,
+        "num_granted_bundle_quests": 8,
+        "max_level_bonus": 0,
+        "challenge_bundle_schedule_id": "S4-ChallengeBundleSchedule:Season4_Challenge_Schedule",
+        "num_progress_quests_completed": 0,
+        "xp": 0,
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "S4-ChallengeBundle:QuestBundle_S4_Week_009": {
+      "templateId": "ChallengeBundle:QuestBundle_S4_Week_009",
+      "attributes": {
+        "has_unlock_by_completion": false,
+        "num_quests_completed": 0,
+        "level": 0,
+        "grantedquestinstanceids": [
+          "S4-Quest:Quest_BR_Damage_ExplosiveWeapon",
+          "S4-Quest:Quest_BR_Interact_Chests_Location_MoistyMire",
+          "S4-Quest:Quest_BR_Use_ShoppingCart",
+          "S4-Quest:Quest_BR_Visit_NamedLocations_SingleMatch",
+          "S4-Quest:Quest_BR_Interact_ScavengerHunt_TreasureMap_05",
+          "S4-Quest:Quest_BR_Eliminate_Weapon_Shotgun",
+          "S4-Quest:Quest_BR_Eliminate_Location_AnarchyAcres",
+          "S4-Quest:Quest_BR_S4W9_Cumulative_CompleteAll"
+        ],
+        "item_seen": true,
+        "max_allowed_bundle_level": 0,
+        "num_granted_bundle_quests": 8,
+        "max_level_bonus": 0,
+        "challenge_bundle_schedule_id": "S4-ChallengeBundleSchedule:Season4_Challenge_Schedule",
+        "num_progress_quests_completed": 0,
+        "xp": 0,
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "S4-ChallengeBundle:QuestBundle_S4_Week_010": {
+      "templateId": "ChallengeBundle:QuestBundle_S4_Week_010",
+      "attributes": {
+        "has_unlock_by_completion": false,
+        "num_quests_completed": 0,
+        "level": 0,
+        "grantedquestinstanceids": [
+          "S4-Quest:Quest_BR_Interact_Chests_Location_JunkJunction",
+          "S4-Quest:Quest_BR_Damage_Enemy_Buildings",
+          "S4-Quest:Quest_BR_Interact_ChestAmmoBoxSupplyDrop_SingleMatch",
+          "S4-Quest:Quest_BR_Skydive_Rings",
+          "S4-Quest:Quest_BR_Interact_ScavengerHunt_Triangulate_05",
+          "S4-Quest:Quest_BR_Eliminate",
+          "S4-Quest:Quest_BR_Eliminate_Location_FatalFields",
+          "S4-Quest:Quest_BR_S4W10_Cumulative_CompleteAll"
+        ],
+        "item_seen": true,
+        "max_allowed_bundle_level": 0,
+        "num_granted_bundle_quests": 8,
+        "max_level_bonus": 0,
+        "challenge_bundle_schedule_id": "S4-ChallengeBundleSchedule:Season4_Challenge_Schedule",
+        "num_progress_quests_completed": 0,
+        "xp": 0,
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "S4-ChallengeBundle:QuestBundle_S4_ProgressiveB": {
+      "templateId": "ChallengeBundle:QuestBundle_S4_ProgressiveB",
+      "attributes": {
+        "has_unlock_by_completion": false,
+        "num_quests_completed": 0,
+        "level": 0,
+        "grantedquestinstanceids": [
+          "S4-Quest:Quest_BR_LevelUp_SeasonLevel_ProgressiveB_01",
+          "S4-Quest:Quest_BR_LevelUp_SeasonLevel_ProgressiveB_02",
+          "S4-Quest:Quest_BR_LevelUp_SeasonLevel_ProgressiveB_03",
+          "S4-Quest:Quest_BR_LevelUp_SeasonLevel_ProgressiveB_04",
+          "S4-Quest:Quest_BR_LevelUp_SeasonLevel_ProgressiveB_05"
+        ],
+        "item_seen": true,
+        "max_allowed_bundle_level": 0,
+        "num_granted_bundle_quests": 5,
+        "max_level_bonus": 0,
+        "challenge_bundle_schedule_id": "S4-ChallengeBundleSchedule:Season4_ProgressiveB_Schedule",
+        "num_progress_quests_completed": 0,
+        "xp": 0,
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "S4-ChallengeBundle:QuestBundle_S4_Starter": {
+      "templateId": "ChallengeBundle:QuestBundle_S4_Starter",
+      "attributes": {
+        "has_unlock_by_completion": false,
+        "num_quests_completed": 0,
+        "level": 0,
+        "grantedquestinstanceids": [
+          "S4-Quest:Quest_BR_Outlive",
+          "S4-Quest:Quest_BR_Play_Min1Friend",
+          "S4-Quest:Quest_BR_Damage",
+          "S4-Quest:Quest_BR_Land_Locations_Different",
+          "S4-Quest:Quest_BR_Play",
+          "S4-Quest:Quest_BR_Play_Min1Elimination",
+          "S4-Quest:Quest_BR_Place_Win"
+        ],
+        "item_seen": true,
+        "max_allowed_bundle_level": 0,
+        "num_granted_bundle_quests": 7,
+        "max_level_bonus": 0,
+        "challenge_bundle_schedule_id": "S4-ChallengeBundleSchedule:Season4_StarterChallenge_Schedule",
+        "num_progress_quests_completed": 0,
+        "xp": 0,
+        "favorite": false
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_S4_Cumulative_CollectTokens_01": {
+      "templateId": "Quest:Quest_BR_S4_Cumulative_CollectTokens_01",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Cumulative",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_cumulative_token1": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_S4_Cumulative_CollectTokens_02": {
+      "templateId": "Quest:Quest_BR_S4_Cumulative_CollectTokens_02",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Cumulative",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_cumulative_token2": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_S4_Cumulative_CollectTokens_03": {
+      "templateId": "Quest:Quest_BR_S4_Cumulative_CollectTokens_03",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Cumulative",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_cumulative_token3": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_S4_Cumulative_CollectTokens_04": {
+      "templateId": "Quest:Quest_BR_S4_Cumulative_CollectTokens_04",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Cumulative",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_cumulative_token4": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_S4_Cumulative_CollectTokens_05": {
+      "templateId": "Quest:Quest_BR_S4_Cumulative_CollectTokens_05",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Cumulative",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_cumulative_token5": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_S4_Cumulative_CollectTokens_06": {
+      "templateId": "Quest:Quest_BR_S4_Cumulative_CollectTokens_06",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Cumulative",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_cumulative_token6": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_S4_Cumulative_CollectTokens_07": {
+      "templateId": "Quest:Quest_BR_S4_Cumulative_CollectTokens_07",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Cumulative",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_cumulative_token7": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_LevelUp_SeasonLevel_ProgressiveA_01": {
+      "templateId": "Quest:Quest_BR_LevelUp_SeasonLevel_ProgressiveA_01",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_ProgressiveA",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_athena_season_levelup_progressive_a_01": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_LevelUp_SeasonLevel_ProgressiveA_02": {
+      "templateId": "Quest:Quest_BR_LevelUp_SeasonLevel_ProgressiveA_02",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_ProgressiveA",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_athena_season_levelup_progressive_a_02": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_LevelUp_SeasonLevel_ProgressiveA_03": {
+      "templateId": "Quest:Quest_BR_LevelUp_SeasonLevel_ProgressiveA_03",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_ProgressiveA",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_athena_season_levelup_progressive_a_03": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_LevelUp_SeasonLevel_ProgressiveA_04": {
+      "templateId": "Quest:Quest_BR_LevelUp_SeasonLevel_ProgressiveA_04",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_ProgressiveA",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_athena_season_levelup_progressive_a_04": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_LevelUp_SeasonLevel_ProgressiveA_05": {
+      "templateId": "Quest:Quest_BR_LevelUp_SeasonLevel_ProgressiveA_05",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_ProgressiveA",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_athena_season_levelup_progressive_a_05": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Damage_SniperRifle": {
+      "templateId": "Quest:Quest_BR_Damage_SniperRifle",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_001",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_damage_athena_player_sniper": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Eliminate_Location_FlushFactory": {
+      "templateId": "Quest:Quest_BR_Eliminate_Location_FlushFactory",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_001",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_killingblow_athena_player_flushfactory": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Eliminate_Weapon_Pistol": {
+      "templateId": "Quest:Quest_BR_Eliminate_Weapon_Pistol",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_001",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_killingblow_athena_player_pistol": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Interact_Chests_Location_HauntedHills": {
+      "templateId": "Quest:Quest_BR_Interact_Chests_Location_HauntedHills",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_001",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_interact_athena_treasurechest_hauntedhills": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Interact_FORTNITE": {
+      "templateId": "Quest:Quest_BR_Interact_FORTNITE",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_001",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_interact_athena_fortnite_letters_01": 0,
+        "completion_battlepass_interact_athena_fortnite_letters_02": 0,
+        "completion_battlepass_interact_athena_fortnite_letters_03": 0,
+        "completion_battlepass_interact_athena_fortnite_letters_04": 0,
+        "completion_battlepass_interact_athena_fortnite_letters_05": 0,
+        "completion_battlepass_interact_athena_fortnite_letters_06": 0,
+        "completion_battlepass_interact_athena_fortnite_letters_07": 0,
+        "completion_battlepass_interact_athena_fortnite_letters_08": 0,
+        "completion_battlepass_interact_athena_fortnite_letters_09": 0,
+        "completion_battlepass_interact_athena_fortnite_letters_10": 0,
+        "completion_battlepass_interact_athena_fortnite_letters_11": 0,
+        "completion_battlepass_interact_athena_fortnite_letters_12": 0,
+        "completion_battlepass_interact_athena_fortnite_letters_13": 0,
+        "completion_battlepass_interact_athena_fortnite_letters_14": 0,
+        "completion_battlepass_interact_athena_fortnite_letters_15": 0,
+        "completion_battlepass_interact_athena_fortnite_letters_16": 0,
+        "completion_battlepass_interact_athena_fortnite_letters_17": 0,
+        "completion_battlepass_interact_athena_fortnite_letters_18": 0,
+        "completion_battlepass_interact_athena_fortnite_letters_19": 0,
+        "completion_battlepass_interact_athena_fortnite_letters_20": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Interact_ScavengerHunt_TreasureMap_01": {
+      "templateId": "Quest:Quest_BR_Interact_ScavengerHunt_TreasureMap_01",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_001",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_interact_athena_hidden_star_01": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_S4W1_Cumulative_CompleteAll": {
+      "templateId": "Quest:Quest_BR_S4W1_Cumulative_CompleteAll",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_001",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_completed_s4w1_quest1": 0,
+        "completion_battlepass_completed_s4w1_quest2": 0,
+        "completion_battlepass_completed_s4w1_quest3": 0,
+        "completion_battlepass_completed_s4w1_quest4": 0,
+        "completion_battlepass_completed_s4w1_quest5": 0,
+        "completion_battlepass_completed_s4w1_quest6": 0,
+        "completion_battlepass_completed_s4w1_quest7": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Use_PortaFort": {
+      "templateId": "Quest:Quest_BR_Use_PortaFort",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_001",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_interact_athena_portafort": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Damage_SuppressedWeapon": {
+      "templateId": "Quest:Quest_BR_Damage_SuppressedWeapon",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_002",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_damage_athena_player_suppressed_weapon": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Dance_ScavengerHunt_Cameras": {
+      "templateId": "Quest:Quest_BR_Dance_ScavengerHunt_Cameras",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_002",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_dance_athena_location_cameras_01": 0,
+        "completion_battlepass_dance_athena_location_cameras_02": 0,
+        "completion_battlepass_dance_athena_location_cameras_03": 0,
+        "completion_battlepass_dance_athena_location_cameras_04": 0,
+        "completion_battlepass_dance_athena_location_cameras_05": 0,
+        "completion_battlepass_dance_athena_location_cameras_06": 0,
+        "completion_battlepass_dance_athena_location_cameras_07": 0,
+        "completion_battlepass_dance_athena_location_cameras_08": 0,
+        "completion_battlepass_dance_athena_location_cameras_09": 0,
+        "completion_battlepass_dance_athena_location_cameras_10": 0,
+        "completion_battlepass_dance_athena_location_cameras_11": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Eliminate_ExplosiveWeapon": {
+      "templateId": "Quest:Quest_BR_Eliminate_ExplosiveWeapon",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_002",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_killingblow_athena_player_with_explosives": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Eliminate_Location_TomatoTown": {
+      "templateId": "Quest:Quest_BR_Eliminate_Location_TomatoTown",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_002",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_killingblow_athena_player_tomatotown": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Interact_Chests_Location_GreasyGrove": {
+      "templateId": "Quest:Quest_BR_Interact_Chests_Location_GreasyGrove",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_002",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_interact_athena_treasurechest_greasygrove": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Interact_GravityStones": {
+      "templateId": "Quest:Quest_BR_Interact_GravityStones",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_002",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_interact_athena_gravitystones": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Interact_ScavengerHunt_Triangulate_01": {
+      "templateId": "Quest:Quest_BR_Interact_ScavengerHunt_Triangulate_01",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_002",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_interact_athena_hidden_star_02": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_S4W2_Cumulative_CompleteAll": {
+      "templateId": "Quest:Quest_BR_S4W2_Cumulative_CompleteAll",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_002",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_completed_s4w2_quest1": 0,
+        "completion_battlepass_completed_s4w2_quest2": 0,
+        "completion_battlepass_completed_s4w2_quest3": 0,
+        "completion_battlepass_completed_s4w2_quest4": 0,
+        "completion_battlepass_completed_s4w2_quest5": 0,
+        "completion_battlepass_completed_s4w2_quest6": 0,
+        "completion_battlepass_completed_s4w2_quest7": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Damage_Pistol": {
+      "templateId": "Quest:Quest_BR_Damage_Pistol",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_003",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_damage_athena_player_pistol": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Eliminate_Location_TiltedTowers": {
+      "templateId": "Quest:Quest_BR_Eliminate_Location_TiltedTowers",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_003",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_killingblow_athena_player_tiltedtowers": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Eliminate_Weapon_SniperRifle": {
+      "templateId": "Quest:Quest_BR_Eliminate_Weapon_SniperRifle",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_003",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_killingblow_athena_player_sniper": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Interact_Chests_Location_LonelyLodge": {
+      "templateId": "Quest:Quest_BR_Interact_Chests_Location_LonelyLodge",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_003",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_interact_athena_treasurechest_lonelylodge": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Interact_RubberDuckies": {
+      "templateId": "Quest:Quest_BR_Interact_RubberDuckies",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_003",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_interact_athena_rubberduckies_01": 0,
+        "completion_battlepass_interact_athena_rubberduckies_02": 0,
+        "completion_battlepass_interact_athena_rubberduckies_03": 0,
+        "completion_battlepass_interact_athena_rubberduckies_04": 0,
+        "completion_battlepass_interact_athena_rubberduckies_05": 0,
+        "completion_battlepass_interact_athena_rubberduckies_06": 0,
+        "completion_battlepass_interact_athena_rubberduckies_07": 0,
+        "completion_battlepass_interact_athena_rubberduckies_08": 0,
+        "completion_battlepass_interact_athena_rubberduckies_09": 0,
+        "completion_battlepass_interact_athena_rubberduckies_10": 0,
+        "completion_battlepass_interact_athena_rubberduckies_11": 0,
+        "completion_battlepass_interact_athena_rubberduckies_12": 0,
+        "completion_battlepass_interact_athena_rubberduckies_13": 0,
+        "completion_battlepass_interact_athena_rubberduckies_14": 0,
+        "completion_battlepass_interact_athena_rubberduckies_15": 0,
+        "completion_battlepass_interact_athena_rubberduckies_16": 0,
+        "completion_battlepass_interact_athena_rubberduckies_17": 0,
+        "completion_battlepass_interact_athena_rubberduckies_18": 0,
+        "completion_battlepass_interact_athena_rubberduckies_19": 0,
+        "completion_battlepass_interact_athena_rubberduckies_20": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Interact_ScavengerHunt_TreasureMap_02": {
+      "templateId": "Quest:Quest_BR_Interact_ScavengerHunt_TreasureMap_02",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_003",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_interact_athena_hidden_star_03": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Revive": {
+      "templateId": "Quest:Quest_BR_Revive",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_003",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_athena_revive_player": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_S4W3_Cumulative_CompleteAll": {
+      "templateId": "Quest:Quest_BR_S4W3_Cumulative_CompleteAll",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_003",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_completed_s4w3_quest1": 0,
+        "completion_battlepass_completed_s4w3_quest2": 0,
+        "completion_battlepass_completed_s4w3_quest3": 0,
+        "completion_battlepass_completed_s4w3_quest4": 0,
+        "completion_battlepass_completed_s4w3_quest5": 0,
+        "completion_battlepass_completed_s4w3_quest6": 0,
+        "completion_battlepass_completed_s4w3_quest7": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Damage_AssaultRifle": {
+      "templateId": "Quest:Quest_BR_Damage_AssaultRifle",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_004",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_damage_athena_player_asssult": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Eliminate_Location_SnobbyShores": {
+      "templateId": "Quest:Quest_BR_Eliminate_Location_SnobbyShores",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_004",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_killingblow_athena_player_snobbyshores": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Eliminate_Trap": {
+      "templateId": "Quest:Quest_BR_Eliminate_Trap",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_004",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_killingblow_athena_player_with_trap": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Interact_AmmoBoxes_SingleMatch": {
+      "templateId": "Quest:Quest_BR_Interact_AmmoBoxes_SingleMatch",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_004",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_athena_battlepass_loot_ammobox_singlematch": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Interact_Chests_Location_WailingWoods": {
+      "templateId": "Quest:Quest_BR_Interact_Chests_Location_WailingWoods",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_004",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_interact_athena_treasurechest_walingwoods": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Interact_ScavengerHunt_Triangulate_02": {
+      "templateId": "Quest:Quest_BR_Interact_ScavengerHunt_Triangulate_02",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_004",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_interact_athena_hidden_star_04": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_S4W4_Cumulative_CompleteAll": {
+      "templateId": "Quest:Quest_BR_S4W4_Cumulative_CompleteAll",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_004",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_completed_s4w4_quest1": 0,
+        "completion_battlepass_completed_s4w4_quest2": 0,
+        "completion_battlepass_completed_s4w4_quest3": 0,
+        "completion_battlepass_completed_s4w4_quest4": 0,
+        "completion_battlepass_completed_s4w4_quest5": 0,
+        "completion_battlepass_completed_s4w4_quest6": 0,
+        "completion_battlepass_completed_s4w4_quest7": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Visit_ScavengerHunt_StormCircles": {
+      "templateId": "Quest:Quest_BR_Visit_ScavengerHunt_StormCircles",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_004",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_findcenter_location_stormcircle": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Damage_SMG": {
+      "templateId": "Quest:Quest_BR_Damage_SMG",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_005",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_damage_athena_player_smg": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Dance_ScavengerHunt_Platforms": {
+      "templateId": "Quest:Quest_BR_Dance_ScavengerHunt_Platforms",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_005",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_dance_athena_scavengerhunt_platforms": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Eliminate_Location_LuckyLanding": {
+      "templateId": "Quest:Quest_BR_Eliminate_Location_LuckyLanding",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_005",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_killingblow_athena_player_luckylanding": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Eliminate_Weapon_MinigunLMG": {
+      "templateId": "Quest:Quest_BR_Eliminate_Weapon_MinigunLMG",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_005",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_killingblow_athena_player_minigunlmg": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Interact_Chests_Location_DustyDivot": {
+      "templateId": "Quest:Quest_BR_Interact_Chests_Location_DustyDivot",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_005",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_interact_athena_treasurechest_dustydivot": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Interact_ScavengerHunt_TreasureMap_03": {
+      "templateId": "Quest:Quest_BR_Interact_ScavengerHunt_TreasureMap_03",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_005",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_interact_athena_hidden_star_05": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_S4W5_Cumulative_CompleteAll": {
+      "templateId": "Quest:Quest_BR_S4W5_Cumulative_CompleteAll",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_005",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_completed_s4w5_quest1": 0,
+        "completion_battlepass_completed_s4w5_quest2": 0,
+        "completion_battlepass_completed_s4w5_quest3": 0,
+        "completion_battlepass_completed_s4w5_quest4": 0,
+        "completion_battlepass_completed_s4w5_quest5": 0,
+        "completion_battlepass_completed_s4w5_quest6": 0,
+        "completion_battlepass_completed_s4w5_quest7": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Use_VendingMachine": {
+      "templateId": "Quest:Quest_BR_Use_VendingMachine",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_005",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_interact_athena_vendingmachine": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Damage_Shotgun": {
+      "templateId": "Quest:Quest_BR_Damage_Shotgun",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_006",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_damage_athena_player_shotgun": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Eliminate_Location_RetailRow": {
+      "templateId": "Quest:Quest_BR_Eliminate_Location_RetailRow",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_006",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_killingblow_athena_player_retailrow": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Eliminate_Weapon_SMG": {
+      "templateId": "Quest:Quest_BR_Eliminate_Weapon_SMG",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_006",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_killingblow_athena_player_smg": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Interact_Chests_Location_LootLake": {
+      "templateId": "Quest:Quest_BR_Interact_Chests_Location_LootLake",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_006",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_interact_athena_treasurechest_lootlake": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Interact_ScavengerHunt_Triangulate_03": {
+      "templateId": "Quest:Quest_BR_Interact_ScavengerHunt_Triangulate_03",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_006",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_interact_athena_hidden_star_06": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Interact_SupplyDrops": {
+      "templateId": "Quest:Quest_BR_Interact_SupplyDrops",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_006",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_interact_athena_supply_drop": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_S4W6_Cumulative_CompleteAll": {
+      "templateId": "Quest:Quest_BR_S4W6_Cumulative_CompleteAll",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_006",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_completed_s4w6_quest1": 0,
+        "completion_battlepass_completed_s4w6_quest2": 0,
+        "completion_battlepass_completed_s4w6_quest3": 0,
+        "completion_battlepass_completed_s4w6_quest4": 0,
+        "completion_battlepass_completed_s4w6_quest5": 0,
+        "completion_battlepass_completed_s4w6_quest6": 0,
+        "completion_battlepass_completed_s4w6_quest7": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Spray_SpecificTargets": {
+      "templateId": "Quest:Quest_BR_Spray_SpecificTargets",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_006",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_spray_athena_heroposters_01": 0,
+        "completion_battlepass_spray_athena_heroposters_02": 0,
+        "completion_battlepass_spray_athena_heroposters_03": 0,
+        "completion_battlepass_spray_athena_heroposters_04": 0,
+        "completion_battlepass_spray_athena_heroposters_05": 0,
+        "completion_battlepass_spray_athena_heroposters_06": 0,
+        "completion_battlepass_spray_athena_heroposters_07": 0,
+        "completion_battlepass_spray_athena_heroposters_08": 0,
+        "completion_battlepass_spray_athena_heroposters_09": 0,
+        "completion_battlepass_spray_athena_heroposters_10": 0,
+        "completion_battlepass_spray_athena_heroposters_11": 0,
+        "completion_battlepass_spray_athena_heroposters_12": 0,
+        "completion_battlepass_spray_athena_heroposters_13": 0,
+        "completion_battlepass_spray_athena_heroposters_14": 0,
+        "completion_battlepass_spray_athena_heroposters_15": 0,
+        "completion_battlepass_spray_athena_heroposters_16": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Damage_Pickaxe": {
+      "templateId": "Quest:Quest_BR_Damage_Pickaxe",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_007",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_damage_athena_player_pickaxe": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Eliminate_Location_ShiftyShafts": {
+      "templateId": "Quest:Quest_BR_Eliminate_Location_ShiftyShafts",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_007",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_killingblow_athena_player_shiftyshafts": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Eliminate_Weapon_AssaultRifle": {
+      "templateId": "Quest:Quest_BR_Eliminate_Weapon_AssaultRifle",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_007",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_killingblow_athena_player_assault": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Interact_Chests_Location_RiskyReels": {
+      "templateId": "Quest:Quest_BR_Interact_Chests_Location_RiskyReels",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_007",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_interact_athena_treasurechest_riskyreels": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Interact_ForagedItems": {
+      "templateId": "Quest:Quest_BR_Interact_ForagedItems",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_007",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_interact_athena_forgeditems": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Interact_ScavengerHunt_TreasureMap_04": {
+      "templateId": "Quest:Quest_BR_Interact_ScavengerHunt_TreasureMap_04",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_007",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_interact_athena_hidden_star_07": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_S4W7_Cumulative_CompleteAll": {
+      "templateId": "Quest:Quest_BR_S4W7_Cumulative_CompleteAll",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_007",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_completed_s4w7_quest1": 0,
+        "completion_battlepass_completed_s4w7_quest2": 0,
+        "completion_battlepass_completed_s4w7_quest3": 0,
+        "completion_battlepass_completed_s4w7_quest4": 0,
+        "completion_battlepass_completed_s4w7_quest5": 0,
+        "completion_battlepass_completed_s4w7_quest6": 0,
+        "completion_battlepass_completed_s4w7_quest7": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Score_Goals": {
+      "templateId": "Quest:Quest_BR_Score_Goals",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_007",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_athena_score_goals_01": 0,
+        "completion_battlepass_athena_score_goals_02": 0,
+        "completion_battlepass_athena_score_goals_03": 0,
+        "completion_battlepass_athena_score_goals_04": 0,
+        "completion_battlepass_athena_score_goals_05": 0,
+        "completion_battlepass_athena_score_goals_06": 0,
+        "completion_battlepass_athena_score_goals_07": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Damage_Headshot": {
+      "templateId": "Quest:Quest_BR_Damage_Headshot",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_008",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_damage_athena_player_head_shots": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Eliminate_Location_PleasantPark": {
+      "templateId": "Quest:Quest_BR_Eliminate_Location_PleasantPark",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_008",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_killingblow_athena_player_pleasantpark": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Eliminate_SuppressedWeapon": {
+      "templateId": "Quest:Quest_BR_Eliminate_SuppressedWeapon",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_008",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_killingblow_athena_player_with_suppressed_weapon": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Interact_Chests_Location_SaltySprings": {
+      "templateId": "Quest:Quest_BR_Interact_Chests_Location_SaltySprings",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_008",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_interact_athena_treasurechest_saltysprings": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Interact_Chests_SingleMatch": {
+      "templateId": "Quest:Quest_BR_Interact_Chests_SingleMatch",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_008",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_interact_athena_loot_chest_single_match": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Interact_GniceGnomes": {
+      "templateId": "Quest:Quest_BR_Interact_GniceGnomes",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_008",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_interact_athena_gnice_gnome_01": 0,
+        "completion_battlepass_interact_athena_gnice_gnome_02": 0,
+        "completion_battlepass_interact_athena_gnice_gnome_03": 0,
+        "completion_battlepass_interact_athena_gnice_gnome_04": 0,
+        "completion_battlepass_interact_athena_gnice_gnome_05": 0,
+        "completion_battlepass_interact_athena_gnice_gnome_06": 0,
+        "completion_battlepass_interact_athena_gnice_gnome_07": 0,
+        "completion_battlepass_interact_athena_gnice_gnome_08": 0,
+        "completion_battlepass_interact_athena_gnice_gnome_09": 0,
+        "completion_battlepass_interact_athena_gnice_gnome_10": 0,
+        "completion_battlepass_interact_athena_gnice_gnome_11": 0,
+        "completion_battlepass_interact_athena_gnice_gnome_12": 0,
+        "completion_battlepass_interact_athena_gnice_gnome_13": 0,
+        "completion_battlepass_interact_athena_gnice_gnome_14": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Interact_ScavengerHunt_Triangulate_04": {
+      "templateId": "Quest:Quest_BR_Interact_ScavengerHunt_Triangulate_04",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_008",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_interact_athena_hidden_star_08": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_S4W8_Cumulative_CompleteAll": {
+      "templateId": "Quest:Quest_BR_S4W8_Cumulative_CompleteAll",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_008",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_completed_s4w8_quest1": 0,
+        "completion_battlepass_completed_s4w8_quest2": 0,
+        "completion_battlepass_completed_s4w8_quest3": 0,
+        "completion_battlepass_completed_s4w8_quest4": 0,
+        "completion_battlepass_completed_s4w8_quest5": 0,
+        "completion_battlepass_completed_s4w8_quest6": 0,
+        "completion_battlepass_completed_s4w8_quest7": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Damage_ExplosiveWeapon": {
+      "templateId": "Quest:Quest_BR_Damage_ExplosiveWeapon",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_009",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_damage_athena_player_explosives": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Eliminate_Location_AnarchyAcres": {
+      "templateId": "Quest:Quest_BR_Eliminate_Location_AnarchyAcres",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_009",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_killingblow_athena_player_anarchyacres": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Eliminate_Weapon_Shotgun": {
+      "templateId": "Quest:Quest_BR_Eliminate_Weapon_Shotgun",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_009",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_killingblow_athena_player_shotgun": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Interact_Chests_Location_MoistyMire": {
+      "templateId": "Quest:Quest_BR_Interact_Chests_Location_MoistyMire",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_009",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_interact_athena_treasurechest_moistymire": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Interact_ScavengerHunt_TreasureMap_05": {
+      "templateId": "Quest:Quest_BR_Interact_ScavengerHunt_TreasureMap_05",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_009",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_interact_athena_hidden_star_09": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_S4W9_Cumulative_CompleteAll": {
+      "templateId": "Quest:Quest_BR_S4W9_Cumulative_CompleteAll",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_009",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_completed_s4w9_quest1": 0,
+        "completion_battlepass_completed_s4w9_quest2": 0,
+        "completion_battlepass_completed_s4w9_quest3": 0,
+        "completion_battlepass_completed_s4w9_quest4": 0,
+        "completion_battlepass_completed_s4w9_quest5": 0,
+        "completion_battlepass_completed_s4w9_quest6": 0,
+        "completion_battlepass_completed_s4w9_quest7": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Use_ShoppingCart": {
+      "templateId": "Quest:Quest_BR_Use_ShoppingCart",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_009",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_athena_use_shoppingcart": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Visit_NamedLocations_SingleMatch": {
+      "templateId": "Quest:Quest_BR_Visit_NamedLocations_SingleMatch",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_009",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_visit_athena_location_mountain_summit_01": 0,
+        "completion_battlepass_visit_athena_location_mountain_summit_02": 0,
+        "completion_battlepass_visit_athena_location_mountain_summit_03": 0,
+        "completion_battlepass_visit_athena_location_mountain_summit_04": 0,
+        "completion_battlepass_visit_athena_location_mountain_summit_05": 0,
+        "completion_battlepass_visit_athena_location_mountain_summit_06": 0,
+        "completion_battlepass_visit_athena_location_mountain_summit_07": 0,
+        "completion_battlepass_visit_athena_location_mountain_summit_08": 0,
+        "completion_battlepass_visit_athena_location_mountain_summit_09": 0,
+        "completion_battlepass_visit_athena_location_mountain_summit_10": 0,
+        "completion_battlepass_visit_athena_location_mountain_summit_11": 0,
+        "completion_battlepass_visit_athena_location_mountain_summit_12": 0,
+        "completion_battlepass_visit_athena_location_mountain_summit_13": 0,
+        "completion_battlepass_visit_athena_location_mountain_summit_14": 0,
+        "completion_battlepass_visit_athena_location_mountain_summit_15": 0,
+        "completion_battlepass_visit_athena_location_mountain_summit_16": 0,
+        "completion_battlepass_visit_athena_location_mountain_summit_17": 0,
+        "completion_battlepass_visit_athena_location_mountain_summit_18": 0,
+        "completion_battlepass_visit_athena_location_mountain_summit_19": 0,
+        "completion_battlepass_visit_athena_location_mountain_summit_20": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Damage_Enemy_Buildings": {
+      "templateId": "Quest:Quest_BR_Damage_Enemy_Buildings",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_010",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_damage_athena_player_buildings": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Eliminate": {
+      "templateId": "Quest:Quest_BR_Eliminate",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_010",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_killingblow_athena_players": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Eliminate_Location_FatalFields": {
+      "templateId": "Quest:Quest_BR_Eliminate_Location_FatalFields",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_010",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_killingblow_athena_player_fatalfields": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Interact_ChestAmmoBoxSupplyDrop_SingleMatch": {
+      "templateId": "Quest:Quest_BR_Interact_ChestAmmoBoxSupplyDrop_SingleMatch",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_010",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_interact_athena_treasurechest": 0,
+        "completion_battlepass_interact_athena_ammobox": 0,
+        "completion_battlepass_interact_athena_supplydrop": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Interact_Chests_Location_JunkJunction": {
+      "templateId": "Quest:Quest_BR_Interact_Chests_Location_JunkJunction",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_010",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_interact_athena_treasurechest_junkjunction": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Interact_ScavengerHunt_Triangulate_05": {
+      "templateId": "Quest:Quest_BR_Interact_ScavengerHunt_Triangulate_05",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_010",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_interact_athena_hidden_star_10": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_S4W10_Cumulative_CompleteAll": {
+      "templateId": "Quest:Quest_BR_S4W10_Cumulative_CompleteAll",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_010",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_completed_s4w10_quest1": 0,
+        "completion_battlepass_completed_s4w10_quest2": 0,
+        "completion_battlepass_completed_s4w10_quest3": 0,
+        "completion_battlepass_completed_s4w10_quest4": 0,
+        "completion_battlepass_completed_s4w10_quest5": 0,
+        "completion_battlepass_completed_s4w10_quest6": 0,
+        "completion_battlepass_completed_s4w10_quest7": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Skydive_Rings": {
+      "templateId": "Quest:Quest_BR_Skydive_Rings",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Week_010",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_skydive_athena_rings": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_LevelUp_SeasonLevel_ProgressiveB_01": {
+      "templateId": "Quest:Quest_BR_LevelUp_SeasonLevel_ProgressiveB_01",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_ProgressiveB",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_athena_season_levelup_progressive_b_01": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_LevelUp_SeasonLevel_ProgressiveB_02": {
+      "templateId": "Quest:Quest_BR_LevelUp_SeasonLevel_ProgressiveB_02",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_ProgressiveB",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_athena_season_levelup_progressive_b_02": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_LevelUp_SeasonLevel_ProgressiveB_03": {
+      "templateId": "Quest:Quest_BR_LevelUp_SeasonLevel_ProgressiveB_03",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_ProgressiveB",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_athena_season_levelup_progressive_b_03": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_LevelUp_SeasonLevel_ProgressiveB_04": {
+      "templateId": "Quest:Quest_BR_LevelUp_SeasonLevel_ProgressiveB_04",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_ProgressiveB",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_athena_season_levelup_progressive_b_04": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_LevelUp_SeasonLevel_ProgressiveB_05": {
+      "templateId": "Quest:Quest_BR_LevelUp_SeasonLevel_ProgressiveB_05",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_ProgressiveB",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_athena_season_levelup_progressive_b_05": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Damage": {
+      "templateId": "Quest:Quest_BR_Damage",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Starter",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_damage_athena_player": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Land_Locations_Different": {
+      "templateId": "Quest:Quest_BR_Land_Locations_Different",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Starter",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_land_athena_location_anarchyacres": 0,
+        "completion_battlepass_land_athena_location_dustydivot": 0,
+        "completion_battlepass_land_athena_location_fatalfields": 0,
+        "completion_battlepass_land_athena_location_flushfactory": 0,
+        "completion_battlepass_land_athena_location_greasygrove": 0,
+        "completion_battlepass_land_athena_location_hauntedhills": 0,
+        "completion_battlepass_land_athena_location_junkjunction": 0,
+        "completion_battlepass_land_athena_location_lonelylodge": 0,
+        "completion_battlepass_land_athena_location_lootlake": 0,
+        "completion_battlepass_land_athena_location_moistymire": 0,
+        "completion_battlepass_land_athena_location_pleasantpark": 0,
+        "completion_battlepass_land_athena_location_retailrow": 0,
+        "completion_battlepass_land_athena_location_shiftyshafts": 0,
+        "completion_battlepass_land_athena_location_saltysprings": 0,
+        "completion_battlepass_land_athena_location_snobbyshores": 0,
+        "completion_battlepass_land_athena_location_tiltedtowers": 0,
+        "completion_battlepass_land_athena_location_tomatotown": 0,
+        "completion_battlepass_land_athena_location_wailingwoods": 0,
+        "completion_battlepass_land_athena_location_luckylanding": 0,
+        "completion_battlepass_land_athena_location_riskyreels": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Outlive": {
+      "templateId": "Quest:Quest_BR_Outlive",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Starter",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_athena_outlive_players": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Place_Win": {
+      "templateId": "Quest:Quest_BR_Place_Win",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Starter",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_athena_win_match": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Play": {
+      "templateId": "Quest:Quest_BR_Play",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Starter",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_athena_play_matches": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Play_Min1Elimination": {
+      "templateId": "Quest:Quest_BR_Play_Min1Elimination",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Starter",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_complete_athena_with_killingblow": 0
+      },
+      "quantity": 1
+    },
+    "S4-Quest:Quest_BR_Play_Min1Friend": {
+      "templateId": "Quest:Quest_BR_Play_Min1Friend",
+      "attributes": {
+        "creation_time": "2022-09-24T19:35:05.739Z",
+        "level": -1,
+        "item_seen": true,
+        "playlists": [],
+        "sent_new_notification": true,
+        "challenge_bundle_id": "S4-ChallengeBundle:QuestBundle_S4_Starter",
+        "xp_reward_scalar": 1,
+        "challenge_linked_quest_given": "",
+        "quest_pool": "",
+        "quest_state": "Active",
+        "bucket": "",
+        "last_state_change_time": "2022-09-24T19:35:05.739Z",
+        "challenge_linked_quest_parent": "",
+        "max_level_bonus": 0,
+        "xp": 0,
+        "quest_rarity": "uncommon",
+        "favorite": false,
+        "completion_battlepass_athena_friend": 0
+      },
+      "quantity": 1
+    }
+  },
+  "stats": {
+    "attributes": {
+      "past_seasons": [],
+      "season_match_boost": 0,
+      "loadouts": [
+        "ettrr4h-2wedfgbn-8i9jsghj-lpw9t2to-loadout1"
+      ],
+      "favorite_victorypose": "",
+      "mfa_reward_claimed": true,
+      "quest_manager": {
+        "dailyLoginInterval": "2022-09-19T11:24:34.156Z",
+        "dailyQuestRerolls": 1
+      },
+      "book_level": 1,
+      "season_num": 4,
+      "favorite_consumableemote": "",
+      "banner_color": "DefaultColor15",
+      "favorite_callingcard": "",
+      "favorite_character": "AthenaCharacter:CID_025_Athena_Commando_M",
+      "favorite_spray": [],
+      "book_xp": 0,
+      "battlestars": 1,
+      "battlestars_season_total": 1,
+      "style_points": 1,
+      "alien_style_points": 1,
+      "party_assist_quest": "",
+      "pinned_quest": "",
+      "purchased_bp_offers": [],
+      "favorite_loadingscreen": "",
+      "book_purchased": false,
+      "lifetime_wins": 0,
+      "favorite_hat": "",
+      "level": 1,
+      "favorite_battlebus": "",
+      "favorite_mapmarker": "",
+      "favorite_vehicledeco": "",
+      "accountLevel": 1,
+      "favorite_backpack": "",
+      "favorite_dance": [
+        "AthenaDance:eid_dancemoves",
+        "c9c5dfa0-2500-4c67-9b18-408227fa5571",
+        "8e0c59a1-0922-41e0-95cb-600962754309",
+        "d7a79068-df1e-49a4-ac91-6640baa69824",
+        "a7aea066-f2ec-4df4-b56d-49e51b1ca513",
+        "8717f467-41b8-44f0-8dec-0ef0a61e16fb"
+      ],
+      "inventory_limit_bonus": 0,
+      "last_applied_loadout": "",
+      "favorite_skydivecontrail": "",
+      "favorite_pickaxe": "AthenaPickaxe:HalloweenScythe",
+      "favorite_glider": "AthenaGlider:Glider_Voyager",
+      "daily_rewards": {},
+      "xp": 0,
+      "season_friend_match_boost": 0,
+      "active_loadout_index": 0,
+      "favorite_musicpack": "",
+      "banner_icon": "StandardBanner27",
+      "favorite_itemwraps": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    }
+  },
+  "commandRevision": 238
+}

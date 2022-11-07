@@ -1,0 +1,26 @@
+{
+  "Season2": {
+    "battlePassPurchased": true,
+    "battlePassTier": 49,
+    "battlePassXPBoost": 90,
+    "battlePassXPFriendBoost": 25
+  },
+  "Season3": {
+    "battlePassPurchased": true,
+    "battlePassTier": 61,
+    "battlePassXPBoost": 90,
+    "battlePassXPFriendBoost": 30
+  },
+  "Season4": {
+    "battlePassPurchased": false,
+    "battlePassTier": 1,
+    "battlePassXPBoost": 0,
+    "battlePassXPFriendBoost": 0
+  },
+  "Season5": {
+    "battlePassPurchased": false,
+    "battlePassTier": 1,
+    "battlePassXPBoost": 0,
+    "battlePassXPFriendBoost": 0
+  }
+}
