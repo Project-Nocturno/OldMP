@@ -2,7 +2,7 @@
   "_id": "NocturnoServer",
   "created": "0001-01-01T00:00:00.000Z",
   "updated": "0001-01-01T00:00:00.000Z",
-  "rvn": 166,
+  "rvn": 179,
   "wipeNumber": 1,
   "accountId": "NocturnoServer",
   "profileId": "profile0",
@@ -37342,8 +37342,8 @@
           "last_incremented_time": "2022-09-15T21:38:24.350Z"
         },
         "SubGameSelectCount_Athena": {
-          "current_count": 100,
-          "last_incremented_time": "2022-09-24T19:32:35.427Z"
+          "current_count": 113,
+          "last_incremented_time": "2022-11-20T14:30:54.084Z"
         }
       },
       "default_hero_squad_id": "",
@@ -37490,5 +37490,5 @@
       "packs_granted": 13
     }
   },
-  "commandRevision": 166
+  "commandRevision": 179
 }

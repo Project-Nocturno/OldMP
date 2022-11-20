@@ -25,13 +25,17 @@ express.use(require("./main/matchmaking.js"));
 express.use(require("./main/cloudstorage.js"));
 express.use(require("./main/mcp.js"));
 
+const okColor="\x1b[32m";
+const initColor="\x1b[33m- \x1b[0mLe";
+const errColor="\x1b[31m";
+
 const port = process.env.PORT || 3551;
 express.listen(port, () => {
-    console.log("\nProject Nocturno\n\n\x1b[32m[SUCCES] \x1b[33m- \x1b[0mLe port:", port,"a bien été connecter à NocturnoServer.");
+    console.log(`\nProject Nocturno\n\n${okColor}[SUCCES]${initColor} Le port: ${port} a bien été connecter à NocturnoServer.`);
 
     require("./main/xmpp.js");
 }).on("error", (err) => {
-    if (err.code == "EADDRINUSE") console.log(`\x1b[31m[ERROR] \x1b[33m- \x1b[0mLe port: ${port} est déjà utiliser !`);
+    if (err.code == "EADDRINUSE") console.log(`${errColor}[ERROR]${initColor} port: ${port} est déjà utiliser !`);
     else throw err;
 
     process.exit(0);
