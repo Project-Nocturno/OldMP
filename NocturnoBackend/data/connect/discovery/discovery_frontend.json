@@ -202,7 +202,7 @@
     }
   ],
   "TestCohorts": [
-    "LawinServer"
+    "NocturnoBackend"
   ],
   "ModeSets": {}
 }

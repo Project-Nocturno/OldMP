@@ -1,50 +1,50 @@
 {
   "daily1": {
     "itemGrants": [
-      "AthenaCharacter:CID_021_Athena_Commando_F"
+      "AthenaCharacter:CID_045_Athena_Commando_M_HolidaySweater"
     ],
-    "price": 120000000
+    "price": 800
   },
   "daily2": {
     "itemGrants": [
-      "AthenaGlider:Glider_Prismatic"
+      "AthenaGlider:Glider_ID_005_HolidaySweater"
     ],
-    "price": 8000000000
+    "price": 800
   },
   "daily3": {
     "itemGrants": [
-      "AthenaPickaxe:HalloweenScythe"
+      "AthenaPickaxe:Pickaxe_ID_015_HolidayCandyCane"
     ],
-    "price": 2500000000
+    "price": 1500
   },
   "daily4": {
     "itemGrants": [
-      "AthenaCharacter:CID_024_Athena_Commando_F"
+      "AthenaCharacter:CID_050_Athena_Commando_M_HolidayNutcracker"
     ],
-    "price": 1200000000
+    "price": 2000
   },
   "daily5": {
     "itemGrants": [
-      "AthenaPickaxe:BoltonPickaxe"
+      "AthenaPickaxe:Pickaxe_ID_019_Heart"
     ],
-    "price": 8000000000
+    "price": 800
   },
   "daily6": {
     "itemGrants": [
-      "AthenaCharacter:CID_022_Athena_Commando_F"
+      "AthenaCharacter:CID_046_Athena_Commando_F_HolidaySweater"
     ],
-    "price": 12000000000
+    "price": 800
   },
   "featured1": {
     "itemGrants": [
-      "AthenaCharacter:CID_030_Athena_Commando_M_Halloween"
+      "AthenaCharacter:CID_049_Athena_Commando_M_HolidayGingerbread"
     ],
-    "price": 1500000000
+    "price": 1200
   },
   "featured2": {
     "itemGrants": [
-      "AthenaCharacter:CID_029_Athena_Commando_F_Halloween"
+      "AthenaCharacter:CID_048_Athena_Commando_F_HolidayGingerbread"
     ],
-    "price": 1200000000
+    "price": 1500
   }
 }

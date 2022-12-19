@@ -16,6 +16,9 @@
           "Token:homebasepoints": 5
         }
       },
+      "mtx_purchase_history": {
+        "purchases": []
+      },
       "mission_alert_redemption_record": {
         "lastClaimTimesMap": {
           "General": {

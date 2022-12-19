@@ -84,7 +84,7 @@ class Data():
                 ]
               }
             },
-            "commandRevision": 247
+            "commandRevision": 0
         }
         new_items={
             "ettrr4h-2wedfgbn-8i9jsghj-lpw9t2to-loadout1": {
@@ -123,7 +123,7 @@ class Data():
                     },
                     "Dance": {
                       "items": [
-                        "AthenaDance:eid_dancemoves"
+                        ""
                       ]
                     },
                     "LoadingScreen": {
@@ -133,7 +133,7 @@ class Data():
                     },
                     "Pickaxe": {
                       "items": [
-                        "AthenaPickaxe:DefaultPickaxe"
+                        ""
                       ],
                       "activeVariants": [
                         ""
@@ -141,7 +141,7 @@ class Data():
                     },
                     "Glider": {
                       "items": [
-                        "AthenaGlider:DefaultGlider"
+                        ""
                       ],
                       "activeVariants": [
                         ""
@@ -167,7 +167,6 @@ class Data():
               "quantity": 1
             }
           }
-        _temp=[]
         for i in self.items_l:
             item_temp={
                 i: {
@@ -183,10 +182,9 @@ class Data():
                   "quantity": 1
                 }
             }
-            _temp.append(item_temp)
-        new_items['ettrr4h-2wedfgbn-8i9jsghj-lpw9t2to-loadout1']['attributes']['locker_slots_data']['slots']=_temp
+            new_items['ettrr4h-2wedfgbn-8i9jsghj-lpw9t2to-loadout1']['attributes']['locker_slots_data']['slots'][i]=item_temp
         self._athena['items']=new_items
         
-        return json.dumps(self._athena)
+        return json.dumps(self._athena, indent=4)
   
-print(Data(usernm="test").athena())
+open('data/athena.json', 'w', encoding='utf-8').write(Data(usernm="test").athena())
