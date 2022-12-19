@@ -1,2 +1,0 @@
-node data.js
-pause
