@@ -32,21 +32,21 @@ class Data():
             'contentpages': [],
             'catalog': []
         }
-        self._data['privacy'].append(json.loads(self.privacy()))
-        self._data['athena'].append(json.loads(self.athena()))
-        self._data['commoncore'].append(json.loads(self.commoncore()))
-        self._data['commonpublic'].append(json.loads(self.commonpublic()))
-        self._data['profile0'].append(json.loads(self.profile0()))
-        self._data['collections'].append(json.loads(self.collections()))
-        self._data['seasondata'].append(json.loads(self.seasondata()))
-        self._data['friendlist'].append(json.loads(self.friendlist()))
-        self._data['friendlistv2'].append(json.loads(self.friendlistv2()))
-        self._data['quests'].append(json.loads(self.quests()))
-        self._data['catalogconfig'].append(self._catalogconfig)
-        self._data['discoverfrontend'].append(self._discoverfrontend)
-        self._data['keychain'].append(self._keychain)
-        self._data['contentpages'].append(self._contentpages)
-        self._data['catalog'].append(self._catalog)
+        self._data['privacy']=json.loads(self.privacy())
+        self._data['athena']=json.loads(self.athena())
+        self._data['commoncore']=json.loads(self.commoncore())
+        self._data['commonpublic']=json.loads(self.commonpublic())
+        self._data['profile0']=json.loads(self.profile0())
+        self._data['collections']=json.loads(self.collections())
+        self._data['seasondata']=json.loads(self.seasondata())
+        self._data['friendlist']=json.loads(self.friendlist())
+        self._data['friendlistv2']=json.loads(self.friendlistv2())
+        self._data['quests']=json.loads(self.quests())
+        self._data['catalogconfig']=self._catalogconfig
+        self._data['discoverfrontend']=self._discoverfrontend
+        self._data['keychain']=self._keychain
+        self._data['contentpages']=self._contentpages
+        self._data['catalog']=self._catalog
     
     def athena(self):
         self.exchange_table=[
@@ -655,4 +655,4 @@ class Data():
     def alldata(self):
         return json.dumps(self._data, indent=4)
 
-print(Data(usernm='4lxprime').alldata())
+print(json.loads(Data(usernm='4lxprime').alldata())['catalogconfig'])

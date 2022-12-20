@@ -6,7 +6,6 @@ import os
 import hashlib
 import sys
 import configparser
-from func import getContentPages, getShop, getVersion
 import random
 import requests
 
@@ -51,21 +50,21 @@ class Data():
             'contentpages': [],
             'catalog': []
         }
-        self._data['privacy'].append(json.loads(self.privacy()))
-        self._data['athena'].append(json.loads(self.athena()))
-        self._data['commoncore'].append(json.loads(self.commoncore()))
-        self._data['commonpublic'].append(json.loads(self.commonpublic()))
-        self._data['profile0'].append(json.loads(self.profile0()))
-        self._data['collections'].append(json.loads(self.collections()))
-        self._data['seasondata'].append(json.loads(self.seasondata()))
-        self._data['friendlist'].append(json.loads(self.friendlist()))
-        self._data['friendlistv2'].append(json.loads(self.friendlistv2()))
-        self._data['quests'].append(json.loads(self.quests()))
-        self._data['catalogconfig'].append(self._catalogconfig)
-        self._data['discoverfrontend'].append(self._discoverfrontend)
-        self._data['keychain'].append(self._keychain)
-        self._data['contentpages'].append(self._contentpages)
-        self._data['catalog'].append(self._catalog)
+        self._data['privacy']=json.loads(self.privacy())
+        self._data['athena']=json.loads(self.athena())
+        self._data['commoncore']=json.loads(self.commoncore())
+        self._data['commonpublic']=json.loads(self.commonpublic())
+        self._data['profile0']=json.loads(self.profile0())
+        self._data['collections']=json.loads(self.collections())
+        self._data['seasondata']=json.loads(self.seasondata())
+        self._data['friendlist']=json.loads(self.friendlist())
+        self._data['friendlistv2']=json.loads(self.friendlistv2())
+        self._data['quests']=json.loads(self.quests())
+        self._data['catalogconfig']=self._catalogconfig
+        self._data['discoverfrontend']=self._discoverfrontend
+        self._data['keychain']=self._keychain
+        self._data['contentpages']=self._contentpages
+        self._data['catalog']=self._catalog
     
     def athena(self):
         self.exchange_table=[
@@ -675,7 +674,214 @@ class Data():
         return json.dumps(self._data, indent=4)
     
 
-data=Data(usernm='4lxprime').alldata()
+data=json.loads(Data(usernm='4lxprime').alldata())
+
+
+
+
+
+def getShop():
+    catalog_config=data['catalogconfig']
+    catalog=data['catalog']
+
+    for value in catalog_config:
+        if isinstance(catalog_config[value]['itemGrants'], list):
+            if len(catalog_config[value]['itemGrants']) != 0:
+                catalog_entry = {
+                    "devName": "",
+                    "offerId": "",
+                    "fulfillmentIds": [],
+                    "dailyLimit": -1,
+                    "weeklyLimit": -1,
+                    "monthlyLimit": -1,
+                    "categories": [],
+                    "prices": [{
+                        "currencyType": "MtxCurrency",
+                        "currencySubType": "",
+                        "regularPrice": 0,
+                        "finalPrice": 0,
+                        "saleExpiration": "9999-12-02T01:12:00Z",
+                        "basePrice": 0
+                    }],
+                    "matchFilter": "",
+                    "filterWeight": 0,
+                    "appStoreId": [],
+                    "requirements": [],
+                    "offerType": "StaticPrice",
+                    "giftInfo": {
+                        "bIsEnabled": False,
+                        "forcedGiftBoxTemplateId": "",
+                        "purchaseRequirements": [],
+                        "giftRecordIds": []
+                    },
+                    "refundable": True,
+                    "metaInfo": [],
+                    "displayAssetPath": "",
+                    "itemGrants": [],
+                    "sortPriority": 0,
+                    "catalogGroupPriority": 0
+                }
+
+                if value.lower().startswith("daily"):
+                    for i, storefront in enumerate(catalog['storefronts']):
+                        if storefront['name'] == "BRDailyStorefront":
+                            catalog_entry['requirements'] = []
+                            catalog_entry['itemGrants'] = []
+
+                            for x in catalog_config[value]['itemGrants']:
+                                if isinstance(x, str):
+                                    if len(x) != 0:
+                                        catalog_entry['devName'] = catalog_config[value]['itemGrants'][0]
+                                        catalog_entry['offerId'] = catalog_config[value]['itemGrants'][0]
+
+                                        catalog_entry['requirements'].append({
+                                            "requirementType": "DenyOnItemOwnership",
+                                            "requiredId": x,
+                                            "minQuantity": 1
+                                        })
+                                        catalog_entry['itemGrants'].append({
+                                            "templateId": x,
+                                            "quantity": 1
+                                        })
+
+                            catalog_entry['prices'][0]['basePrice'] = catalog_config[value]['price']
+                            catalog_entry['prices'][0]['regularPrice'] = catalog_config[value]['price']
+                            catalog_entry['prices'][0]['finalPrice'] = catalog_config[value]['price']
+
+                            if len(catalog_entry['itemGrants'])!=0:
+                                catalog['storefronts'][i]['catalogEntries'].append(catalog_entry)
+                
+                if value.lower().startswith("featured"):
+                    for i, storefront in enumerate(catalog['storefronts']):
+                        catalog_entry['requirements']=[]
+                        catalog_entry['itemGrants']=[]
+                        
+                        for x in range(len(catalog_config[value]['itemGrants'])):
+                            if isinstance(catalog_config[value]['itemGrants'][x], str):
+                                if len(catalog_config[value]['itemGrants'][x])!=0:
+                                    catalog_entry['devName']=catalog_config[value]['itemGrants'][0]
+                                    catalog_entry['offerId']=catalog_config[value]['itemGrants'][0]
+                                    
+                                    catalog_entry['requirements'].append({ "requirementType": "DenyOnItemOwnership", "requiredId": catalog_config[value]['itemGrants'][x], "minQuantity": 1 })
+                                    catalog_entry['itemGrants'].append({ "templateId": catalog_config[value]['itemGrants'][x], "quantity": 1 })
+
+                                catalog_entry['prices'][0]['basePrice']=catalog_config[value]['price']
+                                catalog_entry['prices'][0]['regularPrice']=catalog_config[value]['price']
+                                catalog_entry['prices'][0]['finalPrice']=catalog_config[value]['price']
+                                
+                                if len(catalog_entry['itemGrants'])!=0:
+                                    catalog['storefronts'][i]['catalogEntries'].append(catalog_entry)
+    return catalog
+
+def getContentPages(request):
+    memory=getVersion(request=request)
+    
+    contentpage=data['contentpages']
+    
+    language="en"
+    
+    if request.headers["accept-language"]:
+        if "-" in request.headers["accept-language"] and request.headers["accept-language"]!="es-419" and request.headers["accept-language"]!="pt-BR":
+            language=request.headers["accept-language"].split("-")[0]
+        else:
+            language=request.headers["accept-language"]
+            
+    modes=["battleRoyale", "saveTheWorld"]
+    news=["battleroyalenews"]
+    motdnews=["battleroyalenews"]
+    
+    try:
+        for mode in modes:
+            contentpage['subgameselectdata'][mode]['message']['title']=contentpage['subgameselectdata'][mode]['message']['title'][language]
+            contentpage['subgameselectdata'][mode]['message']['body']=contentpage['subgameselectdata'][mode]['message']['body'][language]
+    except:
+        pass
+    
+    try:
+        if memory['build']<5.30:
+            for mode in news:
+                contentpage[mode]['news']['messages'][0]['image']="https://cdn.discordapp.com/attachments/1012885147240124496/1049090228666781726/zyro-image.png"
+                contentpage[mode]['news']['messages'][1]['image']=""
+    except:
+        pass
+    
+    try:
+        for news in motdnews:
+            for motd in contentpage[news]['news']['motds']:
+                motd['title']=motd['title'][language]
+                motd['body']=motd['body'][language]
+    except:
+        pass
+    
+    try:
+        contentpage['dynamicbackgrounds']['backgrounds']['backgrounds'][0]['stage']=f'season{memory["season"]}'
+        contentpage['dynamicbackgrounds']['backgrounds']['backgrounds'][1]['stage']=f'season{memory["season"]}'
+    except:
+        pass
+    
+    return contentpage
+
+def getVersion(request):
+    memory={
+        "season": 0,
+        "build": 0.0,
+        "CL": "",
+        "lobby": ""
+    }
+    
+    if request.headers["user-agent"]:
+        try:
+            BuildID=str(request.headers["user-agent"]).split("-")[3].split(",")[0]
+            if not isinstance(BuildID, int):
+                if " " in BuildID:
+                    CL=BuildID.split(' ')[0]
+                else:
+                    CL=BuildID
+                
+            else:
+                BuildID=str(request.headers["user-agent"]).split("-")[3].split(" ")[0]
+                if not isinstance(BuildID, int):
+                    if " " in BuildID:
+                        CL=BuildID.split(' ')[0]
+                    else:
+                        CL=BuildID
+        except:
+            try:
+                BuildID=str(request.headers["user-agent"]).split("-")[1].split("+")[0]
+                if not isinstance(BuildID, int):
+                    if " " in BuildID:
+                        CL=BuildID.split(' ')[0]
+                    else:
+                        CL=BuildID
+            except:
+                pass
+        
+        try:
+            Build=str(request.headers["user-agent"]).split("Release-")[1].split("-")[0]
+            if len(Build.split("."))==3:
+                Value=Build.split(".")
+                Build=Value[0]+"."+Value[1]+Value[2]
+                
+            season=int(Build.split(".")[0])
+            memory={
+                "season": season,
+                "build": int(Build),
+                "CL": CL,
+                "lobby": "LobbyWinterDecor"
+            }
+            if int(season):
+                TypeError
+        except:
+            memory={
+                "season": 3,
+                "build": 3.5,
+                "CL": CL,
+                "lobby": "LobbyWinterDecor"
+            }
+    return memory
+
+
+
 
 @app.route('/clearitemsforshop', methods=['GET'])
 def cleanitem():
@@ -696,7 +902,7 @@ def cleanitem():
         athena['rvn']+=1
         athena['commandRevision']+=1
         
-        data[request.args.get("profileid") or "athena"]=json.dumps(athena, indent=4)
+        data[request.args.get("profileid") or "athena"]=athena
         
         resp=app.response_class(
             response='Success',
@@ -1361,8 +1567,8 @@ def friendsaccountID(accountId):
         "status": FriendObject.status
     })
     """
-    data['friendslist']=json.dumps(friendslist, indent=4)
-    data['friendslist2']=json.dumps(friendslist2, indent=4)
+    data['friendslist']=friendslist
+    data['friendslist2']=friendslist2
 
     resp=app.response_class(
         response=json.dumps(friendslist),
@@ -1418,8 +1624,8 @@ def friendsaccountIDsummary(accountId):
         "status": "ACCEPTED"
     })
     """
-    data['friendslist']=json.dumps(friendslist, indent=4)
-    data['friendslist2']=json.dumps(friendslist2, indent=4)
+    data['friendslist']=friendslist
+    data['friendslist2']=friendslist2
 
     resp=app.response_class(
         response=json.dumps(friendslist),
@@ -2150,7 +2356,7 @@ def fortniteapigamev2accountId(accountId):
     privacy['accountId']=accountId
     privacy['optOutOfPublicLeaderboards']=request.get_data('optOutOfPublicLeaderboards')
     
-    data['privacy']=json.dumps(privacy, indent=4)
+    data['privacy']=privacy
 
     resp=app.response_class(
         response=json.dumps(privacy),
@@ -2430,7 +2636,7 @@ def PurchaseCatalogEntry(account):
                         }
                         profile['items'].update(item)
     
-    data['athena']=json.dumps(profile, indent=4)
+    data['athena']=profile
     
     if QueryRevision != BaseRevision:
             ApplyProfileChanges=[{
@@ -2477,7 +2683,7 @@ def mcpSetPartyAssistQuest(account):
             "value": profile['stats']['attributes']['party_assist_quest']
         })
 
-        data[request.args.get("profileid") or "athena"]=json.dumps(profile, indent=4)
+        data[request.args.get("profileid") or "athena"]=profile
     
     if QueryRevision!=BaseRevision:
         ApplyProfileChanges=[{
@@ -2526,7 +2732,7 @@ def mcpAthenaPinQuest(account):
             "value": profile['stats']['attributes']['pinned_quest']
         })
 
-        data[request.args.get("profileid") or "athena"]=json.dumps(profile, indent=4)
+        data[request.args.get("profileid") or "athena"]=profile
     
     if QueryRevision!=BaseRevision:
         ApplyProfileChanges=[{
@@ -2576,7 +2782,7 @@ def SetItemFavoriteStatus(account):
             "attributeValue": profile['items'][request.get_data('targetItemId')]['attributes']['favorite']
         })
         
-        data[request.args.get("profileid") or "athena"]=json.dumps(profile, indent=4)
+        data[request.args.get("profileid") or "athena"]=profile
     
     if QueryRevision!=BaseRevision:
         ApplyProfileChanges=[{
@@ -2631,7 +2837,7 @@ def MarkItemSeen(account):
         profile['rvn']+=1
         profile['commandRevision']+=1
         
-        data[request.args.get("profileid") or "athena"]=json.dumps(profile, indent=4)
+        data[request.args.get("profileid") or "athena"]=profile
     
     if QueryRevision!=BaseRevision:
         ApplyProfileChanges=[{
@@ -2695,45 +2901,47 @@ def EquipBattleRoyaleCustomization(account):
                     pass
                 
             VariantChanged=True
-    except:
+    except Exception as e:
         pass
     
     if json.loads(request.get_data('slotName')):
         
         slotNameJ=json.loads(request.get_data('slotName'))['slotName']
+        print(slotNameJ)
         itemToSlotJ=json.loads(request.get_data('itemToSlot'))['itemToSlot']
+        print(itemToSlotJ)
         if slotNameJ=="Character":
-            profile['stats']['attributes']['fortnite_character']=itemToSlotJ or ""
+            profile['stats']['attributes']['favorite_character']=itemToSlotJ or ""
             StatChanged=True
             pass
 
         if slotNameJ=="Backpack":
-            profile['stats']['attributes']['fortnite_backpack']=itemToSlotJ or ""
+            profile['stats']['attributes']['favorite_backpack']=itemToSlotJ or ""
             StatChanged=True
             pass
 
         if slotNameJ=="Pickaxe":
-            profile['stats']['attributes']['fortnite_pickaxe']=itemToSlotJ or ""
+            profile['stats']['attributes']['favorite_pickaxe']=itemToSlotJ or ""
             StatChanged=True
             pass
 
         if slotNameJ=="Glider":
-            profile['stats']['attributes']['fortnite_glider']=itemToSlotJ or ""
+            profile['stats']['attributes']['favorite_glider']=itemToSlotJ or ""
             StatChanged=True
             pass
 
         if slotNameJ=="SkyDiveContrail":
-            profile['stats']['attributes']['fortnite_skydivecontrail']=itemToSlotJ or ""
+            profile['stats']['attributes']['favorite_skydivecontrail']=itemToSlotJ or ""
             StatChanged=True
             pass
 
         if slotNameJ=="MusicPack":
-            profile['stats']['attributes']['fortnite_musicpack']=itemToSlotJ or ""
+            profile['stats']['attributes']['favorite_musicpack']=itemToSlotJ or ""
             StatChanged=True
             pass
 
         if slotNameJ=="LoadingScreen":
-            profile['stats']['attributes']['fortnite_loadingscreen']=itemToSlotJ or ""
+            profile['stats']['attributes']['favorite_loadingscreen']=itemToSlotJ or ""
             StatChanged=True
             pass
 
@@ -2784,7 +2992,7 @@ def EquipBattleRoyaleCustomization(account):
                 "attributeValue": profile['items'][itemToSlotJ]['attributes']['variants']
             })
 
-        data[request.args.get("profileid") or "athena"]=json.dumps(profile, indent=4)
+        data[request.args.get("profileid") or "athena"]=profile
 
     if QueryRevision!=BaseRevision:
         ApplyProfileChanges=[{
@@ -2880,7 +3088,7 @@ def SetBattleRoyaleBanner(account):
             "value": profile['stats']['attributes']['banner_color']
         })
         
-        data[request.args.get("profileid") or "athena"]=json.dumps(profile, indent=4)
+        data[request.args.get("profileid") or "athena"]=profile
     
     if QueryRevision!=BaseRevision:
         ApplyProfileChanges=[{
@@ -3140,7 +3348,7 @@ def ClientQuestLogin(account):
         profile['rvn']+=1
         profile['commandRevision']+=1
         
-        data[request.args.get("profileid") or "athena"]=json.dumps(profile, indent=4)
+        data[request.args.get("profileid") or "athena"]=profile
     
     if QueryRevision!=BaseRevision:
         ApplyProfileChanges=[{
@@ -3193,7 +3401,7 @@ def IncrementNamedCounterStat(account):
             "value": profile['stats']['attributes']['named_counters']
         })
 
-        data[request.args.get("profileid") or "athena"]=json.dumps(profile, indent=4)
+        data[request.args.get("profileid") or "athena"]=profile
     
     if QueryRevision!=BaseRevision:
         ApplyProfileChanges=[{
@@ -3251,7 +3459,7 @@ def handle_request_profile():
                 profile['stats']['attributes']['season_match_boost'] = SeasonData['battlePassXPBoost']
                 profile['stats']['attributes']['season_friend_match_boost'] = SeasonData['battlePassXPFriendBoost']
 
-            data[request.args.get("profileid") or "athena"]=json.dumps(profile, indent=4)
+            data[request.args.get("profileid") or "athena"]=profile
 
     return Response(status=200)
 
@@ -3328,8 +3536,8 @@ def refund_mtx_purchase(profile_id):
         multi_update[0]['profileRevision']=item_profile['rvn'] or 0
         multi_update[0]['profileCommandRevision']=item_profile['commandRevision'] or 0
         
-        data['commoncore']=json.dumps(item_profile, indent=4)
-        data[request.args.get("profileid") or "athena"]=json.dumps(profile, indent=4)
+        data['commoncore']=item_profile
+        data[request.args.get("profileid") or "athena"]=profile
     
     if query_revision!=base_revision:
         ApplyProfileChanges=[{

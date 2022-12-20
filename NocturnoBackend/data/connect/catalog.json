@@ -1,7 +1,7 @@
 {
   "refreshIntervalHrs": 24,
   "dailyPurchaseHrs": 24,
-  "expiration": "2022-12-24T10:05:00.000Z",
+  "expiration": "9999-12-30T00:00:00.000Z",
   "storefronts": [
     {
       "name": "BRDailyStorefront",
@@ -30,7 +30,7 @@
               "currencySubType": "",
               "regularPrice": 500,
               "finalPrice": 500,
-              "saleExpiration": "2022-12-24T10:05:00.000Z",
+              "saleExpiration": "9999-12-30T00:00:00.000Z",
               "basePrice": 500
             }
           ],
@@ -75,7 +75,7 @@
               "currencySubType": "",
               "regularPrice": 1200,
               "finalPrice": 1200,
-              "saleExpiration": "2022-12-24T10:05:00.000Z",
+              "saleExpiration": "9999-12-30T00:00:00.000Z",
               "basePrice": 1200
             }
           ],
@@ -120,7 +120,7 @@
               "currencySubType": "",
               "regularPrice": 10000,
               "finalPrice": 10000,
-              "saleExpiration": "2022-12-24T10:05:00.000Z",
+              "saleExpiration": "9999-12-30T00:00:00.000Z",
               "basePrice": 10000
             }
           ],
@@ -165,7 +165,7 @@
               "currencySubType": "",
               "regularPrice": 5000,
               "finalPrice": 5000,
-              "saleExpiration": "2022-12-24T10:05:00.000Z",
+              "saleExpiration": "9999-12-30T00:00:00.000Z",
               "basePrice": 5000
             }
           ],
@@ -214,7 +214,7 @@
               "regularPrice": 2800,
               "dynamicRegularPrice": 2800,
               "finalPrice": 2800,
-              "saleExpiration": "2022-12-24T10:05:00.000Z",
+              "saleExpiration": "9999-12-30T00:00:00.000Z",
               "basePrice": 2800
             }
           ],
@@ -250,7 +250,7 @@
               "regularPrice": 2800,
               "dynamicRegularPrice": 2800,
               "finalPrice": 2800,
-              "saleExpiration": "2022-12-24T10:05:00.000Z",
+              "saleExpiration": "9999-12-30T00:00:00.000Z",
               "basePrice": 2800
             }
           ],
@@ -286,7 +286,7 @@
               "regularPrice": 2800,
               "dynamicRegularPrice": 2800,
               "finalPrice": 2800,
-              "saleExpiration": "2022-12-24T10:05:00.000Z",
+              "saleExpiration": "9999-12-30T00:00:00.000Z",
               "basePrice": 2800
             }
           ],
@@ -322,7 +322,7 @@
               "regularPrice": 2800,
               "dynamicRegularPrice": 2800,
               "finalPrice": 2800,
-              "saleExpiration": "2022-12-24T10:05:00.000Z",
+              "saleExpiration": "9999-12-30T00:00:00.000Z",
               "basePrice": 2800
             }
           ],
@@ -363,7 +363,7 @@
               "regularPrice": 2800,
               "dynamicRegularPrice": 2800,
               "finalPrice": 2800,
-              "saleExpiration": "2022-12-24T10:05:00.000Z",
+              "saleExpiration": "9999-12-30T00:00:00.000Z",
               "basePrice": 2800
             }
           ],
@@ -399,7 +399,7 @@
               "regularPrice": 2800,
               "dynamicRegularPrice": 2800,
               "finalPrice": 2800,
-              "saleExpiration": "2022-12-24T10:05:00.000Z",
+              "saleExpiration": "9999-12-30T00:00:00.000Z",
               "basePrice": 2800
             }
           ],
@@ -435,7 +435,7 @@
               "regularPrice": 2800,
               "dynamicRegularPrice": 2800,
               "finalPrice": 2800,
-              "saleExpiration": "2022-12-24T10:05:00.000Z",
+              "saleExpiration": "9999-12-30T00:00:00.000Z",
               "basePrice": 2800
             }
           ],
@@ -471,7 +471,7 @@
               "regularPrice": 2800,
               "dynamicRegularPrice": 2800,
               "finalPrice": 2800,
-              "saleExpiration": "2022-12-24T10:05:00.000Z",
+              "saleExpiration": "9999-12-30T00:00:00.000Z",
               "basePrice": 2800
             }
           ],
@@ -507,7 +507,7 @@
               "currencySubType": "",
               "regularPrice": 0,
               "finalPrice": 0,
-              "saleExpiration": "2022-12-24T10:05:00.000Z",
+              "saleExpiration": "9999-12-30T00:00:00.000Z",
               "basePrice": 0
             }
           ],
@@ -595,7 +595,7 @@
               "currencySubType": "",
               "regularPrice": 0,
               "finalPrice": 0,
-              "saleExpiration": "2022-12-24T10:05:00.000Z",
+              "saleExpiration": "9999-12-30T00:00:00.000Z",
               "basePrice": 0
             }
           ],
@@ -683,7 +683,7 @@
               "currencySubType": "",
               "regularPrice": 0,
               "finalPrice": 0,
-              "saleExpiration": "2022-12-24T10:05:00.000Z",
+              "saleExpiration": "9999-12-30T00:00:00.000Z",
               "basePrice": 0
             }
           ],
@@ -781,7 +781,7 @@
               "regularPrice": 50,
               "dynamicRegularPrice": 50,
               "finalPrice": 50,
-              "saleExpiration": "2022-12-24T10:05:00.000Z",
+              "saleExpiration": "9999-12-30T00:00:00.000Z",
               "basePrice": 50
             }
           ],
@@ -873,7 +873,7 @@
               "regularPrice": 500,
               "dynamicRegularPrice": 500,
               "finalPrice": 500,
-              "saleExpiration": "2022-12-24T10:05:00.000Z",
+              "saleExpiration": "9999-12-30T00:00:00.000Z",
               "basePrice": 500
             }
           ],
@@ -969,7 +969,7 @@
               "regularPrice": 0,
               "dynamicRegularPrice": 0,
               "finalPrice": 0,
-              "saleExpiration": "2022-12-24T10:05:00.000Z",
+              "saleExpiration": "9999-12-30T00:00:00.000Z",
               "basePrice": 0
             }
           ],
@@ -1062,7 +1062,7 @@
               "regularPrice": 1800,
               "finalPrice": 950,
               "saleType": "PercentOff",
-              "saleExpiration": "2022-12-24T10:05:00.000Z",
+              "saleExpiration": "9999-12-30T00:00:00.000Z",
               "basePrice": 950
             }
           ],
@@ -1141,7 +1141,7 @@
               "currencySubType": "",
               "regularPrice": 150,
               "finalPrice": 150,
-              "saleExpiration": "2022-12-24T10:05:00.000Z",
+              "saleExpiration": "9999-12-30T00:00:00.000Z",
               "basePrice": 150
             }
           ],
@@ -1220,7 +1220,7 @@
               "regularPrice": 4700,
               "finalPrice": 2800,
               "saleType": "PercentOff",
-              "saleExpiration": "2022-12-24T10:05:00.000Z",
+              "saleExpiration": "9999-12-30T00:00:00.000Z",
               "basePrice": 2800
             }
           ],
@@ -1315,7 +1315,7 @@
               "currencySubType": "",
               "regularPrice": 950,
               "finalPrice": 950,
-              "saleExpiration": "2022-12-24T10:05:00.000Z",
+              "saleExpiration": "9999-12-30T00:00:00.000Z",
               "basePrice": 950
             }
           ],
@@ -1410,7 +1410,7 @@
               "currencySubType": "",
               "regularPrice": 150,
               "finalPrice": 150,
-              "saleExpiration": "2022-12-24T10:05:00.000Z",
+              "saleExpiration": "9999-12-30T00:00:00.000Z",
               "basePrice": 150
             }
           ],
@@ -1489,7 +1489,7 @@
               "regularPrice": 4700,
               "finalPrice": 2800,
               "saleType": "PercentOff",
-              "saleExpiration": "2022-12-24T10:05:00.000Z",
+              "saleExpiration": "9999-12-30T00:00:00.000Z",
               "basePrice": 2800
             }
           ],
@@ -1584,7 +1584,7 @@
               "currencySubType": "",
               "regularPrice": 950,
               "finalPrice": 950,
-              "saleExpiration": "2022-12-24T10:05:00.000Z",
+              "saleExpiration": "9999-12-30T00:00:00.000Z",
               "basePrice": 950
             }
           ],
@@ -1679,7 +1679,7 @@
               "currencySubType": "",
               "regularPrice": 150,
               "finalPrice": 150,
-              "saleExpiration": "2022-12-24T10:05:00.000Z",
+              "saleExpiration": "9999-12-30T00:00:00.000Z",
               "basePrice": 150
             }
           ],
@@ -1758,7 +1758,7 @@
               "regularPrice": 4700,
               "finalPrice": 2800,
               "saleType": "PercentOff",
-              "saleExpiration": "2022-12-24T10:05:00.000Z",
+              "saleExpiration": "9999-12-30T00:00:00.000Z",
               "basePrice": 2800
             }
           ],
@@ -1853,7 +1853,7 @@
               "currencySubType": "",
               "regularPrice": 950,
               "finalPrice": 950,
-              "saleExpiration": "2022-12-24T10:05:00.000Z",
+              "saleExpiration": "9999-12-30T00:00:00.000Z",
               "basePrice": 950
             }
           ],
@@ -1948,7 +1948,7 @@
               "currencySubType": "",
               "regularPrice": 150,
               "finalPrice": 150,
-              "saleExpiration": "2022-12-24T10:05:00.000Z",
+              "saleExpiration": "9999-12-30T00:00:00.000Z",
               "basePrice": 150
             }
           ],
