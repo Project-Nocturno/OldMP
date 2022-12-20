@@ -935,12 +935,12 @@ def apitimeline():
     activeEvents=[
     {
         "eventType": f'EventFlag.Season{memory["season"]}',
-        "activeUntil": "2023-12-29T10:05:00.000Z",
+        "activeUntil": "9999-12-31T00:00:00.000Z",
         "activeSince": "2020-01-01T00:00:00.000Z"
     },
     {
         "eventType": f'EventFlag.{memory["lobby"]}',
-        "activeUntil": "2023-12-29T10:05:00.000Z",
+        "activeUntil": "9999-12-31T00:00:00.000Z",
         "activeSince": "2020-01-01T00:00:00.000Z"
     }]
     
@@ -959,69 +959,69 @@ def apitimeline():
         if memory['build']>=3.3:
             activeEvents.append({
                 "eventType": "EventFlag.Spring2018Phase3",
-                "activeUntil": "2023-12-29T10:05:00.000Z",
+                "activeUntil": "9999-12-31T00:00:00.000Z",
                 "activeSince": "2020-01-01T00:00:00.000Z"
             })
         if memory['build']>=3.4:
             activeEvents.append({
                 "eventType": "EventFlag.Spring2018Phase4",
-                "activeUntil": "2023-12-29T10:05:00.000Z",
+                "activeUntil": "9999-12-31T00:00:00.000Z",
                 "activeSince": "2020-01-01T00:00:00.000Z"
             })
     if memory["season"]==4:
         activeEvents.append({
             "eventType": "EventFlag.Blockbuster2018",
-            "activeUntil": "2023-12-29T10:05:00.000Z",
+            "activeUntil": "9999-12-31T00:00:00.000Z",
             "activeSince": "2020-01-01T00:00:00.000Z"
         },
         {
             "eventType": "EventFlag.Blockbuster2018Phase1",
-            "activeUntil": "2023-12-29T10:05:00.000Z",
+            "activeUntil": "9999-12-31T00:00:00.000Z",
             "activeSince": "2020-01-01T00:00:00.000Z"
         })
         if memory['build']>=4.3:
             activeEvents.append({
                 "eventType": "EventFlag.Blockbuster2018Phase2",
-                "activeUntil": "2023-12-29T10:05:00.000Z",
+                "activeUntil": "9999-12-31T00:00:00.000Z",
                 "activeSince": "2020-01-01T00:00:00.000Z"
             })
         if memory['build']>=4.4:
             activeEvents.append({
                 "eventType": "EventFlag.Blockbuster2018Phase3",
-                "activeUntil": "2023-12-29T10:05:00.000Z",
+                "activeUntil": "9999-12-31T00:00:00.000Z",
                 "activeSince": "2020-01-01T00:00:00.000Z"
             })
         if memory['build']>=4.5:
             activeEvents.append({
                 "eventType": "EventFlag.Blockbuster2018Phase4",
-                "activeUntil": "2023-12-29T10:05:00.000Z",
+                "activeUntil": "9999-12-31T00:00:00.000Z",
                 "activeSince": "2020-01-01T00:00:00.000Z"
             })
     if memory["season"]==5:
         activeEvents.append({
             "eventType": "EventFlag.RoadTrip2018",
-            "activeUntil": "2023-12-29T10:05:00.000Z",
+            "activeUntil": "9999-12-31T00:00:00.000Z",
             "activeSince": "2020-01-01T00:00:00.000Z"
         },
         {
             "eventType": "EventFlag.Horde",
-            "activeUntil": "2023-12-29T10:05:00.000Z",
+            "activeUntil": "9999-12-31T00:00:00.000Z",
             "activeSince": "2020-01-01T00:00:00.000Z"
         },
         {
             "eventType": "EventFlag.Anniversary2018_BR",
-            "activeUntil": "2023-12-29T10:05:00.000Z",
+            "activeUntil": "9999-12-31T00:00:00.000Z",
             "activeSince": "2020-01-01T00:00:00.000Z"
         },
         {
             "eventType": "EventFlag.LTM_Heist",
-            "activeUntil": "2023-12-29T10:05:00.000Z",
+            "activeUntil": "9999-12-31T00:00:00.000Z",
             "activeSince": "2020-01-01T00:00:00.000Z"
         })
     if memory['build']==5.10:
         activeEvents.append({
             "eventType": "EventFlag.BirthdayBattleBus",
-            "activeUntil": "2023-12-29T10:05:00.000Z",
+            "activeUntil": "9999-12-31T00:00:00.000Z",
             "activeSince": "2020-01-01T00:00:00.000Z"
         })
 
@@ -1042,12 +1042,12 @@ def apitimeline():
                         "seasonTemplateId": f'AthenaSeason:athenaseason{memory["season"]}',
                         "matchXpBonusPoints": 0,
                         "seasonBegin": "2020-01-01T13:00:000Z",
-                        "seasonEnd": "2023-12-29T10:05:00.000Z",
-                        "seasonDisplayedEnd": "2023-12-29T10:05:00.000Z",
-                        "weeklyStoreEnd": "2023-12-29T10:05:00.000Z",
-                        "stwEventStoreEnd": "2023-12-29T10:05:00.000Z",
-                        "stwWeeklyStoreEnd": "2023-12-29T10:05:00.000Z",
-                        "dailyStoreEnd": "2023-12-29T10:05:00.000Z"
+                        "seasonEnd": "9999-12-31T00:00:00.000Z",
+                        "seasonDisplayedEnd": "9999-12-31T00:00:00.000Z",
+                        "weeklyStoreEnd": "9999-12-31T00:00:00.000Z",
+                        "stwEventStoreEnd": "9999-12-31T00:00:00.000Z",
+                        "stwWeeklyStoreEnd": "9999-12-31T00:00:00.000Z",
+                        "dailyStoreEnd": "9999-12-31T00:00:00.000Z"
                     }
                 }],
                 "cacheExpire": "9999-01-01T22:28:47.830Z"
@@ -1514,11 +1514,11 @@ def accountoauthtoken():
     r={
         "access_token": "projectnocturnotoken",
         "expires_in": 28800,
-        "expires_at": "2023-12-29T10:05:00.000Z",
+        "expires_at": "9999-12-31T00:00:00.000Z",
         "token_type": "bearer",
         "refresh_token": "projectnocturnotoken",
         "refresh_expires": 86400,
-        "refresh_expires_at": "2023-12-29T10:05:00.000Z",
+        "refresh_expires_at": "9999-12-31T00:00:00.000Z",
         "account_id": Memory_CurrentAccountID,
         "client_id": "projectnocturnoclientid",
         "internal_client": True,
