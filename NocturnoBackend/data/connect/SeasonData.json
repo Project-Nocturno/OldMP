@@ -13,13 +13,13 @@
   },
   "Season4": {
     "battlePassPurchased": false,
-    "battlePassTier": 1,
+    "battlePassTier": 0,
     "battlePassXPBoost": 0,
     "battlePassXPFriendBoost": 0
   },
   "Season5": {
     "battlePassPurchased": false,
-    "battlePassTier": 1,
+    "battlePassTier": 0,
     "battlePassXPBoost": 0,
     "battlePassXPFriendBoost": 0
   }

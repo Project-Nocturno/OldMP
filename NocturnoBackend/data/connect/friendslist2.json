@@ -1,6 +1,23 @@
 {
     "friends": [
-        {}
+        {
+            "accountId": "NocturnoDEV",
+            "groups": [],
+            "mutual": 0,
+            "alias": "",
+            "note": "",
+            "favorite": false,
+            "created": "2022-09-15T19:37:28.837Z"
+        },
+        {
+            "accountId": "4lxprime",
+            "groups": [],
+            "mutual": 0,
+            "alias": "",
+            "note": "",
+            "favorite": false,
+            "created": "2022-12-20T11:49:46Z"
+        }
     ],
     "incoming": [],
     "outgoing": [],

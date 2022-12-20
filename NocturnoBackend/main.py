@@ -1701,7 +1701,9 @@ def PurchaseCatalogEntry(account):
                 "quantity": 1
             }
         }
-        profile['items'][itemId]=item
+        profile['items'].update(item)
+    
+    open('data/athena.json', 'w', encoding='utf-8').write(json.dumps(profile, indent=4))
     
     if QueryRevision != BaseRevision:
             ApplyProfileChanges=[{
