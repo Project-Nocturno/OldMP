@@ -1,7 +1,7 @@
 {
     "created": "0001-01-01T00:00:00.000Z",
     "updated": "0001-01-01T00:00:00.000Z",
-    "rvn": 0,
+    "rvn": 2,
     "wipeNumber": 1,
     "accountId": "4lxprime",
     "profileId": "athena",
@@ -86,8 +86,8 @@
             },
             "quantity": 1
         },
-        "CID_030_Athena_Commando_M_Halloween": {
-            "templateId": "CID_030_Athena_Commando_M_Halloween",
+        "AthenaCharacter:CID_030_Athena_Commando_M_Halloween": {
+            "templateId": "AthenaCharacter:CID_030_Athena_Commando_M_Halloween",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -98,8 +98,8 @@
             },
             "quantity": 1
         },
-        "CID_029_Athena_Commando_F_Halloween": {
-            "templateId": "CID_029_Athena_Commando_F_Halloween",
+        "AthenaCharacter:CID_029_Athena_Commando_F_Halloween": {
+            "templateId": "AthenaCharacter:CID_029_Athena_Commando_F_Halloween",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -110,8 +110,8 @@
             },
             "quantity": 1
         },
-        "CID_024_Athena_Commando_F": {
-            "templateId": "CID_024_Athena_Commando_F",
+        "AthenaCharacter:CID_024_Athena_Commando_F": {
+            "templateId": "AthenaCharacter:CID_024_Athena_Commando_F",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -122,8 +122,8 @@
             },
             "quantity": 1
         },
-        "CID_021_Athena_Commando_F": {
-            "templateId": "CID_021_Athena_Commando_F",
+        "AthenaCharacter:CID_021_Athena_Commando_F": {
+            "templateId": "AthenaCharacter:CID_021_Athena_Commando_F",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -134,8 +134,8 @@
             },
             "quantity": 1
         },
-        "CID_022_Athena_Commando_F": {
-            "templateId": "CID_022_Athena_Commando_F",
+        "AthenaCharacter:CID_022_Athena_Commando_F": {
+            "templateId": "AthenaCharacter:CID_022_Athena_Commando_F",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -146,8 +146,8 @@
             },
             "quantity": 1
         },
-        "CID_070_Athena_Commando_M_Cupid": {
-            "templateId": "CID_070_Athena_Commando_M_Cupid",
+        "AthenaCharacter:CID_070_Athena_Commando_M_Cupid": {
+            "templateId": "AthenaCharacter:CID_070_Athena_Commando_M_Cupid",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -158,8 +158,8 @@
             },
             "quantity": 1
         },
-        "CID_069_Athena_Commando_F_PinkBear": {
-            "templateId": "CID_069_Athena_Commando_F_PinkBear",
+        "AthenaCharacter:CID_069_Athena_Commando_F_PinkBear": {
+            "templateId": "AthenaCharacter:CID_069_Athena_Commando_F_PinkBear",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -170,8 +170,8 @@
             },
             "quantity": 1
         },
-        "CID_051_Athena_Commando_M_HolidayElf": {
-            "templateId": "CID_051_Athena_Commando_M_HolidayElf",
+        "AthenaCharacter:CID_051_Athena_Commando_M_HolidayElf": {
+            "templateId": "AthenaCharacter:CID_051_Athena_Commando_M_HolidayElf",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -182,8 +182,8 @@
             },
             "quantity": 1
         },
-        "CID_049_Athena_Commando_M_HolidayGingerbread": {
-            "templateId": "CID_049_Athena_Commando_M_HolidayGingerbread",
+        "AthenaCharacter:CID_049_Athena_Commando_M_HolidayGingerbread": {
+            "templateId": "AthenaCharacter:CID_049_Athena_Commando_M_HolidayGingerbread",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -194,8 +194,8 @@
             },
             "quantity": 1
         },
-        "CID_046_Athena_Commando_F_HolidaySweater": {
-            "templateId": "CID_046_Athena_Commando_F_HolidaySweater",
+        "AthenaCharacter:CID_046_Athena_Commando_F_HolidaySweater": {
+            "templateId": "AthenaCharacter:CID_046_Athena_Commando_F_HolidaySweater",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -206,8 +206,8 @@
             },
             "quantity": 1
         },
-        "CID_038_Athena_Commando_M_Disco": {
-            "templateId": "CID_038_Athena_Commando_M_Disco",
+        "AthenaCharacter:CID_038_Athena_Commando_M_Disco": {
+            "templateId": "AthenaCharacter:CID_038_Athena_Commando_M_Disco",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -218,8 +218,8 @@
             },
             "quantity": 1
         },
-        "CID_047_Athena_Commando_F_HolidayReindeer": {
-            "templateId": "CID_047_Athena_Commando_F_HolidayReindeer",
+        "AthenaCharacter:CID_047_Athena_Commando_F_HolidayReindeer": {
+            "templateId": "AthenaCharacter:CID_047_Athena_Commando_F_HolidayReindeer",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -230,8 +230,8 @@
             },
             "quantity": 1
         },
-        "CID_045_Athena_Commando_M_HolidaySweater": {
-            "templateId": "CID_045_Athena_Commando_M_HolidaySweater",
+        "AthenaCharacter:CID_045_Athena_Commando_M_HolidaySweater": {
+            "templateId": "AthenaCharacter:CID_045_Athena_Commando_M_HolidaySweater",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -242,8 +242,8 @@
             },
             "quantity": 1
         },
-        "CID_044_Athena_Commando_F_SciPop": {
-            "templateId": "CID_044_Athena_Commando_F_SciPop",
+        "AthenaCharacter:CID_044_Athena_Commando_F_SciPop": {
+            "templateId": "AthenaCharacter:CID_044_Athena_Commando_F_SciPop",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -254,8 +254,8 @@
             },
             "quantity": 1
         },
-        "CID_050_Athena_Commando_M_HolidayNutcracker": {
-            "templateId": "CID_050_Athena_Commando_M_HolidayNutcracker",
+        "AthenaCharacter:CID_050_Athena_Commando_M_HolidayNutcracker": {
+            "templateId": "AthenaCharacter:CID_050_Athena_Commando_M_HolidayNutcracker",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -266,8 +266,8 @@
             },
             "quantity": 1
         },
-        "CID_037_Athena_Commando_F_WinterCamo": {
-            "templateId": "CID_037_Athena_Commando_F_WinterCamo",
+        "AthenaCharacter:CID_037_Athena_Commando_F_WinterCamo": {
+            "templateId": "AthenaCharacter:CID_037_Athena_Commando_F_WinterCamo",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -278,8 +278,8 @@
             },
             "quantity": 1
         },
-        "CID_052_Athena_Commando_F_PSBlue": {
-            "templateId": "CID_052_Athena_Commando_F_PSBlue",
+        "AthenaCharacter:CID_052_Athena_Commando_F_PSBlue": {
+            "templateId": "AthenaCharacter:CID_052_Athena_Commando_F_PSBlue",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -290,8 +290,8 @@
             },
             "quantity": 1
         },
-        "CID_076_Athena_Commando_F_Sup": {
-            "templateId": "CID_076_Athena_Commando_F_Sup",
+        "AthenaCharacter:CID_076_Athena_Commando_F_Sup": {
+            "templateId": "AthenaCharacter:CID_076_Athena_Commando_F_Sup",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -302,8 +302,8 @@
             },
             "quantity": 1
         },
-        "CID_074_Athena_Commando_F_Stripe": {
-            "templateId": "CID_074_Athena_Commando_F_Stripe",
+        "AthenaCharacter:CID_074_Athena_Commando_F_Stripe": {
+            "templateId": "AthenaCharacter:CID_074_Athena_Commando_F_Stripe",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -314,8 +314,8 @@
             },
             "quantity": 1
         },
-        "CID_065_Athena_Commando_F_SkiGirl_FRA": {
-            "templateId": "CID_065_Athena_Commando_F_SkiGirl_FRA",
+        "AthenaCharacter:CID_065_Athena_Commando_F_SkiGirl_FRA": {
+            "templateId": "AthenaCharacter:CID_065_Athena_Commando_F_SkiGirl_FRA",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -326,8 +326,8 @@
             },
             "quantity": 1
         },
-        "CID_072_Athena_Commando_M_Scout": {
-            "templateId": "CID_072_Athena_Commando_M_Scout",
+        "AthenaCharacter:CID_072_Athena_Commando_M_Scout": {
+            "templateId": "AthenaCharacter:CID_072_Athena_Commando_M_Scout",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -338,8 +338,8 @@
             },
             "quantity": 1
         },
-        "CID_001_Athena_Commando_F_Default": {
-            "templateId": "CID_001_Athena_Commando_F_Default",
+        "AthenaCharacter:CID_001_Athena_Commando_F_Default": {
+            "templateId": "AthenaCharacter:CID_001_Athena_Commando_F_Default",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -350,8 +350,8 @@
             },
             "quantity": 1
         },
-        "HalloweenScythe": {
-            "templateId": "HalloweenScythe",
+        "AthenaPickaxe:HalloweenScythe": {
+            "templateId": "AthenaPickaxe:HalloweenScythe",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -362,8 +362,8 @@
             },
             "quantity": 1
         },
-        "BoltonPickaxe": {
-            "templateId": "BoltonPickaxe",
+        "AthenaPickaxe:BoltonPickaxe": {
+            "templateId": "AthenaPickaxe:BoltonPickaxe",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -374,8 +374,8 @@
             },
             "quantity": 1
         },
-        "Pickaxe_Deathvalley": {
-            "templateId": "Pickaxe_Deathvalley",
+        "AthenaPickaxe:Pickaxe_Deathvalley": {
+            "templateId": "AthenaPickaxe:Pickaxe_Deathvalley",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -386,8 +386,8 @@
             },
             "quantity": 1
         },
-        "Pickaxe_ID_015_HolidayCandyCane": {
-            "templateId": "Pickaxe_ID_015_HolidayCandyCane",
+        "AthenaPickaxe:Pickaxe_ID_015_HolidayCandyCane": {
+            "templateId": "AthenaPickaxe:Pickaxe_ID_015_HolidayCandyCane",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -398,8 +398,8 @@
             },
             "quantity": 1
         },
-        "Pickaxe_ID_016_Disco": {
-            "templateId": "Pickaxe_ID_016_Disco",
+        "AthenaPickaxe:Pickaxe_ID_016_Disco": {
+            "templateId": "AthenaPickaxe:Pickaxe_ID_016_Disco",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -410,8 +410,8 @@
             },
             "quantity": 1
         },
-        "Pickaxe_ID_014_WinterCamo": {
-            "templateId": "Pickaxe_ID_014_WinterCamo",
+        "AthenaPickaxe:Pickaxe_ID_014_WinterCamo": {
+            "templateId": "AthenaPickaxe:Pickaxe_ID_014_WinterCamo",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -422,8 +422,8 @@
             },
             "quantity": 1
         },
-        "Pickaxe_ID_017_Shark": {
-            "templateId": "Pickaxe_ID_017_Shark",
+        "AthenaPickaxe:Pickaxe_ID_017_Shark": {
+            "templateId": "AthenaPickaxe:Pickaxe_ID_017_Shark",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -434,8 +434,8 @@
             },
             "quantity": 1
         },
-        "Pickaxe_ID_024_Plunger": {
-            "templateId": "Pickaxe_ID_024_Plunger",
+        "AthenaPickaxe:Pickaxe_ID_024_Plunger": {
+            "templateId": "AthenaPickaxe:Pickaxe_ID_024_Plunger",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -446,8 +446,8 @@
             },
             "quantity": 1
         },
-        "Pickaxe_ID_019_Heart": {
-            "templateId": "Pickaxe_ID_019_Heart",
+        "AthenaPickaxe:Pickaxe_ID_019_Heart": {
+            "templateId": "AthenaPickaxe:Pickaxe_ID_019_Heart",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -458,8 +458,8 @@
             },
             "quantity": 1
         },
-        "SickleBatPickaxe": {
-            "templateId": "SickleBatPickaxe",
+        "AthenaPickaxe:SickleBatPickaxe": {
+            "templateId": "AthenaPickaxe:SickleBatPickaxe",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -470,8 +470,8 @@
             },
             "quantity": 1
         },
-        "Glider_Warthog": {
-            "templateId": "Glider_Warthog",
+        "AthenaGlider:Glider_Warthog": {
+            "templateId": "AthenaGlider:Glider_Warthog",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -482,8 +482,8 @@
             },
             "quantity": 1
         },
-        "Glider_Prismatic": {
-            "templateId": "Glider_Prismatic",
+        "AthenaGlider:Glider_Prismatic": {
+            "templateId": "AthenaGlider:Glider_Prismatic",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -494,8 +494,8 @@
             },
             "quantity": 1
         },
-        "Glider_ID_009_CandyCoat": {
-            "templateId": "Glider_ID_009_CandyCoat",
+        "AthenaGlider:Glider_ID_009_CandyCoat": {
+            "templateId": "AthenaGlider:Glider_ID_009_CandyCoat",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -506,8 +506,8 @@
             },
             "quantity": 1
         },
-        "Glider_ID_005_HolidaySweater": {
-            "templateId": "Glider_ID_005_HolidaySweater",
+        "AthenaGlider:Glider_ID_005_HolidaySweater": {
+            "templateId": "AthenaGlider:Glider_ID_005_HolidaySweater",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -518,8 +518,8 @@
             },
             "quantity": 1
         },
-        "Glider_ID_010_Storm": {
-            "templateId": "Glider_ID_010_Storm",
+        "AthenaGlider:Glider_ID_010_Storm": {
+            "templateId": "AthenaGlider:Glider_ID_010_Storm",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -530,8 +530,8 @@
             },
             "quantity": 1
         },
-        "Umbrella_Snowflake": {
-            "templateId": "Umbrella_Snowflake",
+        "AthenaGlider:Umbrella_Snowflake": {
+            "templateId": "AthenaGlider:Umbrella_Snowflake",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -542,8 +542,8 @@
             },
             "quantity": 1
         },
-        "Solo_Umbrella": {
-            "templateId": "Solo_Umbrella",
+        "AthenaGlider:Solo_Umbrella": {
+            "templateId": "AthenaGlider:Solo_Umbrella",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -554,8 +554,8 @@
             },
             "quantity": 1
         },
-        "DefaultGlider": {
-            "templateId": "DefaultGlider",
+        "AthenaGlider:DefaultGlider": {
+            "templateId": "AthenaGlider:DefaultGlider",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -566,8 +566,8 @@
             },
             "quantity": 1
         },
-        "CID_033_Athena_Commando_F_Medieval": {
-            "templateId": "CID_033_Athena_Commando_F_Medieval",
+        "AthenaCharacter:CID_033_Athena_Commando_F_Medieval": {
+            "templateId": "AthenaCharacter:CID_033_Athena_Commando_F_Medieval",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -578,8 +578,8 @@
             },
             "quantity": 1
         },
-        "Pickaxe_ID_012_District": {
-            "templateId": "Pickaxe_ID_012_District",
+        "AthenaPickaxe:Pickaxe_ID_012_District": {
+            "templateId": "AthenaPickaxe:Pickaxe_ID_012_District",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -590,8 +590,8 @@
             },
             "quantity": 1
         },
-        "Glider_ID_004_Disco": {
-            "templateId": "Glider_ID_004_Disco",
+        "AthenaGlider:Glider_ID_004_Disco": {
+            "templateId": "AthenaGlider:Glider_ID_004_Disco",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -602,8 +602,8 @@
             },
             "quantity": 1
         },
-        "CID_032_Athena_Commando_M_Medieval": {
-            "templateId": "CID_032_Athena_Commando_M_Medieval",
+        "AthenaCharacter:CID_032_Athena_Commando_M_Medieval": {
+            "templateId": "AthenaCharacter:CID_032_Athena_Commando_M_Medieval",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -614,8 +614,8 @@
             },
             "quantity": 1
         },
-        "Glider_ID_002_Medieval": {
-            "templateId": "Glider_ID_002_Medieval",
+        "AthenaGlider:Glider_ID_002_Medieval": {
+            "templateId": "AthenaGlider:Glider_ID_002_Medieval",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -626,8 +626,8 @@
             },
             "quantity": 1
         },
-        "Pickaxe_ID_011_Medieval": {
-            "templateId": "Pickaxe_ID_011_Medieval",
+        "AthenaPickaxe:Pickaxe_ID_011_Medieval": {
+            "templateId": "AthenaPickaxe:Pickaxe_ID_011_Medieval",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -638,8 +638,8 @@
             },
             "quantity": 1
         },
-        "Glider_ID_003_District": {
-            "templateId": "Glider_ID_003_District",
+        "AthenaGlider:Glider_ID_003_District": {
+            "templateId": "AthenaGlider:Glider_ID_003_District",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -650,8 +650,8 @@
             },
             "quantity": 1
         },
-        "CID_039_Athena_Commando_F_Disco": {
-            "templateId": "CID_039_Athena_Commando_F_Disco",
+        "AthenaCharacter:CID_039_Athena_Commando_F_Disco": {
+            "templateId": "AthenaCharacter:CID_039_Athena_Commando_F_Disco",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -662,8 +662,8 @@
             },
             "quantity": 1
         },
-        "Pickaxe_ID_013_Teslacoil": {
-            "templateId": "Pickaxe_ID_013_Teslacoil",
+        "AthenaPickaxe:Pickaxe_ID_013_Teslacoil": {
+            "templateId": "AthenaPickaxe:Pickaxe_ID_013_Teslacoil",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -674,8 +674,8 @@
             },
             "quantity": 1
         },
-        "CID_035_Athena_Commando_M_Medieval": {
-            "templateId": "CID_035_Athena_Commando_M_Medieval",
+        "AthenaCharacter:CID_035_Athena_Commando_M_Medieval": {
+            "templateId": "AthenaCharacter:CID_035_Athena_Commando_M_Medieval",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -686,8 +686,8 @@
             },
             "quantity": 1
         },
-        "CID_025_Athena_Commando_M": {
-            "templateId": "CID_025_Athena_Commando_M",
+        "AthenaCharacter:CID_025_Athena_Commando_M": {
+            "templateId": "AthenaCharacter:CID_025_Athena_Commando_M",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -698,8 +698,8 @@
             },
             "quantity": 1
         },
-        "HappyPickaxe": {
-            "templateId": "HappyPickaxe",
+        "AthenaPickaxe:HappyPickaxe": {
+            "templateId": "AthenaPickaxe:HappyPickaxe",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -710,8 +710,8 @@
             },
             "quantity": 1
         },
-        "Glider_Voyager": {
-            "templateId": "Glider_Voyager",
+        "AthenaGlider:Glider_Voyager": {
+            "templateId": "AthenaGlider:Glider_Voyager",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -722,8 +722,8 @@
             },
             "quantity": 1
         },
-        "CID_042_Athena_Commando_M_Cyberpunk": {
-            "templateId": "CID_042_Athena_Commando_M_Cyberpunk",
+        "AthenaCharacter:CID_042_Athena_Commando_M_Cyberpunk": {
+            "templateId": "AthenaCharacter:CID_042_Athena_Commando_M_Cyberpunk",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -734,8 +734,8 @@
             },
             "quantity": 1
         },
-        "Pickaxe_ID_022_HolidayGiftWrap": {
-            "templateId": "Pickaxe_ID_022_HolidayGiftWrap",
+        "AthenaPickaxe:Pickaxe_ID_022_HolidayGiftWrap": {
+            "templateId": "AthenaPickaxe:Pickaxe_ID_022_HolidayGiftWrap",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -746,8 +746,8 @@
             },
             "quantity": 1
         },
-        "Glider_ID_008_Graffiti": {
-            "templateId": "Glider_ID_008_Graffiti",
+        "AthenaGlider:Glider_ID_008_Graffiti": {
+            "templateId": "AthenaGlider:Glider_ID_008_Graffiti",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -758,8 +758,8 @@
             },
             "quantity": 1
         },
-        "CID_028_Athena_Commando_F": {
-            "templateId": "CID_028_Athena_Commando_F",
+        "AthenaCharacter:CID_028_Athena_Commando_F": {
+            "templateId": "AthenaCharacter:CID_028_Athena_Commando_F",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -770,8 +770,8 @@
             },
             "quantity": 1
         },
-        "CID_017_Athena_Commando_M": {
-            "templateId": "CID_017_Athena_Commando_M",
+        "AthenaCharacter:CID_017_Athena_Commando_M": {
+            "templateId": "AthenaCharacter:CID_017_Athena_Commando_M",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -782,8 +782,8 @@
             },
             "quantity": 1
         },
-        "Pickaxe_Lockjaw": {
-            "templateId": "Pickaxe_Lockjaw",
+        "AthenaPickaxe:Pickaxe_Lockjaw": {
+            "templateId": "AthenaPickaxe:Pickaxe_Lockjaw",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -794,8 +794,8 @@
             },
             "quantity": 1
         },
-        "CID_034_Athena_Commando_F_Medieval": {
-            "templateId": "CID_034_Athena_Commando_F_Medieval",
+        "AthenaCharacter:CID_034_Athena_Commando_F_Medieval": {
+            "templateId": "AthenaCharacter:CID_034_Athena_Commando_F_Medieval",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -806,8 +806,8 @@
             },
             "quantity": 1
         },
-        "Pickaxe_Flamingo": {
-            "templateId": "Pickaxe_Flamingo",
+        "AthenaGlider:Pickaxe_Flamingo": {
+            "templateId": "AthenaGlider:Pickaxe_Flamingo",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -818,8 +818,8 @@
             },
             "quantity": 1
         },
-        "Glider_RoadTrip": {
-            "templateId": "Glider_RoadTrip",
+        "AthenaGlider:Glider_RoadTrip": {
+            "templateId": "AthenaGlider:Glider_RoadTrip",
             "attributes": {
                 "max_level_bonus": 0,
                 "level": 1,
@@ -891,8 +891,9 @@
                 "",
                 "",
                 ""
-            ]
+            ],
+            "fortnite_character": "AthenaCharacter:CID_035_Athena_Commando_M_Medieval"
         }
     },
-    "commandRevision": 0
+    "commandRevision": 2
 }

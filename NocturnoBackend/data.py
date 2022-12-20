@@ -77,6 +77,31 @@ class Data():
         self.items=list(requests.get(f'{self.api_url}/get/stats/stats.php?user={self.usernm}&action=items', verify=False).json())
         self.level=int(requests.get(f'{self.api_url}/get/stats/stats.php?user={self.usernm}&action=level', verify=False).json())
         self.xp=int(requests.get(f'{self.api_url}/get/stats/stats.php?user={self.usernm}&action=exp', verify=False).json())
+        self._catalog=json.loads(requests.get(f'{self.api_url}/get/lobby/lobby.php?user={self.usernm}&action=exp', verify=False).json())
+        self._data={
+            'athena': [], 
+            'profile0': [], 
+            'commoncore': [], 
+            'commonpublic': [], 
+            'collections': [], 
+            'seasondata': [], 
+            'friendlist': [], 
+            'friendlistv2': [], 
+            'quests': [], 
+            'privacy': [],
+            'catalog': []
+        }
+        self._data['privacy'].append(json.loads(self.privacy()))
+        self._data['athena'].append(json.loads(self.athena()))
+        self._data['commoncore'].append(json.loads(self.commoncore()))
+        self._data['commonpublic'].append(json.loads(self.commonpublic()))
+        self._data['profile0'].append(json.loads(self.profile0()))
+        self._data['collections'].append(json.loads(self.collections()))
+        self._data['seasondata'].append(json.loads(self.seasondata()))
+        self._data['friendlist'].append(json.loads(self.friendlist()))
+        self._data['friendlistv2'].append(json.loads(self.friendlistv2()))
+        self._data['quests'].append(json.loads(self.quests()))
+        self._data['catalog'].append(self._catalog)
     
     def athena(self):
         self._athena={
@@ -239,23 +264,37 @@ class Data():
             for x in exchange_table:
                 if i==x['name']:
                     self.items_id.append(x['id'])
-                  
+        
+        conv_table=[
+          {'name': 'skins', 'id': 'AthenaCharacter'}, 
+          {'name': 'backpacks', 'id': 'AthenaBackpack'}, 
+          {'name': 'gliders', 'id': 'AthenaGlider'},
+          {'name': 'pickaxes', 'id': 'AthenaPickaxe'},
+          {'name': 'musicspacks', 'id': 'AthenaMusicPack'},
+          {'name': 'loadingscreens', 'id': 'AthenaLoadingScreen'}
+        ]
+        
         for i in self.items_id:
-            item_temp={
-                i: {
-                    "templateId": i,
-                    "attributes": {
-                      "max_level_bonus": 0,
-                      "level": 1,
-                      "item_seen": True,
-                      "xp": 0,
-                      "variants": [],
-                      "favorite": False
-                    },
-                    "quantity": 1
-                }
-            }
-            new_items.update(item_temp)
+            for x in exchange_table:
+                if i==x['id']:
+                    for z in conv_table:
+                        if z['name']==x['style']:
+                            i=f"{z['id']}:{i}"
+                            item_temp={
+                                i: {
+                                    "templateId": i,
+                                    "attributes": {
+                                      "max_level_bonus": 0,
+                                      "level": 1,
+                                      "item_seen": True,
+                                      "xp": 0,
+                                      "variants": [],
+                                      "favorite": False
+                                    },
+                                    "quantity": 1
+                                }
+                            }
+                            new_items.update(item_temp)
         self._athena['items']=new_items
         
         return json.dumps(self._athena, indent=4)
@@ -410,11 +449,155 @@ class Data():
           }
         }
         return json.dumps(self._quests, indent=4)
+    
+    def privacy(self):
+        self._privacy={
+          "accountId": "",
+          "optOutOfPublicLeaderboards": False
+        }
+        return json.dumps(self._privacy, indent=4)
+      
+    def profile0(self):
+          self._profile0={
+            "_id": self.usernm,
+            "created": "0001-01-01T00:00:00.000Z",
+            "updated": "0001-01-01T00:00:00.000Z",
+            "rvn": 0,
+            "wipeNumber": 1,
+            "accountId": self.usernm,
+            "profileId": "profile0",
+            "version": "no_version",
+            "items": {},
+            "stats": {
+              "templateId": "profile_v2",
+              "attributes": {
+                "mtx_purchase_history": {
+                  "purchases": []
+                },
+                "mission_alert_redemption_record": {
+                  "lastClaimTimesMap": {
+                    "General": {
+                      "missionAlertGUIDs": [
+                        "",
+                        "",
+                        ""
+                      ],
+                      "lastClaimedTimes": []
+                    },
+                    "StormLow": {
+                      "missionAlertGUIDs": [],
+                      "lastClaimedTimes": []
+                    },
+                    "Halloween": {
+                      "missionAlertGUIDs": [],
+                      "lastClaimedTimes": []
+                    },
+                    "Horde": {
+                      "missionAlertGUIDs": [],
+                      "lastClaimedTimes": []
+                    },
+                    "Storm": {
+                      "missionAlertGUIDs": [],
+                      "lastClaimedTimes": []
+                    }
+                  },
+                  "oldestClaimIndexForCategory": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                "twitch": {},
+                "client_settings": {
+                  "pinnedQuestInstances": []
+                },
+                "level": self.level,
+                "named_counters": {
+                  "SubGameSelectCount_Campaign": {
+                    "current_count": 0,
+                    "last_incremented_time": "2022-09-15T21:38:24.350Z"
+                  },
+                  "SubGameSelectCount_Athena": {
+                    "current_count": 0,
+                    "last_incremented_time": "2022-12-18T12:37:13.822Z"
+                  }
+                },
+                "default_hero_squad_id": "",
+                "collection_book": {
+                  "pages": [],
+                  "maxBookXpLevelAchieved": 0
+                },
+                "quest_manager": {
+                  "dailyLoginInterval": "2022-09-15T19:17:02.785Z",
+                  "dailyQuestRerolls": 1
+                },
+                "bans": {},
+                "gameplay_stats": [
+                  {
+                    "statName": "zonescompleted",
+                    "statValue": 1
+                  }
+                ],
+                "inventory_limit_bonus": 100000,
+                "current_mtx_platform": "Epic",
+                "weekly_purchases": {},
+                "daily_purchases": {
+                  "lastInterval": "2017-08-29T00:00:00.000Z",
+                  "purchaseList": {
+                    "1F6B613D4B7BAD47D8A93CAEED2C4996": 1
+                  }
+                },
+                "mode_loadouts": [
+                  {
+                    "loadoutName": "Default",
+                    "selectedGadgets": [
+                      "",
+                      ""
+                    ]
+                  }
+                ],
+                "in_app_purchases": {
+                  "receipts": [
+                    "EPIC:0aba47abf15143f18370dbc70b910b14",
+                    "EPIC:ee397e98af0042159fec830aea1224d5"
+                  ],
+                  "fulfillmentCounts": {
+                    "0A6CB5B346A149F31A4C3FBDF4BBC198": 3,
+                    "DEF6D31D416227E7D73F65B27288ED6F": 1,
+                    "82ADCC874CFC2D47927208BAE871CF2B": 1,
+                    "F0033207441AC38CD704718B91B2C8EF": 1
+                  }
+                },
+                "daily_rewards": {
+                  "nextDefaultReward": 1,
+                  "totalDaysLoggedIn": 1,
+                  "lastClaimDate": "2022-09-15T00:00:00.000Z",
+                  "additionalSchedules": {
+                    "founderspackdailyrewardtoken": {
+                      "rewardsClaimed": 1,
+                      "claimedToday": True
+                    }
+                  }
+                },
+                "monthly_purchases": {},
+                "xp": self.xp,
+                "homebase": {
+                  "townName": "Nocturno Town",
+                  "bannerIconId": "OT10Banner",
+                  "bannerColorId": "DefaultColor15",
+                  "flagPattern": -1,
+                  "flagColor": -1
+                },
+                "packs_granted": 0
+              }
+            },
+            "commandRevision": 0
+          }
+          return json.dumps(self._profile0, indent=4)
+    
+    def alldata(self):
+        return json.dumps(self._data, indent=4)
 
-open(f'{os.path.dirname(os.path.realpath(__file__))}/data/athena.json', 'w', encoding='utf-8').write(Data(usernm="4lxprime").athena())
-open(f'{os.path.dirname(os.path.realpath(__file__))}/data/common_core.json', 'w', encoding='utf-8').write(Data(usernm="4lxprime").commoncore())
-open(f'{os.path.dirname(os.path.realpath(__file__))}/data/common_public.json', 'w', encoding='utf-8').write(Data(usernm="4lxprime").commoncore())
-open(f'{os.path.dirname(os.path.realpath(__file__))}/data/collections.json', 'w', encoding='utf-8').write(Data(usernm="4lxprime").collections())
-open(f'{os.path.dirname(os.path.realpath(__file__))}/data/connect/SeasonData.json', 'w', encoding='utf-8').write(Data(usernm="4lxprime").seasondata())
-open(f'{os.path.dirname(os.path.realpath(__file__))}/data/connect/friendlist.json', 'w', encoding='utf-8').write(Data(usernm="4lxprime").friendlist())
-open(f'{os.path.dirname(os.path.realpath(__file__))}/data/connect/friendlistv2.json', 'w', encoding='utf-8').write(Data(usernm="4lxprime").friendlistv2())
+print(Data(usernm='4lxprime').alldata())
