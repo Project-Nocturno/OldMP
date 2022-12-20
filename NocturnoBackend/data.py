@@ -182,7 +182,7 @@ class Data():
                   "quantity": 1
                 }
             }
-            new_items['ettrr4h-2wedfgbn-8i9jsghj-lpw9t2to-loadout1']['attributes']['locker_slots_data']['slots'][i]=item_temp
+            new_items[i]=item_temp
         self._athena['items']=new_items
         
         return json.dumps(self._athena, indent=4)

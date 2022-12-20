@@ -1670,1395 +1670,51 @@ def find(pred, iterable):
             return element
     return None
 
-@app.route('/fortnite/api/game/v2/profile/<account>/client/PurchaseCatalogEntry', methods=['GET', 'POST'])
+@app.route('/fortnite/api/game/v2/profile/<account>/client/PurchaseCatalogEntry', methods=['POST'])
 def PurchaseCatalogEntry(account):
-    
-    profile=json.load(open('data/profile0.json', 'r', encoding="utf-8"))
-    athena=json.load(open('data/athena.json', 'r', encoding="utf-8"))
-    ItemIDS=json.load(open('data/connect/ItemIDS.json', 'r', encoding="utf-8"))
-    catalog=getShop()
+    profile=json.load(open('data/athena.json', 'r', encoding="utf-8"))
+    itemId=json.loads(request.get_data('offerId'))['offerId']
     
     ApplyProfileChanges=[]
-    MultiUpdate=[]
-    Notifications=[]
     BaseRevision=profile['rvn'] or 0
     QueryRevision=request.args.get('rvn') or -1
-    PurchasedLlama=False
-    AthenaModified=False
-    ItemExists=False
     
-    if json.loads(request.get_data('offerId'))['offerId'] and request.args.get('profileId')=="profile0" and PurchasedLlama==False:
-        for a, value in enumerate(catalog['storefronts']):
-            if value['name'].lower().startswith("cardpack"):
-                for b, value in enumerate(catalog['storefronts'][a]['catalogEntries']):
-                    if value['offerId'] == json.loads(request.get_data('offerId'))['offerId']:
-                        Quantity=0
-                        for c, value in enumerate(catalog['storefronts'][a]['catalogEntries'][b]['itemGrants']):
-                            Quantity=json.loads(request.get_data('purchaseQuantity'))['purchaseQuantity'] or 1
-
-                            Item={
-                                "templateId": value['templateId'],
-                                "attributes": {
-                                    "is_loot_tier_overridden": False,
-                                    "max_level_bonus": 0,
-                                    "level": 1391,
-                                    "pack_source": "Schedule",
-                                    "item_seen": False,
-                                    "xp": 0,
-                                    "favorite": False,
-                                    "override_loot_tier": 0
-                                },
-                                "quantity": 1
-                            }
-
-                            for i in range(Quantity):
-                                ID=uuid.uuid4()
-
-                                profile['items'][ID]=Item
-
-                                ApplyProfileChanges.append({
-                                    "changeType": "itemAdded",
-                                    "itemId": ID,
-                                    "item": profile['items'][ID]
-                                })
-                        
-                        if catalog['storefronts'][a]['catalogEntries'][b]['prices'][0]['currencyType'].lower() == "mtxcurrency":
-                            for key in profile['items']:
-                                if profile['items'][key]['templateId'].lower().startswith("currency:mtx"):
-                                    if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
-                                        profile['items'][key]['quantity'] -= (catalog['storefronts'][a]['catalogEntries'][b]['prices'][0]['finalPrice']) * Quantity
-                                                                        
-                                        ApplyProfileChanges.append({
-                                            "changeType": "itemQuantityChanged",
-                                            "itemId": key,
-                                            "quantity": profile['items'][key]['quantity']
-                                        })
-                                                
-                                        profile['rvn'] += 1
-                                        profile['commandRevision'] += 1
-                                                
-                                        break
-
-            if value['name'].startswith("BRSeason"):
-                if not isinstance(value['name'].split("BRSeason")[1], int):
-                    for i in value['catalogEntries']:
-                        if i['offerId'] == json.loads(request.get_data('offerId'))['offerId']:
-                            offer=i
-
-                    if offer:
-                        if len(MultiUpdate) == 0:
-                            MultiUpdate.append({
-                                "profileRevision": athena['rvn'] or 0,
-                                "profileId": request.args.get("profileid") or "athena",
-                                "profileChangesBaseRevision": athena['rvn'] or 0,
-                                "profileChanges": [],
-                                "profileCommandRevision": athena['commandRevision'] or 0,
-                            })
-
-                        Season=value['name'].split("BR")[1]
-                        BattlePass=json.load(open(f'./.data/connect/BattlePass/{Season}', 'r', encoding="utf-8"))
-
-                        if BattlePass:
-                            SeasonData=json.load(open("./.data/connect/SeasonData.json", 'r', encoding="utf-8"))
-
-                            if BattlePass['battlePassOfferId'] == offer['offerId'] or BattlePass['battleBundleOfferId'] == offer['offerId']:
-                                lootList=[]
-                                EndingTier=SeasonData[Season]['battlePassTier']
-                                SeasonData[Season]['battlePassPurchased']=True
-
-                                if BattlePass['battleBundleOfferId'] == offer['offerId']:
-                                    SeasonData[Season]['battlePassTier'] += 25
-                                    if SeasonData[Season]['battlePassTier'] > 100:
-                                        SeasonData[Season]['battlePassTier']=100
-                                    EndingTier=SeasonData[Season]['battlePassTier']
-
-                                for i in range(EndingTier):
-                                    FreeTier=BattlePass['freeRewards'][i] or {}
-                                    PaidTier=BattlePass['paidRewards'][i] or {}
-
-                                    for item in FreeTier:
-                                        if item.lower() == "token:athenaseasonxpboost":
-                                            SeasonData[Season]['battlePassXPBoost'] += FreeTier[item]
-
-                                            MultiUpdate[0]['profileChanges'].append({
-                                                "changeType": "statModified",
-                                                "name": "season_match_boost",
-                                                "value": SeasonData[Season]['battlePassXPBoost']
-                                            })
-
-                                        if item.lower() == "token:athenaseasonfriendxpboost":
-                                            SeasonData[Season]['battlePassXPFriendBoost'] += FreeTier[item]
-
-                                            MultiUpdate[0]['profileChanges'].append({
-                                                "changeType": "statModified",
-                                                "name": "season_friend_match_boost",
-                                                "value": SeasonData[Season]['battlePassXPFriendBoost']
-                                            })
-
-                                        if item.lower().startswith("currency:mtx"):
-                                            for key in profile['items']:
-                                                if profile['items'][key]['templateId'].lower().startswith("currency:mtx"):
-                                                    if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
-                                                        profile['items'][key]['quantity'] += FreeTier[item]
-                                                        break
-
-                                        if item.lower().startswith("homebasebanner"):
-                                            for key in profile['items']:
-                                                if profile['items'][key]['templateId'].lower() == item['items']:
-                                                    profile['items'][key]['attributes']['item_seen']=False
-                                                    ItemExists=True
-
-                                                    ApplyProfileChanges.append({
-                                                        "changeType": "itemAttrChanged",
-                                                        "itemId": key,
-                                                        "attributeName": "item_seen",
-                                                        "attributeValue": profile['items'][key]['attributes']['item_seen']
-                                                    })
-
-                                            if ItemExists == False:
-                                                ItemID=uuid.uuid4()
-                                                Item={"templateId":item,"attributes":{"item_seen":False},"quantity":1}
-
-                                                profile['items'][ItemID]=Item
-
-                                                ApplyProfileChanges.append({
-                                                    "changeType": "itemAdded",
-                                                    "itemId": ItemID,
-                                                    "item": Item
-                                                })
-
-                                            ItemExists=False
-
-                                        if item.lower().startswith("athena"):
-                                            for key in athena['items']:
-                                                if athena['items'][key]['templateId'].lower() == item['items']:
-                                                    athena['items'][key]['attributes']['item_seen']=False
-                                                    ItemExists=True
-
-                                                    MultiUpdate[0]['profileChanges'].append({
-                                                        "changeType": "itemAttrChanged",
-                                                        "itemId": key,
-                                                        "attributeName": "item_seen",
-                                                        "attributeValue": athena['items'][key]['attributes']['item_seen']
-                                                    })
-
-                                            if ItemExists == False:
-                                                ItemID=uuid.uuid4()
-                                                Item={"templateId":item,"attributes":{"max_level_bonus":0,"level":1,"item_seen":False,"xp":0,"variants":[],"favorite":False},"quantity":FreeTier[item]}
-
-                                                athena['items'][ItemID]=Item
-
-                                                MultiUpdate[0]['profileChanges'].append({
-                                                    "changeType": "itemAdded",
-                                                    "itemId": ItemID,
-                                                    "item": Item
-                                                })
-
-                                            ItemExists=False
-
-                                        lootList.append({
-                                            "itemType": item,
-                                            "itemGuid": item,
-                                            "quantity": FreeTier[item]
-                                        })
-
-                                    for item in PaidTier:
-                                        if item.lower() == "token:athenaseasonxpboost":
-                                            SeasonData[Season]['battlePassXPBoost'] += PaidTier[item]
-
-                                            MultiUpdate[0]['profileChanges'].append({
-                                                "changeType": "statModified",
-                                                "name": "season_match_boost",
-                                                "value": SeasonData[Season]['battlePassXPBoost']
-                                            })
-
-                                        if item.lower() == "token:athenaseasonfriendxpboost":
-                                            SeasonData[Season]['battlePassXPFriendBoost'] += PaidTier[item]
-
-                                            MultiUpdate[0]['profileChanges'].append({
-                                                "changeType": "statModified",
-                                                "name": "season_friend_match_boost",
-                                                "value": SeasonData[Season]['battlePassXPFriendBoost']
-                                            })
-
-                                        if item.lower().startswith("currency:mtx"):
-                                            for key in profile['items']:
-                                                if profile['items'][key]['templateId'].lower().startswith("currency:mtx"):
-                                                    if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
-                                                        profile['items'][key]['quantity'] += PaidTier[item]
-                                                        break
-
-                                        if item.lower().startswith("homebasebanner"):
-                                            for key in profile['items']:
-                                                if profile['items'][key]['templateId'].lower() == item['items']:
-                                                    profile['items'][key]['attributes']['item_seen']=False
-                                                    ItemExists=True
-
-                                                    ApplyProfileChanges.append({
-                                                        "changeType": "itemAttrChanged",
-                                                        "itemId": key,
-                                                        "attributeName": "item_seen",
-                                                        "attributeValue": profile['items'][key]['attributes']['item_seen']
-                                                    })
-
-                                            if ItemExists == False:
-                                                ItemID=uuid.uuid4()
-                                                Item={"templateId":item,"attributes":{"item_seen":False},"quantity":1}
-
-                                                profile['items'][ItemID]=Item
-
-                                                ApplyProfileChanges.append({
-                                                    "changeType": "itemAdded",
-                                                    "itemId": ItemID,
-                                                    "item": Item
-                                                })
-
-                                            ItemExists=False
-
-                                        if item.lower().startswith("athena"):
-                                            for key in athena['items']:
-                                                if athena['items'][key]['templateId'].lower() == item['items']:
-                                                    athena['items'][key]['attributes']['item_seen']=False
-                                                    ItemExists=True
-
-                                                    MultiUpdate[0]['profileChanges'].append({
-                                                        "changeType": "itemAttrChanged",
-                                                        "itemId": key,
-                                                        "attributeName": "item_seen",
-                                                        "attributeValue": athena['items'][key]['attributes']['item_seen']
-                                                    })
-
-                                            if ItemExists == False:
-                                                ItemID=uuid.uuid4()
-                                                Item={"templateId":item,"attributes":{"max_level_bonus":0,"level":1,"item_seen":False,"xp":0,"variants":[],"favorite":False},"quantity":PaidTier[item]}
-
-                                                athena['items'][ItemID]=Item
-
-                                                MultiUpdate[0]['profileChanges'].append({
-                                                    "changeType": "itemAdded",
-                                                    "itemId": ItemID,
-                                                    "item": Item
-                                                })
-
-                                            ItemExists=False
-
-                                        lootList.append({
-                                            "itemType": item,
-                                            "itemGuid": item,
-                                            "quantity": PaidTier[item]
-                                        })
-
-                                GiftBoxID=uuid.uuid4()
-                                GiftBox={"templateId":int(Season.split("Season")[1]), "GiftBox:gb_battlepass" : "GiftBox:gb_battlepasspurchased","attributes":{"max_level_bonus":0,"fromAccountId":"","lootList":lootList}}
-
-                                if int(Season.split("Season")[1]) > 2:
-                                    profile['items'][GiftBoxID]=GiftBox
-                                    
-                                    ApplyProfileChanges.append({
-                                        "changeType": "itemAdded",
-                                        "itemId": GiftBoxID,
-                                        "item": GiftBox
-                                    })
-
-                                MultiUpdate[0]['profileChanges'].append({
-                                    "changeType": "statModified",
-                                    "name": "book_purchased",
-                                    "value": SeasonData[Season]['battlePassPurchased']
-                                })
-
-                                MultiUpdate[0]['profileChanges'].append({
-                                    "changeType": "statModified",
-                                    "name": "book_level",
-                                    "value": SeasonData[Season]['battlePassTier']
-                                })
-
-                                AthenaModified=True
-
-                            if BattlePass['tierOfferId'] == offer['offerId']:
-                                lootList=[]
-                                StartingTier=SeasonData[Season]['battlePassTier']
-                                EndingTier
-                                SeasonData[Season]['battlePassTier'] += json.loads(request.get_data('purchaseQuantity'))['purchaseQuantity'] or 1
-                                EndingTier=SeasonData[Season]['battlePassTier']
-
-                                for StartingTier in range(EndingTier):
-                                    FreeTier=BattlePass['freeRewards'][i] or {}
-                                    PaidTier=BattlePass['paidRewards'][i] or {}
-
-                                    for item in FreeTier:
-                                        if item.lower() == "token:athenaseasonxpboost":
-                                            SeasonData[Season]['battlePassXPBoost'] += FreeTier[item]
-
-                                            MultiUpdate[0]['profileChanges'].append({
-                                                "changeType": "statModified",
-                                                "name": "season_match_boost",
-                                                "value": SeasonData[Season]['battlePassXPBoost']
-                                            })
-
-                                        if item.lower() == "token:athenaseasonfriendxpboost":
-                                            SeasonData[Season]['battlePassXPFriendBoost'] += FreeTier[item]
-
-                                            MultiUpdate[0]['profileChanges'].append({
-                                                "changeType": "statModified",
-                                                "name": "season_friend_match_boost",
-                                                "value": SeasonData[Season]['battlePassXPFriendBoost']
-                                            })
-
-                                        if item.lower().startswith("currency:mtx"):
-                                            for key in profile['items']:
-                                                if profile['items'][key]['templateId'].lower().startswith("currency:mtx"):
-                                                    if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
-                                                        profile['items'][key]['quantity'] += FreeTier[item]
-                                                        break
-
-                                        if item.lower().startswith("homebasebanner"):
-                                            for key in profile['items']:
-                                                if profile['items'][key]['templateId'].lower() == item['items']:
-                                                    profile['items'][key]['attributes']['item_seen']=False
-                                                    ItemExists=True
-
-                                                    ApplyProfileChanges.append({
-                                                        "changeType": "itemAttrChanged",
-                                                        "itemId": key,
-                                                        "attributeName": "item_seen",
-                                                        "attributeValue": profile['items'][key]['attributes']['item_seen']
-                                                    })
-
-                                            if ItemExists == False:
-                                                ItemID=uuid.uuid4()
-                                                Item={"templateId":item,"attributes":{"item_seen":False},"quantity":1}
-
-                                                profile['items'][ItemID]=Item
-
-                                                ApplyProfileChanges.append({
-                                                    "changeType": "itemAdded",
-                                                    "itemId": ItemID,
-                                                    "item": Item
-                                                })
-
-                                            ItemExists=False
-
-                                        if item.lower().startswith("athena"):
-                                            for key in athena['items']:
-                                                if athena['items'][key]['templateId'].lower() == item['items']:
-                                                    athena['items'][key]['attributes']['item_seen']=False
-                                                    ItemExists=True
-
-                                                    MultiUpdate[0]['profileChanges'].append({
-                                                        "changeType": "itemAttrChanged",
-                                                        "itemId": key,
-                                                        "attributeName": "item_seen",
-                                                        "attributeValue": athena['items'][key]['attributes']['item_seen']
-                                                    })
-
-                                            if ItemExists == False:
-                                                ItemID=uuid.uuid4()
-                                                Item={"templateId":item,"attributes":{"max_level_bonus":0,"level":1,"item_seen":False,"xp":0,"variants":[],"favorite":False},"quantity":FreeTier[item]}
-
-                                                athena['items'][ItemID]=Item
-
-                                                MultiUpdate[0]['profileChanges'].append({
-                                                    "changeType": "itemAdded",
-                                                    "itemId": ItemID,
-                                                    "item": Item
-                                                })
-
-                                            ItemExists=False
-
-                                        lootList.append({
-                                            "itemType": item,
-                                            "itemGuid": item,
-                                            "quantity": FreeTier[item]
-                                        })
-
-                                    for item in PaidTier:
-                                        if item.lower() == "token:athenaseasonxpboost":
-                                            SeasonData[Season]['battlePassXPBoost'] += PaidTier[item]
-
-                                            MultiUpdate[0]['profileChanges'].append({
-                                                "changeType": "statModified",
-                                                "name": "season_match_boost",
-                                                "value": SeasonData[Season]['battlePassXPBoost']
-                                            })
-
-                                        if item.lower() == "token:athenaseasonfriendxpboost":
-                                            SeasonData[Season]['battlePassXPFriendBoost'] += PaidTier[item]
-
-                                            MultiUpdate[0]['profileChanges'].append({
-                                                "changeType": "statModified",
-                                                "name": "season_friend_match_boost",
-                                                "value": SeasonData[Season]['battlePassXPFriendBoost']
-                                            })
-
-                                        if item.lower().startswith("currency:mtx"):
-                                            for key in profile['items']:
-                                                if profile['items'][key]['templateId'].lower().startswith("currency:mtx"):
-                                                    if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
-                                                        profile['items'][key]['quantity'] += PaidTier[item]
-                                                        break
-
-                                        if item.lower().startswith("homebasebanner"):
-                                            for key in profile['items']:
-                                                if profile['items'][key]['templateId'].lower() == item['items']:
-                                                    profile['items'][key]['attributes']['item_seen']=False
-                                                    ItemExists=True
-
-                                                    ApplyProfileChanges.append({
-                                                        "changeType": "itemAttrChanged",
-                                                        "itemId": key,
-                                                        "attributeName": "item_seen",
-                                                        "attributeValue": profile['items'][key]['attributes']['item_seen']
-                                                    })
-
-                                            if ItemExists == False:
-                                                ItemID=uuid.uuid4()
-                                                Item={"templateId":item,"attributes":{"item_seen":False},"quantity":1}
-
-                                                profile['items'][ItemID]=Item
-
-                                                ApplyProfileChanges.append({
-                                                    "changeType": "itemAdded",
-                                                    "itemId": ItemID,
-                                                    "item": Item
-                                                })
-
-                                            ItemExists=False
-
-                                        if item.lower().startswith("athena"):
-                                            for key in athena['items']:
-                                                if athena['items'][key]['templateId'].lower() == item['items']:
-                                                    athena['items'][key]['attributes']['item_seen']=False
-                                                    ItemExists=True
-
-                                                    MultiUpdate[0]['profileChanges'].append({
-                                                        "changeType": "itemAttrChanged",
-                                                        "itemId": key,
-                                                        "attributeName": "item_seen",
-                                                        "attributeValue": athena['items'][key]['attributes']['item_seen']
-                                                    })
-
-                                            if ItemExists == False:
-                                                ItemID=uuid.uuid4()
-                                                Item={"templateId":item,"attributes":{"max_level_bonus":0,"level":1,"item_seen":False,"xp":0,"variants":[],"favorite":False},"quantity":PaidTier[item]}
-
-                                                athena['items'][ItemID]=Item
-
-                                                MultiUpdate[0]['profileChanges'].append({
-                                                    "changeType": "itemAdded",
-                                                    "itemId": ItemID,
-                                                    "item": Item
-                                                })
-
-                                            ItemExists=False
-
-                                        lootList.append({
-                                            "itemType": item,
-                                            "itemGuid": item,
-                                            "quantity": PaidTier[item]
-                                        })
-
-                                GiftBoxID=uuid.uuid4()
-                                GiftBox={"templateId":"GiftBox:gb_battlepass","attributes":{"max_level_bonus":0,"fromAccountId":"","lootList":lootList}}
-
-                                if int(Season.split("Season")[1]) > 2:
-                                    profile['items'][GiftBoxID]=GiftBox
-                                    
-                                    ApplyProfileChanges.append({
-                                        "changeType": "itemAdded",
-                                        "itemId": GiftBoxID,
-                                        "item": GiftBox
-                                    })
-
-                                MultiUpdate[0]['profileChanges'].append({
-                                    "changeType": "statModified",
-                                    "name": "book_level",
-                                    "value": SeasonData[Season]['battlePassTier']
-                                })
-
-                                AthenaModified=True
-
-                            open("./connect/SeasonData.json", 'w', encoding="utf-8").write(json.dumps(SeasonData, indent=4))
-
-            if value['name'].startswith("BR"):
-                for b, value in enumerate(catalog['storefronts'][a]['catalogEntries']):
-                    if value['offerId'] == json.loads(request.get_data('offerId'))['offerId']:
-                        for c, value in enumerate(catalog['storefronts'][a]['catalogEntries'][b]['itemGrants']):
-                            ID=value['templateId']
-
-                            for key in athena['items']:
-                                if value['templateId'].lower() == athena['items'][key]['templateId'].lower():
-                                    ItemExists=True
-
-
-                            if ItemExists == False:
-                                if len(MultiUpdate) == 0:
-                                    MultiUpdate.append({
-                                        "profileRevision": athena['rvn'] or 0,
-                                        "profileId": request.args.get("profileid") or "athena",
-                                        "profileChangesBaseRevision": athena['rvn'] or 0,
-                                        "profileChanges": [],
-                                        "profileCommandRevision": athena['commandRevision'] or 0,
-                                    })
-
-                                if Notifications.length == 0:
-                                    Notifications.append({
-                                        "type": "CatalogPurchase",
-                                        "primary": True,
-                                        "lootResult": {
-                                            "items": []
-                                        }
-                                    })
-
-                                Item={
-                                    "templateId": value['templateId'],
-                                    "attributes": {
-                                        "max_level_bonus": 0,
-                                        "level": 1,
-                                        "item_seen": False,
-                                        "xp": 0,
-                                        "variants": [],
-                                        "favorite": False
-                                    },
-                                    "quantity": 1
-                                }
-
-                                athena['items'][ID]=Item
-
-                                MultiUpdate[0]['profileChanges'].append({
-                                    "changeType": "itemAdded",
-                                    "itemId": ID,
-                                    "item": athena['items'][ID]
-                                })
-
-                                Notifications[0]['lootResult'].lower().append({
-                                    "itemType": value['templateId'],
-                                    "itemGuid": ID,
-                                    "itemProfile": request.args.get("profileid") or "athena",
-                                    "quantity": value['quantity']
-                                })
-
-                                AthenaModified=True
-
-                            ItemExists=False
-                            
-                        if catalog['storefronts'][a]['catalogEntries'][b]['prices'][0]['currencyType'].lower() == "mtxcurrency":
-                            for key in profile['items']:
-                                if profile['items'][key]['templateId'].lower().startswith("currency:mtx"):
-                                    if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
-                                        profile['items'][key]['quantity'] -= (catalog['storefronts'][a]['catalogEntries'][b]['prices'][0]['finalPrice']) * json.loads(request.get_data('purchaseQuantity'))['purchaseQuantity'] or 1
-                        
-                                        ApplyProfileChanges.append({
-                                            "changeType": "itemQuantityChanged",
-                                            "itemId": key,
-                                            "quantity": profile['items'][key]['quantity']
-                                        })
-
-                                        profile['rvn'] += 1
-                                        profile['commandRevision'] += 1
-
-                                        break
-
-
-        PurchasedLlama=True
-
-        if AthenaModified == True:
-            athena['rvn'] += 1
-            athena['commandRevision'] += 1
-
-            if MultiUpdate[0]:
-                MultiUpdate[0]['profileRevision']=athena['rvn'] or 0
-                MultiUpdate[0]['profileCommandRevision']=athena['commandRevision'] or 0
-
-            open(f"data/{request.args.get('profileid') or 'athena'}.json", 'w', encoding="utf-8").write(json.dumps(athena, indent=4))
-            open(f"data/{request.args.get('profileId') or 'profile0'}.json", 'w', encoding="utf-8").write(json.dumps(profile, indent=4))
-
-        if AthenaModified == False:
-            profile['rvn'] += 1
-            profile['commandRevision'] += 1
-
-            open(f"data/{request.args.get('profileId') or 'profile0'}.json", 'w', encoding="utf-8").write(json.dumps(profile, indent=4))
-
-    if json.loads(request.get_data('offerId'))['offerId'] and request.args.get('profileId') == "common_core":
-        for a, value in enumerate(catalog['storefronts']):
-            if hasattr(value, 'name'):
-                if value['name'].lower().startswith("cardpack"):
-                    for b, value in enumerate(catalog['storefronts'][a]['catalogEntries']):
-                        if value['offerId'] == json.loads(request.get_data('offerId'))['offerId']:
-                            Quantity=0
-                            for c, value in enumerate(catalog['storefronts'][a]['catalogEntries'][b]['itemGrants']):
-                                memory=getVersion(request=request)
-
-                                if 4 >= memory['season'] and PurchasedLlama == False:
-                                    if len(MultiUpdate)== 0:
-                                        MultiUpdate.append({
-                                            "profileRevision": profile['rvn'] or 0,
-                                            "profileId": "campaign",
-                                            "profileChangesBaseRevision": profile['rvn'] or 0,
-                                            "profileChanges": [],
-                                            "profileCommandRevision": profile['commandRevision'] or 0,
-                                        })
-
-                                    Quantity=json.loads(request.get_data('purchaseQuantity'))['purchaseQuantity'] or 1
-
-                                    Item={
-                                        "templateId": value['templateId'],
-                                        "attributes": {
-                                            "is_loot_tier_overridden": False,
-                                            "max_level_bonus": 0,
-                                            "level": 1391,
-                                            "pack_source": "Schedule",
-                                            "item_seen": False,
-                                            "xp": 0,
-                                            "favorite": False,
-                                            "override_loot_tier": 0
-                                        },
-                                        "quantity": 1
-                                    }
-
-                                    for i in range(Quantity):
-                                        ID=uuid.uuid4()
-        
-                                        profile['items'][ID]=Item
-
-                                        MultiUpdate[0]['profileChanges'].append({
-                                            "changeType": "itemAdded",
-                                            "itemId": ID,
-                                            "item": profile['items'][ID]
-                                        })
-
-                                    PurchasedLlama=True
-
-                                if memory['build'] >= 5 and memory['build'] <= 7.20 and PurchasedLlama == False:
-                                    if len(MultiUpdate) == 0:
-                                        MultiUpdate.append({
-                                            "profileRevision": profile['rvn'] or 0,
-                                            "profileId": "campaign",
-                                            "profileChangesBaseRevision": profile['rvn'] or 0,
-                                            "profileChanges": [],
-                                            "profileCommandRevision": profile['commandRevision'] or 0,
-                                        })
-
-                                    Quantity=json.loads(request.get_data('purchaseQuantity'))['purchaseQuantity'] or 1
-
-                                    Item={
-                                        "templateId": value['templateId'],
-                                        "attributes": {
-                                            "is_loot_tier_overridden": False,
-                                            "max_level_bonus": 0,
-                                            "level": 1391,
-                                            "pack_source": "Schedule",
-                                            "item_seen": False,
-                                            "xp": 0,
-                                            "favorite": False,
-                                            "override_loot_tier": 0
-                                        },
-                                        "quantity": 1
-                                    }
-
-                                    for i in range(Quantity):
-                                        ID=uuid.uuid4()
-        
-                                        profile['items'][ID]=Item
-
-                                        MultiUpdate[0]['profileChanges'].append({
-                                            "changeType": "itemAdded",
-                                            "itemId": ID,
-                                            "item": profile['items'][ID]
-                                        })
-
-                                    Notifications.append({
-                                        "type": "cardPackResult",
-                                        "primary": True,
-                                        "lootGranted": {
-                                            "tierGroupName": "",
-                                            "items": []
-                                        },
-                                        "displayLevel": 0
-                                    })
-
-                                    PurchasedLlama=True
-
-                                if 6 < memory['season'] and PurchasedLlama == False:
-                                    if len(MultiUpdate) == 0:
-                                        MultiUpdate.append({
-                                            "profileRevision": profile['rvn'] or 0,
-                                            "profileId": "campaign",
-                                            "profileChangesBaseRevision": profile['rvn'] or 0,
-                                            "profileChanges": [],
-                                            "profileCommandRevision": profile['commandRevision'] or 0,
-                                        })
-
-                                    Quantity=json.loads(request.get_data('purchaseQuantity'))['purchaseQuantity'] or 1
-                                    LlamaItemIDS=[]
-
-                                    Item={
-                                        "templateId": value['templateId'],
-                                        "attributes": {
-                                            "is_loot_tier_overridden": False,
-                                            "max_level_bonus": 0,
-                                            "level": 1391,
-                                            "pack_source": "Schedule",
-                                            "item_seen": False,
-                                            "xp": 0,
-                                            "favorite": False,
-                                            "override_loot_tier": 0
-                                        },
-                                        "quantity": 1
-                                    }
-
-                                    for i in range(Quantity):
-                                        ID=uuid.uuid4()
-        
-                                        profile['items'][ID]=Item
-
-                                        MultiUpdate[0]['profileChanges'].append({
-                                            "changeType": "itemAdded",
-                                            "itemId": ID,
-                                            "item": profile['items'][ID]
-                                        })
-
-                                        LlamaItemIDS.append(ID)
-
-                                    Notifications.append({
-                                        "type": "CatalogPurchase",
-                                        "primary": True,
-                                        "lootResult": {
-                                            "items": []
-                                        }
-                                    })
-
-                                    if request.get_data('currencySubType').lower() != "accountresource:voucher_basicpack":
-                                        for x in range(Quantity):
-                                            for key in profile['items']:
-                                                if profile['items'][key]['templateId'].lower() == "prerolldata:preroll_basic":
-                                                    if profile['items'][key]['attributes']['offerId'] == json.loads(request.get_data('offerId'))['offerId']:
-                                                        for item in profile['items'][key]['attributes']['items']:
-                                                            id=uuid.uuid4()
-                                                            Item={"templateId":profile['items'][key]['attributes']['items'][item].itemType,"attributes":profile['items'][key]['attributes']['items'][item]['attributes'],"quantity":profile['items'][key]['attributes']['items'][item]['quantity']}
-                    
-                                                            profile['items'][id]=Item
-
-                                                            MultiUpdate[0]['profileChanges'].append({
-                                                                "changeType": "itemAdded",
-                                                                "itemId": id,
-                                                                "item": Item
-                                                            })
-
-                                                            Notifications[0]['lootResult'].lower().append({
-                                                                "itemType": profile['items'][key]['attributes']['items'][item].itemType,
-                                                                "itemGuid": id,
-                                                                "itemProfile": "campaign",
-                                                                "attributes": Item['attributes'],
-                                                                "quantity": 1
-                                                            })
-
-                                                        profile['items'][key]['attributes']['items']=[]
-
-                                                        for i in range(10):
-                                                            randomNumber=round(random.randint()*len(ItemIDS))
-
-                                                            profile['items'][key]['attributes'].lower().append({"itemType":ItemIDS[randomNumber],"attributes":{"legacy_alterations":[],"max_level_bonus":0,"level":1,"refund_legacy_item":False,"item_seen":False,"alterations":["","","","","",""],"xp":0,"refundable":False,"alteration_base_rarities":[],"favorite":False},"quantity":1})
-
-                                                        MultiUpdate[0]['profileChanges'].append({
-                                                            "changeType": "itemAttrChanged",
-                                                            "itemId": key,
-                                                            "attributeName": "items",
-                                                            "attributeValue": profile['items'][key]['attributes']['items']
-                                                        })
-
-                                    try:
-                                        if request.get_data('currencySubType').lower() != "accountresource:voucher_basicpack":
-                                            for i in LlamaItemIDS:
-                                                id=LlamaItemIDS[i]
-
-                                                profile.lower().pop(id)
-                                                MultiUpdate[0]['profileChanges'].append({
-                                                    "changeType": "itemRemoved",
-                                                    "itemId": id
-                                                })
-                                    except:
-                                        pass
-
-                                    PurchasedLlama=True
-
-                            if catalog['storefronts'][a]['catalogEntries'][b]['prices'][0]['currencyType'].lower() == "mtxcurrency":
-                                for key in profile['items']:
-                                    if profile['items'][key]['templateId'].lower().startswith("currency:mtx"):
-                                        if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
-                                            profile['items'][key]['quantity'] -= (catalog['storefronts'][a]['catalogEntries'][b]['prices'][0]['finalPrice']) * Quantity
-                                                    
-                                            ApplyProfileChanges.append({
-                                                "changeType": "itemQuantityChanged",
-                                                "itemId": key,
-                                                "quantity": profile['items'][key]['quantity']
-                                            })
-                            
-                                            profile['rvn'] += 1
-                                            profile['commandRevision'] += 1
-                            
-                                            break
-                                            
-                if value['name'].startswith("BRSeason") or value['devName'].startswith("BRSeason"):
-                    if not isinstance(value['name'].split("BRSeason")[1], int):
-                        offer=find(lambda x: x['offerId'] == json.loads(request.get_data('offerId'))['offerId'], value['catalogEntries'])
-                        if offer:
-                            if len(MultiUpdate) == 0:
-                                MultiUpdate.append({
-                                    "profileRevision": athena['rvn'] or 0,
-                                    "profileId": request.args.get("profileid") or "athena",
-                                    "profileChangesBaseRevision": athena['rvn'] or 0,
-                                    "profileChanges": [],
-                                    "profileCommandRevision": athena['commandRevision'] or 0,
-                                })
-
-                            Season=value['name'].split("BR")[1]
-                            BattlePass=json.load(open(f'data/connect/BattlePass/{Season}', 'r', encoding="utf-8"))
-
-                            if BattlePass:
-                                SeasonData=json.load(open("./.data/connect/SeasonData.json", 'r', encoding="utf-8"))
-
-                                if BattlePass['battlePassOfferId'] == offer['offerId'] or BattlePass['battleBundleOfferId'] == offer['offerId']:
-                                    lootList=[]
-                                    EndingTier=SeasonData[Season]['battlePassTier']
-                                    SeasonData[Season]['battlePassPurchased']=True
-
-                                    if BattlePass['battleBundleOfferId'] == offer['offerId']:
-                                        SeasonData[Season]['battlePassTier'] += 25
-                                        if SeasonData[Season]['battlePassTier'] > 100:
-                                            SeasonData[Season]['battlePassTier']=100
-                                        EndingTier=SeasonData[Season]['battlePassTier']
-
-                                    for i in range(EndingTier):
-                                        FreeTier=BattlePass['freeRewards'][i] or {}
-                                        PaidTier=BattlePass['paidRewards'][i] or {}
-
-                                        for item in FreeTier:
-                                            if item.lower() == "token:athenaseasonxpboost":
-                                                SeasonData[Season]['battlePassXPBoost'] += FreeTier[item]
-
-                                                MultiUpdate[0]['profileChanges'].append({
-                                                    "changeType": "statModified",
-                                                    "name": "season_match_boost",
-                                                    "value": SeasonData[Season]['battlePassXPBoost']
-                                                })
-
-                                            if item.lower() == "token:athenaseasonfriendxpboost":
-                                                SeasonData[Season]['battlePassXPFriendBoost'] += FreeTier[item]
-
-                                                MultiUpdate[0]['profileChanges'].append({
-                                                    "changeType": "statModified",
-                                                    "name": "season_friend_match_boost",
-                                                    "value": SeasonData[Season]['battlePassXPFriendBoost']
-                                                })
-
-                                            if item.lower().startswith("currency:mtx"):
-                                                for key in profile['items']:
-                                                    if profile['items'][key]['templateId'].lower().startswith("currency:mtx"):
-                                                        if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
-                                                            profile['items'][key]['quantity'] += FreeTier[item]
-                                                            break
-
-                                            if item.lower().startswith("homebasebanner"):
-                                                for key in profile['items']:
-                                                    if profile['items'][key]['templateId'].lower() == item['items']:
-                                                        profile['items'][key]['attributes']['item_seen']=False
-                                                        ItemExists=True
-
-                                                        ApplyProfileChanges.append({
-                                                            "changeType": "itemAttrChanged",
-                                                            "itemId": key,
-                                                            "attributeName": "item_seen",
-                                                            "attributeValue": profile['items'][key]['attributes']['item_seen']
-                                                        })
-
-                                                if ItemExists == False:
-                                                    ItemID=uuid.uuid4()
-                                                    Item={"templateId":item,"attributes":{"item_seen":False},"quantity":1}
-
-                                                    profile['items'][ItemID]=Item
-
-                                                    ApplyProfileChanges.append({
-                                                        "changeType": "itemAdded",
-                                                        "itemId": ItemID,
-                                                        "item": Item
-                                                    })
-
-                                                ItemExists=False
-
-                                            if item.lower().startswith("athena"):
-                                                for key in athena['items']:
-                                                    if athena['items'][key]['templateId'].lower() == item['items']:
-                                                        athena['items'][key]['attributes']['item_seen']=False
-                                                        ItemExists=True
-
-                                                        MultiUpdate[0]['profileChanges'].append({
-                                                            "changeType": "itemAttrChanged",
-                                                            "itemId": key,
-                                                            "attributeName": "item_seen",
-                                                            "attributeValue": athena['items'][key]['attributes']['item_seen']
-                                                        })
-
-                                                if ItemExists == False:
-                                                    ItemID=uuid.uuid4()
-                                                    Item={"templateId":item,"attributes":{"max_level_bonus":0,"level":1,"item_seen":False,"xp":0,"variants":[],"favorite":False},"quantity":FreeTier[item]}
-
-                                                    athena['items'][ItemID]=Item
-
-                                                    MultiUpdate[0]['profileChanges'].append({
-                                                        "changeType": "itemAdded",
-                                                        "itemId": ItemID,
-                                                        "item": Item
-                                                    })
-
-                                                ItemExists=False
-
-                                            lootList.append({
-                                                "itemType": item,
-                                                "itemGuid": item,
-                                                "quantity": FreeTier[item]
-                                            })
-
-                                        for item in PaidTier:
-                                            if item.lower() == "token:athenaseasonxpboost":
-                                                SeasonData[Season]['battlePassXPBoost'] += PaidTier[item]
-
-                                                MultiUpdate[0]['profileChanges'].append({
-                                                    "changeType": "statModified",
-                                                    "name": "season_match_boost",
-                                                    "value": SeasonData[Season]['battlePassXPBoost']
-                                                })
-
-                                            if item.lower() == "token:athenaseasonfriendxpboost":
-                                                SeasonData[Season]['battlePassXPFriendBoost'] += PaidTier[item]
-
-                                                MultiUpdate[0]['profileChanges'].append({
-                                                    "changeType": "statModified",
-                                                    "name": "season_friend_match_boost",
-                                                    "value": SeasonData[Season]['battlePassXPFriendBoost']
-                                                })
-
-                                            if item.lower().startswith("currency:mtx"):
-                                                for key in profile['items']:
-                                                    if profile['items'][key]['templateId'].lower().startswith("currency:mtx"):
-                                                        if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
-                                                            profile['items'][key]['quantity'] += PaidTier[item]
-                                                            break
-
-                                            if item.lower().startswith("homebasebanner"):
-                                                for key in profile['items']:
-                                                    if profile['items'][key]['templateId'].lower() == item['items']:
-                                                        profile['items'][key]['attributes']['item_seen']=False
-                                                        ItemExists=True
-
-                                                        ApplyProfileChanges.append({
-                                                            "changeType": "itemAttrChanged",
-                                                            "itemId": key,
-                                                            "attributeName": "item_seen",
-                                                            "attributeValue": profile['items'][key]['attributes']['item_seen']
-                                                        })
-
-                                                if ItemExists == False:
-                                                    ItemID=uuid.uuid4()
-                                                    Item={"templateId":item,"attributes":{"item_seen":False},"quantity":1}
-
-                                                    profile['items'][ItemID]=Item
-
-                                                    ApplyProfileChanges.append({
-                                                        "changeType": "itemAdded",
-                                                        "itemId": ItemID,
-                                                        "item": Item
-                                                    })
-
-                                                ItemExists=False
-
-                                            if item.lower().startswith("athena"):
-                                                for key in athena['items']:
-                                                    if athena['items'][key]['templateId'].lower() == item['items']:
-                                                        athena['items'][key]['attributes']['item_seen']=False
-                                                        ItemExists=True
-
-                                                        MultiUpdate[0]['profileChanges'].append({
-                                                            "changeType": "itemAttrChanged",
-                                                            "itemId": key,
-                                                            "attributeName": "item_seen",
-                                                            "attributeValue": athena['items'][key]['attributes']['item_seen']
-                                                        })
-
-                                                if ItemExists == False:
-                                                    ItemID=uuid.uuid4()
-                                                    Item={"templateId":item,"attributes":{"max_level_bonus":0,"level":1,"item_seen":False,"xp":0,"variants":[],"favorite":False},"quantity":PaidTier[item]}
-
-                                                    athena['items'][ItemID]=Item
-
-                                                    MultiUpdate[0]['profileChanges'].append({
-                                                        "changeType": "itemAdded",
-                                                        "itemId": ItemID,
-                                                        "item": Item
-                                                    })
-
-                                                ItemExists=False
-
-                                            lootList.append({
-                                                "itemType": item,
-                                                "itemGuid": item,
-                                                "quantity": PaidTier[item]
-                                            })
-
-                                    GiftBoxID=uuid.uuid4()
-                                    GiftBox={"templateId":int(Season.split("Season")[1]), "GiftBox:gb_battlepass" : "GiftBox:gb_battlepasspurchased","attributes":{"max_level_bonus":0,"fromAccountId":"","lootList":lootList}}
-
-                                    if int(Season.split("Season")[1]) > 2:
-                                        profile['items'][GiftBoxID]=GiftBox
-                                        
-                                        ApplyProfileChanges.append({
-                                            "changeType": "itemAdded",
-                                            "itemId": GiftBoxID,
-                                            "item": GiftBox
-                                        })
-
-                                    MultiUpdate[0]['profileChanges'].append({
-                                        "changeType": "statModified",
-                                        "name": "book_purchased",
-                                        "value": SeasonData[Season]['battlePassPurchased']
-                                    })
-
-                                    MultiUpdate[0]['profileChanges'].append({
-                                        "changeType": "statModified",
-                                        "name": "book_level",
-                                        "value": SeasonData[Season]['battlePassTier']
-                                    })
-
-                                    AthenaModified=True
-
-                                if BattlePass['tierOfferId'] == offer['offerId']:
-                                    lootList=[]
-                                    StartingTier=SeasonData[Season]['battlePassTier']
-                                    EndingTier
-                                    SeasonData[Season]['battlePassTier'] += json.loads(request.get_data('purchaseQuantity'))['purchaseQuantity'] or 1
-                                    EndingTier=SeasonData[Season]['battlePassTier']
-
-                                    for StartingTier in range(EndingTier):
-                                        FreeTier=BattlePass['freeRewards'][i] or {}
-                                        PaidTier=BattlePass['paidRewards'][i] or {}
-
-                                        for item in FreeTier:
-                                            if item.lower() == "token:athenaseasonxpboost":
-                                                SeasonData[Season]['battlePassXPBoost'] += FreeTier[item]
-
-                                                MultiUpdate[0]['profileChanges'].append({
-                                                    "changeType": "statModified",
-                                                    "name": "season_match_boost",
-                                                    "value": SeasonData[Season]['battlePassXPBoost']
-                                                })
-
-                                            if item.lower() == "token:athenaseasonfriendxpboost":
-                                                SeasonData[Season]['battlePassXPFriendBoost'] += FreeTier[item]
-
-                                                MultiUpdate[0]['profileChanges'].append({
-                                                    "changeType": "statModified",
-                                                    "name": "season_friend_match_boost",
-                                                    "value": SeasonData[Season]['battlePassXPFriendBoost']
-                                                })
-
-                                            if item.lower().startswith("currency:mtx"):
-                                                for key in profile['items']:
-                                                    if profile['items'][key]['templateId'].lower().startswith("currency:mtx"):
-                                                        if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
-                                                            profile['items'][key]['quantity'] += FreeTier[item]
-                                                            break
-
-                                            if item.lower().startswith("homebasebanner"):
-                                                for key in profile['items']:
-                                                    if profile['items'][key]['templateId'].lower() == item['items']:
-                                                        profile['items'][key]['attributes']['item_seen']=False
-                                                        ItemExists=True
-
-                                                        ApplyProfileChanges.append({
-                                                            "changeType": "itemAttrChanged",
-                                                            "itemId": key,
-                                                            "attributeName": "item_seen",
-                                                            "attributeValue": profile['items'][key]['attributes']['item_seen']
-                                                        })
-
-                                                if ItemExists == False:
-                                                    ItemID=uuid.uuid4()
-                                                    Item={"templateId":item,"attributes":{"item_seen":False},"quantity":1}
-
-                                                    profile['items'][ItemID]=Item
-
-                                                    ApplyProfileChanges.append({
-                                                        "changeType": "itemAdded",
-                                                        "itemId": ItemID,
-                                                        "item": Item
-                                                    })
-
-                                                ItemExists=False
-
-                                            if item.lower().startswith("athena"):
-                                                for key in athena['items']:
-                                                    if athena['items'][key]['templateId'].lower() == item['items']:
-                                                        athena['items'][key]['attributes']['item_seen']=False
-                                                        ItemExists=True
-
-                                                        MultiUpdate[0]['profileChanges'].append({
-                                                            "changeType": "itemAttrChanged",
-                                                            "itemId": key,
-                                                            "attributeName": "item_seen",
-                                                            "attributeValue": athena['items'][key]['attributes']['item_seen']
-                                                        })
-
-                                                if ItemExists == False:
-                                                    ItemID=uuid.uuid4()
-                                                    Item={"templateId":item,"attributes":{"max_level_bonus":0,"level":1,"item_seen":False,"xp":0,"variants":[],"favorite":False},"quantity":FreeTier[item]}
-
-                                                    athena['items'][ItemID]=Item
-
-                                                    MultiUpdate[0]['profileChanges'].append({
-                                                        "changeType": "itemAdded",
-                                                        "itemId": ItemID,
-                                                        "item": Item
-                                                    })
-
-                                                ItemExists=False
-
-                                            lootList.append({
-                                                "itemType": item,
-                                                "itemGuid": item,
-                                                "quantity": FreeTier[item]
-                                            })
-
-                                        for item in PaidTier:
-                                            if item.lower() == "token:athenaseasonxpboost":
-                                                SeasonData[Season]['battlePassXPBoost'] += PaidTier[item]
-
-                                                MultiUpdate[0]['profileChanges'].append({
-                                                    "changeType": "statModified",
-                                                    "name": "season_match_boost",
-                                                    "value": SeasonData[Season]['battlePassXPBoost']
-                                                })
-
-                                            if item.lower() == "token:athenaseasonfriendxpboost":
-                                                SeasonData[Season]['battlePassXPFriendBoost'] += PaidTier[item]
-
-                                                MultiUpdate[0]['profileChanges'].append({
-                                                    "changeType": "statModified",
-                                                    "name": "season_friend_match_boost",
-                                                    "value": SeasonData[Season]['battlePassXPFriendBoost']
-                                                })
-
-                                            if item.lower().startswith("currency:mtx"):
-                                                for key in profile['items']:
-                                                    if profile['items'][key]['templateId'].lower().startswith("currency:mtx"):
-                                                        if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
-                                                            profile['items'][key]['quantity'] += PaidTier[item]
-                                                            break
-
-                                            if item.lower().startswith("homebasebanner"):
-                                                for key in profile['items']:
-                                                    if profile['items'][key]['templateId'].lower() == item['items']:
-                                                        profile['items'][key]['attributes']['item_seen']=False
-                                                        ItemExists=True
-
-                                                        ApplyProfileChanges.append({
-                                                            "changeType": "itemAttrChanged",
-                                                            "itemId": key,
-                                                            "attributeName": "item_seen",
-                                                            "attributeValue": profile['items'][key]['attributes']['item_seen']
-                                                        })
-
-                                                if ItemExists == False:
-                                                    ItemID=uuid.uuid4()
-                                                    Item={"templateId":item,"attributes":{"item_seen":False},"quantity":1}
-
-                                                    profile['items'][ItemID]=Item
-
-                                                    ApplyProfileChanges.append({
-                                                        "changeType": "itemAdded",
-                                                        "itemId": ItemID,
-                                                        "item": Item
-                                                    })
-
-                                                ItemExists=False
-
-                                            if item.lower().startswith("athena"):
-                                                for key in athena['items']:
-                                                    if athena['items'][key]['templateId'].lower() == item['items']:
-                                                        athena['items'][key]['attributes']['item_seen']=False
-                                                        ItemExists=True
-
-                                                        MultiUpdate[0]['profileChanges'].append({
-                                                            "changeType": "itemAttrChanged",
-                                                            "itemId": key,
-                                                            "attributeName": "item_seen",
-                                                            "attributeValue": athena['items'][key]['attributes']['item_seen']
-                                                        })
-
-                                                if ItemExists == False:
-                                                    ItemID=uuid.uuid4()
-                                                    Item={"templateId":item,"attributes":{"max_level_bonus":0,"level":1,"item_seen":False,"xp":0,"variants":[],"favorite":False},"quantity":PaidTier[item]}
-
-                                                    athena['items'][ItemID]=Item
-
-                                                    MultiUpdate[0]['profileChanges'].append({
-                                                        "changeType": "itemAdded",
-                                                        "itemId": ItemID,
-                                                        "item": Item
-                                                    })
-
-                                                ItemExists=False
-
-                                            lootList.append({
-                                                "itemType": item,
-                                                "itemGuid": item,
-                                                "quantity": PaidTier[item]
-                                            })
-
-                                    GiftBoxID=uuid.uuid4()
-                                    GiftBox={"templateId":"GiftBox:gb_battlepass","attributes":{"max_level_bonus":0,"fromAccountId":"","lootList":lootList}}
-
-                                    if int(Season.split("Season")[1]) > 2:
-                                        profile['items'][GiftBoxID]=GiftBox
-                                        
-                                        ApplyProfileChanges.append({
-                                            "changeType": "itemAdded",
-                                            "itemId": GiftBoxID,
-                                            "item": GiftBox
-                                        })
-
-                                    MultiUpdate[0]['profileChanges'].append({
-                                        "changeType": "statModified",
-                                        "name": "book_level",
-                                        "value": SeasonData[Season]['battlePassTier']
-                                    })
-
-                                    AthenaModified=True
-
-                                open("./connect/SeasonData.json", 'w', encoding="utf-8").write(json.dumps(SeasonData, indent=4))
-
-                if value['name'].startswith("BR"):
-                    for b, value in enumerate(catalog['storefronts'][a]['catalogEntries']):
-                        if value['offerId'] == json.loads(request.get_data('offerId'))['offerId']:
-                            for c, value in enumerate(catalog['storefronts'][a]['catalogEntries'][b]['itemGrants']):
-                                ID=value['templateId']
-
-                                for key in athena['items']:
-                                    if value['templateId'].lower() == athena['items'][key]['templateId'].lower():
-                                        ItemExists=True
-
-                                if ItemExists == False:
-                                    if len(MultiUpdate) == 0:
-                                        MultiUpdate.append({
-                                            "profileRevision": athena['rvn'] or 0,
-                                            "profileId": request.args.get("profileid") or "athena",
-                                            "profileChangesBaseRevision": athena['rvn'] or 0,
-                                            "profileChanges": [],
-                                            "profileCommandRevision": athena['commandRevision'] or 0,
-                                        })
-
-                                    if len(Notifications) == 0:
-                                        Notifications.append({
-                                            "type": "CatalogPurchase",
-                                            "primary": True,
-                                            "lootResult": {
-                                                "items": []
-                                            }
-                                        })
-
-                                    Item={
-                                        "templateId": value['templateId'],
-                                        "attributes": {
-                                            "max_level_bonus": 0,
-                                            "level": 1,
-                                            "item_seen": False,
-                                            "xp": 0,
-                                            "variants": [],
-                                            "favorite": False
-                                        },
-                                        "quantity": 1
-                                    }
-
-                                    athena['items'][ID]=Item
-
-                                    MultiUpdate[0]['profileChanges'].append({
-                                        "changeType": "itemAdded",
-                                        "itemId": ID,
-                                        "item": Item
-                                    })
-
-                                    Notifications[0]['lootResult']['items'].append({
-                                        "itemType": value['templateId'],
-                                        "itemGuid": ID,
-                                        "itemProfile": request.args.get("profileid") or "athena",
-                                        "quantity": value['quantity']
-                                    })
-
-                                    AthenaModified=True
-                                ItemExists=False
-
-                            if catalog['storefronts'][a]['catalogEntries'][b]['prices'][0]['currencyType'].lower() == "mtxcurrency":
-                                for key in profile['items']:
-                                    if profile['items'][key]['templateId'].lower().startswith("currency:mtx"):
-                                        if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
-                                            profile['items'][key]['quantity'] -= (catalog['storefronts'][a]['catalogEntries'][b]['prices'][0]['finalPrice']) * json.loads(request.get_data('purchaseQuantity'))['purchaseQuantity'] or 1
-                                                    
-                                            ApplyProfileChanges.append({
-                                                "changeType": "itemQuantityChanged",
-                                                "itemId": key,
-                                                "quantity": profile['items'][key]['quantity']
-                                            })
-                            
-                                            break
-
-                            if len(catalog['storefronts'][a]['catalogEntries'][b]['itemGrants']) != 0:
-
-                                purchaseId=uuid.uuid4()
-                                profile['stats']['attributes']['mtx_purchase_history']['purchases'].append({"purchaseId":purchaseId,"offerId":f'v2:/{purchaseId}',"purchaseDate":datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),"freeRefundEligible":False,"fulfillments":[],"lootResult":Notifications[0]['lootResult']['items'],"totalMtxPaid":catalog['storefronts'][a]['catalogEntries'][b]['prices'][0]['finalPrice'],"metadata":{},"gameContext":""})
-
-                                ApplyProfileChanges.append({
-                                    "changeType": "statModified",
-                                    "name": "mtx_purchase_history",
-                                    "value": profile['stats']['attributes']['mtx_purchase_history']
-                                })
-
-                            profile['rvn'] += 1
-                            profile['commandRevision'] += 1
-
-        if AthenaModified == True:
-            athena['rvn'] += 1
-            athena['commandRevision'] += 1
-
-            if len(MultiUpdate)!=0:
-                MultiUpdate[0]['profileRevision']=athena['rvn'] or 0
-                MultiUpdate[0]['profileCommandRevision']=athena['commandRevision'] or 0
-
-            open(f"data/{request.args.get('profileid') or 'athena'}.json", 'w', encoding="utf-8").write(json.dumps(athena, indent=4))
-            open(f"data/{request.args.get('profileId') or 'common_core'}.json", 'w', encoding="utf-8").write(json.dumps(profile, indent=4))
-
-        if AthenaModified == False:
-            profile['rvn'] += 1
-            profile['commandRevision'] += 1
-
-            print(MultiUpdate)
-            if len(MultiUpdate)!=0:
-                MultiUpdate[0]['profileRevision']=profile['rvn'] or 0
-                MultiUpdate[0]['profileCommandRevision']=profile['commandRevision'] or 0
-            open(f"data/{request.args.get('profileId') or 'common_core'}.json", 'w', encoding="utf-8").write(json.dumps(profile, indent=4))
-
+    exist=False
+    
+    for i in profile['items']:
+        if itemId in i:
+            exist=True
+    
+    if not exist:
+        BaseRevision+=1
+        item={
+            itemId: {
+                "templateId": itemId,
+                "attributes": {
+                "max_level_bonus": 0,
+                "level": 1,
+                "item_seen": True,
+                "xp": 0,
+                "variants": [],
+                "favorite": False
+                },
+                "quantity": 1
+            }
+        }
+        profile['items'][itemId]=item
+    
     if QueryRevision != BaseRevision:
-        ApplyProfileChanges=[{
+            ApplyProfileChanges=[{
             "changeType": "fullProfileUpdate",
             "profile": profile
         }]
-
+    
     r={
         "profileRevision": profile['rvn'] or 0,
         "profileId": request.args.get('profileId') or "profile0",
-        "profileChangesBaseRevision": BaseRevision,
+        "profileCommandRevision": BaseRevision or 0,
         "profileChanges": ApplyProfileChanges,
-        "notifications": Notifications,
-        "profileCommandRevision": profile['commandRevision'] or 0,
         "serverTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "multiUpdate": MultiUpdate,
         "responseVersion": 1
     }
     resp=app.response_class(
@@ -3067,6 +1723,1404 @@ def PurchaseCatalogEntry(account):
         mimetype='application/json'
     )
     return resp
+    
+# @app.route('/fortnite/api/game/v2/profile/<account>/client/PurchaseCatalogEntry', methods=['GET', 'POST'])
+# def PurchaseCatalogEntry(account):
+    
+#     profile=json.load(open('data/profile0.json', 'r', encoding="utf-8"))
+#     athena=json.load(open('data/athena.json', 'r', encoding="utf-8"))
+#     ItemIDS=json.load(open('data/connect/ItemIDS.json', 'r', encoding="utf-8"))
+#     catalog=getShop()
+    
+#     ApplyProfileChanges=[]
+#     MultiUpdate=[]
+#     Notifications=[]
+#     BaseRevision=profile['rvn'] or 0
+#     QueryRevision=request.args.get('rvn') or -1
+#     PurchasedLlama=False
+#     AthenaModified=False
+#     ItemExists=False
+    
+#     if json.loads(request.get_data('offerId'))['offerId'] and request.args.get('profileId')=="profile0" and PurchasedLlama==False:
+#         for a, value in enumerate(catalog['storefronts']):
+#             if value['name'].lower().startswith("cardpack"):
+#                 for b, value in enumerate(catalog['storefronts'][a]['catalogEntries']):
+#                     if value['offerId'] == json.loads(request.get_data('offerId'))['offerId']:
+#                         Quantity=0
+#                         for c, value in enumerate(catalog['storefronts'][a]['catalogEntries'][b]['itemGrants']):
+#                             Quantity=json.loads(request.get_data('purchaseQuantity'))['purchaseQuantity'] or 1
+
+#                             Item={
+#                                 "templateId": value['templateId'],
+#                                 "attributes": {
+#                                     "is_loot_tier_overridden": False,
+#                                     "max_level_bonus": 0,
+#                                     "level": 1391,
+#                                     "pack_source": "Schedule",
+#                                     "item_seen": False,
+#                                     "xp": 0,
+#                                     "favorite": False,
+#                                     "override_loot_tier": 0
+#                                 },
+#                                 "quantity": 1
+#                             }
+
+#                             for i in range(Quantity):
+#                                 ID=uuid.uuid4()
+
+#                                 profile['items'][ID]=Item
+
+#                                 ApplyProfileChanges.append({
+#                                     "changeType": "itemAdded",
+#                                     "itemId": ID,
+#                                     "item": profile['items'][ID]
+#                                 })
+                        
+#                         if catalog['storefronts'][a]['catalogEntries'][b]['prices'][0]['currencyType'].lower() == "mtxcurrency":
+#                             for key in profile['items']:
+#                                 if profile['items'][key]['templateId'].lower().startswith("currency:mtx"):
+#                                     if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
+#                                         profile['items'][key]['quantity'] -= (catalog['storefronts'][a]['catalogEntries'][b]['prices'][0]['finalPrice']) * Quantity
+                                                                        
+#                                         ApplyProfileChanges.append({
+#                                             "changeType": "itemQuantityChanged",
+#                                             "itemId": key,
+#                                             "quantity": profile['items'][key]['quantity']
+#                                         })
+                                                
+#                                         profile['rvn'] += 1
+#                                         profile['commandRevision'] += 1
+                                                
+#                                         break
+
+#             if value['name'].startswith("BRSeason"):
+#                 if not isinstance(value['name'].split("BRSeason")[1], int):
+#                     for i in value['catalogEntries']:
+#                         if i['offerId'] == json.loads(request.get_data('offerId'))['offerId']:
+#                             offer=i
+
+#                     if offer:
+#                         if len(MultiUpdate) == 0:
+#                             MultiUpdate.append({
+#                                 "profileRevision": athena['rvn'] or 0,
+#                                 "profileId": request.args.get("profileid") or "athena",
+#                                 "profileChangesBaseRevision": athena['rvn'] or 0,
+#                                 "profileChanges": [],
+#                                 "profileCommandRevision": athena['commandRevision'] or 0,
+#                             })
+
+#                         Season=value['name'].split("BR")[1]
+#                         BattlePass=json.load(open(f'./.data/connect/BattlePass/{Season}', 'r', encoding="utf-8"))
+
+#                         if BattlePass:
+#                             SeasonData=json.load(open("./.data/connect/SeasonData.json", 'r', encoding="utf-8"))
+
+#                             if BattlePass['battlePassOfferId'] == offer['offerId'] or BattlePass['battleBundleOfferId'] == offer['offerId']:
+#                                 lootList=[]
+#                                 EndingTier=SeasonData[Season]['battlePassTier']
+#                                 SeasonData[Season]['battlePassPurchased']=True
+
+#                                 if BattlePass['battleBundleOfferId'] == offer['offerId']:
+#                                     SeasonData[Season]['battlePassTier'] += 25
+#                                     if SeasonData[Season]['battlePassTier'] > 100:
+#                                         SeasonData[Season]['battlePassTier']=100
+#                                     EndingTier=SeasonData[Season]['battlePassTier']
+
+#                                 for i in range(EndingTier):
+#                                     FreeTier=BattlePass['freeRewards'][i] or {}
+#                                     PaidTier=BattlePass['paidRewards'][i] or {}
+
+#                                     for item in FreeTier:
+#                                         if item.lower() == "token:athenaseasonxpboost":
+#                                             SeasonData[Season]['battlePassXPBoost'] += FreeTier[item]
+
+#                                             MultiUpdate[0]['profileChanges'].append({
+#                                                 "changeType": "statModified",
+#                                                 "name": "season_match_boost",
+#                                                 "value": SeasonData[Season]['battlePassXPBoost']
+#                                             })
+
+#                                         if item.lower() == "token:athenaseasonfriendxpboost":
+#                                             SeasonData[Season]['battlePassXPFriendBoost'] += FreeTier[item]
+
+#                                             MultiUpdate[0]['profileChanges'].append({
+#                                                 "changeType": "statModified",
+#                                                 "name": "season_friend_match_boost",
+#                                                 "value": SeasonData[Season]['battlePassXPFriendBoost']
+#                                             })
+
+#                                         if item.lower().startswith("currency:mtx"):
+#                                             for key in profile['items']:
+#                                                 if profile['items'][key]['templateId'].lower().startswith("currency:mtx"):
+#                                                     if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
+#                                                         profile['items'][key]['quantity'] += FreeTier[item]
+#                                                         break
+
+#                                         if item.lower().startswith("homebasebanner"):
+#                                             for key in profile['items']:
+#                                                 if profile['items'][key]['templateId'].lower() == item['items']:
+#                                                     profile['items'][key]['attributes']['item_seen']=False
+#                                                     ItemExists=True
+
+#                                                     ApplyProfileChanges.append({
+#                                                         "changeType": "itemAttrChanged",
+#                                                         "itemId": key,
+#                                                         "attributeName": "item_seen",
+#                                                         "attributeValue": profile['items'][key]['attributes']['item_seen']
+#                                                     })
+
+#                                             if ItemExists == False:
+#                                                 ItemID=uuid.uuid4()
+#                                                 Item={"templateId":item,"attributes":{"item_seen":False},"quantity":1}
+
+#                                                 profile['items'][ItemID]=Item
+
+#                                                 ApplyProfileChanges.append({
+#                                                     "changeType": "itemAdded",
+#                                                     "itemId": ItemID,
+#                                                     "item": Item
+#                                                 })
+
+#                                             ItemExists=False
+
+#                                         if item.lower().startswith("athena"):
+#                                             for key in athena['items']:
+#                                                 if athena['items'][key]['templateId'].lower() == item['items']:
+#                                                     athena['items'][key]['attributes']['item_seen']=False
+#                                                     ItemExists=True
+
+#                                                     MultiUpdate[0]['profileChanges'].append({
+#                                                         "changeType": "itemAttrChanged",
+#                                                         "itemId": key,
+#                                                         "attributeName": "item_seen",
+#                                                         "attributeValue": athena['items'][key]['attributes']['item_seen']
+#                                                     })
+
+#                                             if ItemExists == False:
+#                                                 ItemID=uuid.uuid4()
+#                                                 Item={"templateId":item,"attributes":{"max_level_bonus":0,"level":1,"item_seen":False,"xp":0,"variants":[],"favorite":False},"quantity":FreeTier[item]}
+
+#                                                 athena['items'][ItemID]=Item
+
+#                                                 MultiUpdate[0]['profileChanges'].append({
+#                                                     "changeType": "itemAdded",
+#                                                     "itemId": ItemID,
+#                                                     "item": Item
+#                                                 })
+
+#                                             ItemExists=False
+
+#                                         lootList.append({
+#                                             "itemType": item,
+#                                             "itemGuid": item,
+#                                             "quantity": FreeTier[item]
+#                                         })
+
+#                                     for item in PaidTier:
+#                                         if item.lower() == "token:athenaseasonxpboost":
+#                                             SeasonData[Season]['battlePassXPBoost'] += PaidTier[item]
+
+#                                             MultiUpdate[0]['profileChanges'].append({
+#                                                 "changeType": "statModified",
+#                                                 "name": "season_match_boost",
+#                                                 "value": SeasonData[Season]['battlePassXPBoost']
+#                                             })
+
+#                                         if item.lower() == "token:athenaseasonfriendxpboost":
+#                                             SeasonData[Season]['battlePassXPFriendBoost'] += PaidTier[item]
+
+#                                             MultiUpdate[0]['profileChanges'].append({
+#                                                 "changeType": "statModified",
+#                                                 "name": "season_friend_match_boost",
+#                                                 "value": SeasonData[Season]['battlePassXPFriendBoost']
+#                                             })
+
+#                                         if item.lower().startswith("currency:mtx"):
+#                                             for key in profile['items']:
+#                                                 if profile['items'][key]['templateId'].lower().startswith("currency:mtx"):
+#                                                     if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
+#                                                         profile['items'][key]['quantity'] += PaidTier[item]
+#                                                         break
+
+#                                         if item.lower().startswith("homebasebanner"):
+#                                             for key in profile['items']:
+#                                                 if profile['items'][key]['templateId'].lower() == item['items']:
+#                                                     profile['items'][key]['attributes']['item_seen']=False
+#                                                     ItemExists=True
+
+#                                                     ApplyProfileChanges.append({
+#                                                         "changeType": "itemAttrChanged",
+#                                                         "itemId": key,
+#                                                         "attributeName": "item_seen",
+#                                                         "attributeValue": profile['items'][key]['attributes']['item_seen']
+#                                                     })
+
+#                                             if ItemExists == False:
+#                                                 ItemID=uuid.uuid4()
+#                                                 Item={"templateId":item,"attributes":{"item_seen":False},"quantity":1}
+
+#                                                 profile['items'][ItemID]=Item
+
+#                                                 ApplyProfileChanges.append({
+#                                                     "changeType": "itemAdded",
+#                                                     "itemId": ItemID,
+#                                                     "item": Item
+#                                                 })
+
+#                                             ItemExists=False
+
+#                                         if item.lower().startswith("athena"):
+#                                             for key in athena['items']:
+#                                                 if athena['items'][key]['templateId'].lower() == item['items']:
+#                                                     athena['items'][key]['attributes']['item_seen']=False
+#                                                     ItemExists=True
+
+#                                                     MultiUpdate[0]['profileChanges'].append({
+#                                                         "changeType": "itemAttrChanged",
+#                                                         "itemId": key,
+#                                                         "attributeName": "item_seen",
+#                                                         "attributeValue": athena['items'][key]['attributes']['item_seen']
+#                                                     })
+
+#                                             if ItemExists == False:
+#                                                 ItemID=uuid.uuid4()
+#                                                 Item={"templateId":item,"attributes":{"max_level_bonus":0,"level":1,"item_seen":False,"xp":0,"variants":[],"favorite":False},"quantity":PaidTier[item]}
+
+#                                                 athena['items'][ItemID]=Item
+
+#                                                 MultiUpdate[0]['profileChanges'].append({
+#                                                     "changeType": "itemAdded",
+#                                                     "itemId": ItemID,
+#                                                     "item": Item
+#                                                 })
+
+#                                             ItemExists=False
+
+#                                         lootList.append({
+#                                             "itemType": item,
+#                                             "itemGuid": item,
+#                                             "quantity": PaidTier[item]
+#                                         })
+
+#                                 GiftBoxID=uuid.uuid4()
+#                                 GiftBox={"templateId":int(Season.split("Season")[1]), "GiftBox:gb_battlepass" : "GiftBox:gb_battlepasspurchased","attributes":{"max_level_bonus":0,"fromAccountId":"","lootList":lootList}}
+
+#                                 if int(Season.split("Season")[1]) > 2:
+#                                     profile['items'][GiftBoxID]=GiftBox
+                                    
+#                                     ApplyProfileChanges.append({
+#                                         "changeType": "itemAdded",
+#                                         "itemId": GiftBoxID,
+#                                         "item": GiftBox
+#                                     })
+
+#                                 MultiUpdate[0]['profileChanges'].append({
+#                                     "changeType": "statModified",
+#                                     "name": "book_purchased",
+#                                     "value": SeasonData[Season]['battlePassPurchased']
+#                                 })
+
+#                                 MultiUpdate[0]['profileChanges'].append({
+#                                     "changeType": "statModified",
+#                                     "name": "book_level",
+#                                     "value": SeasonData[Season]['battlePassTier']
+#                                 })
+
+#                                 AthenaModified=True
+
+#                             if BattlePass['tierOfferId'] == offer['offerId']:
+#                                 lootList=[]
+#                                 StartingTier=SeasonData[Season]['battlePassTier']
+#                                 EndingTier
+#                                 SeasonData[Season]['battlePassTier'] += json.loads(request.get_data('purchaseQuantity'))['purchaseQuantity'] or 1
+#                                 EndingTier=SeasonData[Season]['battlePassTier']
+
+#                                 for StartingTier in range(EndingTier):
+#                                     FreeTier=BattlePass['freeRewards'][i] or {}
+#                                     PaidTier=BattlePass['paidRewards'][i] or {}
+
+#                                     for item in FreeTier:
+#                                         if item.lower() == "token:athenaseasonxpboost":
+#                                             SeasonData[Season]['battlePassXPBoost'] += FreeTier[item]
+
+#                                             MultiUpdate[0]['profileChanges'].append({
+#                                                 "changeType": "statModified",
+#                                                 "name": "season_match_boost",
+#                                                 "value": SeasonData[Season]['battlePassXPBoost']
+#                                             })
+
+#                                         if item.lower() == "token:athenaseasonfriendxpboost":
+#                                             SeasonData[Season]['battlePassXPFriendBoost'] += FreeTier[item]
+
+#                                             MultiUpdate[0]['profileChanges'].append({
+#                                                 "changeType": "statModified",
+#                                                 "name": "season_friend_match_boost",
+#                                                 "value": SeasonData[Season]['battlePassXPFriendBoost']
+#                                             })
+
+#                                         if item.lower().startswith("currency:mtx"):
+#                                             for key in profile['items']:
+#                                                 if profile['items'][key]['templateId'].lower().startswith("currency:mtx"):
+#                                                     if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
+#                                                         profile['items'][key]['quantity'] += FreeTier[item]
+#                                                         break
+
+#                                         if item.lower().startswith("homebasebanner"):
+#                                             for key in profile['items']:
+#                                                 if profile['items'][key]['templateId'].lower() == item['items']:
+#                                                     profile['items'][key]['attributes']['item_seen']=False
+#                                                     ItemExists=True
+
+#                                                     ApplyProfileChanges.append({
+#                                                         "changeType": "itemAttrChanged",
+#                                                         "itemId": key,
+#                                                         "attributeName": "item_seen",
+#                                                         "attributeValue": profile['items'][key]['attributes']['item_seen']
+#                                                     })
+
+#                                             if ItemExists == False:
+#                                                 ItemID=uuid.uuid4()
+#                                                 Item={"templateId":item,"attributes":{"item_seen":False},"quantity":1}
+
+#                                                 profile['items'][ItemID]=Item
+
+#                                                 ApplyProfileChanges.append({
+#                                                     "changeType": "itemAdded",
+#                                                     "itemId": ItemID,
+#                                                     "item": Item
+#                                                 })
+
+#                                             ItemExists=False
+
+#                                         if item.lower().startswith("athena"):
+#                                             for key in athena['items']:
+#                                                 if athena['items'][key]['templateId'].lower() == item['items']:
+#                                                     athena['items'][key]['attributes']['item_seen']=False
+#                                                     ItemExists=True
+
+#                                                     MultiUpdate[0]['profileChanges'].append({
+#                                                         "changeType": "itemAttrChanged",
+#                                                         "itemId": key,
+#                                                         "attributeName": "item_seen",
+#                                                         "attributeValue": athena['items'][key]['attributes']['item_seen']
+#                                                     })
+
+#                                             if ItemExists == False:
+#                                                 ItemID=uuid.uuid4()
+#                                                 Item={"templateId":item,"attributes":{"max_level_bonus":0,"level":1,"item_seen":False,"xp":0,"variants":[],"favorite":False},"quantity":FreeTier[item]}
+
+#                                                 athena['items'][ItemID]=Item
+
+#                                                 MultiUpdate[0]['profileChanges'].append({
+#                                                     "changeType": "itemAdded",
+#                                                     "itemId": ItemID,
+#                                                     "item": Item
+#                                                 })
+
+#                                             ItemExists=False
+
+#                                         lootList.append({
+#                                             "itemType": item,
+#                                             "itemGuid": item,
+#                                             "quantity": FreeTier[item]
+#                                         })
+
+#                                     for item in PaidTier:
+#                                         if item.lower() == "token:athenaseasonxpboost":
+#                                             SeasonData[Season]['battlePassXPBoost'] += PaidTier[item]
+
+#                                             MultiUpdate[0]['profileChanges'].append({
+#                                                 "changeType": "statModified",
+#                                                 "name": "season_match_boost",
+#                                                 "value": SeasonData[Season]['battlePassXPBoost']
+#                                             })
+
+#                                         if item.lower() == "token:athenaseasonfriendxpboost":
+#                                             SeasonData[Season]['battlePassXPFriendBoost'] += PaidTier[item]
+
+#                                             MultiUpdate[0]['profileChanges'].append({
+#                                                 "changeType": "statModified",
+#                                                 "name": "season_friend_match_boost",
+#                                                 "value": SeasonData[Season]['battlePassXPFriendBoost']
+#                                             })
+
+#                                         if item.lower().startswith("currency:mtx"):
+#                                             for key in profile['items']:
+#                                                 if profile['items'][key]['templateId'].lower().startswith("currency:mtx"):
+#                                                     if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
+#                                                         profile['items'][key]['quantity'] += PaidTier[item]
+#                                                         break
+
+#                                         if item.lower().startswith("homebasebanner"):
+#                                             for key in profile['items']:
+#                                                 if profile['items'][key]['templateId'].lower() == item['items']:
+#                                                     profile['items'][key]['attributes']['item_seen']=False
+#                                                     ItemExists=True
+
+#                                                     ApplyProfileChanges.append({
+#                                                         "changeType": "itemAttrChanged",
+#                                                         "itemId": key,
+#                                                         "attributeName": "item_seen",
+#                                                         "attributeValue": profile['items'][key]['attributes']['item_seen']
+#                                                     })
+
+#                                             if ItemExists == False:
+#                                                 ItemID=uuid.uuid4()
+#                                                 Item={"templateId":item,"attributes":{"item_seen":False},"quantity":1}
+
+#                                                 profile['items'][ItemID]=Item
+
+#                                                 ApplyProfileChanges.append({
+#                                                     "changeType": "itemAdded",
+#                                                     "itemId": ItemID,
+#                                                     "item": Item
+#                                                 })
+
+#                                             ItemExists=False
+
+#                                         if item.lower().startswith("athena"):
+#                                             for key in athena['items']:
+#                                                 if athena['items'][key]['templateId'].lower() == item['items']:
+#                                                     athena['items'][key]['attributes']['item_seen']=False
+#                                                     ItemExists=True
+
+#                                                     MultiUpdate[0]['profileChanges'].append({
+#                                                         "changeType": "itemAttrChanged",
+#                                                         "itemId": key,
+#                                                         "attributeName": "item_seen",
+#                                                         "attributeValue": athena['items'][key]['attributes']['item_seen']
+#                                                     })
+
+#                                             if ItemExists == False:
+#                                                 ItemID=uuid.uuid4()
+#                                                 Item={"templateId":item,"attributes":{"max_level_bonus":0,"level":1,"item_seen":False,"xp":0,"variants":[],"favorite":False},"quantity":PaidTier[item]}
+
+#                                                 athena['items'][ItemID]=Item
+
+#                                                 MultiUpdate[0]['profileChanges'].append({
+#                                                     "changeType": "itemAdded",
+#                                                     "itemId": ItemID,
+#                                                     "item": Item
+#                                                 })
+
+#                                             ItemExists=False
+
+#                                         lootList.append({
+#                                             "itemType": item,
+#                                             "itemGuid": item,
+#                                             "quantity": PaidTier[item]
+#                                         })
+
+#                                 GiftBoxID=uuid.uuid4()
+#                                 GiftBox={"templateId":"GiftBox:gb_battlepass","attributes":{"max_level_bonus":0,"fromAccountId":"","lootList":lootList}}
+
+#                                 if int(Season.split("Season")[1]) > 2:
+#                                     profile['items'][GiftBoxID]=GiftBox
+                                    
+#                                     ApplyProfileChanges.append({
+#                                         "changeType": "itemAdded",
+#                                         "itemId": GiftBoxID,
+#                                         "item": GiftBox
+#                                     })
+
+#                                 MultiUpdate[0]['profileChanges'].append({
+#                                     "changeType": "statModified",
+#                                     "name": "book_level",
+#                                     "value": SeasonData[Season]['battlePassTier']
+#                                 })
+
+#                                 AthenaModified=True
+
+#                             open("./connect/SeasonData.json", 'w', encoding="utf-8").write(json.dumps(SeasonData, indent=4))
+
+#             if value['name'].startswith("BR"):
+#                 for b, value in enumerate(catalog['storefronts'][a]['catalogEntries']):
+#                     if value['offerId'] == json.loads(request.get_data('offerId'))['offerId']:
+#                         for c, value in enumerate(catalog['storefronts'][a]['catalogEntries'][b]['itemGrants']):
+#                             ID=value['templateId']
+
+#                             for key in athena['items']:
+#                                 if value['templateId'].lower() == athena['items'][key]['templateId'].lower():
+#                                     ItemExists=True
+
+
+#                             if ItemExists == False:
+#                                 if len(MultiUpdate) == 0:
+#                                     MultiUpdate.append({
+#                                         "profileRevision": athena['rvn'] or 0,
+#                                         "profileId": request.args.get("profileid") or "athena",
+#                                         "profileChangesBaseRevision": athena['rvn'] or 0,
+#                                         "profileChanges": [],
+#                                         "profileCommandRevision": athena['commandRevision'] or 0,
+#                                     })
+
+#                                 if Notifications.length == 0:
+#                                     Notifications.append({
+#                                         "type": "CatalogPurchase",
+#                                         "primary": True,
+#                                         "lootResult": {
+#                                             "items": []
+#                                         }
+#                                     })
+
+#                                 Item={
+#                                     "templateId": value['templateId'],
+#                                     "attributes": {
+#                                         "max_level_bonus": 0,
+#                                         "level": 1,
+#                                         "item_seen": False,
+#                                         "xp": 0,
+#                                         "variants": [],
+#                                         "favorite": False
+#                                     },
+#                                     "quantity": 1
+#                                 }
+
+#                                 athena['items'][ID]=Item
+
+#                                 MultiUpdate[0]['profileChanges'].append({
+#                                     "changeType": "itemAdded",
+#                                     "itemId": ID,
+#                                     "item": athena['items'][ID]
+#                                 })
+
+#                                 Notifications[0]['lootResult'].lower().append({
+#                                     "itemType": value['templateId'],
+#                                     "itemGuid": ID,
+#                                     "itemProfile": request.args.get("profileid") or "athena",
+#                                     "quantity": value['quantity']
+#                                 })
+
+#                                 AthenaModified=True
+
+#                             ItemExists=False
+                            
+#                         if catalog['storefronts'][a]['catalogEntries'][b]['prices'][0]['currencyType'].lower() == "mtxcurrency":
+#                             for key in profile['items']:
+#                                 if profile['items'][key]['templateId'].lower().startswith("currency:mtx"):
+#                                     if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
+#                                         profile['items'][key]['quantity'] -= (catalog['storefronts'][a]['catalogEntries'][b]['prices'][0]['finalPrice']) * json.loads(request.get_data('purchaseQuantity'))['purchaseQuantity'] or 1
+                        
+#                                         ApplyProfileChanges.append({
+#                                             "changeType": "itemQuantityChanged",
+#                                             "itemId": key,
+#                                             "quantity": profile['items'][key]['quantity']
+#                                         })
+
+#                                         profile['rvn'] += 1
+#                                         profile['commandRevision'] += 1
+
+#                                         break
+
+
+#         PurchasedLlama=True
+
+#         if AthenaModified == True:
+#             athena['rvn'] += 1
+#             athena['commandRevision'] += 1
+
+#             if MultiUpdate[0]:
+#                 MultiUpdate[0]['profileRevision']=athena['rvn'] or 0
+#                 MultiUpdate[0]['profileCommandRevision']=athena['commandRevision'] or 0
+
+#             open(f"data/{request.args.get('profileid') or 'athena'}.json", 'w', encoding="utf-8").write(json.dumps(athena, indent=4))
+#             open(f"data/{request.args.get('profileId') or 'profile0'}.json", 'w', encoding="utf-8").write(json.dumps(profile, indent=4))
+
+#         if AthenaModified == False:
+#             profile['rvn'] += 1
+#             profile['commandRevision'] += 1
+
+#             open(f"data/{request.args.get('profileId') or 'profile0'}.json", 'w', encoding="utf-8").write(json.dumps(profile, indent=4))
+
+#     if json.loads(request.get_data('offerId'))['offerId'] and request.args.get('profileId') == "common_core":
+#         for a, value in enumerate(catalog['storefronts']):
+#             if hasattr(value, 'name'):
+#                 if value['name'].lower().startswith("cardpack"):
+#                     for b, value in enumerate(catalog['storefronts'][a]['catalogEntries']):
+#                         if value['offerId'] == json.loads(request.get_data('offerId'))['offerId']:
+#                             Quantity=0
+#                             for c, value in enumerate(catalog['storefronts'][a]['catalogEntries'][b]['itemGrants']):
+#                                 memory=getVersion(request=request)
+
+#                                 if 4 >= memory['season'] and PurchasedLlama == False:
+#                                     if len(MultiUpdate)== 0:
+#                                         MultiUpdate.append({
+#                                             "profileRevision": profile['rvn'] or 0,
+#                                             "profileId": "campaign",
+#                                             "profileChangesBaseRevision": profile['rvn'] or 0,
+#                                             "profileChanges": [],
+#                                             "profileCommandRevision": profile['commandRevision'] or 0,
+#                                         })
+
+#                                     Quantity=json.loads(request.get_data('purchaseQuantity'))['purchaseQuantity'] or 1
+
+#                                     Item={
+#                                         "templateId": value['templateId'],
+#                                         "attributes": {
+#                                             "is_loot_tier_overridden": False,
+#                                             "max_level_bonus": 0,
+#                                             "level": 1391,
+#                                             "pack_source": "Schedule",
+#                                             "item_seen": False,
+#                                             "xp": 0,
+#                                             "favorite": False,
+#                                             "override_loot_tier": 0
+#                                         },
+#                                         "quantity": 1
+#                                     }
+
+#                                     for i in range(Quantity):
+#                                         ID=uuid.uuid4()
+        
+#                                         profile['items'][ID]=Item
+
+#                                         MultiUpdate[0]['profileChanges'].append({
+#                                             "changeType": "itemAdded",
+#                                             "itemId": ID,
+#                                             "item": profile['items'][ID]
+#                                         })
+
+#                                     PurchasedLlama=True
+
+#                                 if memory['build'] >= 5 and memory['build'] <= 7.20 and PurchasedLlama == False:
+#                                     if len(MultiUpdate) == 0:
+#                                         MultiUpdate.append({
+#                                             "profileRevision": profile['rvn'] or 0,
+#                                             "profileId": "campaign",
+#                                             "profileChangesBaseRevision": profile['rvn'] or 0,
+#                                             "profileChanges": [],
+#                                             "profileCommandRevision": profile['commandRevision'] or 0,
+#                                         })
+
+#                                     Quantity=json.loads(request.get_data('purchaseQuantity'))['purchaseQuantity'] or 1
+
+#                                     Item={
+#                                         "templateId": value['templateId'],
+#                                         "attributes": {
+#                                             "is_loot_tier_overridden": False,
+#                                             "max_level_bonus": 0,
+#                                             "level": 1391,
+#                                             "pack_source": "Schedule",
+#                                             "item_seen": False,
+#                                             "xp": 0,
+#                                             "favorite": False,
+#                                             "override_loot_tier": 0
+#                                         },
+#                                         "quantity": 1
+#                                     }
+
+#                                     for i in range(Quantity):
+#                                         ID=uuid.uuid4()
+        
+#                                         profile['items'][ID]=Item
+
+#                                         MultiUpdate[0]['profileChanges'].append({
+#                                             "changeType": "itemAdded",
+#                                             "itemId": ID,
+#                                             "item": profile['items'][ID]
+#                                         })
+
+#                                     Notifications.append({
+#                                         "type": "cardPackResult",
+#                                         "primary": True,
+#                                         "lootGranted": {
+#                                             "tierGroupName": "",
+#                                             "items": []
+#                                         },
+#                                         "displayLevel": 0
+#                                     })
+
+#                                     PurchasedLlama=True
+
+#                                 if 6 < memory['season'] and PurchasedLlama == False:
+#                                     if len(MultiUpdate) == 0:
+#                                         MultiUpdate.append({
+#                                             "profileRevision": profile['rvn'] or 0,
+#                                             "profileId": "campaign",
+#                                             "profileChangesBaseRevision": profile['rvn'] or 0,
+#                                             "profileChanges": [],
+#                                             "profileCommandRevision": profile['commandRevision'] or 0,
+#                                         })
+
+#                                     Quantity=json.loads(request.get_data('purchaseQuantity'))['purchaseQuantity'] or 1
+#                                     LlamaItemIDS=[]
+
+#                                     Item={
+#                                         "templateId": value['templateId'],
+#                                         "attributes": {
+#                                             "is_loot_tier_overridden": False,
+#                                             "max_level_bonus": 0,
+#                                             "level": 1391,
+#                                             "pack_source": "Schedule",
+#                                             "item_seen": False,
+#                                             "xp": 0,
+#                                             "favorite": False,
+#                                             "override_loot_tier": 0
+#                                         },
+#                                         "quantity": 1
+#                                     }
+
+#                                     for i in range(Quantity):
+#                                         ID=uuid.uuid4()
+        
+#                                         profile['items'][ID]=Item
+
+#                                         MultiUpdate[0]['profileChanges'].append({
+#                                             "changeType": "itemAdded",
+#                                             "itemId": ID,
+#                                             "item": profile['items'][ID]
+#                                         })
+
+#                                         LlamaItemIDS.append(ID)
+
+#                                     Notifications.append({
+#                                         "type": "CatalogPurchase",
+#                                         "primary": True,
+#                                         "lootResult": {
+#                                             "items": []
+#                                         }
+#                                     })
+
+#                                     if request.get_data('currencySubType').lower() != "accountresource:voucher_basicpack":
+#                                         for x in range(Quantity):
+#                                             for key in profile['items']:
+#                                                 if profile['items'][key]['templateId'].lower() == "prerolldata:preroll_basic":
+#                                                     if profile['items'][key]['attributes']['offerId'] == json.loads(request.get_data('offerId'))['offerId']:
+#                                                         for item in profile['items'][key]['attributes']['items']:
+#                                                             id=uuid.uuid4()
+#                                                             Item={"templateId":profile['items'][key]['attributes']['items'][item].itemType,"attributes":profile['items'][key]['attributes']['items'][item]['attributes'],"quantity":profile['items'][key]['attributes']['items'][item]['quantity']}
+                    
+#                                                             profile['items'][id]=Item
+
+#                                                             MultiUpdate[0]['profileChanges'].append({
+#                                                                 "changeType": "itemAdded",
+#                                                                 "itemId": id,
+#                                                                 "item": Item
+#                                                             })
+
+#                                                             Notifications[0]['lootResult'].lower().append({
+#                                                                 "itemType": profile['items'][key]['attributes']['items'][item].itemType,
+#                                                                 "itemGuid": id,
+#                                                                 "itemProfile": "campaign",
+#                                                                 "attributes": Item['attributes'],
+#                                                                 "quantity": 1
+#                                                             })
+
+#                                                         profile['items'][key]['attributes']['items']=[]
+
+#                                                         for i in range(10):
+#                                                             randomNumber=round(random.randint()*len(ItemIDS))
+
+#                                                             profile['items'][key]['attributes'].lower().append({"itemType":ItemIDS[randomNumber],"attributes":{"legacy_alterations":[],"max_level_bonus":0,"level":1,"refund_legacy_item":False,"item_seen":False,"alterations":["","","","","",""],"xp":0,"refundable":False,"alteration_base_rarities":[],"favorite":False},"quantity":1})
+
+#                                                         MultiUpdate[0]['profileChanges'].append({
+#                                                             "changeType": "itemAttrChanged",
+#                                                             "itemId": key,
+#                                                             "attributeName": "items",
+#                                                             "attributeValue": profile['items'][key]['attributes']['items']
+#                                                         })
+
+#                                     try:
+#                                         if request.get_data('currencySubType').lower() != "accountresource:voucher_basicpack":
+#                                             for i in LlamaItemIDS:
+#                                                 id=LlamaItemIDS[i]
+
+#                                                 profile.lower().pop(id)
+#                                                 MultiUpdate[0]['profileChanges'].append({
+#                                                     "changeType": "itemRemoved",
+#                                                     "itemId": id
+#                                                 })
+#                                     except:
+#                                         pass
+
+#                                     PurchasedLlama=True
+
+#                             if catalog['storefronts'][a]['catalogEntries'][b]['prices'][0]['currencyType'].lower() == "mtxcurrency":
+#                                 for key in profile['items']:
+#                                     if profile['items'][key]['templateId'].lower().startswith("currency:mtx"):
+#                                         if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
+#                                             profile['items'][key]['quantity'] -= (catalog['storefronts'][a]['catalogEntries'][b]['prices'][0]['finalPrice']) * Quantity
+                                                    
+#                                             ApplyProfileChanges.append({
+#                                                 "changeType": "itemQuantityChanged",
+#                                                 "itemId": key,
+#                                                 "quantity": profile['items'][key]['quantity']
+#                                             })
+                            
+#                                             profile['rvn'] += 1
+#                                             profile['commandRevision'] += 1
+                            
+#                                             break
+                                            
+#                 if value['name'].startswith("BRSeason") or value['devName'].startswith("BRSeason"):
+#                     if not isinstance(value['name'].split("BRSeason")[1], int):
+#                         offer=find(lambda x: x['offerId'] == json.loads(request.get_data('offerId'))['offerId'], value['catalogEntries'])
+#                         if offer:
+#                             if len(MultiUpdate) == 0:
+#                                 MultiUpdate.append({
+#                                     "profileRevision": athena['rvn'] or 0,
+#                                     "profileId": request.args.get("profileid") or "athena",
+#                                     "profileChangesBaseRevision": athena['rvn'] or 0,
+#                                     "profileChanges": [],
+#                                     "profileCommandRevision": athena['commandRevision'] or 0,
+#                                 })
+
+#                             Season=value['name'].split("BR")[1]
+#                             BattlePass=json.load(open(f'data/connect/BattlePass/{Season}', 'r', encoding="utf-8"))
+
+#                             if BattlePass:
+#                                 SeasonData=json.load(open("./.data/connect/SeasonData.json", 'r', encoding="utf-8"))
+
+#                                 if BattlePass['battlePassOfferId'] == offer['offerId'] or BattlePass['battleBundleOfferId'] == offer['offerId']:
+#                                     lootList=[]
+#                                     EndingTier=SeasonData[Season]['battlePassTier']
+#                                     SeasonData[Season]['battlePassPurchased']=True
+
+#                                     if BattlePass['battleBundleOfferId'] == offer['offerId']:
+#                                         SeasonData[Season]['battlePassTier'] += 25
+#                                         if SeasonData[Season]['battlePassTier'] > 100:
+#                                             SeasonData[Season]['battlePassTier']=100
+#                                         EndingTier=SeasonData[Season]['battlePassTier']
+
+#                                     for i in range(EndingTier):
+#                                         FreeTier=BattlePass['freeRewards'][i] or {}
+#                                         PaidTier=BattlePass['paidRewards'][i] or {}
+
+#                                         for item in FreeTier:
+#                                             if item.lower() == "token:athenaseasonxpboost":
+#                                                 SeasonData[Season]['battlePassXPBoost'] += FreeTier[item]
+
+#                                                 MultiUpdate[0]['profileChanges'].append({
+#                                                     "changeType": "statModified",
+#                                                     "name": "season_match_boost",
+#                                                     "value": SeasonData[Season]['battlePassXPBoost']
+#                                                 })
+
+#                                             if item.lower() == "token:athenaseasonfriendxpboost":
+#                                                 SeasonData[Season]['battlePassXPFriendBoost'] += FreeTier[item]
+
+#                                                 MultiUpdate[0]['profileChanges'].append({
+#                                                     "changeType": "statModified",
+#                                                     "name": "season_friend_match_boost",
+#                                                     "value": SeasonData[Season]['battlePassXPFriendBoost']
+#                                                 })
+
+#                                             if item.lower().startswith("currency:mtx"):
+#                                                 for key in profile['items']:
+#                                                     if profile['items'][key]['templateId'].lower().startswith("currency:mtx"):
+#                                                         if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
+#                                                             profile['items'][key]['quantity'] += FreeTier[item]
+#                                                             break
+
+#                                             if item.lower().startswith("homebasebanner"):
+#                                                 for key in profile['items']:
+#                                                     if profile['items'][key]['templateId'].lower() == item['items']:
+#                                                         profile['items'][key]['attributes']['item_seen']=False
+#                                                         ItemExists=True
+
+#                                                         ApplyProfileChanges.append({
+#                                                             "changeType": "itemAttrChanged",
+#                                                             "itemId": key,
+#                                                             "attributeName": "item_seen",
+#                                                             "attributeValue": profile['items'][key]['attributes']['item_seen']
+#                                                         })
+
+#                                                 if ItemExists == False:
+#                                                     ItemID=uuid.uuid4()
+#                                                     Item={"templateId":item,"attributes":{"item_seen":False},"quantity":1}
+
+#                                                     profile['items'][ItemID]=Item
+
+#                                                     ApplyProfileChanges.append({
+#                                                         "changeType": "itemAdded",
+#                                                         "itemId": ItemID,
+#                                                         "item": Item
+#                                                     })
+
+#                                                 ItemExists=False
+
+#                                             if item.lower().startswith("athena"):
+#                                                 for key in athena['items']:
+#                                                     if athena['items'][key]['templateId'].lower() == item['items']:
+#                                                         athena['items'][key]['attributes']['item_seen']=False
+#                                                         ItemExists=True
+
+#                                                         MultiUpdate[0]['profileChanges'].append({
+#                                                             "changeType": "itemAttrChanged",
+#                                                             "itemId": key,
+#                                                             "attributeName": "item_seen",
+#                                                             "attributeValue": athena['items'][key]['attributes']['item_seen']
+#                                                         })
+
+#                                                 if ItemExists == False:
+#                                                     ItemID=uuid.uuid4()
+#                                                     Item={"templateId":item,"attributes":{"max_level_bonus":0,"level":1,"item_seen":False,"xp":0,"variants":[],"favorite":False},"quantity":FreeTier[item]}
+
+#                                                     athena['items'][ItemID]=Item
+
+#                                                     MultiUpdate[0]['profileChanges'].append({
+#                                                         "changeType": "itemAdded",
+#                                                         "itemId": ItemID,
+#                                                         "item": Item
+#                                                     })
+
+#                                                 ItemExists=False
+
+#                                             lootList.append({
+#                                                 "itemType": item,
+#                                                 "itemGuid": item,
+#                                                 "quantity": FreeTier[item]
+#                                             })
+
+#                                         for item in PaidTier:
+#                                             if item.lower() == "token:athenaseasonxpboost":
+#                                                 SeasonData[Season]['battlePassXPBoost'] += PaidTier[item]
+
+#                                                 MultiUpdate[0]['profileChanges'].append({
+#                                                     "changeType": "statModified",
+#                                                     "name": "season_match_boost",
+#                                                     "value": SeasonData[Season]['battlePassXPBoost']
+#                                                 })
+
+#                                             if item.lower() == "token:athenaseasonfriendxpboost":
+#                                                 SeasonData[Season]['battlePassXPFriendBoost'] += PaidTier[item]
+
+#                                                 MultiUpdate[0]['profileChanges'].append({
+#                                                     "changeType": "statModified",
+#                                                     "name": "season_friend_match_boost",
+#                                                     "value": SeasonData[Season]['battlePassXPFriendBoost']
+#                                                 })
+
+#                                             if item.lower().startswith("currency:mtx"):
+#                                                 for key in profile['items']:
+#                                                     if profile['items'][key]['templateId'].lower().startswith("currency:mtx"):
+#                                                         if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
+#                                                             profile['items'][key]['quantity'] += PaidTier[item]
+#                                                             break
+
+#                                             if item.lower().startswith("homebasebanner"):
+#                                                 for key in profile['items']:
+#                                                     if profile['items'][key]['templateId'].lower() == item['items']:
+#                                                         profile['items'][key]['attributes']['item_seen']=False
+#                                                         ItemExists=True
+
+#                                                         ApplyProfileChanges.append({
+#                                                             "changeType": "itemAttrChanged",
+#                                                             "itemId": key,
+#                                                             "attributeName": "item_seen",
+#                                                             "attributeValue": profile['items'][key]['attributes']['item_seen']
+#                                                         })
+
+#                                                 if ItemExists == False:
+#                                                     ItemID=uuid.uuid4()
+#                                                     Item={"templateId":item,"attributes":{"item_seen":False},"quantity":1}
+
+#                                                     profile['items'][ItemID]=Item
+
+#                                                     ApplyProfileChanges.append({
+#                                                         "changeType": "itemAdded",
+#                                                         "itemId": ItemID,
+#                                                         "item": Item
+#                                                     })
+
+#                                                 ItemExists=False
+
+#                                             if item.lower().startswith("athena"):
+#                                                 for key in athena['items']:
+#                                                     if athena['items'][key]['templateId'].lower() == item['items']:
+#                                                         athena['items'][key]['attributes']['item_seen']=False
+#                                                         ItemExists=True
+
+#                                                         MultiUpdate[0]['profileChanges'].append({
+#                                                             "changeType": "itemAttrChanged",
+#                                                             "itemId": key,
+#                                                             "attributeName": "item_seen",
+#                                                             "attributeValue": athena['items'][key]['attributes']['item_seen']
+#                                                         })
+
+#                                                 if ItemExists == False:
+#                                                     ItemID=uuid.uuid4()
+#                                                     Item={"templateId":item,"attributes":{"max_level_bonus":0,"level":1,"item_seen":False,"xp":0,"variants":[],"favorite":False},"quantity":PaidTier[item]}
+
+#                                                     athena['items'][ItemID]=Item
+
+#                                                     MultiUpdate[0]['profileChanges'].append({
+#                                                         "changeType": "itemAdded",
+#                                                         "itemId": ItemID,
+#                                                         "item": Item
+#                                                     })
+
+#                                                 ItemExists=False
+
+#                                             lootList.append({
+#                                                 "itemType": item,
+#                                                 "itemGuid": item,
+#                                                 "quantity": PaidTier[item]
+#                                             })
+
+#                                     GiftBoxID=uuid.uuid4()
+#                                     GiftBox={"templateId":int(Season.split("Season")[1]), "GiftBox:gb_battlepass" : "GiftBox:gb_battlepasspurchased","attributes":{"max_level_bonus":0,"fromAccountId":"","lootList":lootList}}
+
+#                                     if int(Season.split("Season")[1]) > 2:
+#                                         profile['items'][GiftBoxID]=GiftBox
+                                        
+#                                         ApplyProfileChanges.append({
+#                                             "changeType": "itemAdded",
+#                                             "itemId": GiftBoxID,
+#                                             "item": GiftBox
+#                                         })
+
+#                                     MultiUpdate[0]['profileChanges'].append({
+#                                         "changeType": "statModified",
+#                                         "name": "book_purchased",
+#                                         "value": SeasonData[Season]['battlePassPurchased']
+#                                     })
+
+#                                     MultiUpdate[0]['profileChanges'].append({
+#                                         "changeType": "statModified",
+#                                         "name": "book_level",
+#                                         "value": SeasonData[Season]['battlePassTier']
+#                                     })
+
+#                                     AthenaModified=True
+
+#                                 if BattlePass['tierOfferId'] == offer['offerId']:
+#                                     lootList=[]
+#                                     StartingTier=SeasonData[Season]['battlePassTier']
+#                                     EndingTier
+#                                     SeasonData[Season]['battlePassTier'] += json.loads(request.get_data('purchaseQuantity'))['purchaseQuantity'] or 1
+#                                     EndingTier=SeasonData[Season]['battlePassTier']
+
+#                                     for StartingTier in range(EndingTier):
+#                                         FreeTier=BattlePass['freeRewards'][i] or {}
+#                                         PaidTier=BattlePass['paidRewards'][i] or {}
+
+#                                         for item in FreeTier:
+#                                             if item.lower() == "token:athenaseasonxpboost":
+#                                                 SeasonData[Season]['battlePassXPBoost'] += FreeTier[item]
+
+#                                                 MultiUpdate[0]['profileChanges'].append({
+#                                                     "changeType": "statModified",
+#                                                     "name": "season_match_boost",
+#                                                     "value": SeasonData[Season]['battlePassXPBoost']
+#                                                 })
+
+#                                             if item.lower() == "token:athenaseasonfriendxpboost":
+#                                                 SeasonData[Season]['battlePassXPFriendBoost'] += FreeTier[item]
+
+#                                                 MultiUpdate[0]['profileChanges'].append({
+#                                                     "changeType": "statModified",
+#                                                     "name": "season_friend_match_boost",
+#                                                     "value": SeasonData[Season]['battlePassXPFriendBoost']
+#                                                 })
+
+#                                             if item.lower().startswith("currency:mtx"):
+#                                                 for key in profile['items']:
+#                                                     if profile['items'][key]['templateId'].lower().startswith("currency:mtx"):
+#                                                         if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
+#                                                             profile['items'][key]['quantity'] += FreeTier[item]
+#                                                             break
+
+#                                             if item.lower().startswith("homebasebanner"):
+#                                                 for key in profile['items']:
+#                                                     if profile['items'][key]['templateId'].lower() == item['items']:
+#                                                         profile['items'][key]['attributes']['item_seen']=False
+#                                                         ItemExists=True
+
+#                                                         ApplyProfileChanges.append({
+#                                                             "changeType": "itemAttrChanged",
+#                                                             "itemId": key,
+#                                                             "attributeName": "item_seen",
+#                                                             "attributeValue": profile['items'][key]['attributes']['item_seen']
+#                                                         })
+
+#                                                 if ItemExists == False:
+#                                                     ItemID=uuid.uuid4()
+#                                                     Item={"templateId":item,"attributes":{"item_seen":False},"quantity":1}
+
+#                                                     profile['items'][ItemID]=Item
+
+#                                                     ApplyProfileChanges.append({
+#                                                         "changeType": "itemAdded",
+#                                                         "itemId": ItemID,
+#                                                         "item": Item
+#                                                     })
+
+#                                                 ItemExists=False
+
+#                                             if item.lower().startswith("athena"):
+#                                                 for key in athena['items']:
+#                                                     if athena['items'][key]['templateId'].lower() == item['items']:
+#                                                         athena['items'][key]['attributes']['item_seen']=False
+#                                                         ItemExists=True
+
+#                                                         MultiUpdate[0]['profileChanges'].append({
+#                                                             "changeType": "itemAttrChanged",
+#                                                             "itemId": key,
+#                                                             "attributeName": "item_seen",
+#                                                             "attributeValue": athena['items'][key]['attributes']['item_seen']
+#                                                         })
+
+#                                                 if ItemExists == False:
+#                                                     ItemID=uuid.uuid4()
+#                                                     Item={"templateId":item,"attributes":{"max_level_bonus":0,"level":1,"item_seen":False,"xp":0,"variants":[],"favorite":False},"quantity":FreeTier[item]}
+
+#                                                     athena['items'][ItemID]=Item
+
+#                                                     MultiUpdate[0]['profileChanges'].append({
+#                                                         "changeType": "itemAdded",
+#                                                         "itemId": ItemID,
+#                                                         "item": Item
+#                                                     })
+
+#                                                 ItemExists=False
+
+#                                             lootList.append({
+#                                                 "itemType": item,
+#                                                 "itemGuid": item,
+#                                                 "quantity": FreeTier[item]
+#                                             })
+
+#                                         for item in PaidTier:
+#                                             if item.lower() == "token:athenaseasonxpboost":
+#                                                 SeasonData[Season]['battlePassXPBoost'] += PaidTier[item]
+
+#                                                 MultiUpdate[0]['profileChanges'].append({
+#                                                     "changeType": "statModified",
+#                                                     "name": "season_match_boost",
+#                                                     "value": SeasonData[Season]['battlePassXPBoost']
+#                                                 })
+
+#                                             if item.lower() == "token:athenaseasonfriendxpboost":
+#                                                 SeasonData[Season]['battlePassXPFriendBoost'] += PaidTier[item]
+
+#                                                 MultiUpdate[0]['profileChanges'].append({
+#                                                     "changeType": "statModified",
+#                                                     "name": "season_friend_match_boost",
+#                                                     "value": SeasonData[Season]['battlePassXPFriendBoost']
+#                                                 })
+
+#                                             if item.lower().startswith("currency:mtx"):
+#                                                 for key in profile['items']:
+#                                                     if profile['items'][key]['templateId'].lower().startswith("currency:mtx"):
+#                                                         if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
+#                                                             profile['items'][key]['quantity'] += PaidTier[item]
+#                                                             break
+
+#                                             if item.lower().startswith("homebasebanner"):
+#                                                 for key in profile['items']:
+#                                                     if profile['items'][key]['templateId'].lower() == item['items']:
+#                                                         profile['items'][key]['attributes']['item_seen']=False
+#                                                         ItemExists=True
+
+#                                                         ApplyProfileChanges.append({
+#                                                             "changeType": "itemAttrChanged",
+#                                                             "itemId": key,
+#                                                             "attributeName": "item_seen",
+#                                                             "attributeValue": profile['items'][key]['attributes']['item_seen']
+#                                                         })
+
+#                                                 if ItemExists == False:
+#                                                     ItemID=uuid.uuid4()
+#                                                     Item={"templateId":item,"attributes":{"item_seen":False},"quantity":1}
+
+#                                                     profile['items'][ItemID]=Item
+
+#                                                     ApplyProfileChanges.append({
+#                                                         "changeType": "itemAdded",
+#                                                         "itemId": ItemID,
+#                                                         "item": Item
+#                                                     })
+
+#                                                 ItemExists=False
+
+#                                             if item.lower().startswith("athena"):
+#                                                 for key in athena['items']:
+#                                                     if athena['items'][key]['templateId'].lower() == item['items']:
+#                                                         athena['items'][key]['attributes']['item_seen']=False
+#                                                         ItemExists=True
+
+#                                                         MultiUpdate[0]['profileChanges'].append({
+#                                                             "changeType": "itemAttrChanged",
+#                                                             "itemId": key,
+#                                                             "attributeName": "item_seen",
+#                                                             "attributeValue": athena['items'][key]['attributes']['item_seen']
+#                                                         })
+
+#                                                 if ItemExists == False:
+#                                                     ItemID=uuid.uuid4()
+#                                                     Item={"templateId":item,"attributes":{"max_level_bonus":0,"level":1,"item_seen":False,"xp":0,"variants":[],"favorite":False},"quantity":PaidTier[item]}
+
+#                                                     athena['items'][ItemID]=Item
+
+#                                                     MultiUpdate[0]['profileChanges'].append({
+#                                                         "changeType": "itemAdded",
+#                                                         "itemId": ItemID,
+#                                                         "item": Item
+#                                                     })
+
+#                                                 ItemExists=False
+
+#                                             lootList.append({
+#                                                 "itemType": item,
+#                                                 "itemGuid": item,
+#                                                 "quantity": PaidTier[item]
+#                                             })
+
+#                                     GiftBoxID=uuid.uuid4()
+#                                     GiftBox={"templateId":"GiftBox:gb_battlepass","attributes":{"max_level_bonus":0,"fromAccountId":"","lootList":lootList}}
+
+#                                     if int(Season.split("Season")[1]) > 2:
+#                                         profile['items'][GiftBoxID]=GiftBox
+                                        
+#                                         ApplyProfileChanges.append({
+#                                             "changeType": "itemAdded",
+#                                             "itemId": GiftBoxID,
+#                                             "item": GiftBox
+#                                         })
+
+#                                     MultiUpdate[0]['profileChanges'].append({
+#                                         "changeType": "statModified",
+#                                         "name": "book_level",
+#                                         "value": SeasonData[Season]['battlePassTier']
+#                                     })
+
+#                                     AthenaModified=True
+
+#                                 open("./connect/SeasonData.json", 'w', encoding="utf-8").write(json.dumps(SeasonData, indent=4))
+
+#                 if value['name'].startswith("BR"):
+#                     for b, value in enumerate(catalog['storefronts'][a]['catalogEntries']):
+#                         if value['offerId'] == json.loads(request.get_data('offerId'))['offerId']:
+#                             for c, value in enumerate(catalog['storefronts'][a]['catalogEntries'][b]['itemGrants']):
+#                                 ID=value['templateId']
+
+#                                 for key in athena['items']:
+#                                     if value['templateId'].lower() == athena['items'][key]['templateId'].lower():
+#                                         ItemExists=True
+
+#                                 if ItemExists == False:
+#                                     if len(MultiUpdate) == 0:
+#                                         MultiUpdate.append({
+#                                             "profileRevision": athena['rvn'] or 0,
+#                                             "profileId": request.args.get("profileid") or "athena",
+#                                             "profileChangesBaseRevision": athena['rvn'] or 0,
+#                                             "profileChanges": [],
+#                                             "profileCommandRevision": athena['commandRevision'] or 0,
+#                                         })
+
+#                                     if len(Notifications) == 0:
+#                                         Notifications.append({
+#                                             "type": "CatalogPurchase",
+#                                             "primary": True,
+#                                             "lootResult": {
+#                                                 "items": []
+#                                             }
+#                                         })
+
+#                                     Item={
+#                                         "templateId": value['templateId'],
+#                                         "attributes": {
+#                                             "max_level_bonus": 0,
+#                                             "level": 1,
+#                                             "item_seen": False,
+#                                             "xp": 0,
+#                                             "variants": [],
+#                                             "favorite": False
+#                                         },
+#                                         "quantity": 1
+#                                     }
+
+#                                     athena['items'][ID]=Item
+
+#                                     MultiUpdate[0]['profileChanges'].append({
+#                                         "changeType": "itemAdded",
+#                                         "itemId": ID,
+#                                         "item": Item
+#                                     })
+
+#                                     Notifications[0]['lootResult']['items'].append({
+#                                         "itemType": value['templateId'],
+#                                         "itemGuid": ID,
+#                                         "itemProfile": request.args.get("profileid") or "athena",
+#                                         "quantity": value['quantity']
+#                                     })
+
+#                                     AthenaModified=True
+#                                 ItemExists=False
+
+#                             if catalog['storefronts'][a]['catalogEntries'][b]['prices'][0]['currencyType'].lower() == "mtxcurrency":
+#                                 for key in profile['items']:
+#                                     if profile['items'][key]['templateId'].lower().startswith("currency:mtx"):
+#                                         if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
+#                                             profile['items'][key]['quantity'] -= (catalog['storefronts'][a]['catalogEntries'][b]['prices'][0]['finalPrice']) * json.loads(request.get_data('purchaseQuantity'))['purchaseQuantity'] or 1
+                                                    
+#                                             ApplyProfileChanges.append({
+#                                                 "changeType": "itemQuantityChanged",
+#                                                 "itemId": key,
+#                                                 "quantity": profile['items'][key]['quantity']
+#                                             })
+                            
+#                                             break
+
+#                             if len(catalog['storefronts'][a]['catalogEntries'][b]['itemGrants']) != 0:
+
+#                                 purchaseId=uuid.uuid4()
+#                                 profile['stats']['attributes']['mtx_purchase_history']['purchases'].append({"purchaseId":purchaseId,"offerId":f'v2:/{purchaseId}',"purchaseDate":datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),"freeRefundEligible":False,"fulfillments":[],"lootResult":Notifications[0]['lootResult']['items'],"totalMtxPaid":catalog['storefronts'][a]['catalogEntries'][b]['prices'][0]['finalPrice'],"metadata":{},"gameContext":""})
+
+#                                 ApplyProfileChanges.append({
+#                                     "changeType": "statModified",
+#                                     "name": "mtx_purchase_history",
+#                                     "value": profile['stats']['attributes']['mtx_purchase_history']
+#                                 })
+
+#                             profile['rvn'] += 1
+#                             profile['commandRevision'] += 1
+
+#         if AthenaModified == True:
+#             athena['rvn'] += 1
+#             athena['commandRevision'] += 1
+
+#             if len(MultiUpdate)!=0:
+#                 MultiUpdate[0]['profileRevision']=athena['rvn'] or 0
+#                 MultiUpdate[0]['profileCommandRevision']=athena['commandRevision'] or 0
+
+#             open(f"data/{request.args.get('profileid') or 'athena'}.json", 'w', encoding="utf-8").write(json.dumps(athena, indent=4))
+#             open(f"data/{request.args.get('profileId') or 'common_core'}.json", 'w', encoding="utf-8").write(json.dumps(profile, indent=4))
+
+#         if AthenaModified == False:
+#             profile['rvn'] += 1
+#             profile['commandRevision'] += 1
+
+#             print(MultiUpdate)
+#             if len(MultiUpdate)!=0:
+#                 MultiUpdate[0]['profileRevision']=profile['rvn'] or 0
+#                 MultiUpdate[0]['profileCommandRevision']=profile['commandRevision'] or 0
+#             open(f"data/{request.args.get('profileId') or 'common_core'}.json", 'w', encoding="utf-8").write(json.dumps(profile, indent=4))
+
+#     if QueryRevision != BaseRevision:
+#         ApplyProfileChanges=[{
+#             "changeType": "fullProfileUpdate",
+#             "profile": profile
+#         }]
+
+#     r={
+#         "profileRevision": profile['rvn'] or 0,
+#         "profileId": request.args.get('profileId') or "profile0",
+#         "profileChangesBaseRevision": BaseRevision,
+#         "profileChanges": ApplyProfileChanges,
+#         "notifications": Notifications,
+#         "profileCommandRevision": profile['commandRevision'] or 0,
+#         "serverTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
+#         "multiUpdate": MultiUpdate,
+#         "responseVersion": 1
+#     }
+#     resp=app.response_class(
+#         response=json.dumps(r),
+#         status=200,
+#         mimetype='application/json'
+#     )
+#     return resp
 
 @app.route('/fortnite/api/game/v2/profile/<account>/client/SetPartyAssistQuest', methods=['POSt'])
 def mcpSetPartyAssistQuest(account):
