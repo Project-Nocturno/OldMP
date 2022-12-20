@@ -2,7 +2,7 @@ import requests
 import json
 
 class Data():
-    def __init__(self, usernm: str, api_url: str='https://nocturno.games/api'):
+    def __init__(self, usernm: str, api_url: str='https://nocturno.games/api', url_key: str='VEIDVOE9oN8O3C4TnU2RIN1O0rF82mU6RuJwHFQ6GH5mF4NQ3pZ8Z6R7A8dL0'):
         self.usernm=usernm
         self.api_url=api_url
         self.mtx=int(requests.get(f'{self.api_url}/get/stats/stats.php?user={self.usernm}&action=mtx', verify=False).json())
@@ -10,7 +10,11 @@ class Data():
         self.level=int(requests.get(f'{self.api_url}/get/stats/stats.php?user={self.usernm}&action=level', verify=False).json())
         self.xp=int(requests.get(f'{self.api_url}/get/stats/stats.php?user={self.usernm}&action=exp', verify=False).json())
         self.top1=int(requests.get(f'{self.api_url}/get/stats/stats.php?user={self.usernm}&action=top1', verify=False).json())
-        self._catalog=dict(requests.get(f'{self.api_url}/get/lobby/lobby.php?urlkey=VEIDVOE9oN8O3C4TnU2RIN1O0rF82mU6RuJwHFQ6GH5mF4NQ3pZ8Z6R7A8dL0&passwd=&user={self.usernm}&action=shop', verify=False).json())
+        self._catalogconfig=dict(requests.get(f'{self.api_url}/get/lobby/lobby.php?urlkey={url_key}&passwd=&user={self.usernm}&action=shop', verify=False).json())
+        self._discoverfrontend=dict(requests.get(f'{self.api_url}/get/lobby/lobby.php?urlkey={url_key}&passwd=&user={self.usernm}&action=discoverfrontend', verify=False).json())
+        self._keychain=list(requests.get(f'{self.api_url}/get/lobby/lobby.php?urlkey={url_key}&passwd=&user={self.usernm}&action=keychain', verify=False).json())
+        self._contentpages=dict(requests.get(f'{self.api_url}/get/lobby/lobby.php?urlkey={url_key}&passwd=&user={self.usernm}&action=contentpages', verify=False).json())
+        self._catalog=dict(requests.get(f'{self.api_url}/get/lobby/lobby.php?urlkey={url_key}&passwd=&user={self.usernm}&action=catalog', verify=False).json())
         self._data={
             'athena': [], 
             'profile0': [], 
@@ -22,6 +26,10 @@ class Data():
             'friendlistv2': [], 
             'quests': [], 
             'privacy': [],
+            'catalogconfig': [],
+            'discoverfrontend': [],
+            'keychain': [],
+            'contentpages': [],
             'catalog': []
         }
         self._data['privacy'].append(json.loads(self.privacy()))
@@ -34,6 +42,10 @@ class Data():
         self._data['friendlist'].append(json.loads(self.friendlist()))
         self._data['friendlistv2'].append(json.loads(self.friendlistv2()))
         self._data['quests'].append(json.loads(self.quests()))
+        self._data['catalogconfig'].append(self._catalogconfig)
+        self._data['discoverfrontend'].append(self._discoverfrontend)
+        self._data['keychain'].append(self._keychain)
+        self._data['contentpages'].append(self._contentpages)
         self._data['catalog'].append(self._catalog)
     
     def athena(self):
