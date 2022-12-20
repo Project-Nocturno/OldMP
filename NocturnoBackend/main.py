@@ -466,7 +466,7 @@ def apimatchmakingsessionid(sessionId):
 @app.route('/affiliate/api/public/affiliates/slug/<slugs>', methods=['GET'])
 def affiliateslug(slugs):
     
-    SupportedCodes=json.load(open('data/connect/SAC.json', 'r', encoding="utf-8"))
+    SupportedCodes=json.loads([])
     
     ValidCode=False
 

@@ -1,15 +1,15 @@
 {
-  "_id": "NocturnoServer",
-  "created": "0001-01-01T00:00:00.000Z",
-  "updated": "0001-01-01T00:00:00.000Z",
-  "rvn": 0,
-  "wipeNumber": 1,
-  "accountId": "NocturnoServer",
-  "profileId": "collections",
-  "version": "no_version",
-  "items": {},
-  "stats": {
-    "attributes": {}
-  },
-  "commandRevision": 0
+    "_id": "4lxprime",
+    "created": "0001-01-01T00:00:00.000Z",
+    "updated": "0001-01-01T00:00:00.000Z",
+    "rvn": 0,
+    "wipeNumber": 1,
+    "accountId": "4lxprime",
+    "profileId": "collections",
+    "version": "no_version",
+    "items": {},
+    "stats": {
+        "attributes": {}
+    },
+    "commandRevision": 0
 }
