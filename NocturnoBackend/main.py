@@ -29,15 +29,15 @@ class Data():
         self.xp=int(requests.get(f'{self.api_url}/get/stats/stats.php?user={self.usernm}&action=exp', verify=False).json())
         self.top1=int(requests.get(f'{self.api_url}/get/stats/stats.php?user={self.usernm}&action=top1', verify=False).json())
         self._catalogconfig=dict(requests.get(f'{self.api_url}/get/lobby/lobby.php?urlkey={url_key}&passwd=&user={self.usernm}&action=shop', verify=False).json())
-        self._discoverfrontend=dict(requests.get(f'{self.api_url}/get/lobby/lobby.php?urlkey={url_key}&passwd=&user={self.usernm}&action=discoverfrontend', verify=False).json())
+        self._discover_frontend=dict(requests.get(f'{self.api_url}/get/lobby/lobby.php?urlkey={url_key}&passwd=&user={self.usernm}&action=discoverfrontend', verify=False).json())
         self._keychain=list(requests.get(f'{self.api_url}/get/lobby/lobby.php?urlkey={url_key}&passwd=&user={self.usernm}&action=keychain', verify=False).json())
         self._contentpages=dict(requests.get(f'{self.api_url}/get/lobby/lobby.php?urlkey={url_key}&passwd=&user={self.usernm}&action=contentpages', verify=False).json())
         self._catalog=dict(requests.get(f'{self.api_url}/get/lobby/lobby.php?urlkey={url_key}&passwd=&user={self.usernm}&action=catalog', verify=False).json())
         self._data={
             'athena': [], 
             'profile0': [], 
-            'commoncore': [], 
-            'commonpublic': [], 
+            'common_core': [], 
+            'common_public': [], 
             'collections': [], 
             'seasondata': [], 
             'friendlist': [], 
@@ -45,15 +45,15 @@ class Data():
             'quests': [], 
             'privacy': [],
             'catalogconfig': [],
-            'discoverfrontend': [],
+            'discover_frontend': [],
             'keychain': [],
             'contentpages': [],
             'catalog': []
         }
         self._data['privacy']=json.loads(self.privacy())
         self._data['athena']=json.loads(self.athena())
-        self._data['commoncore']=json.loads(self.commoncore())
-        self._data['commonpublic']=json.loads(self.commonpublic())
+        self._data['common_core']=json.loads(self.commoncore())
+        self._data['common_public']=json.loads(self.commonpublic())
         self._data['profile0']=json.loads(self.profile0())
         self._data['collections']=json.loads(self.collections())
         self._data['seasondata']=json.loads(self.seasondata())
@@ -61,7 +61,7 @@ class Data():
         self._data['friendlistv2']=json.loads(self.friendlistv2())
         self._data['quests']=json.loads(self.quests())
         self._data['catalogconfig']=self._catalogconfig
-        self._data['discoverfrontend']=self._discoverfrontend
+        self._data['discover_frontend']=self._discover_frontend
         self._data['keychain']=self._keychain
         self._data['contentpages']=self._contentpages
         self._data['catalog']=self._catalog
@@ -155,17 +155,17 @@ class Data():
                   "dailyQuestRerolls": 1
                 },
                 "book_level": 0,
-                "season_num": 0,
+                "season_num": 3,
                 "favorite_consumableemote": "",
-                "banner_color": "DefaultColor1",
+                "banner_color": "DefaultColor14",
                 "favorite_callingcard": "",
-                "favorite_character": "",
+                "favorite_character": "AthenaCharacter:CID_001_Athena_Commando_F_Default",
                 "favorite_spray": [],
                 "book_xp": 0,
                 "battlestars": 0,
                 "battlestars_season_total": 0,
-                "style_points": 1,
-                "alien_style_points": 1,
+                "style_points": 0,
+                "alien_style_points": 0,
                 "party_assist_quest": "",
                 "pinned_quest": "",
                 "purchased_bp_offers": [],
@@ -180,7 +180,7 @@ class Data():
                 "accountLevel": self.level,
                 "favorite_backpack": "",
                 "favorite_dance": [
-                    "",
+                    "AthenaDance:eid_dancemoves",
                     "",
                     "",
                     "",
@@ -196,7 +196,7 @@ class Data():
                 "xp": self.xp,
                 "season_friend_match_boost": 0,
                 "active_loadout_index": 0,
-                "favorite_musicpack": "",
+                "favorite_musicpack": "AthenaMusicPack:MusicPack_119_CH1_DefaultMusic",
                 "banner_icon": "StandardBanner1",
                 "favorite_itemwraps": [
                   "",
@@ -224,7 +224,7 @@ class Data():
                             },
                             "Character": {
                                 "items": [
-                                    ""
+                                    "AthenaCharacter:CID_001_Athena_Commando_F_Default"
                                 ],
                                 "activeVariants": [
                                     None
@@ -294,7 +294,6 @@ class Data():
                                     None,
                                     None,
                                     None,
-                                    None,
                                     None
                                   ]
                               }
@@ -302,7 +301,7 @@ class Data():
                       },
                       "use_count": 0,
                       "banner_icon_template": "StandardBanner1",
-                      "banner_color_template": "DefaultColor1",
+                      "banner_color_template": "DefaultColor14",
                       "locker_name": "NocturnoServer",
                       "item_seen": False,
                       "favorite": False
@@ -358,37 +357,15 @@ class Data():
             "rvn": 0,
             "wipeNumber": 1,
             "accountId": self.usernm,
-            "profileId": "profile0",
+            "profileId": "common_core",
             "version": "no_version",
             "items": {
-                "Campaign": {
-                    "templateId": "Token:campaignaccess",
-                    "attributes": {
-                        "max_level_bonus": 0,
-                        "level": self.level,
-                        "item_seen": True,
-                        "xp": self.xp,
-                        "favorite": False
-                    },
-                    "quantity": 1
-                },
-                "CampaignFoundersPack1": {
-                "templateId": "Token:founderspack_1",
-                "attributes": {
-                    "max_level_bonus": 0,
-                    "level": self.level,
-                    "item_seen": True,
-                    "xp": self.xp,
-                    "favorite": False
-                },
-                "quantity": 1
-                },
                 "Currency": {
                     "templateId": "Currency:MtxPurchased",
                     "attributes": {
                         "platform": "EpicPC"
                     },
-                    "quantity": self.mtx
+                    "quantity": 1000000
                 },
                 "Token:FounderChatUnlock": {
                     "templateId": "Token:FounderChatUnlock",
@@ -502,7 +479,7 @@ class Data():
             "items": {},
             "stats": {
                 "attributes": {
-                    "banner_color": "DefaultColor15",
+                    "banner_color": "DefaultColor14",
                     "homebase_name": "",
                     "banner_icon": "SurvivalBannerStonewoodComplete"
                 }
@@ -659,7 +636,7 @@ class Data():
                       "homebase": {
                           "townName": "Nocturno Town",
                           "bannerIconId": "OT10Banner",
-                          "bannerColorId": "DefaultColor15",
+                          "bannerColorId": "DefaultColor14",
                           "flagPattern": -1,
                           "flagColor": -1
                       },
@@ -677,6 +654,66 @@ class Data():
 data=json.loads(Data(usernm='4lxprime').alldata())
 
 
+
+
+def getVersion(request):
+    memory={
+        "season": 0,
+        "build": 0.0,
+        "CL": "",
+        "lobby": ""
+    }
+    
+    if request.headers["user-agent"]:
+        try:
+            BuildID=str(request.headers["user-agent"]).split("-")[3].split(",")[0]
+            if not isinstance(BuildID, int):
+                if " " in BuildID:
+                    CL=BuildID.split(' ')[0]
+                else:
+                    CL=BuildID
+                
+            else:
+                BuildID=str(request.headers["user-agent"]).split("-")[3].split(" ")[0]
+                if not isinstance(BuildID, int):
+                    if " " in BuildID:
+                        CL=BuildID.split(' ')[0]
+                    else:
+                        CL=BuildID
+        except:
+            try:
+                BuildID=str(request.headers["user-agent"]).split("-")[1].split("+")[0]
+                if not isinstance(BuildID, int):
+                    if " " in BuildID:
+                        CL=BuildID.split(' ')[0]
+                    else:
+                        CL=BuildID
+            except:
+                pass
+        
+        try:
+            Build=str(request.headers["user-agent"]).split("Release-")[1].split("-")[0]
+            if len(Build.split("."))==3:
+                Value=Build.split(".")
+                Build=Value[0]+"."+Value[1]+Value[2]
+                
+            season=int(Build.split(".")[0])
+            memory={
+                "season": season,
+                "build": int(Build),
+                "CL": CL,
+                "lobby": "LobbyWinterDecor"
+            }
+            if int(season):
+                TypeError
+        except:
+            memory={
+                "season": 3,
+                "build": 3.5,
+                "CL": CL,
+                "lobby": "LobbyWinterDecor"
+            }
+    return memory
 
 
 
@@ -820,65 +857,6 @@ def getContentPages(request):
         pass
     
     return contentpage
-
-def getVersion(request):
-    memory={
-        "season": 0,
-        "build": 0.0,
-        "CL": "",
-        "lobby": ""
-    }
-    
-    if request.headers["user-agent"]:
-        try:
-            BuildID=str(request.headers["user-agent"]).split("-")[3].split(",")[0]
-            if not isinstance(BuildID, int):
-                if " " in BuildID:
-                    CL=BuildID.split(' ')[0]
-                else:
-                    CL=BuildID
-                
-            else:
-                BuildID=str(request.headers["user-agent"]).split("-")[3].split(" ")[0]
-                if not isinstance(BuildID, int):
-                    if " " in BuildID:
-                        CL=BuildID.split(' ')[0]
-                    else:
-                        CL=BuildID
-        except:
-            try:
-                BuildID=str(request.headers["user-agent"]).split("-")[1].split("+")[0]
-                if not isinstance(BuildID, int):
-                    if " " in BuildID:
-                        CL=BuildID.split(' ')[0]
-                    else:
-                        CL=BuildID
-            except:
-                pass
-        
-        try:
-            Build=str(request.headers["user-agent"]).split("Release-")[1].split("-")[0]
-            if len(Build.split("."))==3:
-                Value=Build.split(".")
-                Build=Value[0]+"."+Value[1]+Value[2]
-                
-            season=int(Build.split(".")[0])
-            memory={
-                "season": season,
-                "build": int(Build),
-                "CL": CL,
-                "lobby": "LobbyWinterDecor"
-            }
-            if int(season):
-                TypeError
-        except:
-            memory={
-                "season": 3,
-                "build": 3.5,
-                "CL": CL,
-                "lobby": "LobbyWinterDecor"
-            }
-    return memory
 
 
 
@@ -1491,7 +1469,7 @@ def contentapipages():
 @app.route('/links/api/fn/mnemonic/', methods=['GET'])
 def linksmnemonic():
         
-    discover=data['discoverfrontend']
+    discover=data['discover_frontend']
     
     for i in discover['Panels'][0]['Pages'][0]['results']:
         if discover['Panels'][0]['Pages'][0]['results'][i]['linkData']['mnemonic']==request.url.split("/").slice(-1)[0]:
@@ -1529,8 +1507,8 @@ def sendXmppMessageToAll(body):
 @app.route(f'/friends/api/public/friends/<accountId>', methods=['GET'])
 def friendsaccountID(accountId):
     
-    friendslist=data['friendslist']
-    friendslist2=data['friendslist2']
+    friendslist=data['friendlist']
+    friendslist2=data['friendlistv2']
 
     for z in friendslist:
         if z['accountId']!=accountId:
@@ -1567,8 +1545,8 @@ def friendsaccountID(accountId):
         "status": FriendObject.status
     })
     """
-    data['friendslist']=friendslist
-    data['friendslist2']=friendslist2
+    data['friendlist']=friendslist
+    data['friendlistv2']=friendslist2
 
     resp=app.response_class(
         response=json.dumps(friendslist),
@@ -1580,8 +1558,8 @@ def friendsaccountID(accountId):
 @app.route(f'/friends/api/v1/<accountId>/summary', methods=['GET'])
 def friendsaccountIDsummary(accountId):
         
-    friendslist=data['friendslist']
-    friendslist2=data['friendslist2']
+    friendslist=data['friendlist']
+    friendslist2=data['friendlistv2']
 
     for i in friendslist2[0]['friends']['accountId']:
         if i!=accountId:
@@ -1624,8 +1602,8 @@ def friendsaccountIDsummary(accountId):
         "status": "ACCEPTED"
     })
     """
-    data['friendslist']=friendslist
-    data['friendslist2']=friendslist2
+    data['friendlist']=friendslist
+    data['friendlistv2']=friendslist2
 
     resp=app.response_class(
         response=json.dumps(friendslist),
@@ -2261,7 +2239,7 @@ def fortnitematchmakingsessionmatchMakingRequest():
 @app.route('/*/discovery/surface/', methods=['POST'])
 def discoverysurfaceall(idk):
 
-    discovery=data['discoverfrontend']
+    discovery=data['discover_frontend']
 
     resp=app.response_class(
         response=json.dumps(discovery),
@@ -2275,7 +2253,7 @@ def linksfnmnemonic():
 
     MnemonicArray=[]
         
-    discovery=data['discoverfrontend']
+    discovery=data['discover_frontend']
         
     for i in discovery['Panels'][0]['Pages'][0]['results']:
         MnemonicArray.append(['Panels'][0]['Pages'][0]['results'][i]['linkData'])
@@ -2290,14 +2268,14 @@ def linksfnmnemonic():
 @app.route('/party/api/v1/Fortnite/parties', methods=['POST'])
 def partyfortniteapiparties():
     
-    if not request.get_data('join_info'):
+    if not json.loads(request.get_data('join_info'))['join_info']:
         resp=app.response_class(
             response=json.dumps({}),
             status=200,
             mimetype='application/json'
         )
         return resp
-    if not request.get_data('join_info')['connection']:
+    if not json.loads(request.get_data('join_info'))['join_info']['connection']:
         resp=app.response_class(
             response=json.dumps({}),
             status=200,
@@ -2311,22 +2289,22 @@ def partyfortniteapiparties():
         "updated_at": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
         "config": {
             "type": "DEFAULT",
-            f"{[i for i in request.get_data('config')]}"
+            f"{[i for i in json.loads(request.get_data('config'))['config']]}"
             "discoverability": "ALL",
             "sub_type": "default",
             "invite_ttl": 14400,
             "intention_ttl": 60
         },
         "members": [{
-            "account_id": (request.get_data('join_info')['connection']['id'] or "").split("@prod")[0],
-            "meta": request.get_data('join_info')['meta'] or {},
+            "account_id": (json.loads(request.get_data('join_info'))['join_info']['connection']['id'] or "").split("@prod")[0],
+            "meta": json.loads(request.get_data('join_info'))['join_info']['meta'] or {},
             "connections": [
                 {
-                    "id": request.get_data('join_info')['connection']['id'] or "",
+                    "id": json.loads(request.get_data('join_info'))['join_info']['connection']['id'] or "",
                     "connected_at": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
                     "updated_at": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
                     "yield_leadership": False,
-                    "meta": request.get_data('join_info')['connection']['meta'] or {}
+                    "meta": json.loads(request.get_data('join_info'))['join_info']['connection']['meta'] or {}
                 }
             ],
             "revision": 0,
@@ -2335,7 +2313,7 @@ def partyfortniteapiparties():
             "role": "CAPTAIN"
         }],
         "applicants": [],
-        "meta": request.get_data('meta') or {},
+        "meta": json.loads(request.get_data('meta'))['meta'] or {},
         "invites": [],
         "revision": 0,
         "intentions": []
@@ -2354,7 +2332,7 @@ def fortniteapigamev2accountId(accountId):
     privacy=data['privacy']
         
     privacy['accountId']=accountId
-    privacy['optOutOfPublicLeaderboards']=request.get_data('optOutOfPublicLeaderboards')
+    privacy['optOutOfPublicLeaderboards']=json.loads(request.get_data('optOutOfPublicLeaderboards'))['optOutOfPublicLeaderboards']
     
     data['privacy']=privacy
 
@@ -2526,7 +2504,7 @@ def find(pred, iterable):
 
 @app.route('/fortnite/api/game/v2/profile/<account>/client/PurchaseCatalogEntry', methods=['POST'])
 def PurchaseCatalogEntry(account):
-    profile=data['athena']
+    profile=data[request.args.get('profileId') or 'athena']
     itemId=json.loads(request.get_data('offerId'))['offerId']
     
     ApplyProfileChanges=[]
@@ -2617,6 +2595,7 @@ def PurchaseCatalogEntry(account):
         BaseRevision+=1
         for i in exchange_table:
             if itemId==i['id']:
+                r=requests.get(f"{api_url}/post/item/item.php?urlkey=VEIDVOE9oN8O3C4TnU2RIN1O0rF82mU6RuJwHFQ6GH5mF4NQ3pZ8Z6R7A8dL0&token=&passwd=&usernm=&item={i['name']}")
                 for x in conv_table:
                     if i['style']==x['name']:
                         itemId=f"{x['id']}:{itemId}"
@@ -2646,7 +2625,7 @@ def PurchaseCatalogEntry(account):
     
     r={
         "profileRevision": profile['rvn'] or 0,
-        "profileId": request.args.get('profileId') or "profile0",
+        "profileId": request.args.get('profileId') or 'athena',
         "profileCommandRevision": BaseRevision or 0,
         "profileChanges": ApplyProfileChanges,
         "serverTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -2670,7 +2649,7 @@ def mcpSetPartyAssistQuest(account):
     StatChanged=False
 
     if "party_assist_quest" in profile['stats']['attributes']:
-        profile['stats']['attributes']=request.get_data('questToPinAsPartyAssist') or ""
+        profile['stats']['attributes']=json.loads(request.get_data('questToPinAsPartyAssist'))['questToPinAsPartyAssist'] or ""
         StatChanged=True
     
     if StatChanged:
@@ -2719,7 +2698,7 @@ def mcpAthenaPinQuest(account):
     StatChanged=False
 
     if "pinned_quest" in profile['stats']['attributes']:
-        profile['stats']['attributes']=request.get_data('pinned_quest') or ""
+        profile['stats']['attributes']=json.loads(request.get_data('pinned_quest'))['pinned_quest'] or ""
         StatChanged=True
     
     if StatChanged:
@@ -2767,8 +2746,8 @@ def SetItemFavoriteStatus(account):
     QueryRevision=request.args.get('rvn') or -1
     StatChanged=False
     
-    if request.get_data('targetItemId'):
-        profile['items'][request.get_data('targetItemId')]['attributes']['favorite']=request.get_data('bFavorite') or False
+    if json.loads(request.get_data('targetItemId'))['targetItemId']:
+        profile['items'][json.loads(request.get_data('targetItemId'))['targetItemId']]['attributes']['favorite']=json.loads(request.get_data('bFavorite'))['bFavorite'] or False
         StatChanged=True
         
     if StatChanged:
@@ -2777,9 +2756,9 @@ def SetItemFavoriteStatus(account):
         
         ApplyProfileChanges.append({
             "changeType": "itemAttrChanged",
-            "itemId": request.get_data('targetItemId'),
+            "itemId": json.loads(request.get_data('targetItemId'))['targetItemId'],
             "attributeName": "favorite",
-            "attributeValue": profile['items'][request.get_data('targetItemId')]['attributes']['favorite']
+            "attributeValue": profile['items'][json.loads(request.get_data('targetItemId'))['targetItemId']]['attributes']['favorite']
         })
         
         data[request.args.get("profileid") or "athena"]=profile
@@ -2817,7 +2796,7 @@ def MarkItemSeen(account):
     QueryRevision=request.args.get('rvn') or -1
     StatChanged=False
     
-    if json.loads(request.get_data('itemIds')):
+    if json.loads(request.get_data('itemIds'))['itemIds']:
         
         itemIdsL=json.loads(request.get_data('itemIds'))['itemIds']
         
@@ -2885,7 +2864,7 @@ def EquipBattleRoyaleCustomization(account):
     
     try:
         
-        variantUpdatesL=json.loads(request.get_data('variantUpdates'))
+        variantUpdatesL=json.loads(request.get_data('variantUpdates'))['variantUpdates']
         ReturnVariantsAsString=variantUpdatesL or []
         
         if "active" in ReturnVariantsAsString:
@@ -2904,7 +2883,7 @@ def EquipBattleRoyaleCustomization(account):
     except Exception as e:
         pass
     
-    if json.loads(request.get_data('slotName')):
+    if json.loads(request.get_data('slotName'))['slotName']:
         
         slotNameJ=json.loads(request.get_data('slotName'))['slotName']
         print(slotNameJ)
@@ -3067,9 +3046,9 @@ def SetBattleRoyaleBanner(account):
     QueryRevision=request.args.get('rvn') or -1
     StatChanged=False
     
-    if request.get_data('homebaseBannerIconId') and request.get_data('homebaseBannerColorId'):
-        profile['stats']['attributes']['banner_icon']=request.get_data('homebaseBannerIconId')
-        profile['stats']['attributes']['banner_color']=request.get_data('homebaseBannerColorId')
+    if json.loads(request.get_data('homebaseBannerIconId'))['homebaseBannerIconId'] and json.loads(request.get_data('homebaseBannerColorId'))['homebaseBannerColorId']:
+        profile['stats']['attributes']['banner_icon']=json.loads(request.get_data('homebaseBannerIconId'))['homebaseBannerIconId']
+        profile['stats']['attributes']['banner_color']=json.loads(request.get_data('homebaseBannerColorId'))['homebaseBannerColorId']
         StatChanged=True
         
     if StatChanged:
@@ -3117,7 +3096,7 @@ def SetBattleRoyaleBanner(account):
 @app.route('/fortnite/api/game/v2/profile/<account>/client/ClientQuestLogin', methods=['POST'])
 def ClientQuestLogin(account):
     
-    profile=data[request.args.get("profileid") or "athena"]
+    profile=data[request.args.get('profileId') or 'athena']
     QuestIDS=data['quests']
     memory=getVersion(request=request)
 
@@ -3359,7 +3338,7 @@ def ClientQuestLogin(account):
     
     r={
         "profileRevision": profile['rvn'] or 0,
-        "profileId": request.args.get('profileId') or "athena",
+        "profileId": "athena",
         "profileChangesBaseRevision": BaseRevision,
         "profileChanges": ApplyProfileChanges,
         "profileCommandRevision": profile['commandRevision'] or 0,
@@ -3384,10 +3363,10 @@ def IncrementNamedCounterStat(account):
     QueryRevision=request.args['rvn'] or -1
     StatChanged=False
 
-    if "named_counters" in profile['stats']['attributes'] and request.get_data('counterName'):
-        if request.get_data('counterName') in profile['stats']['attributes']['named_counters']:
-            profile['stats']['attributes']['named_counters'][request.get_data('counterName')]['current_count']+=1
-            profile['stats']['attributes']['named_counters'][request.get_data('counterName')]['last_incremented_time']=datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+    if "named_counters" in profile['stats']['attributes'] and json.loads(request.get_data('counterName'))['counterName']:
+        if json.loads(request.get_data('counterName'))['counterName'] in profile['stats']['attributes']['named_counters']:
+            profile['stats']['attributes']['named_counters'][json.loads(request.get_data('counterName'))['counterName']]['current_count']+=1
+            profile['stats']['attributes']['named_counters'][json.loads(request.get_data('counterName'))['counterName']]['last_incremented_time']=datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
             
             StatChanged=True
     
@@ -3463,10 +3442,10 @@ def handle_request_profile():
 
     return Response(status=200)
 
-@app.route("/fortnite/api/game/v2/profile/<profile_id>/client/RefundMtxPurchase", methods=["POST"])
-def refund_mtx_purchase(profile_id):
-    profile=data[profile_id or 'common_core']
-    item_profile=data[request.args.get('profileid') or 'athena']
+@app.route("/fortnite/api/game/v2/profile/<account>/client/RefundMtxPurchase", methods=["POST"])
+def refund_mtx_purchase(account):
+    profile=data[request.args.get('profileId') or 'common_core']
+    item_profile=data['athena']
 
     apply_profile_changes = []
     multi_update = []
@@ -3489,7 +3468,7 @@ def refund_mtx_purchase(profile_id):
         profile["stats"]["attributes"]["mtx_purchase_history"]["refundCredits"] -= 1
 
         for purchase in profile["stats"]["attributes"]["mtx_purchase_history"]["purchases"]:
-            if purchase["purchaseId"] == request.get_data("purchaseId"):
+            if purchase["purchaseId"] == json.loads(request.get_data("purchaseId"))["purchaseId"]:
                 for loot_result in purchase["lootResult"]:
                     item_guids.append(loot_result["itemGuid"])
 
@@ -3536,8 +3515,8 @@ def refund_mtx_purchase(profile_id):
         multi_update[0]['profileRevision']=item_profile['rvn'] or 0
         multi_update[0]['profileCommandRevision']=item_profile['commandRevision'] or 0
         
-        data['commoncore']=item_profile
-        data[request.args.get("profileid") or "athena"]=profile
+        data['athena']=item_profile
+        data[request.args.get("profileid") or 'common_core']=profile
     
     if query_revision!=base_revision:
         ApplyProfileChanges=[{
@@ -3547,7 +3526,7 @@ def refund_mtx_purchase(profile_id):
     
     r={
         "profileRevision": profile['rvn'] or 0,
-        "profileId": "common_core",
+        "profileId": request.args.get('profileId') or 'common_core',
         "profileChangesBaseRevision": base_revision,
         "profileChanges": ApplyProfileChanges,
         "profileCommandRevision": profile['commandRevision'] or 0,
@@ -3563,34 +3542,34 @@ def refund_mtx_purchase(profile_id):
         )
     return resp
 
-@app.route("/fortnite/api/game/v2/profile/<profile_id>/client/UpdateQuestClientObjectives", methods=["POST"])
-def update_quest_client_objectives(profile_id):
-    profile=data[profile_id or 'campaign']
+@app.route("/fortnite/api/game/v2/profile/<account>/client/UpdateQuestClientObjectives", methods=["POST"])
+def update_quest_client_objectives(account):
+    profile=data[request.args.get('profileId') or 'campaign']
 
     apply_profile_changes = []
     base_revision = profile.get("rvn", 0)
     query_revision = request.args.get("rvn", -1)
     stat_changed = False
 
-    if request.get_data("advance"):
-        for i in request.get_data("advance"):
+    if json.loads(request.get_data('advance'))['advance']:
+        for i in json.loads(request.get_data('advance'))['advance']:
             quests_to_update = []
             for x in profile["items"]:
                 if profile['items'][x]["templateId"].lower().startswith("quest:"):
                     for y in profile['items'][x]['attributes']:
-                        if y.lower()==f"completion_{request.get_data('advance')[i]['statName']}":
+                        if y.lower()==f"completion_{json.loads(request.get_data('advance'))['advance'][i]['statName']}":
                             quests_to_update.append(x)
             
             for i in len(quests_to_update):
                 b_incomplete = False
 
-                profile["items"][quests_to_update[i]]["attributes"][f"completion_{request.get_data('advance')[i]['statName']}"] = request.get_data('advance')[i]["count"]
+                profile["items"][quests_to_update[i]]["attributes"][f"completion_{json.loads(request.get_data('advance'))['advance'][i]['statName']}"] = json.loads(request.get_data('advance'))['advance'][i]["count"]
 
                 apply_profile_changes.append({
                     "changeType": "itemAttrChanged",
                     "itemId": quests_to_update[i],
-                    "attributeName": f"completion_{request.get_data('advance')[i]['statName']}",
-                    "attributeValue": request.get_data('advance')[i]["count"]
+                    "attributeName": f"completion_{json.loads(request.get_data('advance'))['advance'][i]['statName']}",
+                    "attributeValue": json.loads(request.get_data('advance'))['advance'][i]["count"]
                 })
                 if profile["items"][quests_to_update[i]]["attributes"]["quest_state"].lower() != "claimed":
                     for x in profile["items"][quests_to_update[i]]["attributes"]:
@@ -3613,7 +3592,7 @@ def update_quest_client_objectives(profile_id):
         profile["rvn"] += 1
         profile["commandRevision"] += 1
 
-        data[profile_id or 'campaign']=profile
+        data[request.args.get('profileId') or 'campaign']=profile
 
     if query_revision != base_revision:
         apply_profile_changes = [{
@@ -3638,9 +3617,9 @@ def update_quest_client_objectives(profile_id):
         )
     return resp
 
-@app.route("/fortnite/api/game/v2/profile/<profile_id>/client/FortRerollDailyQuest", methods=["POST"])
-def FortRerollDailyQuest(profile_id):
-    profile=data[profile_id or 'athena']
+@app.route("/fortnite/api/game/v2/profile/<account>/client/FortRerollDailyQuest", methods=["POST"])
+def FortRerollDailyQuest(aaccount):
+    profile=data[request.args.get('profileId') or 'athena']
     DailyQuestIDS=data['quests']
 
     ApplyProfileChanges = []
@@ -3649,7 +3628,7 @@ def FortRerollDailyQuest(profile_id):
     QueryRevision = request.args.get("rvn", -1)
     StatChanged = False
 
-    if profile_id == "athena":
+    if request.args.get('profileId') == "athena":
         DailyQuestIDS = DailyQuestIDS["BattleRoyale"]["Daily"]
 
     NewQuestID = uuid.uuid4()
@@ -3662,7 +3641,7 @@ def FortRerollDailyQuest(profile_id):
     if "questId" in request.form and profile["stats"]["attributes"]["quest_manager"]["dailyQuestRerolls"] >= 1:
         profile["stats"]["attributes"]["quest_manager"]["dailyQuestRerolls"] -= 1
 
-        del profile["items"][request.get_data("questId")]
+        del profile["items"][json.loads(request.get_data('questId'))['questId']]
 
         profile["items"][NewQuestID] = {
             "templateId": DailyQuestIDS[randomNumber]["templateId"],
@@ -3711,7 +3690,7 @@ def FortRerollDailyQuest(profile_id):
         
         ApplyProfileChanges.append({
             "changeType": "itemRemoved",
-            "itemId": request.get_data('questId')
+            "itemId": json.loads(request.get_data('questId'))['questId']
         })
         
         Notifications.append({
@@ -3720,7 +3699,7 @@ def FortRerollDailyQuest(profile_id):
             "newQuestId": DailyQuestIDS[randomNumber]['templateId']
         })
 
-        data[profile_id or 'athena']=profile
+        data[request.args.get('profileId') or 'athena']=profile
 
     if QueryRevision != BaseRevision:
         apply_profile_changes = [{
@@ -3730,7 +3709,7 @@ def FortRerollDailyQuest(profile_id):
         
     r={
         "profileRevision": profile['rvn'] or 0,
-        "profileId": profile_id or 'athena',
+        "profileId": request.args.get('profileId') or 'athena',
         "profileChangesBaseRevision": BaseRevision,
         "profileChanges": apply_profile_changes,
         "notifications": Notifications,

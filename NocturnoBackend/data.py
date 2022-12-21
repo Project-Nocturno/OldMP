@@ -137,7 +137,7 @@ class Data():
                   "dailyQuestRerolls": 1
                 },
                 "book_level": 0,
-                "season_num": 0,
+                "season_num": 3,
                 "favorite_consumableemote": "",
                 "banner_color": "DefaultColor1",
                 "favorite_callingcard": "",
@@ -270,7 +270,6 @@ class Data():
                                     ""
                                 ],
                                 "activeVariants": [
-                                    None,
                                     None,
                                     None,
                                     None,
