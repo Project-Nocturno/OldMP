@@ -142,72 +142,72 @@ class Data():
             "version": "no_version",
             "items": {},
             "stats": {
-              "attributes": {
-                "past_seasons": [],
-                "season_match_boost": 0,
-                "loadouts": [
-                  "ettrr4h-2wedfgbn-8i9jsghj-lpw9t2to-loadout1"
-                ],
-                "favorite_victorypose": "",
-                "mfa_reward_claimed": True,
-                "quest_manager": {
-                  "dailyLoginInterval": "0001-01-01T00:00:00.000Z",
-                  "dailyQuestRerolls": 1
-                },
-                "book_level": 0,
-                "season_num": 3,
-                "favorite_consumableemote": "",
-                "banner_color": "DefaultColor14",
-                "favorite_callingcard": "",
-                "favorite_character": "AthenaCharacter:CID_001_Athena_Commando_F_Default",
-                "favorite_spray": [],
-                "book_xp": 0,
-                "battlestars": 0,
-                "battlestars_season_total": 0,
-                "style_points": 0,
-                "alien_style_points": 0,
-                "party_assist_quest": "",
-                "pinned_quest": "",
-                "purchased_bp_offers": [],
-                "favorite_loadingscreen": "",
-                "book_purchased": False,
-                "lifetime_wins": self.top1,
-                "favorite_hat": "",
-                "level": self.level,
-                "favorite_battlebus": "",
-                "favorite_mapmarker": "",
-                "favorite_vehicledeco": "",
-                "accountLevel": self.level,
-                "favorite_backpack": "",
-                "favorite_dance": [
-                    "AthenaDance:eid_dancemoves",
-                    "",
-                    "",
-                    "",
-                    "",
-                    ""
-                ],
-                "inventory_limit_bonus": 0,
-                "last_applied_loadout": "",
-                "favorite_skydivecontrail": "",
-                "favorite_pickaxe": "AthenaPickaxe:DefaultPickaxe",
-                "favorite_glider": "AthenaGlider:DefaultGlider",
-                "daily_rewards": {},
-                "xp": self.xp,
-                "season_friend_match_boost": 0,
-                "active_loadout_index": 0,
-                "favorite_musicpack": "AthenaMusicPack:MusicPack_119_CH1_DefaultMusic",
-                "banner_icon": "StandardBanner1",
-                "favorite_itemwraps": [
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  ""
-                ]
-              }
+                "attributes": {
+                    "past_seasons": [],
+                    "season_match_boost": 0,
+                    "loadouts": [
+                        "ettrr4h-2wedfgbn-8i9jsghj-lpw9t2to-loadout1"
+                    ],
+                    "favorite_victorypose": "",
+                    "mfa_reward_claimed": True,
+                    "quest_manager": {
+                        "dailyLoginInterval": "0001-01-01T00:00:00.000Z",
+                        "dailyQuestRerolls": 1
+                    },
+                    "book_level": 0,
+                    "season_num": 3,
+                    "favorite_consumableemote": "",
+                    "banner_color": "DefaultColor14",
+                    "favorite_callingcard": "",
+                    "favorite_character": "AthenaCharacter:CID_001_Athena_Commando_F_Default",
+                    "favorite_spray": [],
+                    "book_xp": 0,
+                    "battlestars": 0,
+                    "battlestars_season_total": 0,
+                    "style_points": 0,
+                    "alien_style_points": 0,
+                    "party_assist_quest": "",
+                    "pinned_quest": "",
+                    "purchased_bp_offers": [],
+                    "favorite_loadingscreen": "",
+                    "book_purchased": False,
+                    "lifetime_wins": self.top1,
+                    "favorite_hat": "",
+                    "level": self.level,
+                    "favorite_battlebus": "",
+                    "favorite_mapmarker": "",
+                    "favorite_vehicledeco": "",
+                    "accountLevel": self.level,
+                    "favorite_backpack": "",
+                    "favorite_dance": [
+                        "AthenaDance:eid_dancemoves",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""
+                    ],
+                    "inventory_limit_bonus": 0,
+                    "last_applied_loadout": "",
+                    "favorite_skydivecontrail": "",
+                    "favorite_pickaxe": "AthenaPickaxe:DefaultPickaxe",
+                    "favorite_glider": "AthenaGlider:DefaultGlider",
+                    "daily_rewards": {},
+                    "xp": self.xp,
+                    "season_friend_match_boost": 0,
+                    "active_loadout_index": 0,
+                    "favorite_musicpack": "AthenaMusicPack:MusicPack_119_CH1_DefaultMusic",
+                    "banner_icon": "StandardBanner1",
+                    "favorite_itemwraps": [
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""
+                    ]
+                }
             },
             "commandRevision": 0
         }
@@ -351,7 +351,6 @@ class Data():
 
     def commoncore(self):
         self._commoncore={
-            "_id": self.usernm,
             "created": "0001-01-01T00:00:00.000Z",
             "updated": "0001-01-01T00:00:00.000Z",
             "rvn": 0,
@@ -360,26 +359,66 @@ class Data():
             "profileId": "common_core",
             "version": "no_version",
             "items": {
+                "Campaign": {
+                "templateId": "",
+                "attributes": {
+                    "max_level_bonus": 0,
+                    "level": 1,
+                    "item_seen": False,
+                    "xp": 0,
+                    "favorite": False
+                },
+                "quantity": 1
+                },
                 "Currency": {
-                    "templateId": "Currency:MtxPurchased",
-                    "attributes": {
-                        "platform": "EpicPC"
-                    },
-                    "quantity": 1000000
+                "templateId": "Currency:MtxPurchased",
+                "attributes": {
+                    "platform": "EpicPC"
+                },
+                "quantity": 1000000000
                 },
                 "Token:FounderChatUnlock": {
-                    "templateId": "Token:FounderChatUnlock",
-                    "attributes": {
-                        "max_level_bonus": 0,
-                        "level": self.level,
-                        "item_seen": True,
-                        "xp": self.xp,
-                        "favorite": False
-                  },
-                  "quantity": 1
+                "templateId": "Token:FounderChatUnlock",
+                "attributes": {
+                    "max_level_bonus": 0,
+                    "level": self.level,
+                    "item_seen": True,
+                    "xp": self.xp,
+                    "favorite": False
+                },
+                "quantity": 1
                 }
             },
-            "stats": {},
+            "stats": {
+                "attributes": {
+                    "survey_data": {},
+                    "personal_offers": {},
+                    "intro_game_played": True,
+                    "import_friends_claimed": {},
+                    "mtx_purchase_history": {
+                        "refundsUsed": 0,
+                        "refundCredits": 3,
+                        "purchases": []
+                    },
+                    "undo_cooldowns": [],
+                    "mtx_affiliate_set_time": "",
+                    "inventory_limit_bonus": 0,
+                    "current_mtx_platform": "EpicPC",
+                    "mtx_affiliate": "",
+                    "forced_intro_played": "Coconut",
+                    "weekly_purchases": {},
+                    "daily_purchases": {},
+                    "ban_history": {},
+                    "in_app_purchases": {},
+                    "permissions": [],
+                    "undo_timeout": "min",
+                    "monthly_purchases": {},
+                    "allowed_to_send_gifts": True,
+                    "mfa_enabled": True,
+                    "allowed_to_receive_gifts": True,
+                    "gift_history": {}
+                }
+            },
             "commandRevision": 0
         }
         
@@ -623,7 +662,7 @@ class Data():
                       "daily_rewards": {
                         "nextDefaultReward": 0,
                         "totalDaysLoggedIn": 0,
-                        "lastClaimDate": "0001-01-01T00:00:00.000Z",
+                        "lastClaimDate": "2022-09-15T00:00:00.000Z",
                         "additionalSchedules": {
                             "founderspackdailyrewardtoken": {
                                 "rewardsClaimed": 0,
