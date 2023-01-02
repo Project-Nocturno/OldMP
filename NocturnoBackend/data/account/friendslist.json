@@ -1,0 +1,30 @@
+[
+    {
+        "accountId": "4lxprime",
+        "status": "ACCEPTED",
+        "direction": "OUTBOUND",
+        "created": "2022-09-15T19:37:28.837Z",
+        "favorite": false
+    },
+    {
+        "accountId": "Anonyme 56075",
+        "status": "ACCEPTED",
+        "direction": "OUTBOUND",
+        "created": "2023-01-01T12:25:08Z",
+        "favorite": false
+    },
+    {
+        "accountId": "Anonyme 37863",
+        "status": "ACCEPTED",
+        "direction": "OUTBOUND",
+        "created": "2023-01-01T16:51:00Z",
+        "favorite": false
+    },
+    {
+        "accountId": "Anonyme 24075",
+        "status": "ACCEPTED",
+        "direction": "OUTBOUND",
+        "created": "2023-01-01T17:58:21Z",
+        "favorite": false
+    }
+]

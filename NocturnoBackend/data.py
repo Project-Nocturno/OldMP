@@ -1,25 +1,25 @@
-import requests
-import json
+from requests import get
+from json import loads, load, dump, dumps
 
 class Data():
     def __init__(self, usernm: str, api_url: str='https://nocturno.games/api', url_key: str='VEIDVOE9oN8O3C4TnU2RIN1O0rF82mU6RuJwHFQ6GH5mF4NQ3pZ8Z6R7A8dL0'):
         self.usernm=usernm
         self.api_url=api_url
-        self.mtx=int(requests.get(f'{self.api_url}/get/stats/stats.php?user={self.usernm}&action=mtx', verify=False).json())
-        self.items=list(requests.get(f'{self.api_url}/get/stats/stats.php?user={self.usernm}&action=items', verify=False).json())
-        self.level=int(requests.get(f'{self.api_url}/get/stats/stats.php?user={self.usernm}&action=level', verify=False).json())
-        self.xp=int(requests.get(f'{self.api_url}/get/stats/stats.php?user={self.usernm}&action=exp', verify=False).json())
-        self.top1=int(requests.get(f'{self.api_url}/get/stats/stats.php?user={self.usernm}&action=top1', verify=False).json())
-        self._catalogconfig=dict(requests.get(f'{self.api_url}/get/lobby/lobby.php?urlkey={url_key}&passwd=&user={self.usernm}&action=shop', verify=False).json())
-        self._discoverfrontend=dict(requests.get(f'{self.api_url}/get/lobby/lobby.php?urlkey={url_key}&passwd=&user={self.usernm}&action=discoverfrontend', verify=False).json())
-        self._keychain=list(requests.get(f'{self.api_url}/get/lobby/lobby.php?urlkey={url_key}&passwd=&user={self.usernm}&action=keychain', verify=False).json())
-        self._contentpages=dict(requests.get(f'{self.api_url}/get/lobby/lobby.php?urlkey={url_key}&passwd=&user={self.usernm}&action=contentpages', verify=False).json())
-        self._catalog=dict(requests.get(f'{self.api_url}/get/lobby/lobby.php?urlkey={url_key}&passwd=&user={self.usernm}&action=catalog', verify=False).json())
+        self.mtx=int(get(f'{self.api_url}/get/stats/stats.php?user={self.usernm}&action=mtx', verify=False).json())
+        self.items=list(get(f'{self.api_url}/get/stats/stats.php?user={self.usernm}&action=items', verify=False).json())
+        self.level=int(get(f'{self.api_url}/get/stats/stats.php?user={self.usernm}&action=level', verify=False).json())
+        self.xp=int(get(f'{self.api_url}/get/stats/stats.php?user={self.usernm}&action=exp', verify=False).json())
+        self.top1=int(get(f'{self.api_url}/get/stats/stats.php?user={self.usernm}&action=top1', verify=False).json())
+        self._catalogconfig=dict(get(f'{self.api_url}/get/lobby/lobby.php?urlkey={url_key}&passwd=&user={self.usernm}&action=shop', verify=False).json())
+        self._discover_frontend=dict(get(f'{self.api_url}/get/lobby/lobby.php?urlkey={url_key}&passwd=&user={self.usernm}&action=discoverfrontend', verify=False).json())
+        self._keychain=list(get(f'{self.api_url}/get/lobby/lobby.php?urlkey={url_key}&passwd=&user={self.usernm}&action=keychain', verify=False).json())
+        self._contentpages=dict(get(f'{self.api_url}/get/lobby/lobby.php?urlkey={url_key}&passwd=&user={self.usernm}&action=contentpages', verify=False).json())
+        self._catalog=dict(get(f'{self.api_url}/get/lobby/lobby.php?urlkey={url_key}&passwd=&user={self.usernm}&action=catalog', verify=False).json())
         self._data={
             'athena': [], 
             'profile0': [], 
-            'commoncore': [], 
-            'commonpublic': [], 
+            'common_core': [], 
+            'common_public': [], 
             'collections': [], 
             'seasondata': [], 
             'friendlist': [], 
@@ -27,23 +27,23 @@ class Data():
             'quests': [], 
             'privacy': [],
             'catalogconfig': [],
-            'discoverfrontend': [],
+            'discover_frontend': [],
             'keychain': [],
             'contentpages': [],
             'catalog': []
         }
-        self._data['privacy']=json.loads(self.privacy())
-        self._data['athena']=json.loads(self.athena())
-        self._data['commoncore']=json.loads(self.commoncore())
-        self._data['commonpublic']=json.loads(self.commonpublic())
-        self._data['profile0']=json.loads(self.profile0())
-        self._data['collections']=json.loads(self.collections())
-        self._data['seasondata']=json.loads(self.seasondata())
-        self._data['friendlist']=json.loads(self.friendlist())
-        self._data['friendlistv2']=json.loads(self.friendlistv2())
-        self._data['quests']=json.loads(self.quests())
+        self._data['privacy']=loads(self.privacy())
+        self._data['athena']=loads(self.athena())
+        self._data['common_core']=loads(self.commoncore())
+        self._data['common_public']=loads(self.commonpublic())
+        self._data['profile0']=loads(self.profile0())
+        self._data['collections']=loads(self.collections())
+        self._data['seasondata']=loads(self.seasondata())
+        self._data['friendlist']=loads(self.friendlist())
+        self._data['friendlistv2']=loads(self.friendlistv2())
+        self._data['quests']=loads(self.quests())
         self._data['catalogconfig']=self._catalogconfig
-        self._data['discoverfrontend']=self._discoverfrontend
+        self._data['discover_frontend']=self._discover_frontend
         self._data['keychain']=self._keychain
         self._data['contentpages']=self._contentpages
         self._data['catalog']=self._catalog
@@ -124,72 +124,72 @@ class Data():
             "version": "no_version",
             "items": {},
             "stats": {
-              "attributes": {
-                "past_seasons": [],
-                "season_match_boost": 0,
-                "loadouts": [
-                  "ettrr4h-2wedfgbn-8i9jsghj-lpw9t2to-loadout1"
-                ],
-                "favorite_victorypose": "",
-                "mfa_reward_claimed": True,
-                "quest_manager": {
-                  "dailyLoginInterval": "0001-01-01T00:00:00.000Z",
-                  "dailyQuestRerolls": 1
-                },
-                "book_level": 0,
-                "season_num": 3,
-                "favorite_consumableemote": "",
-                "banner_color": "DefaultColor1",
-                "favorite_callingcard": "",
-                "favorite_character": "",
-                "favorite_spray": [],
-                "book_xp": 0,
-                "battlestars": 0,
-                "battlestars_season_total": 0,
-                "style_points": 1,
-                "alien_style_points": 1,
-                "party_assist_quest": "",
-                "pinned_quest": "",
-                "purchased_bp_offers": [],
-                "favorite_loadingscreen": "",
-                "book_purchased": False,
-                "lifetime_wins": self.top1,
-                "favorite_hat": "",
-                "level": self.level,
-                "favorite_battlebus": "",
-                "favorite_mapmarker": "",
-                "favorite_vehicledeco": "",
-                "accountLevel": self.level,
-                "favorite_backpack": "",
-                "favorite_dance": [
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    ""
-                ],
-                "inventory_limit_bonus": 0,
-                "last_applied_loadout": "",
-                "favorite_skydivecontrail": "",
-                "favorite_pickaxe": "AthenaPickaxe:DefaultPickaxe",
-                "favorite_glider": "AthenaGlider:DefaultGlider",
-                "daily_rewards": {},
-                "xp": self.xp,
-                "season_friend_match_boost": 0,
-                "active_loadout_index": 0,
-                "favorite_musicpack": "",
-                "banner_icon": "StandardBanner1",
-                "favorite_itemwraps": [
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "",
-                  ""
-                ]
-              }
+                "attributes": {
+                    "past_seasons": [],
+                    "season_match_boost": 0,
+                    "loadouts": [
+                        "ettrr4h-2wedfgbn-8i9jsghj-lpw9t2to-loadout1"
+                    ],
+                    "favorite_victorypose": "",
+                    "mfa_reward_claimed": True,
+                    "quest_manager": {
+                        "dailyLoginInterval": "0001-01-01T00:00:00.000Z",
+                        "dailyQuestRerolls": 1
+                    },
+                    "book_level": 0,
+                    "season_num": 3,
+                    "favorite_consumableemote": "",
+                    "banner_color": "DefaultColor14",
+                    "favorite_callingcard": "",
+                    "favorite_character": "AthenaCharacter:CID_001_Athena_Commando_F_Default",
+                    "favorite_spray": [],
+                    "book_xp": 0,
+                    "battlestars": 0,
+                    "battlestars_season_total": 0,
+                    "style_points": 0,
+                    "alien_style_points": 0,
+                    "party_assist_quest": "",
+                    "pinned_quest": "",
+                    "purchased_bp_offers": [],
+                    "favorite_loadingscreen": "",
+                    "book_purchased": False,
+                    "lifetime_wins": self.top1,
+                    "favorite_hat": "",
+                    "level": self.level,
+                    "favorite_battlebus": "",
+                    "favorite_mapmarker": "",
+                    "favorite_vehicledeco": "",
+                    "accountLevel": self.level,
+                    "favorite_backpack": "",
+                    "favorite_dance": [
+                        "AthenaDance:eid_dancemoves",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""
+                    ],
+                    "inventory_limit_bonus": 0,
+                    "last_applied_loadout": "",
+                    "favorite_skydivecontrail": "",
+                    "favorite_pickaxe": "AthenaPickaxe:DefaultPickaxe",
+                    "favorite_glider": "AthenaGlider:DefaultGlider",
+                    "daily_rewards": {},
+                    "xp": self.xp,
+                    "season_friend_match_boost": 0,
+                    "active_loadout_index": 0,
+                    "favorite_musicpack": "AthenaMusicPack:MusicPack_119_CH1_DefaultMusic",
+                    "banner_icon": "StandardBanner1",
+                    "favorite_itemwraps": [
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""
+                    ]
+                }
             },
             "commandRevision": 0
         }
@@ -206,7 +206,7 @@ class Data():
                             },
                             "Character": {
                                 "items": [
-                                    ""
+                                    "AthenaCharacter:CID_001_Athena_Commando_F_Default"
                                 ],
                                 "activeVariants": [
                                     None
@@ -283,7 +283,7 @@ class Data():
                       },
                       "use_count": 0,
                       "banner_icon_template": "StandardBanner1",
-                      "banner_color_template": "DefaultColor1",
+                      "banner_color_template": "DefaultColor14",
                       "locker_name": "NocturnoServer",
                       "item_seen": False,
                       "favorite": False
@@ -329,32 +329,38 @@ class Data():
                             new_items.update(item_temp)
         self._athena['items']=new_items
         
-        return json.dumps(self._athena, indent=4)
+        return dumps(self._athena, indent=4)
 
     def commoncore(self):
         self._commoncore={
-            "_id": self.usernm,
             "created": "0001-01-01T00:00:00.000Z",
             "updated": "0001-01-01T00:00:00.000Z",
             "rvn": 0,
             "wipeNumber": 1,
             "accountId": self.usernm,
-            "profileId": "profile0",
+            "profileId": "common_core",
             "version": "no_version",
             "items": {
                 "Campaign": {
-                    "templateId": "Token:campaignaccess",
-                    "attributes": {
-                        "max_level_bonus": 0,
-                        "level": self.level,
-                        "item_seen": True,
-                        "xp": self.xp,
-                        "favorite": False
-                    },
-                    "quantity": 1
+                "templateId": "",
+                "attributes": {
+                    "max_level_bonus": 0,
+                    "level": 1,
+                    "item_seen": False,
+                    "xp": 0,
+                    "favorite": False
                 },
-                "CampaignFoundersPack1": {
-                "templateId": "Token:founderspack_1",
+                "quantity": 1
+                },
+                "Currency": {
+                "templateId": "Currency:MtxPurchased",
+                "attributes": {
+                    "platform": "EpicPC"
+                },
+                "quantity": self.mtx
+                },
+                "Token:FounderChatUnlock": {
+                "templateId": "Token:FounderChatUnlock",
                 "attributes": {
                     "max_level_bonus": 0,
                     "level": self.level,
@@ -363,31 +369,42 @@ class Data():
                     "favorite": False
                 },
                 "quantity": 1
-                },
-                "Currency": {
-                    "templateId": "Currency:MtxPurchased",
-                    "attributes": {
-                        "platform": "EpicPC"
-                    },
-                    "quantity": self.mtx
-                },
-                "Token:FounderChatUnlock": {
-                    "templateId": "Token:FounderChatUnlock",
-                    "attributes": {
-                        "max_level_bonus": 0,
-                        "level": self.level,
-                        "item_seen": True,
-                        "xp": self.xp,
-                        "favorite": False
-                  },
-                  "quantity": 1
                 }
             },
-            "stats": {},
+            "stats": {
+                "attributes": {
+                    "survey_data": {},
+                    "personal_offers": {},
+                    "intro_game_played": True,
+                    "import_friends_claimed": {},
+                    "mtx_purchase_history": {
+                        "refundsUsed": 0,
+                        "refundCredits": 3,
+                        "purchases": []
+                    },
+                    "undo_cooldowns": [],
+                    "mtx_affiliate_set_time": "",
+                    "inventory_limit_bonus": 0,
+                    "current_mtx_platform": "EpicPC",
+                    "mtx_affiliate": "",
+                    "forced_intro_played": "Coconut",
+                    "weekly_purchases": {},
+                    "daily_purchases": {},
+                    "ban_history": {},
+                    "in_app_purchases": {},
+                    "permissions": [],
+                    "undo_timeout": "min",
+                    "monthly_purchases": {},
+                    "allowed_to_send_gifts": True,
+                    "mfa_enabled": True,
+                    "allowed_to_receive_gifts": True,
+                    "gift_history": {}
+                }
+            },
             "commandRevision": 0
         }
         
-        return json.dumps(self._commoncore, indent=4)
+        return dumps(self._commoncore, indent=4)
 
     def collections(self):
         self._collections={
@@ -405,7 +422,7 @@ class Data():
             },
             "commandRevision": 0
         }
-        return json.dumps(self._collections, indent=4)     
+        return dumps(self._collections, indent=4)     
 
     def seasondata(self):
           self._seasondata={
@@ -434,7 +451,7 @@ class Data():
                   "battlePassXPFriendBoost": 0
               }
           }
-          return json.dumps(self._seasondata, indent=4)
+          return dumps(self._seasondata, indent=4)
 
     def friendlist(self):
         self._friendlist=[
@@ -446,7 +463,7 @@ class Data():
                 "favorite": False
             }
         ]
-        return json.dumps(self._friendlist, indent=4)
+        return dumps(self._friendlist, indent=4)
       
     def friendlistv2(self):
         self._friendlistv2={
@@ -469,7 +486,7 @@ class Data():
                 "acceptInvites": "public"
             }
         }
-        return json.dumps(self._friendlistv2, indent=4)
+        return dumps(self._friendlistv2, indent=4)
 
     def commonpublic(self):
           self._commonpublic={
@@ -483,14 +500,14 @@ class Data():
             "items": {},
             "stats": {
                 "attributes": {
-                    "banner_color": "DefaultColor15",
+                    "banner_color": "DefaultColor14",
                     "homebase_name": "",
                     "banner_icon": "SurvivalBannerStonewoodComplete"
                 }
             },
             "commandRevision": 0
           }
-          return json.dumps(self._commonpublic, indent=4)
+          return dumps(self._commonpublic, indent=4)
 
     def quests(self):
         self._quests={
@@ -502,14 +519,14 @@ class Data():
               "Season5": {}
           }
         }
-        return json.dumps(self._quests, indent=4)
+        return dumps(self._quests, indent=4)
     
     def privacy(self):
         self._privacy={
             "accountId": "",
             "optOutOfPublicLeaderboards": False
         }
-        return json.dumps(self._privacy, indent=4)
+        return dumps(self._privacy, indent=4)
       
     def profile0(self):
           self._profile0={
@@ -627,7 +644,7 @@ class Data():
                       "daily_rewards": {
                         "nextDefaultReward": 0,
                         "totalDaysLoggedIn": 0,
-                        "lastClaimDate": "0001-01-01T00:00:00.000Z",
+                        "lastClaimDate": "2022-09-15T00:00:00.000Z",
                         "additionalSchedules": {
                             "founderspackdailyrewardtoken": {
                                 "rewardsClaimed": 0,
@@ -640,7 +657,7 @@ class Data():
                       "homebase": {
                           "townName": "Nocturno Town",
                           "bannerIconId": "OT10Banner",
-                          "bannerColorId": "DefaultColor15",
+                          "bannerColorId": "DefaultColor14",
                           "flagPattern": -1,
                           "flagColor": -1
                       },
@@ -649,9 +666,7 @@ class Data():
               },
               "commandRevision": 0
           }
-          return json.dumps(self._profile0, indent=4)
+          return dumps(self._profile0, indent=4)
     
     def alldata(self):
-        return json.dumps(self._data, indent=4)
-
-print(json.loads(Data(usernm='4lxprime').alldata())['catalogconfig'])
+        return dumps(self._data, indent=4)

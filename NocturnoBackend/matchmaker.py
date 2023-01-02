@@ -4,6 +4,8 @@ import json
 import asyncio
 from datetime import datetime
 
+#based on https://github.com/Lawin0129/FortMatchmaker by lawin
+
 async def on_connection(ws, path):
     if "xmpp" in ws.request_headers["Sec-WebSocket-Protocol"].lower():
         return ws.close()
