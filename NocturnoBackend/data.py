@@ -352,23 +352,23 @@ class Data():
                 },
                 "quantity": 1
                 },
-                "Currency": {
-                "templateId": "Currency:MtxPurchased",
-                "attributes": {
-                    "platform": "EpicPC"
-                },
-                "quantity": self.mtx
+                    "Currency": {
+                    "templateId": "Currency:MtxPurchased",
+                    "attributes": {
+                        "platform": "EpicPC"
+                    },
+                    "quantity": self.mtx
                 },
                 "Token:FounderChatUnlock": {
-                "templateId": "Token:FounderChatUnlock",
-                "attributes": {
-                    "max_level_bonus": 0,
-                    "level": self.level,
-                    "item_seen": True,
-                    "xp": self.xp,
-                    "favorite": False
-                },
-                "quantity": 1
+                    "templateId": "Token:FounderChatUnlock",
+                    "attributes": {
+                        "max_level_bonus": 0,
+                        "level": self.level,
+                        "item_seen": True,
+                        "xp": self.xp,
+                        "favorite": False
+                    },
+                    "quantity": 1
                 }
             },
             "stats": {
@@ -530,75 +530,75 @@ class Data():
       
     def profile0(self):
           self._profile0={
-              "_id": self.usernm,
-              "created": "0001-01-01T00:00:00.000Z",
-              "updated": "0001-01-01T00:00:00.000Z",
-              "rvn": 0,
-              "wipeNumber": 1,
-              "accountId": self.usernm,
-              "profileId": "profile0",
-              "version": "no_version",
-              "items": {},
-              "stats": {
-                  "templateId": "profile_v2",
-                  "attributes": {
-                      "mtx_purchase_history": {
-                          "purchases": []
-                      },
-                      "mission_alert_redemption_record": {
-                          "lastClaimTimesMap": {
-                              "General": {
-                                  "missionAlertGUIDs": [
-                                      "",
-                                      "",
-                                      ""
-                                  ],
-                                  "lastClaimedTimes": []
-                              },
-                              "StormLow": {
-                                  "missionAlertGUIDs": [],
-                                  "lastClaimedTimes": []
-                              },
-                              "Halloween": {
-                                  "missionAlertGUIDs": [],
-                                  "lastClaimedTimes": []
-                              },
-                              "Horde": {
-                                  "missionAlertGUIDs": [],
-                                  "lastClaimedTimes": []
-                              },
-                              "Storm": {
-                                  "missionAlertGUIDs": [],
-                                  "lastClaimedTimes": []
-                              }
-                          },
-                          "oldestClaimIndexForCategory": [
-                                0,
-                                0,
-                                0,
-                                0,
-                                0
-                          ]
-                      },
-                      "twitch": {},
-                      "client_settings": {
-                          "pinnedQuestInstances": []
-                      },
-                      "level": self.level,
-                      "named_counters": {
-                          "SubGameSelectCount_Campaign": {
-                              "current_count": 0,
-                              "last_incremented_time": ""
-                          },
+            "_id": self.usernm,
+            "created": "0001-01-01T00:00:00.000Z",
+            "updated": "0001-01-01T00:00:00.000Z",
+            "rvn": 0,
+            "wipeNumber": 1,
+            "accountId": self.usernm,
+            "profileId": "profile0",
+            "version": "no_version",
+            "items": {},
+            "stats": {
+                "templateId": "profile_v2",
+                "attributes": {
+                    "mtx_purchase_history": {
+                        "purchases": []
+                    },
+                    "mission_alert_redemption_record": {
+                        "lastClaimTimesMap": {
+                            "General": {
+                                "missionAlertGUIDs": [
+                                    "",
+                                    "",
+                                    ""
+                                ],
+                                "lastClaimedTimes": []
+                            },
+                            "StormLow": {
+                                "missionAlertGUIDs": [],
+                                "lastClaimedTimes": []
+                            },
+                            "Halloween": {
+                                "missionAlertGUIDs": [],
+                                "lastClaimedTimes": []
+                            },
+                            "Horde": {
+                                "missionAlertGUIDs": [],
+                                "lastClaimedTimes": []
+                            },
+                            "Storm": {
+                                "missionAlertGUIDs": [],
+                                "lastClaimedTimes": []
+                            }
+                        },
+                        "oldestClaimIndexForCategory": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ]
+                    },
+                    "twitch": {},
+                    "client_settings": {
+                        "pinnedQuestInstances": []
+                    },
+                    "level": self.level,
+                    "named_counters": {
+                        "SubGameSelectCount_Campaign": {
+                            "current_count": 0,
+                            "last_incremented_time": ""
+                        },
                         "SubGameSelectCount_Athena": {
                             "current_count": 0,
                             "last_incremented_time": ""
                         }
                       },
-                      "default_hero_squad_id": "",
-                      "collection_book": {
-                          "pages": [],
-                          "maxBookXpLevelAchieved": 0
+                    "default_hero_squad_id": "",
+                    "collection_book": {
+                        "pages": [],
+                        "maxBookXpLevelAchieved": 0
                       },
                       "quest_manager": {
                           "dailyLoginInterval": "",

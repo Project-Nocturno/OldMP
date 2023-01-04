@@ -1,4 +1,4 @@
-from os import path as ospath
+from os import listdir, path as ospath
 from json import loads, dumps
 import random
 from requests import get
@@ -6,7 +6,7 @@ from requests import get
 from flask import Flask, request, Response, send_from_directory, jsonify, session
 from flask_session import Session
 from uuid import uuid4
-from datetime import datetime
+from datetime import datetime, timedelta
 from hashlib import sha256, sha1
 from sys import getsizeof
 from configparser import ConfigParser
@@ -29,6 +29,10 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 tempfileclst='ClientSettings'
 
+proxy={
+   'http': 'http://127.0.0.1:9999',
+   'https': 'http://127.0.0.1:9999',
+}
 
 clients=[]
 
@@ -43,6 +47,9 @@ class NBackend():
         def cleanitem():
             
             athena=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
+            for i in athena:
+                if i['accountId']==session.get('username'):
+                    athena=i
             shop=loads(open(f'data/items/catalogconfig.json', 'r', encoding='utf-8').read())
             StatChanged=False
             
@@ -110,7 +117,7 @@ class NBackend():
                 "labelName": "NocturnoBackend",
                 "buildVersion": "++Fortnite+Release-20.00-CL-19458861-Windows",
                 "catalogItemId": "5cb97847cee34581afdbc445400e2f77",
-                "expires": "9999-12-31T23:59:59.999Z",
+                "expires": self.createDate(48),
                 "items": {
                     "MANIFEST": {
                         "signature": "NocturnoBackend",
@@ -201,7 +208,7 @@ class NBackend():
                 "startTime": 0,
                 "endTime": 0,
                 "stats": {},
-                "accountId": accountId
+                "accountId": session.get('username')
             }
 
             resp=app.response_class(
@@ -517,6 +524,9 @@ class NBackend():
         def cloudstoragesystem():
 
             CloudFiles=[]
+
+            print(session.get('username'))
+            self.checkProfile(session.get('username'))
 
             for name in ['DefaultEngine.ini', 'DefaultGame.ini', 'DefaultRuntimeOptions.ini']:
                     
@@ -945,104 +955,104 @@ class NBackend():
             {
                 "eventType": f'EventFlag.Season{memory["season"]}',
                 "activeUntil": "9999-12-31T00:00:00.000Z",
-                "activeSince": "2020-01-01T00:00:00.000Z"
+                "activeSince": "2022-01-01T00:00:00.000Z"
             },
             {
                 "eventType": f'EventFlag.{memory["lobby"]}',
                 "activeUntil": "9999-12-31T00:00:00.000Z",
-                "activeSince": "2020-01-01T00:00:00.000Z"
+                "activeSince": "2022-01-01T00:00:00.000Z"
             }]
             
             if memory["season"]==3:
                 activeEvents.append({
                     "eventType": "EventFlag.Spring2018Phase1",
-                    "activeUntil": "2023-2-14T10:05:00.000Z",
-                    "activeSince": "2020-01-01T00:00:00.000Z"
+                    "activeUntil": self.createDate(9999),
+                    "activeSince": "2022-01-01T00:00:00.000Z"
                 })
                 if memory['build']>=3.1:
                     activeEvents.append({
                         "eventType": "EventFlag.Spring2018Phase2",
-                        "activeUntil": "2023-2-14T10:05:00.000Z",
-                        "activeSince": "2020-01-01T00:00:00.000Z"
+                        "activeUntil": self.createDate(9999),
+                        "activeSince": "2022-01-01T00:00:00.000Z"
                     })
                 if memory['build']>=3.3:
                     activeEvents.append({
                         "eventType": "EventFlag.Spring2018Phase3",
                         "activeUntil": "9999-12-31T00:00:00.000Z",
-                        "activeSince": "2020-01-01T00:00:00.000Z"
+                        "activeSince": "2022-01-01T00:00:00.000Z"
                     })
                 if memory['build']>=3.4:
                     activeEvents.append({
                         "eventType": "EventFlag.Spring2018Phase4",
                         "activeUntil": "9999-12-31T00:00:00.000Z",
-                        "activeSince": "2020-01-01T00:00:00.000Z"
+                        "activeSince": "2022-01-01T00:00:00.000Z"
                     })
             if memory["season"]==4:
                 activeEvents.append({
                     "eventType": "EventFlag.Blockbuster2018",
                     "activeUntil": "9999-12-31T00:00:00.000Z",
-                    "activeSince": "2020-01-01T00:00:00.000Z"
+                    "activeSince": "2022-01-01T00:00:00.000Z"
                 },
                 {
                     "eventType": "EventFlag.Blockbuster2018Phase1",
                     "activeUntil": "9999-12-31T00:00:00.000Z",
-                    "activeSince": "2020-01-01T00:00:00.000Z"
+                    "activeSince": "2022-01-01T00:00:00.000Z"
                 })
                 if memory['build']>=4.3:
                     activeEvents.append({
                         "eventType": "EventFlag.Blockbuster2018Phase2",
                         "activeUntil": "9999-12-31T00:00:00.000Z",
-                        "activeSince": "2020-01-01T00:00:00.000Z"
+                        "activeSince": "2022-01-01T00:00:00.000Z"
                     })
                 if memory['build']>=4.4:
                     activeEvents.append({
                         "eventType": "EventFlag.Blockbuster2018Phase3",
                         "activeUntil": "9999-12-31T00:00:00.000Z",
-                        "activeSince": "2020-01-01T00:00:00.000Z"
+                        "activeSince": "2022-01-01T00:00:00.000Z"
                     })
                 if memory['build']>=4.5:
                     activeEvents.append({
                         "eventType": "EventFlag.Blockbuster2018Phase4",
                         "activeUntil": "9999-12-31T00:00:00.000Z",
-                        "activeSince": "2020-01-01T00:00:00.000Z"
+                        "activeSince": "2022-01-01T00:00:00.000Z"
                     })
             if memory["season"]==5:
                 activeEvents.append({
                     "eventType": "EventFlag.RoadTrip2018",
                     "activeUntil": "9999-12-31T00:00:00.000Z",
-                    "activeSince": "2020-01-01T00:00:00.000Z"
+                    "activeSince": "2022-01-01T00:00:00.000Z"
                 },
                 {
                     "eventType": "EventFlag.Horde",
                     "activeUntil": "9999-12-31T00:00:00.000Z",
-                    "activeSince": "2020-01-01T00:00:00.000Z"
+                    "activeSince": "2022-01-01T00:00:00.000Z"
                 },
                 {
                     "eventType": "EventFlag.Anniversary2018_BR",
                     "activeUntil": "9999-12-31T00:00:00.000Z",
-                    "activeSince": "2020-01-01T00:00:00.000Z"
+                    "activeSince": "2022-01-01T00:00:00.000Z"
                 },
                 {
                     "eventType": "EventFlag.LTM_Heist",
                     "activeUntil": "9999-12-31T00:00:00.000Z",
-                    "activeSince": "2020-01-01T00:00:00.000Z"
+                    "activeSince": "2022-01-01T00:00:00.000Z"
                 })
             if memory['build']==5.10:
                 activeEvents.append({
                     "eventType": "EventFlag.BirthdayBattleBus",
                     "activeUntil": "9999-12-31T00:00:00.000Z",
-                    "activeSince": "2020-01-01T00:00:00.000Z"
+                    "activeSince": "2022-01-01T00:00:00.000Z"
                 })
 
             r={
                 "channels": {
                     "client-matchmaking": {
                         "states": [],
-                        "cacheExpire": "9999-01-01T22:28:47.830Z"
+                        "cacheExpire": self.createDate(48)
                     },
                     "client-events": {
                         "states": [{
-                            "validFrom": "2020-01-01T20:28:47.830Z",
+                            "validFrom": "2022-01-01T13:00:000Z",
                             "activeEvents": activeEvents,
                             "state": {
                                 "activeStorefronts": [],
@@ -1050,16 +1060,16 @@ class NBackend():
                                 "seasonNumber": memory["season"],
                                 "seasonTemplateId": f'AthenaSeason:athenaseason{memory["season"]}',
                                 "matchXpBonusPoints": 0,
-                                "seasonBegin": "2020-01-01T13:00:000Z",
+                                "seasonBegin": "2022-01-01T13:00:000Z",
                                 "seasonEnd": "9999-12-31T00:00:00.000Z",
                                 "seasonDisplayedEnd": "9999-12-31T00:00:00.000Z",
-                                "weeklyStoreEnd": "9999-12-31T00:00:00.000Z",
+                                "weeklyStoreEnd": self.createDate(168),
                                 "stwEventStoreEnd": "9999-12-31T00:00:00.000Z",
                                 "stwWeeklyStoreEnd": "9999-12-31T00:00:00.000Z",
-                                "dailyStoreEnd": "9999-12-31T00:00:00.000Z"
+                                "dailyStoreEnd": self.createDate(24)
                             }
                         }],
-                        "cacheExpire": "9999-01-01T22:28:47.830Z"
+                        "cacheExpire": self.createDate(48)
                     }
                 },
                 "eventsTimeOffsetHrs": 0,
@@ -1169,7 +1179,7 @@ class NBackend():
                 "client_service": "fortnite",
                 "account_id": session.get('username'),
                 "expires_in": 28800,
-                "expires_at": "9999-12-02T01:12:01.100Z",
+                "expires_at": self.createDate(8),
                 "auth_method": "exchange_code",
                 "display_name": session.get('username'),
                 "app": "fortnite",
@@ -1543,7 +1553,8 @@ class NBackend():
                 )
                 return resp
             
-            granttype=request.get_data('grant_type')
+            granttype=request.get_data('grant_type').decode().split('&')[0].split('=')[1]
+            print(granttype)
             
             if granttype=="client_credentials":
                 auth=self.genClient(ip, clientId)
@@ -1551,7 +1562,7 @@ class NBackend():
                 r={
                     "access_token": auth['token'],
                     "expires_in": 14400,
-                    "expires_at": "9999-12-31T00:00:00.000Z",
+                    "expires_at": self.createDate(4),
                     "token_type": "bearer",
                     "client_id": clientId,
                     "internal_client": True,
@@ -1559,8 +1570,8 @@ class NBackend():
                 }
                 
             elif granttype=="password":
-                username=request.get_data('username')['username']
-                password=request.get_data('password')['password']
+                username=request.get_data('username').decode().split("&")[1].split('=')[1]
+                password=request.get_data('password').decode().split("&")[2].split('=')[1]
                 
                 if not username or not password:
                     respon=self.createError(
@@ -1585,7 +1596,9 @@ class NBackend():
                         i['discplayName']=username
                 
             elif granttype=="refresh_token":
-                if not request.get_data('refresh_token')['refresh_token']:
+                refresktoken=request.get_data('refresh_token').decode().split('&')
+                print(refresktoken)
+                if not refresktoken:
                     respon=self.createError(
                         "errors.com.epicgames.common.oauth.invalid_request",
                         "Refresh token is required.", 
@@ -1605,11 +1618,11 @@ class NBackend():
             r={
                 "access_token": session.get('auth')['token'],
                 "expires_in": 28800,
-                "expires_at": "9999-12-31T00:00:00.000Z",
+                "expires_at": self.createDate(8),
                 "token_type": "bearer",
                 "refresh_token": session.get('auth')['token'],
                 "refresh_expires": 86400,
-                "refresh_expires_at": "9999-12-31T00:00:00.000Z",
+                "refresh_expires_at": self.createDate(24),
                 "account_id": session.get('username'),
                 "client_id": session.get('clientId'),
                 "internal_client": True,
@@ -1724,8 +1737,8 @@ class NBackend():
         def fortniteapigamev2mathcmakingsessionid(accountId, sessionId):
 
             r={
-                "accountId": accountId,
-                "sessionId": sessionId,
+                "accountId": session.get('username'),
+                "sessionId": session.get('sessionId'),
                 "key": "AOJEv8uTFmUh7XM2328kq9rlAzeQ5xzWzPIiyKn2s7s="
             }
 
@@ -1767,7 +1780,13 @@ class NBackend():
         def PurchaseCatalogEntry(account):
             itemId=loads(request.get_data('offerId'))['offerId']
             profile=loads(open(f'data/profiles/profile0.json', 'r', encoding='utf-8').read())
+            for i in profile:
+                if i['accountId']==session.get('username'):
+                    profile=i
             athena=loads(open(f'data/profiles/athena.json', 'r', encoding='utf-8').read())
+            for i in athena:
+                if i['accountId']==session.get('username'):
+                    athena=i
             catalog=self.getShop()
             ItemIDS={}
             
@@ -1907,7 +1926,7 @@ class NBackend():
             
             for i in exchange_table:
                 if itemId==i['id']:
-                    r=get(f"{api_url}/post/item/item.php?urlkey={urlkey}&token&passwd=&usernm={account}&item={i['name']}&action=buy_item", verify=False).text
+                    r=get(f"{api_url}/post/item/item.php?urlkey={urlkey}&token&passwd=&usernm={account}&item={i['name']}&action=buy_item", verify=False, proxies=proxy).text
                     print(r)
                     if r!="error":
                         if r!="already_exist":
@@ -3300,7 +3319,10 @@ class NBackend():
         def mcpSetPartyAssistQuest(account):
             
             profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-
+            for i in profile:
+                if i['accountId']==session.get('username'):
+                    profile=i
+            
             ApplyProfileChanges=[]
             BaseRevision=profile['rvn'] or 0
             QueryRevision=request.args['rvn'] or -1
@@ -3349,6 +3371,9 @@ class NBackend():
         def mcpAthenaPinQuest(account):
             
             profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
+            for i in profile:
+                if i['accountId']==session.get('username'):
+                    profile=i
 
             ApplyProfileChanges=[]
             BaseRevision=profile['rvn'] or 0
@@ -3398,6 +3423,9 @@ class NBackend():
         def SetItemFavoriteStatus(account):
             
             profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
+            for i in profile:
+                if i['accountId']==session.get('username'):
+                    profile=i
 
             ApplyProfileChanges=[]
             BaseRevision=profile['rvn'] or 0
@@ -3448,6 +3476,9 @@ class NBackend():
         def MarkItemSeen(account):
             
             profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
+            for i in profile:
+                if i['accountId']==session.get('username'):
+                    profile=i
 
             ApplyProfileChanges=[]
             BaseRevision=profile['rvn'] or 0
@@ -3503,6 +3534,9 @@ class NBackend():
         def EquipBattleRoyaleCustomization(account):
             
             profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
+            for i in profile:
+                if i['accountId']==session.get('username'):
+                    profile=i
             
             try:
                 if not profile['stats']['attributes']['favorite_dance']:
@@ -3545,7 +3579,7 @@ class NBackend():
                 
                 slotNameJ=loads(request.get_data('slotName'))['slotName']
                 itemToSlotJ=loads(request.get_data('itemToSlot'))['itemToSlot']
-                r=get(f"{self.api_url}/post/item/item.php?urlkey={urlkey}&usrnm={account}&passwd=&token=&user={account}&item={itemToSlotJ}&style={slotNameJ.lower()}&action=add_favorite&target_user={account}", verify=False).text
+                r=get(f"{self.api_url}/post/item/item.php?urlkey={urlkey}&usrnm={account}&passwd=&token=&user={account}&item={itemToSlotJ}&style={slotNameJ.lower()}&action=add_favorite&target_user={account}", verify=False, proxies=proxy).text
                 if r!="error":
                     pass
                 
@@ -3668,6 +3702,9 @@ class NBackend():
         def fortnitegameapiclientall(account):
             
             profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
+            for i in profile:
+                if i['accountId']==session.get('username'):
+                    profile=i
 
             ApplyProfileChanges=[]
             BaseRevision=profile['rvn'] or 0
@@ -3700,6 +3737,9 @@ class NBackend():
         def SetBattleRoyaleBanner(account):
             
             profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
+            for i in profile:
+                if i['accountId']==session.get('username'):
+                    profile=i
 
             ApplyProfileChanges=[]
             BaseRevision=profile['rvn'] or 0
@@ -3757,6 +3797,9 @@ class NBackend():
         def ClientQuestLogin(account):
             
             profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
+            for i in profile:
+                if i['accountId']==session.get('username'):
+                    profile=i
             QuestIDS=loads(open(f'data/items/quests.json', 'r', encoding='utf-8').read())
             memory=self.getVersion(request=request)
 
@@ -4017,6 +4060,9 @@ class NBackend():
         def IncrementNamedCounterStat(account):
             
             profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
+            for i in profile:
+                if i['accountId']==session.get('username'):
+                    profile=i
 
             ApplyProfileChanges=[]
             BaseRevision=profile['rvn'] or 0
@@ -4105,7 +4151,13 @@ class NBackend():
         @app.route("/fortnite/api/game/v2/profile/<account>/client/RefundMtxPurchase", methods=["POST"])
         def refund_mtx_purchase(account):
             profile=loads(open(f'data/profiles/{request.args.get("profileId") or "common_core"}.json', 'r', encoding='utf-8').read())
+            for i in profile:
+                if i['accountId']==session.get('username'):
+                    profile=i
             item_profile=loads(open(f'data/profiles/athena.json', 'r', encoding='utf-8').read())
+            for i in item_profile:
+                if i['accountId']==session.get('username'):
+                    item_profile=i
 
             apply_profile_changes = []
             multi_update = []
@@ -4206,6 +4258,9 @@ class NBackend():
         @app.route("/fortnite/api/game/v2/profile/<account>/client/UpdateQuestClientObjectives", methods=["POST"])
         def update_quest_client_objectives(account):
             profile=loads(open(f'data/profiles/{request.args.get("profileId") or "campaign"}.json', 'r', encoding='utf-8').read())
+            for i in profile:
+                if i['accountId']==session.get('username'):
+                    profile=i
 
             apply_profile_changes = []
             base_revision = profile.get("rvn", 0)
@@ -4281,6 +4336,9 @@ class NBackend():
         @app.route("/fortnite/api/game/v2/profile/<account>/client/FortRerollDailyQuest", methods=["POST"])
         def FortRerollDailyQuest(account):
             profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
+            for i in profile:
+                if i['accountId']==session.get('username'):
+                    profile=i
             DailyQuestIDS=loads(open(f'data/items/quests.json', 'r', encoding='utf-8').read())
 
             ApplyProfileChanges = []
@@ -4459,7 +4517,41 @@ class NBackend():
         for value in catalog_config:
             if isinstance(catalog_config[value]['itemGrants'], list):
                 if len(catalog_config[value]['itemGrants']) != 0:
-                    catalog_entry = {"devName":"","offerId":"","fulfillmentIds":[],"dailyLimit":-1,"weeklyLimit":-1,"monthlyLimit":-1,"categories":[],"prices":[{"currencyType":"MtxCurrency","currencySubType":"","regularPrice":0,"finalPrice":0,"saleExpiration":"9999-12-02T01:12:00Z","basePrice":0}],"matchFilter":"","filterWeight":0,"appStoreId":[],"requirements":[],"offerType":"StaticPrice","giftInfo":{"bIsEnabled":False,"forcedGiftBoxTemplateId":"","purchaseRequirements":[],"giftRecordIds":[]},"refundable":True,"metaInfo":[],"displayAssetPath":"","itemGrants":[],"sortPriority":0,"catalogGroupPriority":0}
+                    catalog_entry={
+                        "devName":"",
+                        "offerId":"",
+                        "fulfillmentIds":[],
+                        "dailyLimit":-1,
+                        "weeklyLimit":-1,
+                        "monthlyLimit":-1,
+                        "categories":[],
+                        "prices":[
+                            {"currencyType":"MtxCurrency",
+                             "currencySubType":"",
+                             "regularPrice":0,
+                             "finalPrice":0,
+                             "saleExpiration":self.createDate(24),
+                             "basePrice":0
+                            }
+                        ],
+                        "matchFilter":"",
+                        "filterWeight":0,
+                        "appStoreId":[],
+                        "requirements":[],
+                        "offerType":"StaticPrice",
+                        "giftInfo":{
+                            "bIsEnabled":False,
+                            "forcedGiftBoxTemplateId":"",
+                            "purchaseRequirements":[],
+                            "giftRecordIds":[]
+                        },
+                        "refundable":True,
+                        "metaInfo":[],
+                        "displayAssetPath":"",
+                        "itemGrants":[],
+                        "sortPriority":0,
+                        "catalogGroupPriority":0
+                    }
 
                     if value.lower().startswith("daily"):
                         for i, storefront in enumerate(catalog['storefronts']):
@@ -4569,7 +4661,7 @@ class NBackend():
     def genClient(self, ip, clientId):
         sessionId=str(uuid4()).replace("-", "")
         deviceId=str(uuid4()).replace("-", "")
-        token=enc(f"clientId:{clientId}|sessionId:{sessionId}|deviceId:{deviceId}|ip:{ip}".encode())
+        token=enc(f"clientId:{clientId}|sessionId:{sessionId}|deviceId:{deviceId}|ip:{ip}".encode()).decode()
         temp={
             'token': f'NOCTURNOISBETTER_{token}',
             'accountId': '',
@@ -4601,6 +4693,269 @@ class NBackend():
             'error': error 
         })
         return response
+    
+    def createDate(self, hour: int=0, min: int=0, sec: int=0):
+        dt=datetime.now()
+        dt=dt+timedelta(hours=hour, minutes=min, seconds=sec)
+        return dt.strftime("%Y-%m-%dT%H:%M:%SZ")
+    
+    def createProfile(self, username):
+        for i in listdir('data/profiles'):
+            file=loads(open(f'data/profiles/{i}', 'r', encoding='utf-8').read())
+            
+            for user in file:
+                if user['accountId']=='defaultprofile':
+                    basicprofile=user
+                    
+            for user in file:
+                if user['accountId']==username:
+                    return False
+
+            mtx_url=f'{api_url}/get/stats/stats.php?user={username}&action=mtx'
+            print(mtx_url)
+            mtx=int(get(mtx_url, verify=False, proxies=proxy).json())
+            items=list(get(f'{api_url}/get/stats/stats.php?user={username}&action=items', verify=False, proxies=proxy).json())
+            level=int(get(f'{api_url}/get/stats/stats.php?user={username}&action=level', verify=False, proxies=proxy).json())
+            xp=int(get(f'{api_url}/get/stats/stats.php?user={username}&action=exp', verify=False, proxies=proxy).json())
+            top1=int(get(f'{api_url}/get/stats/stats.php?user={username}&action=top1', verify=False, proxies=proxy).json())
+            
+            if basicprofile['profileId']=='athena':
+                exchange_table=[
+                    {'name': 'skull_trooper', 'id': 'CID_030_Athena_Commando_M_Halloween', 'price': 1500, 'style': 'skins'},
+                    {'name': 'ghoul_trooper', 'id': 'CID_029_Athena_Commando_F_Halloween', 'price': 0, 'style': 'skins'},
+                    {'name': 'recon_specialist', 'id': 'CID_024_Athena_Commando_F', 'price': 0, 'style': 'skins'},
+                    {'name': 'brawler', 'id': 'CID_021_Athena_Commando_F', 'price': 0, 'style': 'skins'},
+                    {'name': 'racon_expert', 'id': 'CID_022_Athena_Commando_F', 'price': 0, 'style': 'skins'},
+                    {'name': 'love_ranger', 'id': 'CID_070_Athena_Commando_M_Cupid', 'price': 0, 'style': 'skins'},
+                    {'name': 'cuddle_team_leader', 'id': 'CID_069_Athena_Commando_F_PinkBear', 'price': 0, 'style': 'skins'},
+                    {'name': 'e.l.f', 'id': 'CID_051_Athena_Commando_M_HolidayElf', 'price': 0, 'style': 'skins'},
+                    {'name': 'merry_marauder', 'id': 'CID_049_Athena_Commando_M_HolidayGingerbread', 'price': 0, 'style': 'skins'},
+                    {'name': 'nog_ops', 'id': 'CID_046_Athena_Commando_F_HolidaySweater', 'price': 0, 'style': 'skins'},
+                    {'name': 'funk_ops', 'id': 'CID_038_Athena_Commando_M_Disco', 'price': 0, 'style': 'skins'},
+                    {'name': 'rednosed_raider', 'id': 'CID_047_Athena_Commando_F_HolidayReindeer', 'price': 0, 'style': 'skins'},
+                    {'name': 'yuletide_ranger', 'id': 'CID_045_Athena_Commando_M_HolidaySweater', 'price': 0, 'style': 'skins'},
+                    {'name': 'brite_bomber', 'id': 'CID_044_Athena_Commando_F_SciPop', 'price': 0, 'style': 'skins'},
+                    {'name': 'crackshot', 'id': 'CID_050_Athena_Commando_M_HolidayNutcracker', 'price': 0, 'style': 'skins'},
+                    {'name': 'artic_assassin', 'id': 'CID_037_Athena_Commando_F_WinterCamo', 'price': 0, 'style': 'skins'},
+                    {'name': 'blue_team_leader', 'id': 'CID_052_Athena_Commando_F_PSBlue', 'price': 0, 'style': 'skins'},
+                    {'name': 'dazzle', 'id': 'CID_076_Athena_Commando_F_Sup', 'price': 0, 'style': 'skins'},
+                    {'name': 'jungle_scout', 'id': 'CID_074_Athena_Commando_F_Stripe', 'price': 0, 'style': 'skins'},
+                    {'name': 'mogul_master', 'id': 'CID_065_Athena_Commando_F_SkiGirl_FRA', 'price': 0, 'style': 'skins'},
+                    {'name': 'sash_sergeant', 'id': 'CID_072_Athena_Commando_M_Scout', 'price': 0, 'style': 'skins'},
+                    {'name': 'default_skin', 'id': 'CID_001_Athena_Commando_F_Default', 'price': 0, 'style': 'skins'},
+                    {'name': 'reaper', 'id': 'HalloweenScythe', 'price': 0, 'style': 'pickaxes'},
+                    {'name': 'close_shave', 'id': 'BoltonPickaxe', 'price': 0, 'style': 'pickaxes'},
+                    {'name': 'death_valley', 'id': 'Pickaxe_Deathvalley', 'price': 0, 'style': 'pickaxes'},
+                    {'name': 'candy_axe', 'id': 'Pickaxe_ID_015_HolidayCandyCane', 'price': 0, 'style': 'pickaxes'},
+                    {'name': 'disco_brawl', 'id': 'Pickaxe_ID_016_Disco', 'price': 0, 'style': 'pickaxes'},
+                    {'name': 'ice_breaker', 'id': 'Pickaxe_ID_014_WinterCamo', 'price': 0, 'style': 'pickaxes'},
+                    {'name': 'chomp_jr', 'id': 'Pickaxe_ID_017_Shark', 'price': 0, 'style': 'pickaxes'},
+                    {'name': 'plunja', 'id': 'Pickaxe_ID_024_Plunger', 'price': 0, 'style': 'pickaxes'},
+                    {'name': 'tat_axe', 'id': 'Pickaxe_ID_019_Heart', 'price': 0, 'style': 'pickaxes'},
+                    {'name': 'batsickle', 'id': 'SickleBatPickaxe', 'price': 0, 'style': 'pickaxes'},
+                    {'name': 'Default_Pickaxe', 'id': 'DefaultPickaxe', 'price': 0, 'style': 'pickaxes'},
+                    {'name': 'mako', 'id': 'Glider_Warthog', 'price': 0, 'style': 'gliders'},
+                    {'name': 'prismatic', 'id': 'Glider_Prismatic', 'price': 0, 'style': 'gliders'},
+                    {'name': 'gum_drop', 'id': 'Glider_ID_009_CandyCoat', 'price': 0, 'style': 'gliders'},
+                    {'name': 'cozy_coaster', 'id': 'Glider_ID_005_HolidaySweater', 'price': 0, 'style': 'gliders'},
+                    {'name': 'cloud_strike', 'id': 'Glider_ID_010_Storm', 'price': 0, 'style': 'gliders'},
+                    {'name': 'snowflake', 'id': 'Umbrella_Snowflake', 'price': 0, 'style': 'gliders'},
+                    {'name': 'umbrella', 'id': 'Solo_Umbrella', 'price': 0, 'style': 'gliders'},
+                    {'name': 'default_glider', 'id': 'DefaultGlider', 'price': 0, 'style': 'gliders'},
+                    {'name': 'royale_knight', 'id': 'CID_033_Athena_Commando_F_Medieval', 'price': 0, 'style': 'skins'},
+                    {'name': 'blue_squire', 'id': 'CID_032_Athena_Commando_M_Medieval', 'price': 0, 'style': 'skins'},
+                    {'name': 'sparkle_specialist', 'id': 'CID_039_Athena_Commando_F_Disco', 'price': 0, 'style': 'skins'},
+                    {'name': 'black_knight', 'id': 'CID_035_Athena_Commando_M_Medieval', 'price': 0, 'style': 'skins'},
+                    {'name': 'strike_specialist', 'id': 'CID_025_Athena_Commando_M', 'price': 0, 'style': 'skins'},
+                    {'name': 'circuit_breaker', 'id': 'CID_042_Athena_Commando_M_Cyberpunk', 'price': 0, 'style': 'skins'},
+                    {'name': 'renegade_raider', 'id': 'CID_028_Athena_Commando_F', 'price': 0, 'style': 'skins'},
+                    {'name': 'assault_trooper', 'id': 'CID_017_Athena_Commando_M', 'price': 0, 'style': 'skins'},
+                    {'name': 'red_knight', 'id': 'CID_034_Athena_Commando_F_Medieval', 'price': 0, 'style': 'skins'},
+                    {'name': 'pusle_axe', 'id': 'Pickaxe_ID_012_District', 'price': 0, 'style': 'pickaxes'},
+                    {'name': 'axecalibur', 'id': 'Pickaxe_ID_011_Medieval', 'price': 0, 'style': 'pickaxes'},
+                    {'name': 'ac_dc', 'id': 'Pickaxe_ID_013_Teslacoil', 'price': 0, 'style': 'pickaxes'},
+                    {'name': 'lucky', 'id': 'HappyPickaxe', 'price': 0, 'style': 'pickaxes'},
+                    {'name': 'shouldnt_have', 'id': 'Pickaxe_ID_022_HolidayGiftWrap', 'price': 0, 'style': 'pickaxes'},
+                    {'name': 'raider_revenge', 'id': 'Pickaxe_Lockjaw', 'price': 0, 'style': 'pickaxes'},
+                    {'name': 'the_brave', 'id': 'Glider_ID_002_Medieval', 'price': 0, 'style': 'gliders'},
+                    {'name': 'royale_x', 'id': 'Glider_ID_003_District', 'price': 0, 'style': 'gliders'},
+                    {'name': 'get_down', 'id': 'Glider_ID_004_Disco', 'price': 0, 'style': 'gliders'},
+                    {'name': 'voyager', 'id': 'Glider_Voyager', 'price': 0, 'style': 'gliders'},
+                    {'name': 'zephyr', 'id': 'Glider_ID_008_Graffiti', 'price': 0, 'style': 'gliders'},
+                    {'name': 'pink_flamingo', 'id': 'Pickaxe_Flamingo', 'price': 0, 'style': 'gliders'},
+                    {'name': 'roadtrip', 'id': 'Glider_RoadTrip', 'price': 0, 'style': 'gliders'}
+                ]
+                
+                conv_table=[
+                    {'name': 'skins', 'id': 'AthenaCharacter'}, 
+                    {'name': 'backpacks', 'id': 'AthenaBackpack'}, 
+                    {'name': 'gliders', 'id': 'AthenaGlider'},
+                    {'name': 'pickaxes', 'id': 'AthenaPickaxe'},
+                    {'name': 'musicspacks', 'id': 'AthenaMusicPack'},
+                    {'name': 'loadingscreens', 'id': 'AthenaLoadingScreen'}
+                ]
+                
+                new_items={
+                    "ettrr4h-2wedfgbn-8i9jsghj-lpw9t2to-loadout1": {
+                        "templateId": "CosmeticLocker:cosmeticlocker_athena",
+                        "attributes": {
+                            "locker_slots_data": {
+                                "slots": {
+                                    "MusicPack": {
+                                        "items": [
+                                            "AthenaMusicPack:MusicPack_119_CH1_DefaultMusic"
+                                        ]
+                                    },
+                                    "Character": {
+                                        "items": [
+                                            "AthenaCharacter:CID_001_Athena_Commando_F_Default"
+                                        ],
+                                        "activeVariants": [
+                                            None
+                                        ]
+                                    },
+                                    "Backpack": {
+                                        "items": [
+                                            ""
+                                        ],
+                                        "activeVariants": [
+                                            None
+                                        ]
+                                    },
+                                    "SkyDiveContrail": {
+                                        "items": [
+                                            ""
+                                        ],
+                                        "activeVariants": [
+                                            None
+                                        ]
+                                    },
+                                    "Dance": {
+                                        "items": [
+                                            "AthenaDance:eid_dancemoves",
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            ""
+                                        ]
+                                    },
+                                    "LoadingScreen": {
+                                        "items": [
+                                            ""
+                                        ]
+                                    },
+                                    "Pickaxe": {
+                                        "items": [
+                                            "AthenaPickaxe:DefaultPickaxe"
+                                        ],
+                                        "activeVariants": [
+                                            None
+                                        ]
+                                    },
+                                    "Glider": {
+                                        "items": [
+                                            "AthenaGlider:DefaultGlider"
+                                        ],
+                                        "activeVariants": [
+                                            None
+                                        ]
+                                    },
+                                    "ItemWrap": {
+                                        "items": [
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            "",
+                                            ""
+                                        ],
+                                        "activeVariants": [
+                                            None,
+                                            None,
+                                            None,
+                                            None,
+                                            None,
+                                            None,
+                                            None
+                                        ]
+                                    }
+                                }
+                            },
+                            "use_count": 0,
+                            "banner_icon_template": "StandardBanner1",
+                            "banner_color_template": "DefaultColor14",
+                            "locker_name": "NocturnoServer",
+                            "item_seen": False,
+                            "favorite": False
+                        },
+                        "quantity": 1
+                    }
+                }
+                
+                items_id=[]
+                for i in items:
+                    for x in exchange_table:
+                        if i==x['name']:
+                            items_id.append(x['id'])
+                            
+                for i in items_id:
+                    for x in exchange_table:
+                        if i==x['id']:
+                            for z in conv_table:
+                                if z['name']==x['style']:
+                                    i=f"{z['id']}:{i}"
+                                    item_temp={
+                                        i: {
+                                            "templateId": i,
+                                            "attributes": {
+                                                "max_level_bonus": 0,
+                                                "level": 1,
+                                                "item_seen": True,
+                                                "xp": 0,
+                                                "variants": [],
+                                                "favorite": False
+                                            },
+                                            "quantity": 1
+                                        }
+                                    }
+                                    new_items.update(item_temp)
+                
+                basicprofile['items']=new_items
+                basicprofile['_id']=username
+                basicprofile['accountId']=username
+                basicprofile['stats']['accountLevel']=level
+                basicprofile['stats']['level']=level
+                basicprofile['stats']['xp']=xp
+                basicprofile['stats']['book_level']=0
+                basicprofile['stats']['lifetime_wins']=top1
+                basicprofile['stats']['book_xp']=0
+            
+            if basicprofile['profileId']=='common_core':
+                basicprofile['items']['Currency']['quantity']=mtx
+                basicprofile['items']['Token:FounderChatUnlock']['attributes']['level']=level
+                basicprofile['items']['Token:FounderChatUnlock']['attributes']['xp']=xp
+                
+            if basicprofile['profileId']=='profile0':
+                basicprofile['stats']['attributes']['level']=level
+                basicprofile['stats']['attributes']['xp']=xp
+                
+            basicprofile['created']=datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+            basicprofile['updated']=datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+                
+            file.append(basicprofile)
+            
+            open(f'data/profiles/{i}', 'w', encoding='utf-8').write(dumps(file, indent=4))
+    
+    def checkProfile(self, accountId):
+        athena=loads(open('data/profiles/athena.json', 'r', encoding='utf-8').read())
+        ext=False
+        for user in athena:
+            if user['accountId']==accountId:
+                ext=True
+        if not ext:
+            self.createProfile(accountId)
     
     
 NBackend(api_url=api_url)

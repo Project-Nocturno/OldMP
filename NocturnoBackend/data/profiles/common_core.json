@@ -1,32 +1,34 @@
-{
-    "_id": "4lxprime",
-    "created": "0001-01-01T00:00:00.000Z",
-    "updated": "0001-01-01T00:00:00.000Z",
-    "rvn": 0,
-    "wipeNumber": 1,
-    "accountId": "4lxprime",
-    "profileId": "profile0",
-    "version": "no_version",
-    "items": {
-        "Currency": {
-            "templateId": "Currency:MtxPurchased",
-            "attributes": {
-                "platform": "EpicPC"
+[
+    {
+        "_id": "defaultprofile",
+        "created": "0001-01-01T00:00:00.000Z",
+        "updated": "0001-01-01T00:00:00.000Z",
+        "rvn": 0,
+        "wipeNumber": 1,
+        "accountId": "defaultprofile",
+        "profileId": "common_core",
+        "version": "no_version",
+        "items": {
+            "Currency": {
+                "templateId": "Currency:MtxPurchased",
+                "attributes": {
+                    "platform": "EpicPC"
+                },
+                "quantity": 0
             },
-            "quantity": 11500
+            "Token:FounderChatUnlock": {
+                "templateId": "Token:FounderChatUnlock",
+                "attributes": {
+                    "max_level_bonus": 0,
+                    "level": 0,
+                    "item_seen": true,
+                    "xp": 0,
+                    "favorite": false
+                },
+                "quantity": 1
+            }
         },
-        "Token:FounderChatUnlock": {
-            "templateId": "Token:FounderChatUnlock",
-            "attributes": {
-                "max_level_bonus": 0,
-                "level": 1,
-                "item_seen": true,
-                "xp": 1,
-                "favorite": false
-            },
-            "quantity": 1
-        }
-    },
-    "stats": {},
-    "commandRevision": 0
-}
+        "stats": {},
+        "commandRevision": 0
+    }
+]
