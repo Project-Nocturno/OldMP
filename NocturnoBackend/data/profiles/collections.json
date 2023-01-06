@@ -1,8 +1,8 @@
 [
     {
         "_id": "defaultprofile",
-        "created": "2023-01-06T21:12:58Z",
-        "updated": "2023-01-06T21:12:58Z",
+        "created": "0001-01-01T00:00:00.000Z",
+        "updated": "0001-01-01T00:00:00.000Z",
         "rvn": 0,
         "wipeNumber": 1,
         "accountId": "defaultprofile",

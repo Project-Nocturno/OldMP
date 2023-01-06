@@ -4699,13 +4699,13 @@ class NBackend():
         xp=int(get(f'{api_url}/get/stats/stats.php?user={username}&action=exp', verify=False, proxies=proxy).json())
         top1=int(get(f'{api_url}/get/stats/stats.php?user={username}&action=top1', verify=False, proxies=proxy).json())
         
-        for i in listdir('data/profiles'):
+        for i in ['athena.json', 'profile0.json', 'common_core.json', 'common_public.json', 'collections.json']:
             print(f'data/profiles/{i}')
             file=loads(open(f'data/profiles/{i}', 'r', encoding='utf-8').read())
             
             for user in file:
                 if user['accountId']=='defaultprofile':
-                    basicprofile=user
+                    basicprofile=user.copy()
                     
             for user in file:
                 if user['accountId']==username:
@@ -4915,19 +4915,19 @@ class NBackend():
                                     new_items.update(item_temp)
                 
                 basicprofile['items']=new_items
-                basicprofile['stats']['accountLevel']=level
-                basicprofile['stats']['level']=level
-                basicprofile['stats']['xp']=xp
-                basicprofile['stats']['book_level']=0
-                basicprofile['stats']['lifetime_wins']=top1
-                basicprofile['stats']['book_xp']=0
+                basicprofile['stats']['attributes']['accountLevel']=level
+                basicprofile['stats']['attributes']['level']=level
+                basicprofile['stats']['attributes']['xp']=xp
+                basicprofile['stats']['attributes']['book_level']=0
+                basicprofile['stats']['attributes']['lifetime_wins']=top1
+                basicprofile['stats']['attributes']['book_xp']=0
             
-            if basicprofile['profileId']=='common_core':
+            elif basicprofile['profileId']=='common_core':
                 basicprofile['items']['Currency']['quantity']=mtx
                 basicprofile['items']['Token:FounderChatUnlock']['attributes']['level']=level
                 basicprofile['items']['Token:FounderChatUnlock']['attributes']['xp']=xp
                 
-            if basicprofile['profileId']=='profile0':
+            elif basicprofile['profileId']=='profile0':
                 basicprofile['stats']['attributes']['level']=level
                 basicprofile['stats']['attributes']['xp']=xp
             

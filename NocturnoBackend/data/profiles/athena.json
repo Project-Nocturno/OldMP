@@ -15,33 +15,19 @@
                     "locker_slots_data": {
                         "slots": {
                             "MusicPack": {
-                                "items": [
-                                    "AthenaMusicPack:MusicPack_119_CH1_DefaultMusic"
-                                ]
+                                "items": [""]
                             },
                             "Character": {
-                                "items": [
-                                    "AthenaCharacter:CID_001_Athena_Commando_F_Default"
-                                ],
-                                "activeVariants": [
-                                    null
-                                ]
+                                "items": [""],
+                                "activeVariants": [null]
                             },
                             "Backpack": {
-                                "items": [
-                                    ""
-                                ],
-                                "activeVariants": [
-                                    null
-                                ]
+                                "items": [""],
+                                "activeVariants": [null]
                             },
                             "SkyDiveContrail": {
-                                "items": [
-                                    ""
-                                ],
-                                "activeVariants": [
-                                    null
-                                ]
+                                "items": [""],
+                                "activeVariants": [null]
                             },
                             "Dance": {
                                 "items": [
@@ -110,9 +96,7 @@
             "attributes": {
                 "past_seasons": [],
                 "season_match_boost": 0,
-                "loadouts": [
-                    "ettrr4h-2wedfgbn-8i9jsghj-lpw9t2to-loadout1"
-                ],
+                "loadouts": ["ettrr4h-2wedfgbn-8i9jsghj-lpw9t2to-loadout1"],
                 "favorite_victorypose": "",
                 "mfa_reward_claimed": true,
                 "quest_manager": {
@@ -144,9 +128,7 @@
                 "favorite_vehicledeco": "",
                 "accountLevel": 0,
                 "favorite_backpack": "",
-                "favorite_dance": [
-                    ""
-                ],
+                "favorite_dance": [""],
                 "inventory_limit_bonus": 0,
                 "last_applied_loadout": "",
                 "favorite_skydivecontrail": "",
