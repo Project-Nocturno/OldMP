@@ -1,8 +1,8 @@
 [
     {
         "_id": "defaultprofile",
-        "created": "0001-01-01T00:00:00.000Z",
-        "updated": "0001-01-01T00:00:00.000Z",
+        "created": "2023-01-06T21:13:08Z",
+        "updated": "2023-01-06T21:13:08Z",
         "rvn": 0,
         "wipeNumber": 1,
         "accountId": "defaultprofile",
@@ -54,7 +54,7 @@
                 "client_settings": {
                     "pinnedQuestInstances": []
                 },
-                "level": 0,
+                "level": 1,
                 "named_counters": {
                     "SubGameSelectCount_Campaign": {
                         "current_count": 0,

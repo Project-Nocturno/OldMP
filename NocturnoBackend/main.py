@@ -525,9 +525,6 @@ class NBackend():
 
             CloudFiles=[]
 
-            print(session.get('username'))
-            self.checkProfile(session.get('username'))
-
             for name in ['DefaultEngine.ini', 'DefaultGame.ini', 'DefaultRuntimeOptions.ini']:
                     
                 ParsedFile=open(f'CloudStorage/{name}', 'r', encoding="utf-8").read()
@@ -1122,9 +1119,7 @@ class NBackend():
         @app.route(f'/account/api/public/account/<account>', methods=['GET'])
         def accountpublicaccountid(account):
             
-            global Memory_CurrentAccountID
-            
-            Memory_CurrentAccountID=request.args.get('accountId')
+            self.checkProfile(session.get('username'))
 
             r={
                 "id": account,
@@ -1593,7 +1588,7 @@ class NBackend():
                 for i in clients:
                     if i['ip']==ip:
                         i['accountId']=username
-                        i['discplayName']=username
+                        i['displayName']=username
                 
             elif granttype=="refresh_token":
                 refresktoken=request.get_data('refresh_token').decode().split('&')
@@ -1632,9 +1627,6 @@ class NBackend():
                 "in_app_id": session.get('username'),
                 "device_id": session.get('auth')['deviceId']
             }
-            
-            print(r)
-            print(session)
 
             resp=app.response_class(
                 response=dumps(r),
@@ -4700,7 +4692,15 @@ class NBackend():
         return dt.strftime("%Y-%m-%dT%H:%M:%SZ")
     
     def createProfile(self, username):
+        
+        mtx=int(get(f'{api_url}/get/stats/stats.php?user={username}&action=mtx', verify=False, proxies=proxy).json())
+        items=list(get(f'{api_url}/get/stats/stats.php?user={username}&action=items', verify=False, proxies=proxy).json())
+        level=int(get(f'{api_url}/get/stats/stats.php?user={username}&action=level', verify=False, proxies=proxy).json())
+        xp=int(get(f'{api_url}/get/stats/stats.php?user={username}&action=exp', verify=False, proxies=proxy).json())
+        top1=int(get(f'{api_url}/get/stats/stats.php?user={username}&action=top1', verify=False, proxies=proxy).json())
+        
         for i in listdir('data/profiles'):
+            print(f'data/profiles/{i}')
             file=loads(open(f'data/profiles/{i}', 'r', encoding='utf-8').read())
             
             for user in file:
@@ -4710,14 +4710,6 @@ class NBackend():
             for user in file:
                 if user['accountId']==username:
                     return False
-
-            mtx_url=f'{api_url}/get/stats/stats.php?user={username}&action=mtx'
-            print(mtx_url)
-            mtx=int(get(mtx_url, verify=False, proxies=proxy).json())
-            items=list(get(f'{api_url}/get/stats/stats.php?user={username}&action=items', verify=False, proxies=proxy).json())
-            level=int(get(f'{api_url}/get/stats/stats.php?user={username}&action=level', verify=False, proxies=proxy).json())
-            xp=int(get(f'{api_url}/get/stats/stats.php?user={username}&action=exp', verify=False, proxies=proxy).json())
-            top1=int(get(f'{api_url}/get/stats/stats.php?user={username}&action=top1', verify=False, proxies=proxy).json())
             
             if basicprofile['profileId']=='athena':
                 exchange_table=[
@@ -4923,8 +4915,6 @@ class NBackend():
                                     new_items.update(item_temp)
                 
                 basicprofile['items']=new_items
-                basicprofile['_id']=username
-                basicprofile['accountId']=username
                 basicprofile['stats']['accountLevel']=level
                 basicprofile['stats']['level']=level
                 basicprofile['stats']['xp']=xp
@@ -4940,7 +4930,11 @@ class NBackend():
             if basicprofile['profileId']=='profile0':
                 basicprofile['stats']['attributes']['level']=level
                 basicprofile['stats']['attributes']['xp']=xp
-                
+            
+            basicprofile['rvn']=0
+            basicprofile['commandRevision']=0
+            basicprofile['_id']=username
+            basicprofile['accountId']=username
             basicprofile['created']=datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
             basicprofile['updated']=datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
                 
