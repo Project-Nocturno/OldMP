@@ -11,8 +11,10 @@
         "items": {
             "Currency": {
                 "templateId": "Currency:MtxPurchased",
-                "attributes": {"platform": "EpicPC"},
-                "quantity": 0
+                "attributes": {
+                    "platform": "EpicPC"
+                },
+                "quantity": 11500
             },
             "Token:FounderChatUnlock": {
                 "templateId": "Token:FounderChatUnlock",

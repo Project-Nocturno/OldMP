@@ -15,19 +15,33 @@
                     "locker_slots_data": {
                         "slots": {
                             "MusicPack": {
-                                "items": [""]
+                                "items": [
+                                    ""
+                                ]
                             },
                             "Character": {
-                                "items": [""],
-                                "activeVariants": [null]
+                                "items": [
+                                    ""
+                                ],
+                                "activeVariants": [
+                                    null
+                                ]
                             },
                             "Backpack": {
-                                "items": [""],
-                                "activeVariants": [null]
+                                "items": [
+                                    ""
+                                ],
+                                "activeVariants": [
+                                    null
+                                ]
                             },
                             "SkyDiveContrail": {
-                                "items": [""],
-                                "activeVariants": [null]
+                                "items": [
+                                    ""
+                                ],
+                                "activeVariants": [
+                                    null
+                                ]
                             },
                             "Dance": {
                                 "items": [
@@ -96,7 +110,9 @@
             "attributes": {
                 "past_seasons": [],
                 "season_match_boost": 0,
-                "loadouts": ["ettrr4h-2wedfgbn-8i9jsghj-lpw9t2to-loadout1"],
+                "loadouts": [
+                    "ettrr4h-2wedfgbn-8i9jsghj-lpw9t2to-loadout1"
+                ],
                 "favorite_victorypose": "",
                 "mfa_reward_claimed": true,
                 "quest_manager": {
@@ -122,20 +138,22 @@
                 "book_purchased": false,
                 "lifetime_wins": 0,
                 "favorite_hat": "",
-                "level": 0,
+                "level": 1,
                 "favorite_battlebus": "",
                 "favorite_mapmarker": "",
                 "favorite_vehicledeco": "",
-                "accountLevel": 0,
+                "accountLevel": 1,
                 "favorite_backpack": "",
-                "favorite_dance": [""],
+                "favorite_dance": [
+                    ""
+                ],
                 "inventory_limit_bonus": 0,
                 "last_applied_loadout": "",
                 "favorite_skydivecontrail": "",
                 "favorite_pickaxe": "",
                 "favorite_glider": "",
                 "daily_rewards": {},
-                "xp": 0,
+                "xp": 1,
                 "season_friend_match_boost": 0,
                 "active_loadout_index": 0,
                 "favorite_musicpack": "",

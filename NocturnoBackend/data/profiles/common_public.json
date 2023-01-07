@@ -11,7 +11,9 @@
         "items": {
             "Token:nocturnobackend": {
                 "templateId": "Token:nocturnobackend",
-                "attributes": {"item_seen": true},
+                "attributes": {
+                    "item_seen": true
+                },
                 "quantity": 1
             }
         },

@@ -1182,8 +1182,6 @@ class NBackend():
                 "device_id": token.split('|')[2].split(':')[1]
             }
 
-            print(r)
-
             resp=app.response_class(
                 response=dumps(r),
                 status=200,
@@ -1549,7 +1547,6 @@ class NBackend():
                 return resp
             
             granttype=request.get_data('grant_type').decode().split('&')[0].split('=')[1]
-            print(granttype)
             
             if granttype=="client_credentials":
                 auth=self.genClient(ip, clientId)
@@ -1773,11 +1770,11 @@ class NBackend():
             itemId=loads(request.get_data('offerId'))['offerId']
             profile=loads(open(f'data/profiles/profile0.json', 'r', encoding='utf-8').read())
             for i in profile:
-                if i['accountId']==session.get('username'):
+                if i['accountId']==account:
                     profile=i
             athena=loads(open(f'data/profiles/athena.json', 'r', encoding='utf-8').read())
             for i in athena:
-                if i['accountId']==session.get('username'):
+                if i['accountId']==account:
                     athena=i
             catalog=self.getShop()
             ItemIDS={}
@@ -1791,14 +1788,6 @@ class NBackend():
             AthenaModified=False
             ItemExists=False
             
-            conv_table=[
-                {'name': 'skins', 'id': 'AthenaCharacter'}, 
-                {'name': 'backpacks', 'id': 'AthenaBackpack'}, 
-                {'name': 'gliders', 'id': 'AthenaGlider'},
-                {'name': 'pickaxes', 'id': 'AthenaPickaxe'},
-                {'name': 'musicspacks', 'id': 'AthenaMusicPack'},
-                {'name': 'loadingscreens', 'id': 'AthenaLoadingScreen'}
-            ]
             exchange_table=[
                 {'name': 'tomatohead', 'id': 'CID_109_Athena_Commando_M_Pizza', 'price': 1500, 'style': 'skins'},
                 {'name': 'tricera_ops', 'id': 'CID_107_Athena_Commando_F_PajamaParty', 'price': 2000, 'style': 'skins'},
@@ -1919,10 +1908,9 @@ class NBackend():
             for i in exchange_table:
                 if itemId==i['id']:
                     r=get(f"{api_url}/post/item/item.php?urlkey={urlkey}&token&passwd=&usernm={account}&item={i['name']}&action=buy_item", verify=False, proxies=proxy).text
-                    print(r)
                     if r!="error":
                         if r!="already_exist":
-                            print("db but op")
+                            pass
                     else:
                         pass
             
@@ -3277,7 +3265,6 @@ class NBackend():
                     profile['rvn'] += 1
                     profile['commandRevision'] += 1
 
-                    print(MultiUpdate)
                     if len(MultiUpdate)!=0:
                         MultiUpdate[0]['profileRevision']=profile['rvn'] or 0
                         MultiUpdate[0]['profileCommandRevision']=profile['commandRevision'] or 0
@@ -3312,7 +3299,7 @@ class NBackend():
             
             profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
             for i in profile:
-                if i['accountId']==session.get('username'):
+                if i['accountId']==account:
                     profile=i
             
             ApplyProfileChanges=[]
@@ -3364,7 +3351,7 @@ class NBackend():
             
             profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
             for i in profile:
-                if i['accountId']==session.get('username'):
+                if i['accountId']==account:
                     profile=i
 
             ApplyProfileChanges=[]
@@ -3416,7 +3403,7 @@ class NBackend():
             
             profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
             for i in profile:
-                if i['accountId']==session.get('username'):
+                if i['accountId']==account:
                     profile=i
 
             ApplyProfileChanges=[]
@@ -3469,7 +3456,7 @@ class NBackend():
             
             profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
             for i in profile:
-                if i['accountId']==session.get('username'):
+                if i['accountId']==account:
                     profile=i
 
             ApplyProfileChanges=[]
@@ -3527,7 +3514,7 @@ class NBackend():
             
             profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
             for i in profile:
-                if i['accountId']==session.get('username'):
+                if i['accountId']==account:
                     profile=i
             
             try:
@@ -3571,9 +3558,9 @@ class NBackend():
                 
                 slotNameJ=loads(request.get_data('slotName'))['slotName']
                 itemToSlotJ=loads(request.get_data('itemToSlot'))['itemToSlot']
-                r=get(f"{self.api_url}/post/item/item.php?urlkey={urlkey}&usrnm={account}&passwd=&token=&user={account}&item={itemToSlotJ}&style={slotNameJ.lower()}&action=add_favorite&target_user={account}", verify=False, proxies=proxy).text
-                if r!="error":
-                    pass
+                # r=get(f"{self.api_url}/post/item/item.php?urlkey={urlkey}&usrnm={account}&passwd=&token=&user={account}&item={itemToSlotJ}&style={slotNameJ.lower()}&action=add_favorite&target_user={account}", verify=False, proxies=proxy).text
+                # if r!="error":
+                #     pass
                 
                 if slotNameJ=="Character":
                     profile['stats']['attributes']['favorite_character']=itemToSlotJ or ""
@@ -3695,7 +3682,7 @@ class NBackend():
             
             profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
             for i in profile:
-                if i['accountId']==session.get('username'):
+                if i['accountId']==account:
                     profile=i
 
             ApplyProfileChanges=[]
@@ -3730,7 +3717,7 @@ class NBackend():
             
             profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
             for i in profile:
-                if i['accountId']==session.get('username'):
+                if i['accountId']==account:
                     profile=i
 
             ApplyProfileChanges=[]
@@ -3790,7 +3777,7 @@ class NBackend():
             
             profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
             for i in profile:
-                if i['accountId']==session.get('username'):
+                if i['accountId']==account:
                     profile=i
             QuestIDS=loads(open(f'data/items/quests.json', 'r', encoding='utf-8').read())
             memory=self.getVersion(request=request)
@@ -4053,7 +4040,7 @@ class NBackend():
             
             profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
             for i in profile:
-                if i['accountId']==session.get('username'):
+                if i['accountId']==account:
                     profile=i
 
             ApplyProfileChanges=[]
@@ -4144,11 +4131,11 @@ class NBackend():
         def refund_mtx_purchase(account):
             profile=loads(open(f'data/profiles/{request.args.get("profileId") or "common_core"}.json', 'r', encoding='utf-8').read())
             for i in profile:
-                if i['accountId']==session.get('username'):
+                if i['accountId']==account:
                     profile=i
             item_profile=loads(open(f'data/profiles/athena.json', 'r', encoding='utf-8').read())
             for i in item_profile:
-                if i['accountId']==session.get('username'):
+                if i['accountId']==account:
                     item_profile=i
 
             apply_profile_changes = []
@@ -4251,7 +4238,7 @@ class NBackend():
         def update_quest_client_objectives(account):
             profile=loads(open(f'data/profiles/{request.args.get("profileId") or "campaign"}.json', 'r', encoding='utf-8').read())
             for i in profile:
-                if i['accountId']==session.get('username'):
+                if i['accountId']==account:
                     profile=i
 
             apply_profile_changes = []
@@ -4329,7 +4316,7 @@ class NBackend():
         def FortRerollDailyQuest(account):
             profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
             for i in profile:
-                if i['accountId']==session.get('username'):
+                if i['accountId']==account:
                     profile=i
             DailyQuestIDS=loads(open(f'data/items/quests.json', 'r', encoding='utf-8').read())
 
@@ -4700,7 +4687,6 @@ class NBackend():
         top1=int(get(f'{api_url}/get/stats/stats.php?user={username}&action=top1', verify=False, proxies=proxy).json())
         
         for i in ['athena.json', 'profile0.json', 'common_core.json', 'common_public.json', 'collections.json']:
-            print(f'data/profiles/{i}')
             file=loads(open(f'data/profiles/{i}', 'r', encoding='utf-8').read())
             
             for user in file:
@@ -4789,118 +4775,96 @@ class NBackend():
                 
                 new_items={
                     "ettrr4h-2wedfgbn-8i9jsghj-lpw9t2to-loadout1": {
-                        "templateId": "CosmeticLocker:cosmeticlocker_athena",
-                        "attributes": {
-                            "locker_slots_data": {
-                                "slots": {
-                                    "MusicPack": {
-                                        "items": [
-                                            "AthenaMusicPack:MusicPack_119_CH1_DefaultMusic"
-                                        ]
-                                    },
-                                    "Character": {
-                                        "items": [
-                                            "AthenaCharacter:CID_001_Athena_Commando_F_Default"
-                                        ],
-                                        "activeVariants": [
-                                            None
-                                        ]
-                                    },
-                                    "Backpack": {
-                                        "items": [
-                                            ""
-                                        ],
-                                        "activeVariants": [
-                                            None
-                                        ]
-                                    },
-                                    "SkyDiveContrail": {
-                                        "items": [
-                                            ""
-                                        ],
-                                        "activeVariants": [
-                                            None
-                                        ]
-                                    },
-                                    "Dance": {
-                                        "items": [
-                                            "AthenaDance:eid_dancemoves",
-                                            "",
-                                            "",
-                                            "",
-                                            "",
-                                            ""
-                                        ]
-                                    },
-                                    "LoadingScreen": {
-                                        "items": [
-                                            ""
-                                        ]
-                                    },
-                                    "Pickaxe": {
-                                        "items": [
-                                            "AthenaPickaxe:DefaultPickaxe"
-                                        ],
-                                        "activeVariants": [
-                                            None
-                                        ]
-                                    },
-                                    "Glider": {
-                                        "items": [
-                                            "AthenaGlider:DefaultGlider"
-                                        ],
-                                        "activeVariants": [
-                                            None
-                                        ]
-                                    },
-                                    "ItemWrap": {
-                                        "items": [
-                                            "",
-                                            "",
-                                            "",
-                                            "",
-                                            "",
-                                            "",
-                                            ""
-                                        ],
-                                        "activeVariants": [
-                                            None,
-                                            None,
-                                            None,
-                                            None,
-                                            None,
-                                            None,
-                                            None
-                                        ]
-                                    }
+                    "templateId": "CosmeticLocker:cosmeticlocker_athena",
+                    "attributes": {
+                        "locker_slots_data": {
+                            "slots": {
+                                "MusicPack": {
+                                    "items": [""]
+                                },
+                                "Character": {
+                                    "items": [""],
+                                    "activeVariants": [None]
+                                },
+                                "Backpack": {
+                                    "items": [""],
+                                    "activeVariants": [None]
+                                },
+                                "SkyDiveContrail": {
+                                    "items": [""],
+                                    "activeVariants": [None]
+                                },
+                                "Dance": {
+                                    "items": [
+                                        "AthenaDance:eid_dancemoves",
+                                        "",
+                                        "",
+                                        "",
+                                        "",
+                                        ""
+                                    ]
+                                },
+                                "LoadingScreen": {
+                                    "items": [
+                                        ""
+                                    ]
+                                },
+                                "Pickaxe": {
+                                    "items": ["AthenaPickaxe:DefaultPickaxe"],
+                                    "activeVariants": [None]
+                                },
+                                "Glider": {
+                                    "items": ["AthenaGlider:DefaultGlider"],
+                                    "activeVariants": [None]
+                                },
+                                "ItemWrap": {
+                                    "items": [
+                                        "",
+                                        "",
+                                        "",
+                                        "",
+                                        "",
+                                        "",
+                                        ""
+                                    ],
+                                    "activeVariants": [
+                                        None,
+                                        None,
+                                        None,
+                                        None,
+                                        None,
+                                        None,
+                                        None
+                                    ]
                                 }
-                            },
-                            "use_count": 0,
-                            "banner_icon_template": "StandardBanner1",
-                            "banner_color_template": "DefaultColor14",
-                            "locker_name": "NocturnoServer",
-                            "item_seen": False,
-                            "favorite": False
+                            }
                         },
-                        "quantity": 1
+                        "use_count": 0,
+                        "banner_icon_template": "StandardBanner1",
+                        "banner_color_template": "DefaultColor14",
+                        "locker_name": "NocturnoServer",
+                        "item_seen": False,
+                        "favorite": False
+                    },
+                    "quantity": 1
                     }
                 }
                 
                 items_id=[]
-                for i in items:
+                for p in items:
                     for x in exchange_table:
-                        if i==x['name']:
+                        if p==x['name']:
                             items_id.append(x['id'])
                             
-                for i in items_id:
+                for p in items_id:
                     for x in exchange_table:
-                        if i==x['id']:
+                        if p==x['id']:
                             for z in conv_table:
                                 if z['name']==x['style']:
-                                    i=f"{z['id']}:{i}"
+                                    p=f"{z['id']}:{p}"
                                     item_temp={
-                                        i: {
-                                            "templateId": i,
+                                        p: {
+                                            "templateId": p,
                                             "attributes": {
                                                 "max_level_bonus": 0,
                                                 "level": 1,
@@ -4914,7 +4878,7 @@ class NBackend():
                                     }
                                     new_items.update(item_temp)
                 
-                basicprofile['items']=new_items
+                basicprofile['items']=dict(new_items)
                 basicprofile['stats']['attributes']['accountLevel']=level
                 basicprofile['stats']['attributes']['level']=level
                 basicprofile['stats']['attributes']['xp']=xp
