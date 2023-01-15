@@ -1163,7 +1163,9 @@ class NBackend():
         def accountoauthverify():
             
             token=request.headers.get('authorization').split("bearer ")[1]
-            
+            tkn=token.split('NOCTURNOISBETTER_')[1].encode()
+            token=dec(tkn).decode()
+            print(token)
             
             r={
                 "token": token,
@@ -1173,8 +1175,8 @@ class NBackend():
                 "internal_client": True,
                 "client_service": "fortnite",
                 "account_id": session.get('username'),
-                "expires_in": 28800,
-                "expires_at": self.createDate(8),
+                "expires_in": 600,
+                "expires_at": self.createDate(0, 10, 0),
                 "auth_method": "exchange_code",
                 "display_name": session.get('username'),
                 "app": "fortnite",
@@ -1398,6 +1400,8 @@ class NBackend():
         @app.route('/datarouter/api/v1/public/data', methods=['POST'])
         def datarouterapipublicdata():
 
+            print(request.stream.read())
+
             resp=Response()
             resp.status_code=204
             return resp
@@ -1548,13 +1552,15 @@ class NBackend():
             
             granttype=request.get_data('grant_type').decode().split('&')[0].split('=')[1]
             
+            print(granttype)
+            
             if granttype=="client_credentials":
                 auth=self.genClient(ip, clientId)
                 session['auth']=auth
                 r={
                     "access_token": auth['token'],
-                    "expires_in": 14400,
-                    "expires_at": self.createDate(4),
+                    "expires_in": 300,
+                    "expires_at": self.createDate(0, 5, 0),
                     "token_type": "bearer",
                     "client_id": clientId,
                     "internal_client": True,
@@ -1588,6 +1594,8 @@ class NBackend():
                         i['displayName']=username
                 
             elif granttype=="refresh_token":
+                print(request.get_data('refresh_token'))
+                print(request.get_data())
                 refresktoken=request.get_data('refresh_token').decode().split('&')
                 print(refresktoken)
                 if not refresktoken:
@@ -1609,12 +1617,12 @@ class NBackend():
 
             r={
                 "access_token": session.get('auth')['token'],
-                "expires_in": 28800,
-                "expires_at": self.createDate(8),
+                "expires_in": 300,
+                "expires_at": self.createDate(0, 5, 0),
                 "token_type": "bearer",
                 "refresh_token": session.get('auth')['token'],
-                "refresh_expires": 86400,
-                "refresh_expires_at": self.createDate(24),
+                "refresh_expires": 600,
+                "refresh_expires_at": self.createDate(0, 10, 0),
                 "account_id": session.get('username'),
                 "client_id": session.get('clientId'),
                 "internal_client": True,
@@ -1728,7 +1736,7 @@ class NBackend():
             r={
                 "accountId": session.get('username'),
                 "sessionId": session.get('sessionId'),
-                "key": "AOJEv8uTFmUh7XM2328kq9rlAzeQ5xzWzPIiyKn2s7s="
+                "key": "KvOWLwXTUO6XyXsZGpK0_GvEKZatDxwb34-rJNUW8Fs="
             }
 
             resp=app.response_class(
@@ -1767,15 +1775,21 @@ class NBackend():
 
         @app.route('/fortnite/api/game/v2/profile/<account>/client/PurchaseCatalogEntry', methods=['POST'])
         def PurchaseCatalogEntry(account):
+            
             itemId=loads(request.get_data('offerId'))['offerId']
-            profile=loads(open(f'data/profiles/profile0.json', 'r', encoding='utf-8').read())
-            for i in profile:
+            
+            profiles=loads(open(f'data/profiles/profile0.json', 'r', encoding='utf-8').read())
+            
+            for i in profiles:
                 if i['accountId']==account:
-                    profile=i
+                    profile=i.copy()
+                    
             athena=loads(open(f'data/profiles/athena.json', 'r', encoding='utf-8').read())
+            
             for i in athena:
                 if i['accountId']==account:
                     athena=i
+                    
             catalog=self.getShop()
             ItemIDS={}
             
@@ -1916,56 +1930,6 @@ class NBackend():
             
             if loads(request.get_data('offerId'))['offerId'] and request.args.get('profileId')=="profile0" and PurchasedLlama==False:
                 for a, value in enumerate(catalog['storefronts']):
-                    if value['name'].lower().startswith("cardpack"):
-                        for b, value in enumerate(catalog['storefronts'][a]['catalogEntries']):
-                            if value['offerId'] == loads(request.get_data('offerId'))['offerId']:
-                                Quantity=0
-                                for c, value in enumerate(catalog['storefronts'][a]['catalogEntries'][b]['itemGrants']):
-                                    Quantity=loads(request.get_data('purchaseQuantity'))['purchaseQuantity'] or 1
-
-                                    Item={
-                                        "templateId": value['templateId'],
-                                        "attributes": {
-                                            "is_loot_tier_overridden": False,
-                                            "max_level_bonus": 0,
-                                            "level": 1391,
-                                            "pack_source": "Schedule",
-                                            "item_seen": False,
-                                            "xp": 0,
-                                            "favorite": False,
-                                            "override_loot_tier": 0
-                                        },
-                                        "quantity": 1
-                                    }
-
-                                    for i in range(Quantity):
-                                        ID=str(uuid4()).replace("-", "")
-
-                                        profile['items'][ID]=Item
-
-                                        ApplyProfileChanges.append({
-                                            "changeType": "itemAdded",
-                                            "itemId": ID,
-                                            "item": profile['items'][ID]
-                                        })
-                                
-                                if catalog['storefronts'][a]['catalogEntries'][b]['prices'][0]['currencyType'].lower() == "mtxcurrency":
-                                    for key in profile['items']:
-                                        if profile['items'][key]['templateId'].lower().startswith("Currency:Mtx"):
-                                            if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
-                                                profile['items'][key]['quantity'] -= (catalog['storefronts'][a]['catalogEntries'][b]['prices'][0]['finalPrice']) * Quantity
-                                                                                
-                                                ApplyProfileChanges.append({
-                                                    "changeType": "itemQuantityChanged",
-                                                    "itemId": key,
-                                                    "quantity": profile['items'][key]['quantity']
-                                                })
-                                                        
-                                                profile['rvn'] += 1
-                                                profile['commandRevision'] += 1
-                                                        
-                                                break
-
                     if value['name'].startswith("BRSeason"):
                         if not isinstance(value['name'].split("BRSeason")[1], int):
                             for i in value['catalogEntries']:
@@ -2022,9 +1986,9 @@ class NBackend():
                                                         "value": SeasonData[Season]['battlePassXPFriendBoost']
                                                     })
 
-                                                if item.lower().startswith("Currency:Mtx"):
+                                                if item.lower().startswith("currency:mtx"):
                                                     for key in profile['items']:
-                                                        if profile['items'][key]['templateId'].lower().startswith("Currency:Mtx"):
+                                                        if profile['items'][key]['templateId'].lower().startswith("currency:mtx"):
                                                             if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
                                                                 profile['items'][key]['quantity'] += FreeTier[item]
                                                                 break
@@ -2108,9 +2072,9 @@ class NBackend():
                                                         "value": SeasonData[Season]['battlePassXPFriendBoost']
                                                     })
 
-                                                if item.lower().startswith("Currency:Mtx"):
+                                                if item.lower().startswith("currency:mtx"):
                                                     for key in profile['items']:
-                                                        if profile['items'][key]['templateId'].lower().startswith("Currency:Mtx"):
+                                                        if profile['items'][key]['templateId'].lower().startswith("currency:mtx"):
                                                             if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
                                                                 profile['items'][key]['quantity'] += PaidTier[item]
                                                                 break
@@ -2231,9 +2195,9 @@ class NBackend():
                                                         "value": SeasonData[Season]['battlePassXPFriendBoost']
                                                     })
 
-                                                if item.lower().startswith("Currency:Mtx"):
+                                                if item.lower().startswith("currency:mtx"):
                                                     for key in profile['items']:
-                                                        if profile['items'][key]['templateId'].lower().startswith("Currency:Mtx"):
+                                                        if profile['items'][key]['templateId'].lower().startswith("currency:mtx"):
                                                             if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
                                                                 profile['items'][key]['quantity'] += FreeTier[item]
                                                                 break
@@ -2317,9 +2281,9 @@ class NBackend():
                                                         "value": SeasonData[Season]['battlePassXPFriendBoost']
                                                     })
 
-                                                if item.lower().startswith("Currency:Mtx"):
+                                                if item.lower().startswith("currency:mtx"):
                                                     for key in profile['items']:
-                                                        if profile['items'][key]['templateId'].lower().startswith("Currency:Mtx"):
+                                                        if profile['items'][key]['templateId'].lower().startswith("currency:mtx"):
                                                             if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
                                                                 profile['items'][key]['quantity'] += PaidTier[item]
                                                                 break
@@ -2470,7 +2434,7 @@ class NBackend():
                                     
                                 if catalog['storefronts'][a]['catalogEntries'][b]['prices'][0]['currencyType'].lower() == "mtxcurrency":
                                     for key in profile['items']:
-                                        if profile['items'][key]['templateId'].lower().startswith("Currency:Mtx"):
+                                        if profile['items'][key]['templateId'].lower().startswith("currency:mtx"):
                                             if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
                                                 profile['items'][key]['quantity'] -= (catalog['storefronts'][a]['catalogEntries'][b]['prices'][0]['finalPrice']) * loads(request.get_data('purchaseQuantity'))['purchaseQuantity'] or 1
                                 
@@ -2508,223 +2472,6 @@ class NBackend():
             if loads(request.get_data('offerId'))['offerId'] and request.args.get('profileId') == "common_core":
                 for a, value in enumerate(catalog['storefronts']):
                     if hasattr(value, 'name'):
-                        if value['name'].lower().startswith("cardpack"):
-                            for b, value in enumerate(catalog['storefronts'][a]['catalogEntries']):
-                                if value['offerId'] == loads(request.get_data('offerId'))['offerId']:
-                                    Quantity=0
-                                    for c, value in enumerate(catalog['storefronts'][a]['catalogEntries'][b]['itemGrants']):
-                                        memory=self.getVersion(request=request)
-
-                                        if 4 >= memory['season'] and PurchasedLlama == False:
-                                            if len(MultiUpdate)== 0:
-                                                MultiUpdate.append({
-                                                    "profileRevision": profile['rvn'] or 0,
-                                                    "profileId": "campaign",
-                                                    "profileChangesBaseRevision": profile['rvn'] or 0,
-                                                    "profileChanges": [],
-                                                    "profileCommandRevision": profile['commandRevision'] or 0,
-                                                })
-
-                                            Quantity=loads(request.get_data('purchaseQuantity'))['purchaseQuantity'] or 1
-
-                                            Item={
-                                                "templateId": value['templateId'],
-                                                "attributes": {
-                                                    "is_loot_tier_overridden": False,
-                                                    "max_level_bonus": 0,
-                                                    "level": 1391,
-                                                    "pack_source": "Schedule",
-                                                    "item_seen": False,
-                                                    "xp": 0,
-                                                    "favorite": False,
-                                                    "override_loot_tier": 0
-                                                },
-                                                "quantity": 1
-                                            }
-
-                                            for i in range(Quantity):
-                                                ID=str(uuid4()).replace("-", "")
-                
-                                                profile['items'][ID]=Item
-
-                                                MultiUpdate[0]['profileChanges'].append({
-                                                    "changeType": "itemAdded",
-                                                    "itemId": ID,
-                                                    "item": profile['items'][ID]
-                                                })
-
-                                            PurchasedLlama=True
-
-                                        if memory['build'] >= 5 and memory['build'] <= 7.20 and PurchasedLlama == False:
-                                            if len(MultiUpdate) == 0:
-                                                MultiUpdate.append({
-                                                    "profileRevision": profile['rvn'] or 0,
-                                                    "profileId": "campaign",
-                                                    "profileChangesBaseRevision": profile['rvn'] or 0,
-                                                    "profileChanges": [],
-                                                    "profileCommandRevision": profile['commandRevision'] or 0,
-                                                })
-
-                                            Quantity=loads(request.get_data('purchaseQuantity'))['purchaseQuantity'] or 1
-
-                                            Item={
-                                                "templateId": value['templateId'],
-                                                "attributes": {
-                                                    "is_loot_tier_overridden": False,
-                                                    "max_level_bonus": 0,
-                                                    "level": 1391,
-                                                    "pack_source": "Schedule",
-                                                    "item_seen": False,
-                                                    "xp": 0,
-                                                    "favorite": False,
-                                                    "override_loot_tier": 0
-                                                },
-                                                "quantity": 1
-                                            }
-
-                                            for i in range(Quantity):
-                                                ID=str(uuid4()).replace("-", "")
-                
-                                                profile['items'][ID]=Item
-
-                                                MultiUpdate[0]['profileChanges'].append({
-                                                    "changeType": "itemAdded",
-                                                    "itemId": ID,
-                                                    "item": profile['items'][ID]
-                                                })
-
-                                            Notifications.append({
-                                                "type": "cardPackResult",
-                                                "primary": True,
-                                                "lootGranted": {
-                                                    "tierGroupName": "",
-                                                    "items": []
-                                                },
-                                                "displayLevel": 0
-                                            })
-
-                                            PurchasedLlama=True
-
-                                        if 6 < memory['season'] and PurchasedLlama == False:
-                                            if len(MultiUpdate) == 0:
-                                                MultiUpdate.append({
-                                                    "profileRevision": profile['rvn'] or 0,
-                                                    "profileId": "campaign",
-                                                    "profileChangesBaseRevision": profile['rvn'] or 0,
-                                                    "profileChanges": [],
-                                                    "profileCommandRevision": profile['commandRevision'] or 0,
-                                                })
-
-                                            Quantity=loads(request.get_data('purchaseQuantity'))['purchaseQuantity'] or 1
-                                            LlamaItemIDS=[]
-
-                                            Item={
-                                                "templateId": value['templateId'],
-                                                "attributes": {
-                                                    "is_loot_tier_overridden": False,
-                                                    "max_level_bonus": 0,
-                                                    "level": 1391,
-                                                    "pack_source": "Schedule",
-                                                    "item_seen": False,
-                                                    "xp": 0,
-                                                    "favorite": False,
-                                                    "override_loot_tier": 0
-                                                },
-                                                "quantity": 1
-                                            }
-
-                                            for i in range(Quantity):
-                                                ID=str(uuid4()).replace("-", "")
-                
-                                                profile['items'][ID]=Item
-
-                                                MultiUpdate[0]['profileChanges'].append({
-                                                    "changeType": "itemAdded",
-                                                    "itemId": ID,
-                                                    "item": profile['items'][ID]
-                                                })
-
-                                                LlamaItemIDS.append(ID)
-
-                                            Notifications.append({
-                                                "type": "CatalogPurchase",
-                                                "primary": True,
-                                                "lootResult": {
-                                                    "items": []
-                                                }
-                                            })
-
-                                            if request.get_data('currencySubType').lower() != "accountresource:voucher_basicpack":
-                                                for x in range(Quantity):
-                                                    for key in profile['items']:
-                                                        if profile['items'][key]['templateId'].lower() == "prerolldata:preroll_basic":
-                                                            if profile['items'][key]['attributes']['offerId'] == loads(request.get_data('offerId'))['offerId']:
-                                                                for item in profile['items'][key]['attributes']['items']:
-                                                                    id=str(uuid4()).replace("-", "")
-                                                                    Item={"templateId":profile['items'][key]['attributes']['items'][item].itemType,"attributes":profile['items'][key]['attributes']['items'][item]['attributes'],"quantity":profile['items'][key]['attributes']['items'][item]['quantity']}
-                            
-                                                                    profile['items'][id]=Item
-
-                                                                    MultiUpdate[0]['profileChanges'].append({
-                                                                        "changeType": "itemAdded",
-                                                                        "itemId": id,
-                                                                        "item": Item
-                                                                    })
-
-                                                                    Notifications[0]['lootResult'].lower().append({
-                                                                        "itemType": profile['items'][key]['attributes']['items'][item].itemType,
-                                                                        "itemGuid": id,
-                                                                        "itemProfile": "campaign",
-                                                                        "attributes": Item['attributes'],
-                                                                        "quantity": 1
-                                                                    })
-
-                                                                profile['items'][key]['attributes']['items']=[]
-
-                                                                for i in range(10):
-                                                                    randomNumber=round(random.randint()*len(ItemIDS))
-
-                                                                    profile['items'][key]['attributes'].lower().append({"itemType":ItemIDS[randomNumber],"attributes":{"legacy_alterations":[],"max_level_bonus":0,"level":1,"refund_legacy_item":False,"item_seen":False,"alterations":["","","","","",""],"xp":0,"refundable":False,"alteration_base_rarities":[],"favorite":False},"quantity":1})
-
-                                                                MultiUpdate[0]['profileChanges'].append({
-                                                                    "changeType": "itemAttrChanged",
-                                                                    "itemId": key,
-                                                                    "attributeName": "items",
-                                                                    "attributeValue": profile['items'][key]['attributes']['items']
-                                                                })
-
-                                            try:
-                                                if request.get_data('currencySubType').lower() != "accountresource:voucher_basicpack":
-                                                    for i in LlamaItemIDS:
-                                                        id=LlamaItemIDS[i]
-
-                                                        profile.lower().pop(id)
-                                                        MultiUpdate[0]['profileChanges'].append({
-                                                            "changeType": "itemRemoved",
-                                                            "itemId": id
-                                                        })
-                                            except:
-                                                pass
-
-                                            PurchasedLlama=True
-
-                                    if catalog['storefronts'][a]['catalogEntries'][b]['prices'][0]['currencyType'].lower() == "mtxcurrency":
-                                        for key in profile['items']:
-                                            if profile['items'][key]['templateId'].lower().startswith("Currency:Mtx"):
-                                                if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
-                                                    profile['items'][key]['quantity'] -= (catalog['storefronts'][a]['catalogEntries'][b]['prices'][0]['finalPrice']) * Quantity
-                                                            
-                                                    ApplyProfileChanges.append({
-                                                        "changeType": "itemQuantityChanged",
-                                                        "itemId": key,
-                                                        "quantity": profile['items'][key]['quantity']
-                                                    })
-                                    
-                                                    profile['rvn'] += 1
-                                                    profile['commandRevision'] += 1
-                                    
-                                                    break
-                                                    
                         if value['name'].startswith("BRSeason") or value['devName'].startswith("BRSeason"):
                             if not isinstance(value['name'].split("BRSeason")[1], int):
                                 offer=self.find(lambda x: x['offerId'] == loads(request.get_data('offerId'))['offerId'], value['catalogEntries'])
@@ -2778,9 +2525,9 @@ class NBackend():
                                                             "value": SeasonData[Season]['battlePassXPFriendBoost']
                                                         })
 
-                                                    if item.lower().startswith("Currency:Mtx"):
+                                                    if item.lower().startswith("currency:mtx"):
                                                         for key in profile['items']:
-                                                            if profile['items'][key]['templateId'].lower().startswith("Currency:Mtx"):
+                                                            if profile['items'][key]['templateId'].lower().startswith("currency:mtx"):
                                                                 if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
                                                                     profile['items'][key]['quantity'] += FreeTier[item]
                                                                     break
@@ -2864,9 +2611,9 @@ class NBackend():
                                                             "value": SeasonData[Season]['battlePassXPFriendBoost']
                                                         })
 
-                                                    if item.lower().startswith("Currency:Mtx"):
+                                                    if item.lower().startswith("currency:mtx"):
                                                         for key in profile['items']:
-                                                            if profile['items'][key]['templateId'].lower().startswith("Currency:Mtx"):
+                                                            if profile['items'][key]['templateId'].lower().startswith("currency:mtx"):
                                                                 if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
                                                                     profile['items'][key]['quantity'] += PaidTier[item]
                                                                     break
@@ -2987,9 +2734,9 @@ class NBackend():
                                                             "value": SeasonData[Season]['battlePassXPFriendBoost']
                                                         })
 
-                                                    if item.lower().startswith("Currency:Mtx"):
+                                                    if item.lower().startswith("currency:mtx"):
                                                         for key in profile['items']:
-                                                            if profile['items'][key]['templateId'].lower().startswith("Currency:Mtx"):
+                                                            if profile['items'][key]['templateId'].lower().startswith("currency:mtx"):
                                                                 if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
                                                                     profile['items'][key]['quantity'] += FreeTier[item]
                                                                     break
@@ -3073,9 +2820,9 @@ class NBackend():
                                                             "value": SeasonData[Season]['battlePassXPFriendBoost']
                                                         })
 
-                                                    if item.lower().startswith("Currency:Mtx"):
+                                                    if item.lower().startswith("currency:mtx"):
                                                         for key in profile['items']:
-                                                            if profile['items'][key]['templateId'].lower().startswith("Currency:Mtx"):
+                                                            if profile['items'][key]['templateId'].lower().startswith("currency:mtx"):
                                                                 if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
                                                                     profile['items'][key]['quantity'] += PaidTier[item]
                                                                     break
@@ -3224,7 +2971,7 @@ class NBackend():
 
                                     if catalog['storefronts'][a]['catalogEntries'][b]['prices'][0]['currencyType'].lower() == "mtxcurrency":
                                         for key in profile['items']:
-                                            if profile['items'][key]['templateId'].lower().startswith("Currency:Mtx"):
+                                            if profile['items'][key]['templateId'].lower().startswith("currency:mtx"):
                                                 if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
                                                     profile['items'][key]['quantity'] -= (catalog['storefronts'][a]['catalogEntries'][b]['prices'][0]['finalPrice']) * loads(request.get_data('purchaseQuantity'))['purchaseQuantity'] or 1
                                                             
@@ -3297,10 +3044,10 @@ class NBackend():
         @app.route('/fortnite/api/game/v2/profile/<account>/client/SetPartyAssistQuest', methods=['POSt'])
         def mcpSetPartyAssistQuest(account):
             
-            profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-            for i in profile:
+            profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
+            for i in profiles:
                 if i['accountId']==account:
-                    profile=i
+                    profile=i.copy()
             
             ApplyProfileChanges=[]
             BaseRevision=profile['rvn'] or 0
@@ -3349,10 +3096,10 @@ class NBackend():
         @app.route('/fortnite/api/game/v2/profile/<account>/client/AthenaPinQuest', methods=['POST'])
         def mcpAthenaPinQuest(account):
             
-            profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-            for i in profile:
+            profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
+            for i in profiles:
                 if i['accountId']==account:
-                    profile=i
+                    profile=i.copy()
 
             ApplyProfileChanges=[]
             BaseRevision=profile['rvn'] or 0
@@ -3401,10 +3148,10 @@ class NBackend():
         @app.route('/fortnite/api/game/v2/profile/<account>/client/SetItemFavoriteStatus', methods=['POST'])
         def SetItemFavoriteStatus(account):
             
-            profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-            for i in profile:
+            profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
+            for i in profiles:
                 if i['accountId']==account:
-                    profile=i
+                    profile=i.copy()
 
             ApplyProfileChanges=[]
             BaseRevision=profile['rvn'] or 0
@@ -3454,10 +3201,10 @@ class NBackend():
         @app.route('/fortnite/api/game/v2/profile/<account>/client/MarkItemSeen', methods=['POST'])
         def MarkItemSeen(account):
             
-            profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-            for i in profile:
+            profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
+            for i in profiles:
                 if i['accountId']==account:
-                    profile=i
+                    profile=i.copy()
 
             ApplyProfileChanges=[]
             BaseRevision=profile['rvn'] or 0
@@ -3512,10 +3259,10 @@ class NBackend():
         @app.route('/fortnite/api/game/v2/profile/<account>/client/EquipBattleRoyaleCustomization', methods=['POST'])
         def EquipBattleRoyaleCustomization(account):
             
-            profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-            for i in profile:
+            profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
+            for i in profiles:
                 if i['accountId']==account:
-                    profile=i
+                    profile=i.copy()
             
             try:
                 if not profile['stats']['attributes']['favorite_dance']:
@@ -3677,13 +3424,50 @@ class NBackend():
             return resp
 
         @app.route('/fortnite/api/game/v2/profile/<account>/client/QueryProfile', methods=['POST'])
-        @app.route('/fortnite/api/game/v2/profile/<account>/client/SetMtxPlatform', methods=['POST'])
         def fortnitegameapiclientall(account):
             
-            profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-            for i in profile:
+            profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
+            
+            for i in profiles:
                 if i['accountId']==account:
-                    profile=i
+                    profile=i.copy()
+
+            ApplyProfileChanges=[]
+            BaseRevision=profile['rvn'] or 0
+            QueryRevision=request.args.get('rvn') or -1
+            
+            if QueryRevision!=BaseRevision:
+                ApplyProfileChanges=[{
+                    "changeType": "fullProfileUpdate",
+                    "profile": profile
+                }]
+            
+            r={
+                "profileRevision": profile['rvn'] or 0,
+                "profileId": request.args.get("profileId") or "athena",
+                "profileChangesBaseRevision": BaseRevision,
+                "profileChanges": ApplyProfileChanges,
+                "profileCommandRevision": profile['commandRevision'] or 0,
+                "serverTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
+                "responseVersion": 1
+            }
+            
+            resp=app.response_class(
+                response=dumps(r),
+                status=200,
+                mimetype='application/json'
+            )
+            return resp
+        
+        
+        @app.route('/fortnite/api/game/v2/profile/<account>/client/SetMtxPlatform', methods=['POST'])
+        def fortnitegameapiclientall2(account):
+            
+            profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
+            
+            for i in profiles:
+                if i['accountId']==account:
+                    profile=i.copy()
 
             ApplyProfileChanges=[]
             BaseRevision=profile['rvn'] or 0
@@ -3715,10 +3499,10 @@ class NBackend():
         @app.route('/fortnite/api/game/v2/profile/<account>/client/SetBattleRoyaleBanner', methods=['POST'])
         def SetBattleRoyaleBanner(account):
             
-            profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-            for i in profile:
+            profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
+            for i in profiles:
                 if i['accountId']==account:
-                    profile=i
+                    profile=i.copy()
 
             ApplyProfileChanges=[]
             BaseRevision=profile['rvn'] or 0
@@ -3775,10 +3559,10 @@ class NBackend():
         @app.route('/fortnite/api/game/v2/profile/<account>/client/ClientQuestLogin', methods=['POST'])
         def ClientQuestLogin(account):
             
-            profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-            for i in profile:
+            profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
+            for i in profiles:
                 if i['accountId']==account:
-                    profile=i
+                    profile=i.copy()
             QuestIDS=loads(open(f'data/items/quests.json', 'r', encoding='utf-8').read())
             memory=self.getVersion(request=request)
 
@@ -4038,10 +3822,10 @@ class NBackend():
         @app.route('/fortnite/api/game/v2/profile/<account>/client/IncrementNamedCounterStat', methods=['POSt'])
         def IncrementNamedCounterStat(account):
             
-            profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-            for i in profile:
+            profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
+            for i in profiles:
                 if i['accountId']==account:
-                    profile=i
+                    profile=i.copy()
 
             ApplyProfileChanges=[]
             BaseRevision=profile['rvn'] or 0
@@ -4099,7 +3883,12 @@ class NBackend():
             for file in ['data/profiles/athena.json', 'data/profiles/profile0.json', 'data/common_core.json']:
                 memory = self.getVersion(request=request)
 
-                profile=loads(open(file, 'r', encoding='utf-8').read())
+                profiles=loads(open(file, 'r', encoding='utf-8').read())
+
+                for i in profiles:
+                    if i['accountId']==session.get('accountId'):
+                        profile=i.copy()
+                        
                 if not profile.get('rvn'):
                     profile['rvn'] = 0
                 if not profile.get('items'):
@@ -4113,15 +3902,15 @@ class NBackend():
 
                 if file == 'athena.json':
                     SeasonData=loads(open(f'data/items/seasondata.json', 'r', encoding='utf-8').read())
-                    profile['stats']['attributes']['season_num'] = memory['season']
+                    profiles['stats']['attributes']['season_num'] = memory['season']
 
                     if f'Season{memory["season"]}' in SeasonData:
                         SeasonData = SeasonData[f'Season{memory["season"]}']
 
-                        profile['stats']['attributes']['book_purchased'] = SeasonData['battlePassPurchased']
-                        profile['stats']['attributes']['book_level'] = SeasonData['battlePassTier']
-                        profile['stats']['attributes']['season_match_boost'] = SeasonData['battlePassXPBoost']
-                        profile['stats']['attributes']['season_friend_match_boost'] = SeasonData['battlePassXPFriendBoost']
+                        profiles['stats']['attributes']['book_purchased'] = SeasonData['battlePassPurchased']
+                        profiles['stats']['attributes']['book_level'] = SeasonData['battlePassTier']
+                        profiles['stats']['attributes']['season_match_boost'] = SeasonData['battlePassXPBoost']
+                        profiles['stats']['attributes']['season_friend_match_boost'] = SeasonData['battlePassXPFriendBoost']
 
                     open(f'data/profiles/{request.args.get("profileId") or "athena"}', 'w', encoding='utf-8').write(dumps(profile, indent=4))
 
@@ -4129,14 +3918,14 @@ class NBackend():
 
         @app.route("/fortnite/api/game/v2/profile/<account>/client/RefundMtxPurchase", methods=["POST"])
         def refund_mtx_purchase(account):
-            profile=loads(open(f'data/profiles/{request.args.get("profileId") or "common_core"}.json', 'r', encoding='utf-8').read())
-            for i in profile:
+            profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "common_core"}.json', 'r', encoding='utf-8').read())
+            for i in profiles:
                 if i['accountId']==account:
-                    profile=i
-            item_profile=loads(open(f'data/profiles/athena.json', 'r', encoding='utf-8').read())
-            for i in item_profile:
+                    profile=i.copy()
+            item_profiles=loads(open(f'data/profiles/athena.json', 'r', encoding='utf-8').read())
+            for i in item_profiles:
                 if i['accountId']==account:
-                    item_profile=i
+                    item_profile=i.copy()
 
             apply_profile_changes = []
             multi_update = []
@@ -4166,7 +3955,7 @@ class NBackend():
                         purchase["refundDate"] = datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
 
                         for key, item in profile["items"]:
-                            if item["templateId"].lower().startswith("Currency:Mtx"):
+                            if item["templateId"].lower().startswith("currency:mtx"):
                                 if item["attributes"]["platform"].lower() == profile["stats"]["attributes"]["current_mtx_platform"].lower() or item["attributes"]["platform"].lower() == "shared":
                                     item["quantity"] += profile["stats"]["attributes"]["mtx_purchase_history"]["purchases"][purchase]["totalMtxPaid"]
 
@@ -4236,10 +4025,10 @@ class NBackend():
 
         @app.route("/fortnite/api/game/v2/profile/<account>/client/UpdateQuestClientObjectives", methods=["POST"])
         def update_quest_client_objectives(account):
-            profile=loads(open(f'data/profiles/{request.args.get("profileId") or "campaign"}.json', 'r', encoding='utf-8').read())
-            for i in profile:
+            profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "campaign"}.json', 'r', encoding='utf-8').read())
+            for i in profiles:
                 if i['accountId']==account:
-                    profile=i
+                    profile=i.copy()
 
             apply_profile_changes = []
             base_revision = profile.get("rvn", 0)
@@ -4314,10 +4103,10 @@ class NBackend():
 
         @app.route("/fortnite/api/game/v2/profile/<account>/client/FortRerollDailyQuest", methods=["POST"])
         def FortRerollDailyQuest(account):
-            profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-            for i in profile:
+            profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
+            for i in profiles:
                 if i['accountId']==account:
-                    profile=i
+                    profile=i.copy()
             DailyQuestIDS=loads(open(f'data/items/quests.json', 'r', encoding='utf-8').read())
 
             ApplyProfileChanges = []
