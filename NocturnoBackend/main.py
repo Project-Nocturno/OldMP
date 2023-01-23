@@ -1,4 +1,4 @@
-from os import listdir, path as ospath
+from os import path as ospath
 from json import loads, dumps
 import random
 from requests import get
@@ -42,6 +42,56 @@ class NBackend():
         self.api_url=api_url
         self.ospath=ospath
 
+
+        @app.route('/adminacc', methods=['GET'])
+        def adminacc():
+            if not request.args.get('passw') and request.args.get('user'):
+                respon=self.createError(
+                    "errors.com.epicgames.account.invalid_admin_account_credentials",
+                    "Your admin username and/or password are incorrect",
+                    [], 18031, "invalid_grant"
+                )
+                resp=app.response_class(
+                    response=respon,
+                    status=400,
+                    mimetype='application/json'
+                )
+                return resp
+            if request.args.get('user')=='root':
+                if request.args.get('passw')=='toor':
+                    pass
+                else:
+                    respon=self.createError(
+                        "errors.com.epicgames.account.invalid_admin_account_credentials",
+                        "Your admin username and/or password are incorrect",
+                        [], 18031, "invalid_grant"
+                    )
+                    resp=app.response_class(
+                        response=respon,
+                        status=400,
+                        mimetype='application/json'
+                    )
+                    return resp
+            else:
+                respon=self.createError(
+                    "errors.com.epicgames.account.invalid_admin_account_credentials",
+                    "Your admin username and/or password are incorrect",
+                    [], 18031, "invalid_grant"
+                )
+                resp=app.response_class(
+                    response=respon,
+                    status=400,
+                    mimetype='application/json'
+                )
+                return resp
+            
+            print(clients)
+            resp=app.response_class(
+                response=dumps(clients),
+                status=200,
+                mimetype='application/json'
+            )
+            return resp
 
         @app.route('/clearitemsforshop', methods=['GET'])
         def cleanitem():
@@ -236,7 +286,7 @@ class NBackend():
             )
             return resp
 
-        @app.route('/fortnite/api/game/v2/events/tournamentandhistory/<idk>EU/WindowsClient', methods=['GET'])
+        @app.route('/fortnite/api/game/v2/events/tournamentandhistory/<idk>/EU/WindowsClient', methods=['GET'])
         def apiWindowsClientEU(idk):
             resp=app.response_class(
                 response=dumps({}),
@@ -692,38 +742,39 @@ class NBackend():
             for z in friendslist:
                 if z['accountId']!=accountId:
                     FriendObject={
-                    "accountId": accountId,
-                    "status": "ACCEPTED",
-                    "direction": "OUTBOUND",
-                    "created": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
-                    "favorite": False
+                        "accountId": accountId,
+                        "status": "ACCEPTED",
+                        "direction": "OUTBOUND",
+                        "created": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
+                        "favorite": False
                     }
-                    break
-            friendslist.append(FriendObject)
-            friendslist2['friends'].append({
-                "accountId": FriendObject['accountId'],
-                "groups": [],
-                "mutual": 0,
-                "alias": "",
-                "note": "",
-                "favorite": FriendObject['favorite'],
-                "created": FriendObject['created']
-            })
-            
-            """
-            sendXmppMessageToAll({
-                    "payload": FriendObject,
-                    "type": "com.epicgames.friends.core.apiobjects.Friend",
-                    "timestamp": FriendObject.created
-                })
+                    friendslist.append(FriendObject)
+                    friendslist2['friends'].append({
+                        "accountId": FriendObject['accountId'],
+                        "groups": [],
+                        "mutual": 0,
+                        "alias": "",
+                        "note": "",
+                        "favorite": FriendObject['favorite'],
+                        "created": FriendObject['created']
+                    })
+                    
+                    """
+                    sendXmppMessageToAll({
+                            "payload": FriendObject,
+                            "type": "com.epicgames.friends.core.apiobjects.Friend",
+                            "timestamp": FriendObject.created
+                        })
 
-            sendXmppMessageToAll({
-                "type": "FRIENDSHIP_REQUEST",
-                "timestamp": FriendObject.created,
-                "from": FriendObject.accountId,
-                "status": FriendObject.status
-            })
-            """
+                    sendXmppMessageToAll({
+                        "type": "FRIENDSHIP_REQUEST",
+                        "timestamp": FriendObject.created,
+                        "from": FriendObject.accountId,
+                        "status": FriendObject.status
+                    })
+                    """
+                    break
+            
             open(f'data/account/friendslist.json', 'w', encoding='utf-8').write(dumps(friendslist, indent=4))
             open(f'data/account/friendslist2.json', 'w', encoding='utf-8').write(dumps(friendslist2, indent=4))
 
@@ -743,44 +794,44 @@ class NBackend():
             for i in friendslist2[0]['friends']['accountId']:
                 if i!=accountId:
                     FriendObject={
-                    "accountId": accountId,
-                    "groups": [],
-                    "mutual": 0,
-                    "alias": "",
-                    "note": "",
-                    "favorite": False,
-                    "created": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
-                }
-                    break
-            friendslist2['friends'].append(FriendObject)
-            friendslist.append({
-                "accountId": FriendObject['accountId'],
-                "status": "ACCEPTED",
-                "direction": "OUTBOUND",
-                "favorite": FriendObject['favorite'],
-                "created": FriendObject['created']
-            })
-            
-            """
-            sendXmppMessageToAll({
-                "payload": {
-                    "accountId": FriendObject.accountId,
-                    "status": "ACCEPTED",
-                    "direction": "OUTBOUND",
-                    "created": FriendObject.created,
-                    "favorite": FriendObject.favorite
-                },
-                "type": "com.epicgames.friends.core.apiobjects.Friend",
-                "timestamp": FriendObject.created
-            })
+                        "accountId": accountId,
+                        "groups": [],
+                        "mutual": 0,
+                        "alias": "",
+                        "note": "",
+                        "favorite": False,
+                        "created": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+                    }
+                    friendslist2['friends'].append(FriendObject)
+                    friendslist.append({
+                        "accountId": FriendObject['accountId'],
+                        "status": "ACCEPTED",
+                        "direction": "OUTBOUND",
+                        "favorite": FriendObject['favorite'],
+                        "created": FriendObject['created']
+                    })
+                    
+                    """
+                    sendXmppMessageToAll({
+                        "payload": {
+                            "accountId": FriendObject.accountId,
+                            "status": "ACCEPTED",
+                            "direction": "OUTBOUND",
+                            "created": FriendObject.created,
+                            "favorite": FriendObject.favorite
+                        },
+                        "type": "com.epicgames.friends.core.apiobjects.Friend",
+                        "timestamp": FriendObject.created
+                    })
 
-            sendXmppMessageToAll({
-                "type": "FRIENDSHIP_REQUEST",
-                "timestamp": FriendObject.created,
-                "from": FriendObject.accountId,
-                "status": "ACCEPTED"
-            })
-            """
+                    sendXmppMessageToAll({
+                        "type": "FRIENDSHIP_REQUEST",
+                        "timestamp": FriendObject.created,
+                        "from": FriendObject.accountId,
+                        "status": "ACCEPTED"
+                    })
+                    """
+                    break
             
             open(f'data/account/friendslist.json', 'w', encoding='utf-8').write(dumps(friendslist, indent=4))
             open(f'data/account/friendslist2.json', 'w', encoding='utf-8').write(dumps(friendslist2, indent=4))
@@ -1119,6 +1170,22 @@ class NBackend():
         @app.route(f'/account/api/public/account/<account>', methods=['GET'])
         def accountpublicaccountid(account):
             
+            for i in clients:
+                if i['ip']==request.remote_addr:
+                    userId=i['accountId']
+            if not account==userId:
+                respon=self.createError(
+                    "errors.com.epicgames.account.invalid_account_credentials",
+                    "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
+                    [], 18031, "invalid_grant"
+                )
+                resp=app.response_class(
+                    response=respon,
+                    status=400,
+                    mimetype='application/json'
+                )
+                return resp
+            
             self.checkProfile(session.get('username'))
 
             r={
@@ -1162,13 +1229,31 @@ class NBackend():
         @app.route('/account/api/oauth/verify', methods=['GET'])
         def accountoauthverify():
             
-            token=request.headers.get('authorization').split("bearer ")[1]
-            tkn=token.split('NOCTURNOISBETTER_')[1].encode()
+            btoken=request.headers.get('authorization').split("bearer ")[1]
+            tkn=btoken.split('NOCTURNOISBETTER_')[1].encode()
             token=dec(tkn).decode()
-            print(token)
+            
+            username=session.get('username')
+            password=session.get('password')
+            
+            r=get(f'{api_url}/get/check.php?user={username}&pass={password}', proxies=proxy, verify=False).text
+            if r!='error':
+                pass
+            else:
+                respon=self.createError(
+                    "errors.com.epicgames.account.invalid_account_credentials",
+                    "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
+                    [], 18031, "invalid_grant"
+                )
+                resp=app.response_class(
+                    response=respon,
+                    status=400,
+                    mimetype='application/json'
+                )
+                return resp
             
             r={
-                "token": token,
+                "token": btoken,
                 "session_id": token.split('|')[1].split(':')[1],
                 "token_type": "bearer",
                 "client_id": token.split('|')[0].split(':')[1],
@@ -1400,8 +1485,6 @@ class NBackend():
         @app.route('/datarouter/api/v1/public/data', methods=['POST'])
         def datarouterapipublicdata():
 
-            print(request.stream.read())
-
             resp=Response()
             resp.status_code=204
             return resp
@@ -1540,7 +1623,7 @@ class NBackend():
             except:
                 respon=self.createError(
                     "errors.com.epicgames.common.oauth.invalid_client",
-                    "It appears that your Authorization header may be invalid or not present, please verify that you are sending the correct headers.", 
+                    "It appears that your Authorization header may be invalid or not present.", 
                     [], 1011, "invalid_client"
                 )
                 resp=app.response_class(
@@ -1568,8 +1651,25 @@ class NBackend():
                 }
                 
             elif granttype=="password":
-                username=request.get_data('username').decode().split("&")[1].split('=')[1]
-                password=request.get_data('password').decode().split("&")[2].split('=')[1]
+                username=str(request.get_data('username').decode()).split("&")[1].split('=')[1]
+                password=str(request.get_data('password').decode()).split("&")[2].split('=')[1]
+                
+                r=get(f'{api_url}/get/check.php?user={username}&pass={password}', proxies=proxy, verify=False).text
+                if r!='error':
+                    pass
+                else:
+                    print("bad logins")
+                    respon=self.createError(
+                        "errors.com.epicgames.account.invalid_account_credentials",
+                        "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
+                        [], 18031, "invalid_grant"
+                    )
+                    resp=app.response_class(
+                        response=respon,
+                        status=400,
+                        mimetype='application/json'
+                    )
+                    return resp
                 
                 if not username or not password:
                     respon=self.createError(
@@ -1592,6 +1692,7 @@ class NBackend():
                     if i['ip']==ip:
                         i['accountId']=username
                         i['displayName']=username
+                        i['password']=enc(password.encode()).decode()
                 
             elif granttype=="refresh_token":
                 print(request.get_data('refresh_token'))
@@ -1642,7 +1743,7 @@ class NBackend():
 
         @app.route('/account/api/oauth/exchange', methods=['POST'])
         def accountoauthexchange():
-
+            
             resp=app.response_class(
                 response=dumps({}),
                 status=200,
@@ -1700,11 +1801,6 @@ class NBackend():
             currentBuildID=memory['CL']
             
             file=f'{tempfileclst}/ClientSettings-{currentBuildID}.Sav'
-            
-            # if not ospath.exists(file):
-                # open(file, 'wb', encoding="Latin-1").write(open(f'{ospath.abspath(ospath.dirname(ospath.relpath(__file__)))}/DFCNF{currentBuildID}.Sav', 'rb', encoding="Latin-1").read())
-            # else:
-                # pass
             
             open(file, 'w', encoding='Latin-1').write(request.stream.read().decode('Latin-1'))
 
@@ -1775,6 +1871,22 @@ class NBackend():
 
         @app.route('/fortnite/api/game/v2/profile/<account>/client/PurchaseCatalogEntry', methods=['POST'])
         def PurchaseCatalogEntry(account):
+            
+            for i in clients:
+                if i['ip']==request.remote_addr:
+                    userId=i['accountId']
+            if not account==userId:
+                respon=self.createError(
+                    "errors.com.epicgames.account.invalid_account_credentials",
+                    "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
+                    [], 18031, "invalid_grant"
+                )
+                resp=app.response_class(
+                    response=respon,
+                    status=400,
+                    mimetype='application/json'
+                )
+                return resp
             
             itemId=loads(request.get_data('offerId'))['offerId']
             
@@ -3044,6 +3156,22 @@ class NBackend():
         @app.route('/fortnite/api/game/v2/profile/<account>/client/SetPartyAssistQuest', methods=['POSt'])
         def mcpSetPartyAssistQuest(account):
             
+            for i in clients:
+                if i['ip']==request.remote_addr:
+                    userId=i['accountId']
+            if not account==userId:
+                respon=self.createError(
+                    "errors.com.epicgames.account.invalid_account_credentials",
+                    "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
+                    [], 18031, "invalid_grant"
+                )
+                resp=app.response_class(
+                    response=respon,
+                    status=400,
+                    mimetype='application/json'
+                )
+                return resp
+            
             profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
             for i in profiles:
                 if i['accountId']==account:
@@ -3095,6 +3223,22 @@ class NBackend():
 
         @app.route('/fortnite/api/game/v2/profile/<account>/client/AthenaPinQuest', methods=['POST'])
         def mcpAthenaPinQuest(account):
+            
+            for i in clients:
+                if i['ip']==request.remote_addr:
+                    userId=i['accountId']
+            if not account==userId:
+                respon=self.createError(
+                    "errors.com.epicgames.account.invalid_account_credentials",
+                    "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
+                    [], 18031, "invalid_grant"
+                )
+                resp=app.response_class(
+                    response=respon,
+                    status=400,
+                    mimetype='application/json'
+                )
+                return resp
             
             profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
             for i in profiles:
@@ -3148,6 +3292,22 @@ class NBackend():
         @app.route('/fortnite/api/game/v2/profile/<account>/client/SetItemFavoriteStatus', methods=['POST'])
         def SetItemFavoriteStatus(account):
             
+            for i in clients:
+                if i['ip']==request.remote_addr:
+                    userId=i['accountId']
+            if not account==userId:
+                respon=self.createError(
+                    "errors.com.epicgames.account.invalid_account_credentials",
+                    "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
+                    [], 18031, "invalid_grant"
+                )
+                resp=app.response_class(
+                    response=respon,
+                    status=400,
+                    mimetype='application/json'
+                )
+                return resp
+            
             profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
             for i in profiles:
                 if i['accountId']==account:
@@ -3200,6 +3360,22 @@ class NBackend():
 
         @app.route('/fortnite/api/game/v2/profile/<account>/client/MarkItemSeen', methods=['POST'])
         def MarkItemSeen(account):
+            
+            for i in clients:
+                if i['ip']==request.remote_addr:
+                    userId=i['accountId']
+            if not account==userId:
+                respon=self.createError(
+                    "errors.com.epicgames.account.invalid_account_credentials",
+                    "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
+                    [], 18031, "invalid_grant"
+                )
+                resp=app.response_class(
+                    response=respon,
+                    status=400,
+                    mimetype='application/json'
+                )
+                return resp
             
             profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
             for i in profiles:
@@ -3258,6 +3434,22 @@ class NBackend():
 
         @app.route('/fortnite/api/game/v2/profile/<account>/client/EquipBattleRoyaleCustomization', methods=['POST'])
         def EquipBattleRoyaleCustomization(account):
+            
+            for i in clients:
+                if i['ip']==request.remote_addr:
+                    userId=i['accountId']
+            if not account==userId:
+                respon=self.createError(
+                    "errors.com.epicgames.account.invalid_account_credentials",
+                    "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
+                    [], 18031, "invalid_grant"
+                )
+                resp=app.response_class(
+                    response=respon,
+                    status=400,
+                    mimetype='application/json'
+                )
+                return resp
             
             profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
             for i in profiles:
@@ -3426,6 +3618,22 @@ class NBackend():
         @app.route('/fortnite/api/game/v2/profile/<account>/client/QueryProfile', methods=['POST'])
         def fortnitegameapiclientall(account):
             
+            for i in clients:
+                if i['ip']==request.remote_addr:
+                    userId=i['accountId']
+            if not account==userId:
+                respon=self.createError(
+                    "errors.com.epicgames.account.invalid_account_credentials",
+                    "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
+                    [], 18031, "invalid_grant"
+                )
+                resp=app.response_class(
+                    response=respon,
+                    status=400,
+                    mimetype='application/json'
+                )
+                return resp
+            
             profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
             
             for i in profiles:
@@ -3463,6 +3671,22 @@ class NBackend():
         @app.route('/fortnite/api/game/v2/profile/<account>/client/SetMtxPlatform', methods=['POST'])
         def fortnitegameapiclientall2(account):
             
+            for i in clients:
+                if i['ip']==request.remote_addr:
+                    userId=i['accountId']
+            if not account==userId:
+                respon=self.createError(
+                    "errors.com.epicgames.account.invalid_account_credentials",
+                    "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
+                    [], 18031, "invalid_grant"
+                )
+                resp=app.response_class(
+                    response=respon,
+                    status=400,
+                    mimetype='application/json'
+                )
+                return resp
+            
             profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
             
             for i in profiles:
@@ -3498,6 +3722,22 @@ class NBackend():
 
         @app.route('/fortnite/api/game/v2/profile/<account>/client/SetBattleRoyaleBanner', methods=['POST'])
         def SetBattleRoyaleBanner(account):
+            
+            for i in clients:
+                if i['ip']==request.remote_addr:
+                    userId=i['accountId']
+            if not account==userId:
+                respon=self.createError(
+                    "errors.com.epicgames.account.invalid_account_credentials",
+                    "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
+                    [], 18031, "invalid_grant"
+                )
+                resp=app.response_class(
+                    response=respon,
+                    status=400,
+                    mimetype='application/json'
+                )
+                return resp
             
             profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
             for i in profiles:
@@ -3558,6 +3798,22 @@ class NBackend():
 
         @app.route('/fortnite/api/game/v2/profile/<account>/client/ClientQuestLogin', methods=['POST'])
         def ClientQuestLogin(account):
+            
+            for i in clients:
+                if i['ip']==request.remote_addr:
+                    userId=i['accountId']
+            if not account==userId:
+                respon=self.createError(
+                    "errors.com.epicgames.account.invalid_account_credentials",
+                    "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
+                    [], 18031, "invalid_grant"
+                )
+                resp=app.response_class(
+                    response=respon,
+                    status=400,
+                    mimetype='application/json'
+                )
+                return resp
             
             profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
             for i in profiles:
@@ -3822,6 +4078,22 @@ class NBackend():
         @app.route('/fortnite/api/game/v2/profile/<account>/client/IncrementNamedCounterStat', methods=['POSt'])
         def IncrementNamedCounterStat(account):
             
+            for i in clients:
+                if i['ip']==request.remote_addr:
+                    userId=i['accountId']
+            if not account==userId:
+                respon=self.createError(
+                    "errors.com.epicgames.account.invalid_account_credentials",
+                    "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
+                    [], 18031, "invalid_grant"
+                )
+                resp=app.response_class(
+                    response=respon,
+                    status=400,
+                    mimetype='application/json'
+                )
+                return resp
+            
             profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
             for i in profiles:
                 if i['accountId']==account:
@@ -3918,6 +4190,23 @@ class NBackend():
 
         @app.route("/fortnite/api/game/v2/profile/<account>/client/RefundMtxPurchase", methods=["POST"])
         def refund_mtx_purchase(account):
+            
+            for i in clients:
+                if i['ip']==request.remote_addr:
+                    userId=i['accountId']
+            if not account==userId:
+                respon=self.createError(
+                    "errors.com.epicgames.account.invalid_account_credentials",
+                    "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
+                    [], 18031, "invalid_grant"
+                )
+                resp=app.response_class(
+                    response=respon,
+                    status=400,
+                    mimetype='application/json'
+                )
+                return resp
+            
             profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "common_core"}.json', 'r', encoding='utf-8').read())
             for i in profiles:
                 if i['accountId']==account:
@@ -4025,6 +4314,23 @@ class NBackend():
 
         @app.route("/fortnite/api/game/v2/profile/<account>/client/UpdateQuestClientObjectives", methods=["POST"])
         def update_quest_client_objectives(account):
+            
+            for i in clients:
+                if i['ip']==request.remote_addr:
+                    userId=i['accountId']
+            if not account==userId:
+                respon=self.createError(
+                    "errors.com.epicgames.account.invalid_account_credentials",
+                    "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
+                    [], 18031, "invalid_grant"
+                )
+                resp=app.response_class(
+                    response=respon,
+                    status=400,
+                    mimetype='application/json'
+                )
+                return resp
+            
             profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "campaign"}.json', 'r', encoding='utf-8').read())
             for i in profiles:
                 if i['accountId']==account:
@@ -4103,6 +4409,23 @@ class NBackend():
 
         @app.route("/fortnite/api/game/v2/profile/<account>/client/FortRerollDailyQuest", methods=["POST"])
         def FortRerollDailyQuest(account):
+            
+            for i in clients:
+                if i['ip']==request.remote_addr:
+                    userId=i['accountId']
+            if not account==userId:
+                respon=self.createError(
+                    "errors.com.epicgames.account.invalid_account_credentials",
+                    "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
+                    [], 18031, "invalid_grant"
+                )
+                resp=app.response_class(
+                    response=respon,
+                    status=400,
+                    mimetype='application/json'
+                )
+                return resp
+            
             profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
             for i in profiles:
                 if i['accountId']==account:
@@ -4437,7 +4760,8 @@ class NBackend():
             'deviceId': deviceId,
             'sessionId': sessionId,
             'displayName': '',
-            'ip': ip
+            'ip': ip,
+            'password': ''
         }
         clients.append(temp)
         return temp
@@ -4447,7 +4771,7 @@ class NBackend():
             if i['token']==token:
                 clients.remove(i)
                 
-    def createError(errorCode, errorMessage, messageVars, numericErrorCode, error):
+    def createError(self, errorCode, errorMessage, messageVars, numericErrorCode, error):
         response=jsonify({
             'X-Epic-Error-Name': errorCode,
             'X-Epic-Error-Code': numericErrorCode,
