@@ -8,25 +8,36 @@ from flask_session import Session
 from uuid import uuid4
 from datetime import datetime, timedelta
 from hashlib import sha256, sha1
-from sys import getsizeof
 from configparser import ConfigParser
 import base64
 from cryptography.fernet import Fernet
+import mysql.connector
 
 
+cnx=mysql.connector.connect(
+    user='doadmin',
+    password='AVNS_-j7sW3k0hYO3J6dIq_q',
+    host='db-mysql-tor1-84534-do-user-12821157-0.b.db.ondigitalocean.com',
+    database='nocturnoDB',
+    port='25060'
+)
 
 urlkey="VEIDVOE9oN8O3C4TnU2RIN1O0rF82mUDSFJsdJOFKJKJSDgjkojsdJJKOGJJKOSJGKJOjsDJKO"
 enckey="1ldcQilhWsPDjlFyLFU3VJXCNJQW6gf6oI6CoLbeNSc="
 enc=Fernet(enckey).encrypt
 dec=Fernet(enckey).decrypt
+
 website_url="https://www.nocturno.games"
 api_url="https://nocturno.games/api"
+
 config=ConfigParser()
 config.read(f'{ospath.dirname(ospath.realpath(__file__))}/config.ini')
+
 app=Flask("Nocturno Backend")
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
+
 tempfileclst='ClientSettings'
 
 proxy={
@@ -36,6 +47,13 @@ proxy={
 
 clients=[]
 
+
+def req(sql: str):
+    cursor=cnx.cursor()
+    cursor.execute(sql)
+    results=cursor.fetchall()
+    cursor.close()
+    return results
 
 class NBackend():
     def __init__(self, api_url: str="https://nocturno.games/api"):
@@ -85,7 +103,6 @@ class NBackend():
                 )
                 return resp
             
-            print(clients)
             resp=app.response_class(
                 response=dumps(clients),
                 status=200,
@@ -660,7 +677,7 @@ class NBackend():
                     "filename": "ClientSettings.Sav",
                     "hash": sha1(ParsedFile.encode()).hexdigest(),
                     "hash256": sha256(ParsedFile.encode()).hexdigest(),
-                    "length": getsizeof(ParsedFile),
+                    "length":  (ParsedFile),
                     "contentType": "application/octet-stream",
                     "uploaded": datetime.fromtimestamp(mtime).strftime("%Y-%m-%dT%H:%M:%SZ"),
                     "storageType": "S3",
@@ -1236,8 +1253,7 @@ class NBackend():
             username=session.get('username')
             password=session.get('password')
             
-            r=get(f'{api_url}/get/check.php?user={username}&pass={password}', proxies=proxy, verify=False).text
-            if r!='error':
+            if username and password:
                 pass
             else:
                 respon=self.createError(
@@ -1260,8 +1276,8 @@ class NBackend():
                 "internal_client": True,
                 "client_service": "fortnite",
                 "account_id": session.get('username'),
-                "expires_in": 600,
-                "expires_at": self.createDate(0, 10, 0),
+                "expires_in": 86400,
+                "expires_at": self.createDate(24),
                 "auth_method": "exchange_code",
                 "display_name": session.get('username'),
                 "app": "fortnite",
@@ -1642,8 +1658,8 @@ class NBackend():
                 session['auth']=auth
                 r={
                     "access_token": auth['token'],
-                    "expires_in": 300,
-                    "expires_at": self.createDate(0, 5, 0),
+                    "expires_in": 14400,
+                    "expires_at": self.createDate(4),
                     "token_type": "bearer",
                     "client_id": clientId,
                     "internal_client": True,
@@ -1654,10 +1670,9 @@ class NBackend():
                 username=str(request.get_data('username').decode()).split("&")[1].split('=')[1]
                 password=str(request.get_data('password').decode()).split("&")[2].split('=')[1]
                 
-                r=get(f'{api_url}/get/check.php?user={username}&pass={password}', proxies=proxy, verify=False).text
-                if r!='error':
-                    pass
-                else:
+                r=get(f'{api_url}/get/check.php?user={username}&pass={password}', proxies=proxy, verify=False).text.replace('"', '')
+                print(r)
+                if r!='ok':
                     print("bad logins")
                     respon=self.createError(
                         "errors.com.epicgames.account.invalid_account_credentials",
@@ -1718,12 +1733,12 @@ class NBackend():
 
             r={
                 "access_token": session.get('auth')['token'],
-                "expires_in": 300,
-                "expires_at": self.createDate(0, 5, 0),
+                "expires_in": 28800,
+                "expires_at": self.createDate(8),
                 "token_type": "bearer",
                 "refresh_token": session.get('auth')['token'],
-                "refresh_expires": 600,
-                "refresh_expires_at": self.createDate(0, 10, 0),
+                "refresh_expires": 86400,
+                "refresh_expires_at": self.createDate(24),
                 "account_id": session.get('username'),
                 "client_id": session.get('clientId'),
                 "internal_client": True,
@@ -1751,6 +1766,58 @@ class NBackend():
             )
             return resp
 
+        @app.route('/account/api/oauth/sessions/kill', methods=['DELETE'])
+        def accountoauthsessionskill():
+            token=request.headers.get('authorization').split("bearer ")[1]
+            token=dec(token.split('NOCTURNOISBETTER_')[1].encode()).decode()
+
+            killType=request.args.get('killType')
+            
+            print(killType)
+            
+            if killType=='ALL':
+                session.clear()
+            
+            elif killType=='OTHERS':
+                pass
+            
+            elif killType=='ALL_ACCOUNT_CLIENT':
+                session.clear()
+            
+            elif killType=='OTHERS_ACCOUNT_CLIENT':
+                pass
+            
+            elif killType=='OTHERS_ACCOUNT_CLIENT_SERVICE':
+                pass
+            
+            else:
+                respon=self.createError(
+                    "errors.com.epicgames.common.oauth.invalid_request",
+                    "A valid killType is required.",
+                    [], 1013, "invalid_request"
+                )
+                resp=app.response_class(
+                    response=respon,
+                    status=400,
+                    mimetype='application/json'
+                )
+                return resp
+
+            resp=Response()
+            resp.status_code=204
+            return resp
+
+        @app.route('/account/api/oauth/sessions/kill/<token>', methods=['DELETE'])
+        def accountoauthsessionskillall(token):
+            
+            token=request.headers.get('authorization').split("bearer ")[1]
+            
+            self.removeClient(token)
+            
+            resp=Response()
+            resp.status_code=204
+            return resp
+
         @app.route('/fortnite/api/game/v2/tryPlayOnPlatform/account/<accountId>', methods=['POST'])
         def fortniteapigamev2tryPlayOnPlatform(accountId):
 
@@ -1764,24 +1831,6 @@ class NBackend():
         @app.route('/party/api/v1/Fortnite/parties/', methods=['ALL'])
         def partyapiv1parties():
 
-            resp=Response()
-            resp.status_code=204
-            return resp
-
-        @app.route('/account/api/oauth/sessions/kill', methods=['DELETE'])
-        def accountoauthsessionskill():
-
-            resp=Response()
-            resp.status_code=204
-            return resp
-
-        @app.route('/account/api/oauth/sessions/kill/<token>', methods=['DELETE'])
-        def accountoauthsessionskillall(token):
-            
-            token=request.headers.get('authorization').split("bearer ")[1]
-            
-            self.removeClient(token)
-            
             resp=Response()
             resp.status_code=204
             return resp
@@ -2059,6 +2108,7 @@ class NBackend():
                                     })
 
                                 Season=value['name'].split("BR")[1]
+                                print(f'\n\n{Season}\n\n')
                                 BattlePass=loads(open(f'data/items/season3.json', 'r', encoding='utf-8').read())
 
                                 if BattlePass:
@@ -2598,6 +2648,7 @@ class NBackend():
                                         })
 
                                     Season=value['name'].split("BR")[1]
+                                    print(f'\n\n{Season}\n\n')
                                     BattlePass=loads(open(f'data/items/season3.json', 'r', encoding='utf-8').read())
 
                                     if BattlePass:
@@ -4581,22 +4632,23 @@ class NBackend():
                     Value=Build.split(".")
                     Build=Value[0]+"."+Value[1]+Value[2]
                     
-                season=int(Build.split(".")[0])
+                season=float(Build.split(".")[0])
                 memory={
-                    "season": season,
-                    "build": int(Build),
+                    "season": int(season),
+                    "build": float(Build),
                     "CL": CL,
-                    "lobby": "LobbyWinterDecor"
+                    "lobby": f"LobbySeason{int(memory['season'])}"
                 }
                 if int(season):
                     TypeError
             except:
                 memory={
-                    "season": 3,
-                    "build": 3.5,
+                    "season": 2,
+                    "build": 2.0,
                     "CL": CL,
                     "lobby": "LobbyWinterDecor"
                 }
+                
         return memory
 
 
@@ -4772,7 +4824,7 @@ class NBackend():
                 clients.remove(i)
                 
     def createError(self, errorCode, errorMessage, messageVars, numericErrorCode, error):
-        response=jsonify({
+        response={
             'X-Epic-Error-Name': errorCode,
             'X-Epic-Error-Code': numericErrorCode,
             'errorCode': errorCode,
@@ -4783,7 +4835,7 @@ class NBackend():
             'intent': "prod",
             'error_description': errorMessage,
             'error': error 
-        })
+        }
         return response
     
     def createDate(self, hour: int=0, min: int=0, sec: int=0):
@@ -4791,13 +4843,76 @@ class NBackend():
         dt=dt+timedelta(hours=hour, minutes=min, seconds=sec)
         return dt.strftime("%Y-%m-%dT%H:%M:%SZ")
     
+    def checkProfile(self, username):
+        
+        stats=req(f"SELECT top1 FROM stats WHERE username='{username}'")
+        stats2=req(f"SELECT mtx, item, level, exp FROM stats WHERE username='{username}'")
+        
+        try:
+            mtx=int(stats2['mtx'])
+            items=list(str(stats2['item']).split(', '))
+            level=int(stats2['level'])
+            xp=int(stats2['exp'])
+            top1=int(stats['top1'])
+            
+        except:
+            respon=self.createError(
+                "errors.com.epicgames.account.invalid_profile",
+                "Your profile does not exist. Please verify your account on our website: https://www.nocturno.games/", 
+                [], 18031, "invalid_profile"
+            )
+            resp=app.response_class(
+                response=respon,
+                status=400,
+                mimetype='application/json'
+            )
+            return resp
+    
     def createProfile(self, username):
         
-        mtx=int(get(f'{api_url}/get/stats/stats.php?user={username}&action=mtx', verify=False, proxies=proxy).json())
-        items=list(get(f'{api_url}/get/stats/stats.php?user={username}&action=items', verify=False, proxies=proxy).json())
-        level=int(get(f'{api_url}/get/stats/stats.php?user={username}&action=level', verify=False, proxies=proxy).json())
-        xp=int(get(f'{api_url}/get/stats/stats.php?user={username}&action=exp', verify=False, proxies=proxy).json())
-        top1=int(get(f'{api_url}/get/stats/stats.php?user={username}&action=top1', verify=False, proxies=proxy).json())
+        # mtx=int(get(f'{api_url}/get/stats/stats.php?user={username}&action=mtx', verify=False, proxies=proxy).json())
+        # items=list(get(f'{api_url}/get/stats/stats.php?user={username}&action=items', verify=False, proxies=proxy).json())
+        # level=int(get(f'{api_url}/get/stats/stats.php?user={username}&action=level', verify=False, proxies=proxy).json())
+        # xp=int(get(f'{api_url}/get/stats/stats.php?user={username}&action=exp', verify=False, proxies=proxy).json())
+        # top1=int(get(f'{api_url}/get/stats/stats.php?user={username}&action=top1', verify=False, proxies=proxy).json())
+        
+        stats=req(f"SELECT top1 FROM stats WHERE username='{username}'")
+        stats2=req(f"SELECT mtx, item, level, exp FROM stats WHERE username='{username}'")
+        
+        try:
+            mtx=int(stats2['mtx'])
+            items=list(str(stats2['item']).split(', '))
+            level=int(stats2['level'])
+            xp=int(stats2['exp'])
+            top1=int(stats['top1'])
+            
+        except:
+            respon=self.createError(
+                "errors.com.epicgames.account.invalid_profile",
+                "Your profile does not exist. Please verify your account on our website: https://www.nocturno.games/", 
+                [], 18031, "invalid_profile"
+            )
+            resp=app.response_class(
+                response=respon,
+                status=400,
+                mimetype='application/json'
+            )
+            return resp
+
+        for i in ['athena.json', 'profile0.json', 'common_core.json', 'common_public.json', 'collections.json']:
+            file=loads(open(f'data/profiles/{i}', 'r', encoding='utf-8').read())
+            
+            for profile in file:
+                if profile['accountId']==username:
+                    if profile['profileId']=='athena':
+                        profile['items']=dict(new_items)
+                        profile['stats']['attributes']['accountLevel']=level
+                        profile['stats']['attributes']['level']=level
+                        profile['stats']['attributes']['xp']=xp
+                        profile['stats']['attributes']['book_level']=0
+                        profile['stats']['attributes']['lifetime_wins']=top1
+                        profile['stats']['attributes']['book_xp']=0
+
         
         for i in ['athena.json', 'profile0.json', 'common_core.json', 'common_public.json', 'collections.json']:
             file=loads(open(f'data/profiles/{i}', 'r', encoding='utf-8').read())
