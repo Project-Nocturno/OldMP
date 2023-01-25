@@ -176,7 +176,7 @@
         "_id": "4lxprime",
         "created": "2023-01-15T16:04:49Z",
         "updated": "2023-01-15T16:04:49Z",
-        "rvn": 0,
+        "rvn": 10,
         "wipeNumber": 1,
         "accountId": "4lxprime",
         "profileId": "athena",
@@ -1041,7 +1041,7 @@
                 "favorite_consumableemote": "",
                 "banner_color": "DefaultColor14",
                 "favorite_callingcard": "",
-                "favorite_character": "",
+                "favorite_character": "AthenaCharacter:CID_035_Athena_Commando_M_Medieval",
                 "favorite_spray": [],
                 "book_xp": 0,
                 "battlestars": 0,
@@ -1067,8 +1067,8 @@
                 "inventory_limit_bonus": 0,
                 "last_applied_loadout": "",
                 "favorite_skydivecontrail": "",
-                "favorite_pickaxe": "",
-                "favorite_glider": "",
+                "favorite_pickaxe": "AthenaPickaxe:Pickaxe_Lockjaw",
+                "favorite_glider": "AthenaGlider:Glider_ID_010_Storm",
                 "daily_rewards": {},
                 "xp": 1,
                 "season_friend_match_boost": 0,
@@ -1087,6 +1087,6 @@
                 "fortnite_character": ""
             }
         },
-        "commandRevision": 0
+        "commandRevision": 10
     }
 ]

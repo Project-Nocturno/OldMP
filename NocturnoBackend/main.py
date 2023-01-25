@@ -3,7 +3,7 @@ from json import loads, dumps
 import random
 from requests import get
 
-from flask import Flask, request, Response, send_from_directory, jsonify, session
+from flask import Flask, request, Response, send_from_directory, session
 from flask_session import Session
 from uuid import uuid4
 from datetime import datetime, timedelta
@@ -132,7 +132,7 @@ class NBackend():
                 athena['rvn']+=1
                 athena['commandRevision']+=1
                 
-                open(f'data/profiles/{request.args.get("profileId") or "athena"}', 'w', encoding='utf-8').write(dumps(athena, indent=4))
+                open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(athena, indent=4))
                 
                 resp=app.response_class(
                     response='Success',
@@ -501,16 +501,74 @@ class NBackend():
             resp.status_code=200
             return resp
 
+        @app.route('/fortnite/api/game/v2/matchmakingservice/ticket/player/<accountId>', methods=['GET'])
+        def fortniteapigamev2mathcmakingplayerticket(accountId):
+            print(config)
+            ip=config['GameServer']['ip']
+            port=config['GameServer']['port']
+            print('\n')
+            print('\n')
+            print(request.view_args)
+            print('\n')
+            print(request.stream.read())
+            print('\n')
+            print(request.get_data())
+            print('\n')
+            print('\n')
+
+            r={
+                "serviceUrl": "ws://127.0.0.1",
+                "ticketType": "mms-player",
+                "payload": "69=",
+                "signature": "420="
+            }
+
+            resp=app.response_class(
+                response=dumps(r),
+                status=200,
+                mimetype='application/json'
+            )
+            resp.set_cookie("currentbuildUniqueId", request.args.get('bucketId').split(":")[0])
+            return resp
+
+        @app.route('/fortnite/api/game/v2/matchmaking/account/<accountId>/session/<sessionId>', methods=['GET'])
+        def fortniteapigamev2mathcmakingsessionid(accountId, sessionId):
+
+            r={
+                "accountId": session.get('username'),
+                "sessionId": session.get('sessionId'),
+                "key": "KvOWLwXTUO6XyXsZGpK0_GvEKZatDxwb34-rJNUW8Fs="
+            }
+
+            resp=app.response_class(
+                response=dumps(r),
+                status=200,
+                mimetype='application/json'
+            )
+            return resp
+
         @app.route('/fortnite/api/matchmaking/session/<sessionId>', methods=['GET'])
         def apimatchmakingsessionid(sessionId):
 
-            session={
-                "id": sessionId,
+            ip=config['GameServer']['ip']
+            port=config['GameServer']['port']
+            print('\n')
+            print('\n')
+            print(request.view_args)
+            print('\n')
+            print(request.stream.read())
+            print('\n')
+            print(request.get_data())
+            print('\n')
+            print('\n')
+
+            sessionCode={
+                "id": session.get('sessionId'),
                 "ownerId": str(uuid4()).replace("-", "").upper(),
                 "ownerName": "[DS]fortnite-liveeugcec1c2e30ubrcore0a-z8hj-1968",
                 "serverName": "[DS]fortnite-liveeugcec1c2e30ubrcore0a-z8hj-1968",
-                "serverAddress": "0.0.0.0",
-                "serverPort": 3551,
+                "serverAddress": ip,
+                "serverPort": int(port),
                 "maxPublicPlayers": 220,
                 "openPublicPlayers": 175,
                 "maxPrivatePlayers": 0,
@@ -539,7 +597,7 @@ class NBackend():
                 "usesStats": False,
                 "allowInvites": False,
                 "usesPresence": False,
-                "allowJoinViaPresence": True,
+                "allowJoinViaPresence": False,
                 "allowJoinViaPresenceFriendsOnly": False,
                 "buildUniqueId": request.cookies.get('currentbuildUniqueId') or "0",
                 "lastUpdated": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -547,7 +605,7 @@ class NBackend():
             }
 
             resp=app.response_class(
-                response=dumps(session),
+                response=dumps(sessionCode),
                 status=200,
                 mimetype='application/json'
             )
@@ -592,7 +650,7 @@ class NBackend():
 
             CloudFiles=[]
 
-            for name in ['DefaultEngine.ini', 'DefaultGame.ini', 'DefaultRuntimeOptions.ini']:
+            for name in ['DefaultEngine.ini', 'DefaultGame.ini', 'DefaultRuntimeOptions.ini', 'DefaultInput.ini']:
                     
                 ParsedFile=open(f'CloudStorage/{name}', 'r', encoding="utf-8").read()
                 
@@ -1670,9 +1728,8 @@ class NBackend():
                 username=str(request.get_data('username').decode()).split("&")[1].split('=')[1]
                 password=str(request.get_data('password').decode()).split("&")[2].split('=')[1]
                 
-                r=get(f'{api_url}/get/check.php?user={username}&pass={password}', proxies=proxy, verify=False).text.replace('"', '')
-                print(r)
-                if r!='ok':
+                r=get(f'{api_url}/get/check.php?user={username}&pass={password}', proxies=proxy, verify=False).text
+                if not 'ok' in r:
                     print("bad logins")
                     respon=self.createError(
                         "errors.com.epicgames.account.invalid_account_credentials",
@@ -1857,40 +1914,6 @@ class NBackend():
             resp.status_code=204
             return resp
 
-        @app.route('/fortnite/api/game/v2/matchmakingservice/ticket/player/<accountId>', methods=['GET'])
-        def fortniteapigamev2mathcmakingplayerticket(accountId):
-
-            r={
-                "serviceUrl": "ws://127.0.0.1",
-                "ticketType": "mms-player",
-                "payload": "69=",
-                "signature": "420="
-            }
-
-            resp=app.response_class(
-                response=dumps(r),
-                status=200,
-                mimetype='application/json'
-            )
-            resp.set_cookie("currentbuildUniqueId", request.args.get('bucketId').split(":")[0])
-            return resp
-
-        @app.route('/fortnite/api/game/v2/matchmaking/account/<accountId>/session/<sessionId>', methods=['GET'])
-        def fortniteapigamev2mathcmakingsessionid(accountId, sessionId):
-
-            r={
-                "accountId": session.get('username'),
-                "sessionId": session.get('sessionId'),
-                "key": "KvOWLwXTUO6XyXsZGpK0_GvEKZatDxwb34-rJNUW8Fs="
-            }
-
-            resp=app.response_class(
-                response=dumps(r),
-                status=200,
-                mimetype='application/json'
-            )
-            return resp
-
         @app.route('/fortnite/api/game/v2/enabled_features', methods=['GET'])
         def apigamev2enabledfeatures():
             
@@ -1941,9 +1964,9 @@ class NBackend():
             
             profiles=loads(open(f'data/profiles/profile0.json', 'r', encoding='utf-8').read())
             
-            for i in profiles:
-                if i['accountId']==account:
-                    profile=i.copy()
+            for prof in profiles:
+                if prof['accountId']==account:
+                    profile=prof.copy()
                     
             athena=loads(open(f'data/profiles/athena.json', 'r', encoding='utf-8').read())
             
@@ -2622,7 +2645,7 @@ class NBackend():
                         MultiUpdate[0]['profileRevision']=athena['rvn'] or 0
                         MultiUpdate[0]['profileCommandRevision']=athena['commandRevision'] or 0
 
-                    open(f'data/profiles/{request.args.get("profileId") or "athena"}', 'w', encoding='utf-8').write(dumps(athena, indent=4))
+                    open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(athena, indent=4))
                     open(f'data/profiles/{request.args.get("profileId") or "profile0"}.json', 'w', encoding='utf-8').write(dumps(profile, indent=4))
 
                 if AthenaModified == False:
@@ -3168,7 +3191,7 @@ class NBackend():
                         MultiUpdate[0]['profileRevision']=athena['rvn'] or 0
                         MultiUpdate[0]['profileCommandRevision']=athena['commandRevision'] or 0
 
-                    open(f'data/profiles/{request.args.get("profileId") or "athena"}', 'w', encoding='utf-8').write(dumps(athena, indent=4))
+                    open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(athena, indent=4))
                     open(f'data/profiles/{request.args.get("profileId") or "common_core"}.json', 'w', encoding='utf-8').write(dumps(profile, indent=4))
 
                 if AthenaModified == False:
@@ -3224,9 +3247,9 @@ class NBackend():
                 return resp
             
             profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-            for i in profiles:
-                if i['accountId']==account:
-                    profile=i.copy()
+            for prof in profiles:
+                if prof['accountId']==account:
+                    profile=prof.copy()
             
             ApplyProfileChanges=[]
             BaseRevision=profile['rvn'] or 0
@@ -3247,7 +3270,7 @@ class NBackend():
                     "value": profile['stats']['attributes']['party_assist_quest']
                 })
 
-                open(f'data/profiles/{request.args.get("profileId") or "athena"}', 'w', encoding='utf-8').write(dumps(profile, indent=4))
+                open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(profile, indent=4))
             
             if QueryRevision!=BaseRevision:
                 ApplyProfileChanges=[{
@@ -3292,9 +3315,9 @@ class NBackend():
                 return resp
             
             profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-            for i in profiles:
-                if i['accountId']==account:
-                    profile=i.copy()
+            for prof in profiles:
+                if prof['accountId']==account:
+                    profile=prof.copy()
 
             ApplyProfileChanges=[]
             BaseRevision=profile['rvn'] or 0
@@ -3315,7 +3338,7 @@ class NBackend():
                     "value": profile['stats']['attributes']['pinned_quest']
                 })
 
-                open(f'data/profiles/{request.args.get("profileId") or "athena"}', 'w', encoding='utf-8').write(dumps(profile, indent=4))
+                open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(profile, indent=4))
             
             if QueryRevision!=BaseRevision:
                 ApplyProfileChanges=[{
@@ -3360,9 +3383,9 @@ class NBackend():
                 return resp
             
             profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-            for i in profiles:
-                if i['accountId']==account:
-                    profile=i.copy()
+            for prof in profiles:
+                if prof['accountId']==account:
+                    profile=prof.copy()
 
             ApplyProfileChanges=[]
             BaseRevision=profile['rvn'] or 0
@@ -3384,7 +3407,7 @@ class NBackend():
                     "attributeValue": profile['items'][loads(request.get_data('targetItemId'))['targetItemId']]['attributes']['favorite']
                 })
                 
-                open(f'data/profiles/{request.args.get("profileId") or "athena"}', 'w', encoding='utf-8').write(dumps(profile, indent=4))
+                open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(profile, indent=4))
             
             if QueryRevision!=BaseRevision:
                 ApplyProfileChanges=[{
@@ -3429,9 +3452,9 @@ class NBackend():
                 return resp
             
             profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-            for i in profiles:
-                if i['accountId']==account:
-                    profile=i.copy()
+            for prof in profiles:
+                if prof['accountId']==account:
+                    profile=prof.copy()
 
             ApplyProfileChanges=[]
             BaseRevision=profile['rvn'] or 0
@@ -3458,7 +3481,7 @@ class NBackend():
                 profile['rvn']+=1
                 profile['commandRevision']+=1
                 
-                open(f'data/profiles/{request.args.get("profileId") or "athena"}', 'w', encoding='utf-8').write(dumps(profile, indent=4))
+                open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(profile, indent=4))
             
             if QueryRevision!=BaseRevision:
                 ApplyProfileChanges=[{
@@ -3503,9 +3526,9 @@ class NBackend():
                 return resp
             
             profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-            for i in profiles:
-                if i['accountId']==account:
-                    profile=i.copy()
+            for prof in profiles:
+                if prof['accountId']==account:
+                    profile=prof.copy()
             
             try:
                 if not profile['stats']['attributes']['favorite_dance']:
@@ -3633,8 +3656,11 @@ class NBackend():
                         "attributeName": "variants",
                         "attributeValue": profile['items'][itemToSlotJ]['attributes']['variants']
                     })
-
-                open(f'data/profiles/{request.args.get("profileId") or "athena"}', 'w', encoding='utf-8').write(dumps(profile, indent=4))
+                oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
+                for key, val in enumerate(oldprofile):
+                    if val['accountId']==account:
+                        oldprofile[key]=profile
+                open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
 
             if QueryRevision!=BaseRevision:
                 ApplyProfileChanges=[{
@@ -3687,9 +3713,9 @@ class NBackend():
             
             profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
             
-            for i in profiles:
-                if i['accountId']==account:
-                    profile=i.copy()
+            for prof in profiles:
+                if prof['accountId']==account:
+                    profile=prof.copy()
 
             ApplyProfileChanges=[]
             BaseRevision=profile['rvn'] or 0
@@ -3740,9 +3766,9 @@ class NBackend():
             
             profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
             
-            for i in profiles:
-                if i['accountId']==account:
-                    profile=i.copy()
+            for prof in profiles:
+                if prof['accountId']==account:
+                    profile=prof.copy()
 
             ApplyProfileChanges=[]
             BaseRevision=profile['rvn'] or 0
@@ -3791,9 +3817,9 @@ class NBackend():
                 return resp
             
             profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-            for i in profiles:
-                if i['accountId']==account:
-                    profile=i.copy()
+            for prof in profiles:
+                if prof['accountId']==account:
+                    profile=prof.copy()
 
             ApplyProfileChanges=[]
             BaseRevision=profile['rvn'] or 0
@@ -3821,7 +3847,7 @@ class NBackend():
                     "value": profile['stats']['attributes']['banner_color']
                 })
                 
-                open(f'data/profiles/{request.args.get("profileId") or "athena"}', 'w', encoding='utf-8').write(dumps(profile, indent=4))
+                open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(profile, indent=4))
             
             if QueryRevision!=BaseRevision:
                 ApplyProfileChanges=[{
@@ -3867,9 +3893,9 @@ class NBackend():
                 return resp
             
             profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-            for i in profiles:
-                if i['accountId']==account:
-                    profile=i.copy()
+            for prof in profiles:
+                if prof['accountId']==account:
+                    profile=prof.copy()
             QuestIDS=loads(open(f'data/items/quests.json', 'r', encoding='utf-8').read())
             memory=self.getVersion(request=request)
 
@@ -4100,7 +4126,7 @@ class NBackend():
                 profile['rvn']+=1
                 profile['commandRevision']+=1
                 
-                open(f'data/profiles/{request.args.get("profileId") or "athena"}', 'w', encoding='utf-8').write(dumps(profile, indent=4))
+                open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(profile, indent=4))
             
             if QueryRevision!=BaseRevision:
                 ApplyProfileChanges=[{
@@ -4146,9 +4172,9 @@ class NBackend():
                 return resp
             
             profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-            for i in profiles:
-                if i['accountId']==account:
-                    profile=i.copy()
+            for prof in profiles:
+                if prof['accountId']==account:
+                    profile=prof.copy()
 
             ApplyProfileChanges=[]
             BaseRevision=profile['rvn'] or 0
@@ -4172,7 +4198,7 @@ class NBackend():
                     "value": profile['stats']['attributes']['named_counters']
                 })
 
-                open(f'data/profiles/{request.args.get("profileId") or "athena"}', 'w', encoding='utf-8').write(dumps(profile, indent=4))
+                open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(profile, indent=4))
             
             if QueryRevision!=BaseRevision:
                 ApplyProfileChanges=[{
@@ -4208,9 +4234,9 @@ class NBackend():
 
                 profiles=loads(open(file, 'r', encoding='utf-8').read())
 
-                for i in profiles:
-                    if i['accountId']==session.get('accountId'):
-                        profile=i.copy()
+                for prof in profiles:
+                    if prof['accountId']==session.get('accountId'):
+                        profile=prof.copy()
                         
                 if not profile.get('rvn'):
                     profile['rvn'] = 0
@@ -4235,7 +4261,7 @@ class NBackend():
                         profiles['stats']['attributes']['season_match_boost'] = SeasonData['battlePassXPBoost']
                         profiles['stats']['attributes']['season_friend_match_boost'] = SeasonData['battlePassXPFriendBoost']
 
-                    open(f'data/profiles/{request.args.get("profileId") or "athena"}', 'w', encoding='utf-8').write(dumps(profile, indent=4))
+                    open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(profile, indent=4))
 
             return Response(status=200)
 
@@ -4259,9 +4285,9 @@ class NBackend():
                 return resp
             
             profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "common_core"}.json', 'r', encoding='utf-8').read())
-            for i in profiles:
-                if i['accountId']==account:
-                    profile=i.copy()
+            for prof in profiles:
+                if prof['accountId']==account:
+                    profile=prof.copy()
             item_profiles=loads(open(f'data/profiles/athena.json', 'r', encoding='utf-8').read())
             for i in item_profiles:
                 if i['accountId']==account:
@@ -4383,9 +4409,9 @@ class NBackend():
                 return resp
             
             profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "campaign"}.json', 'r', encoding='utf-8').read())
-            for i in profiles:
-                if i['accountId']==account:
-                    profile=i.copy()
+            for prof in profiles:
+                if prof['accountId']==account:
+                    profile=prof.copy()
 
             apply_profile_changes = []
             base_revision = profile.get("rvn", 0)
@@ -4478,9 +4504,9 @@ class NBackend():
                 return resp
             
             profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-            for i in profiles:
-                if i['accountId']==account:
-                    profile=i.copy()
+            for prof in profiles:
+                if prof['accountId']==account:
+                    profile=prof.copy()
             DailyQuestIDS=loads(open(f'data/items/quests.json', 'r', encoding='utf-8').read())
 
             ApplyProfileChanges = []
@@ -4560,7 +4586,7 @@ class NBackend():
                     "newQuestId": DailyQuestIDS[randomNumber]['templateId']
                 })
 
-                open(f'data/profiles/{request.args.get("profileId") or "athena"}', 'w', encoding='utf-8').write(dumps(profile, indent=4))
+                open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(profile, indent=4))
 
             if QueryRevision != BaseRevision:
                 apply_profile_changes = [{

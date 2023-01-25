@@ -10,7 +10,7 @@
       "message": {
         "_type": "CommonUI Simple Message Base",
         "title": "Project Nocturno",
-        "body": "Bienvenue sur Nocturno !\nPatch Notes:\nImportant:\n - Creation du NocturnoBack (serveur backend)\n - Creation du gameserver 3.5 (serveur de jeux)\n - Creation du site Nocturno (site web)\n - Creation du launcher Nocturno\nDiscord: https://discord.gg/nocturno\nTiktok: project.nocturno"
+        "body": "Bienvenue sur Nocturno !\n\nPatch Notes:\n\nImportant:\n\n - Creation du NocturnoBack (serveur backend)\n - Creation du gameserver 3.5 (serveur de jeux)\n - Creation du site Nocturno (www.nocturno.games)\n - Creation du launcher Nocturno\n\nDiscord: https://discord.gg/nocturno\nTiktok: project.nocturno"
       }
     },
     "_activeDate": "2017-07-19T13:14:04.490Z",
@@ -44,7 +44,7 @@
           "ru": "Совместное сражение с Бурей!",
           "en": "Cooperative PvE storm-fighting adventure!",
           "it": "Avventura tempestosa cooperativa PvE!",
-          "fr": "Une FFFFFFaventure en JcE coopératif pour combattre la tempête !",
+          "fr": "Une aventure en JcE coopératif pour combattre la tempête !",
           "es": "¡Aventura cooperativa JcE de lucha contra la tormenta!",
           "ar": "Cooperative PvE storm-fighting adventure!",
           "ja": "PvE協力プレイでストームに立ち向かえ！",
@@ -257,7 +257,7 @@
           "hidden": true,
           "_type": "CommonUI Simple Message Base",
           "title": "Project Nocturno",
-          "body": "Maintenance prévue de 20h jusqu'à 10h.\nPour en savoir plus tout est sur le serveur discord.",
+          "body": "Le projet Nocturno est fonctionnel!\n une mise a jour est prévue le 10/02/2023",
           "spotlight": true
         }
       ]
@@ -276,7 +276,7 @@
           "hidden": false,
           "_type": "CommonUI Emergency Notice Base",
           "title": "Project Nocturno",
-          "body": "L'API du Project Nocturno est en dev.\nCredits to Helaito, 4lxprime, Nathael"
+          "body": "L'API du Project Nocturno est en dev.\nCredits to Heliato, 4lxprime, Nathael"
         }
       ]
     },
