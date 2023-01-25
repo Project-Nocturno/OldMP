@@ -1962,9 +1962,9 @@ class NBackend():
             
             itemId=loads(request.get_data('offerId'))['offerId']
             
-            profiles=loads(open(f'data/profiles/profile0.json', 'r', encoding='utf-8').read())
+            allprofiles=loads(open(f'data/profiles/profile0.json', 'r', encoding='utf-8').read())
             
-            for prof in profiles:
+            for prof in allprofiles:
                 if prof['accountId']==account:
                     profile=prof.copy()
                     
@@ -2103,14 +2103,14 @@ class NBackend():
             ]
             
             
-            for i in exchange_table:
-                if itemId==i['id']:
-                    r=get(f"{api_url}/post/item/item.php?urlkey={urlkey}&token&passwd=&usernm={account}&item={i['name']}&action=buy_item", verify=False, proxies=proxy).text
-                    if r!="error":
-                        if r!="already_exist":
-                            pass
-                    else:
-                        pass
+            # for i in exchange_table:
+            #     if itemId==i['id']:
+            #         r=get(f"{api_url}/post/item/item.php?urlkey={urlkey}&token&passwd=&usernm={account}&item={i['name']}&action=buy_item", verify=False, proxies=proxy).text
+            #         if r!="error":
+            #             if r!="already_exist":
+            #                 pass
+            #         else:
+            #             pass
             
             if loads(request.get_data('offerId'))['offerId'] and request.args.get('profileId')=="profile0" and PurchasedLlama==False:
                 for a, value in enumerate(catalog['storefronts']):
@@ -2645,14 +2645,27 @@ class NBackend():
                         MultiUpdate[0]['profileRevision']=athena['rvn'] or 0
                         MultiUpdate[0]['profileCommandRevision']=athena['commandRevision'] or 0
 
-                    open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(athena, indent=4))
-                    open(f'data/profiles/{request.args.get("profileId") or "profile0"}.json', 'w', encoding='utf-8').write(dumps(profile, indent=4))
+                    oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
+                    for key, val in enumerate(oldprofile):
+                        if val['accountId']==account:
+                            oldprofile[key]=athena
+                    open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
+                    
+                    oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
+                    for key, val in enumerate(oldprofile):
+                        if val['accountId']==account:
+                            oldprofile[key]=profile
+                    open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
 
                 if AthenaModified == False:
                     profile['rvn'] += 1
                     profile['commandRevision'] += 1
 
-                    open(f'data/profiles/{request.args.get("profileId") or "profile0"}.json', 'w', encoding='utf-8').write(dumps(profile, indent=4))
+                    oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "profile0"}.json', 'r', encoding='utf-8').read())
+                    for key, val in enumerate(oldprofile):
+                        if val['accountId']==account:
+                            oldprofile[key]=profile
+                    open(f'data/profiles/{request.args.get("profileId") or "profile0"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
 
             if loads(request.get_data('offerId'))['offerId'] and request.args.get('profileId') == "common_core":
                 for a, value in enumerate(catalog['storefronts']):
@@ -2672,7 +2685,7 @@ class NBackend():
 
                                     Season=value['name'].split("BR")[1]
                                     print(f'\n\n{Season}\n\n')
-                                    BattlePass=loads(open(f'data/items/season3.json', 'r', encoding='utf-8').read())
+                                    BattlePass=loads(open(f'data/items/season{int(Season)}.json', 'r', encoding='utf-8').read())
 
                                     if BattlePass:
                                         SeasonData=loads(open(f'data/items/seasondata.json', 'r', encoding='utf-8').read())
@@ -3191,8 +3204,17 @@ class NBackend():
                         MultiUpdate[0]['profileRevision']=athena['rvn'] or 0
                         MultiUpdate[0]['profileCommandRevision']=athena['commandRevision'] or 0
 
-                    open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(athena, indent=4))
-                    open(f'data/profiles/{request.args.get("profileId") or "common_core"}.json', 'w', encoding='utf-8').write(dumps(profile, indent=4))
+                    oldprofile=loads(open('data/profiles/athena.json', 'r', encoding='utf-8').read())
+                    for key, val in enumerate(oldprofile):
+                        if val['accountId']==account:
+                            oldprofile[key]=athena
+                    open('data/profiles/athena.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
+                    
+                    oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "common_core"}.json', 'r', encoding='utf-8').read())
+                    for key, val in enumerate(oldprofile):
+                        if val['accountId']==account:
+                            oldprofile[key]=profile
+                    open(f'data/profiles/{request.args.get("profileId") or "common_core"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
 
                 if AthenaModified == False:
                     profile['rvn'] += 1
@@ -3201,7 +3223,12 @@ class NBackend():
                     if len(MultiUpdate)!=0:
                         MultiUpdate[0]['profileRevision']=profile['rvn'] or 0
                         MultiUpdate[0]['profileCommandRevision']=profile['commandRevision'] or 0
-                    open(f'data/profiles/{request.args.get("profileId") or "common_core"}.json', 'w', encoding='utf-8').write(dumps(profile, indent=4))
+                        
+                    oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "common_core"}.json', 'r', encoding='utf-8').read())
+                    for key, val in enumerate(oldprofile):
+                        if val['accountId']==account:
+                            oldprofile[key]=profile
+                    open(f'data/profiles/{request.args.get("profileId") or "common_core"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
 
             if QueryRevision != BaseRevision:
                 ApplyProfileChanges=[{
@@ -3270,7 +3297,11 @@ class NBackend():
                     "value": profile['stats']['attributes']['party_assist_quest']
                 })
 
-                open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(profile, indent=4))
+                oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
+                for key, val in enumerate(oldprofile):
+                    if val['accountId']==account:
+                        oldprofile[key]=profile
+                open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
             
             if QueryRevision!=BaseRevision:
                 ApplyProfileChanges=[{
@@ -3338,7 +3369,11 @@ class NBackend():
                     "value": profile['stats']['attributes']['pinned_quest']
                 })
 
-                open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(profile, indent=4))
+                oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
+                for key, val in enumerate(oldprofile):
+                    if val['accountId']==account:
+                        oldprofile[key]=profile
+                open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
             
             if QueryRevision!=BaseRevision:
                 ApplyProfileChanges=[{
@@ -3407,7 +3442,11 @@ class NBackend():
                     "attributeValue": profile['items'][loads(request.get_data('targetItemId'))['targetItemId']]['attributes']['favorite']
                 })
                 
-                open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(profile, indent=4))
+                oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
+                for key, val in enumerate(oldprofile):
+                    if val['accountId']==account:
+                        oldprofile[key]=profile
+                open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
             
             if QueryRevision!=BaseRevision:
                 ApplyProfileChanges=[{
@@ -3481,7 +3520,11 @@ class NBackend():
                 profile['rvn']+=1
                 profile['commandRevision']+=1
                 
-                open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(profile, indent=4))
+                oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
+                for key, val in enumerate(oldprofile):
+                    if val['accountId']==account:
+                        oldprofile[key]=profile
+                open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
             
             if QueryRevision!=BaseRevision:
                 ApplyProfileChanges=[{
@@ -3847,7 +3890,11 @@ class NBackend():
                     "value": profile['stats']['attributes']['banner_color']
                 })
                 
-                open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(profile, indent=4))
+                oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
+                for key, val in enumerate(oldprofile):
+                    if val['accountId']==account:
+                        oldprofile[key]=profile
+                open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
             
             if QueryRevision!=BaseRevision:
                 ApplyProfileChanges=[{
@@ -4126,7 +4173,11 @@ class NBackend():
                 profile['rvn']+=1
                 profile['commandRevision']+=1
                 
-                open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(profile, indent=4))
+                oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
+                for key, val in enumerate(oldprofile):
+                    if val['accountId']==account:
+                        oldprofile[key]=profile
+                open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
             
             if QueryRevision!=BaseRevision:
                 ApplyProfileChanges=[{
@@ -4198,7 +4249,11 @@ class NBackend():
                     "value": profile['stats']['attributes']['named_counters']
                 })
 
-                open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(profile, indent=4))
+                oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
+                for key, val in enumerate(oldprofile):
+                    if val['accountId']==account:
+                        oldprofile[key]=profile
+                open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
             
             if QueryRevision!=BaseRevision:
                 ApplyProfileChanges=[{
@@ -4261,7 +4316,11 @@ class NBackend():
                         profiles['stats']['attributes']['season_match_boost'] = SeasonData['battlePassXPBoost']
                         profiles['stats']['attributes']['season_friend_match_boost'] = SeasonData['battlePassXPFriendBoost']
 
-                    open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(profile, indent=4))
+                    oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
+                    for key, val in enumerate(oldprofile):
+                        if val['accountId']==session.get('accountId'):
+                            oldprofile[key]=profile
+                    open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
 
             return Response(status=200)
 
@@ -4361,9 +4420,17 @@ class NBackend():
                 multi_update[0]['profileRevision']=item_profile['rvn'] or 0
                 multi_update[0]['profileCommandRevision']=item_profile['commandRevision'] or 0
                 
-                open(f'data/profiles/athena.json', 'w', encoding='utf-8').write(dumps(item_profile, indent=4))
+                oldprofile=loads(open(f'data/profiles/athena.json', 'r', encoding='utf-8').read())
+                for key, val in enumerate(oldprofile):
+                    if val['accountId']==account:
+                        oldprofile[key]=item_profile
+                open(f'data/profiles/{request.args.get("profileId") or "common_core"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
                 
-                open(f'data/profiles/{request.args.get("profileId") or "common_core"}.json', 'w', encoding='utf-8').write(dumps(profile, indent=4))
+                oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "common_core"}.json', 'r', encoding='utf-8').read())
+                for key, val in enumerate(oldprofile):
+                    if val['accountId']==account:
+                        oldprofile[key]=profile
+                open(f'data/profiles/{request.args.get("profileId") or "common_core"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
             
             if query_revision!=base_revision:
                 ApplyProfileChanges=[{
@@ -4459,7 +4526,11 @@ class NBackend():
                 profile["rvn"] += 1
                 profile["commandRevision"] += 1
 
-                open(f'data/profiles/{request.args.get("profileId") or "campaign"}.json', 'w', encoding='utf-8').write(dumps(profile, indent=4))
+                oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "campaign"}.json', 'r', encoding='utf-8').read())
+                for key, val in enumerate(oldprofile):
+                    if val['accountId']==account:
+                        oldprofile[key]=profile
+                open(f'data/profiles/{request.args.get("profileId") or "campaign"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
 
             if query_revision != base_revision:
                 apply_profile_changes = [{
@@ -4586,7 +4657,11 @@ class NBackend():
                     "newQuestId": DailyQuestIDS[randomNumber]['templateId']
                 })
 
-                open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(profile, indent=4))
+                oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
+                for key, val in enumerate(oldprofile):
+                    if val['accountId']==account:
+                        oldprofile[key]=profile
+                open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
 
             if QueryRevision != BaseRevision:
                 apply_profile_changes = [{
