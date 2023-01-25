@@ -4762,39 +4762,40 @@ class NBackend():
             if isinstance(catalog_config[value]['itemGrants'], list):
                 if len(catalog_config[value]['itemGrants']) != 0:
                     catalog_entry={
-                        "devName":"",
-                        "offerId":"",
-                        "fulfillmentIds":[],
-                        "dailyLimit":-1,
-                        "weeklyLimit":-1,
-                        "monthlyLimit":-1,
-                        "categories":[],
-                        "prices":[
-                            {"currencyType":"MtxCurrency",
-                             "currencySubType":"",
-                             "regularPrice":0,
-                             "finalPrice":0,
-                             "saleExpiration":self.createDate(24),
-                             "basePrice":0
+                        "devName": "",
+                        "offerId": "",
+                        "fulfillmentIds": [],
+                        "dailyLimit": -1,
+                        "weeklyLimit": -1,
+                        "monthlyLimit": -1,
+                        "categories": [],
+                        "prices": [
+                            {
+                                "currencyType": "MtxCurrency",
+                                "currencySubType": "",
+                                "regularPrice": 0,
+                                "finalPrice": 0,
+                                "saleExpiration": self.createDate(24),
+                                "basePrice": 0
                             }
                         ],
-                        "matchFilter":"",
-                        "filterWeight":0,
-                        "appStoreId":[],
-                        "requirements":[],
-                        "offerType":"StaticPrice",
-                        "giftInfo":{
-                            "bIsEnabled":False,
-                            "forcedGiftBoxTemplateId":"",
-                            "purchaseRequirements":[],
-                            "giftRecordIds":[]
+                        "matchFilter": "",
+                        "filterWeight": 0,
+                        "appStoreId": [],
+                        "requirements": [],
+                        "offerType": "StaticPrice",
+                        "giftInfo": {
+                            "bIsEnabled": False,
+                            "forcedGiftBoxTemplateId": "",
+                            "purchaseRequirements": [],
+                            "giftRecordIds": []
                         },
-                        "refundable":True,
-                        "metaInfo":[],
-                        "displayAssetPath":"",
-                        "itemGrants":[],
-                        "sortPriority":0,
-                        "catalogGroupPriority":0
+                        "refundable": True,
+                        "metaInfo": [],
+                        "displayAssetPath": "",
+                        "itemGrants": [],
+                        "sortPriority": 0,
+                        "catalogGroupPriority": 0
                     }
 
                     if value.lower().startswith("daily"):
