@@ -2180,7 +2180,7 @@ class NBackend():
 
                                                 if item.lower().startswith("homebasebanner"):
                                                     for key in profile['items']:
-                                                        if profile['items'][key]['templateId'].lower() == item['items']:
+                                                        if profile['items'][key]['templateId'].lower() == item.lower():
                                                             profile['items'][key]['attributes']['item_seen']=False
                                                             ItemExists=True
 
@@ -2207,7 +2207,7 @@ class NBackend():
 
                                                 if item.lower().startswith("athena"):
                                                     for key in athena['items']:
-                                                        if athena['items'][key]['templateId'].lower() == item['items']:
+                                                        if athena['items'][key]['templateId'].lower() == item.lower():
                                                             athena['items'][key]['attributes']['item_seen']=False
                                                             ItemExists=True
 
@@ -2266,7 +2266,7 @@ class NBackend():
 
                                                 if item.lower().startswith("homebasebanner"):
                                                     for key in profile['items']:
-                                                        if profile['items'][key]['templateId'].lower() == item['items']:
+                                                        if profile['items'][key]['templateId'].lower() == item.lower():
                                                             profile['items'][key]['attributes']['item_seen']=False
                                                             ItemExists=True
 
@@ -2293,7 +2293,7 @@ class NBackend():
 
                                                 if item.lower().startswith("athena"):
                                                     for key in athena['items']:
-                                                        if athena['items'][key]['templateId'].lower() == item['items']:
+                                                        if athena['items'][key]['templateId'].lower() == item.lower():
                                                             athena['items'][key]['attributes']['item_seen']=False
                                                             ItemExists=True
 
@@ -2389,7 +2389,7 @@ class NBackend():
 
                                                 if item.lower().startswith("homebasebanner"):
                                                     for key in profile['items']:
-                                                        if profile['items'][key]['templateId'].lower() == item['items']:
+                                                        if profile['items'][key]['templateId'].lower() == item.lower():
                                                             profile['items'][key]['attributes']['item_seen']=False
                                                             ItemExists=True
 
@@ -2416,7 +2416,7 @@ class NBackend():
 
                                                 if item.lower().startswith("athena"):
                                                     for key in athena['items']:
-                                                        if athena['items'][key]['templateId'].lower() == item['items']:
+                                                        if athena['items'][key]['templateId'].lower() == item.lower():
                                                             athena['items'][key]['attributes']['item_seen']=False
                                                             ItemExists=True
 
@@ -2475,7 +2475,7 @@ class NBackend():
 
                                                 if item.lower().startswith("homebasebanner"):
                                                     for key in profile['items']:
-                                                        if profile['items'][key]['templateId'].lower() == item['items']:
+                                                        if profile['items'][key]['templateId'].lower() == item.lower():
                                                             profile['items'][key]['attributes']['item_seen']=False
                                                             ItemExists=True
 
@@ -2502,7 +2502,7 @@ class NBackend():
 
                                                 if item.lower().startswith("athena"):
                                                     for key in athena['items']:
-                                                        if athena['items'][key]['templateId'].lower() == item['items']:
+                                                        if athena['items'][key]['templateId'].lower() == item.lower():
                                                             athena['items'][key]['attributes']['item_seen']=False
                                                             ItemExists=True
 
@@ -2733,7 +2733,7 @@ class NBackend():
 
                                                     if item.lower().startswith("homebasebanner"):
                                                         for key in profile['items']:
-                                                            if profile['items'][key]['templateId'].lower() == item['items']:
+                                                            if profile['items'][key]['templateId'].lower() == item.lower():
                                                                 profile['items'][key]['attributes']['item_seen']=False
                                                                 ItemExists=True
 
@@ -2760,7 +2760,7 @@ class NBackend():
 
                                                     if item.lower().startswith("athena"):
                                                         for key in athena['items']:
-                                                            if athena['items'][key]['templateId'].lower() == item['items']:
+                                                            if athena['items'][key]['templateId'].lower() == item.lower():
                                                                 athena['items'][key]['attributes']['item_seen']=False
                                                                 ItemExists=True
 
@@ -2819,7 +2819,7 @@ class NBackend():
 
                                                     if item.lower().startswith("homebasebanner"):
                                                         for key in profile['items']:
-                                                            if profile['items'][key]['templateId'].lower() == item['items']:
+                                                            if profile['items'][key]['templateId'].lower() == item.lower():
                                                                 profile['items'][key]['attributes']['item_seen']=False
                                                                 ItemExists=True
 
@@ -2846,7 +2846,7 @@ class NBackend():
 
                                                     if item.lower().startswith("athena"):
                                                         for key in athena['items']:
-                                                            if athena['items'][key]['templateId'].lower() == item['items']:
+                                                            if athena['items'][key]['templateId'].lower() == item.lower():
                                                                 athena['items'][key]['attributes']['item_seen']=False
                                                                 ItemExists=True
 
@@ -2942,7 +2942,7 @@ class NBackend():
 
                                                     if item.lower().startswith("homebasebanner"):
                                                         for key in profile['items']:
-                                                            if profile['items'][key]['templateId'].lower() == item['items']:
+                                                            if profile['items'][key]['templateId'].lower() == item.lower():
                                                                 profile['items'][key]['attributes']['item_seen']=False
                                                                 ItemExists=True
 
@@ -2969,7 +2969,7 @@ class NBackend():
 
                                                     if item.lower().startswith("athena"):
                                                         for key in athena['items']:
-                                                            if athena['items'][key]['templateId'].lower() == item['items']:
+                                                            if athena['items'][key]['templateId'].lower() == item.lower():
                                                                 athena['items'][key]['attributes']['item_seen']=False
                                                                 ItemExists=True
 
@@ -3028,7 +3028,7 @@ class NBackend():
 
                                                     if item.lower().startswith("homebasebanner"):
                                                         for key in profile['items']:
-                                                            if profile['items'][key]['templateId'].lower() == item['items']:
+                                                            if profile['items'][key]['templateId'].lower() == item.lower():
                                                                 profile['items'][key]['attributes']['item_seen']=False
                                                                 ItemExists=True
 
@@ -3055,7 +3055,7 @@ class NBackend():
 
                                                     if item.lower().startswith("athena"):
                                                         for key in athena['items']:
-                                                            if athena['items'][key]['templateId'].lower() == item['items']:
+                                                            if athena['items'][key]['templateId'].lower() == item.lower():
                                                                 athena['items'][key]['attributes']['item_seen']=False
                                                                 ItemExists=True
 
