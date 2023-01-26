@@ -1694,6 +1694,7 @@ class NBackend():
 
             try:
                 clientId=base64.b64decode(request.headers["authorization"].split(" ")[1]).decode().split(":")[0]
+            
             except:
                 respon=self.createError(
                     "errors.com.epicgames.common.oauth.invalid_client",
@@ -1756,6 +1757,8 @@ class NBackend():
                     )
                     return resp
                 
+                self.checkProfile(username)
+
                 session['username']=username
                 session['password']=password
                 session['ip']=ip
@@ -1787,7 +1790,6 @@ class NBackend():
             elif granttype=="exchange_code":
                 pass
 
-
             r={
                 "access_token": session.get('auth')['token'],
                 "expires_in": 28800,
@@ -1815,7 +1817,7 @@ class NBackend():
 
         @app.route('/account/api/oauth/exchange', methods=['POST'])
         def accountoauthexchange():
-            
+
             resp=app.response_class(
                 response=dumps({}),
                 status=200,
@@ -4945,7 +4947,7 @@ class NBackend():
         dt=dt+timedelta(hours=hour, minutes=min, seconds=sec)
         return dt.strftime("%Y-%m-%dT%H:%M:%SZ")
     
-    def checkProfile(self, username):
+    def loadProfile(self, username):
         
         # mtx=int(get(f'{api_url}/get/stats/stats.php?user={username}&action=mtx', verify=False, proxies=proxy).json())
         # items=list(get(f'{api_url}/get/stats/stats.php?user={username}&action=items', verify=False, proxies=proxy).json())
