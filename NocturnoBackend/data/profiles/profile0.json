@@ -137,7 +137,7 @@
         "_id": "4lxprime",
         "created": "2023-01-15T16:04:49Z",
         "updated": "2023-01-15T16:04:49Z",
-        "rvn": 0,
+        "rvn": 2,
         "wipeNumber": 1,
         "accountId": "4lxprime",
         "profileId": "profile0",
@@ -195,8 +195,8 @@
                         "last_incremented_time": "2022-09-15T21:38:24.350Z"
                     },
                     "SubGameSelectCount_Athena": {
-                        "current_count": 0,
-                        "last_incremented_time": "2022-12-18T12:37:13.822Z"
+                        "current_count": 2,
+                        "last_incremented_time": "2023-01-26T21:42:23Z"
                     }
                 },
                 "default_hero_squad_id": "",
@@ -265,6 +265,6 @@
                 "packs_granted": 0
             }
         },
-        "commandRevision": 0
+        "commandRevision": 2
     }
 ]

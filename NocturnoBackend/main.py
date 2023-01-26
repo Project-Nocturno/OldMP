@@ -33,7 +33,7 @@ api_url="https://nocturno.games/api"
 config=ConfigParser()
 config.read(f'{ospath.dirname(ospath.realpath(__file__))}/config.ini')
 
-app=Flask("Nocturno Backend")
+app=Flask("OldMP")
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
@@ -181,22 +181,22 @@ class NBackend():
         def publicsaassets():
             assets={
                 "appName": "FortniteContentBuilds",
-                "labelName": "NocturnoBackend",
+                "labelName": "OldMP",
                 "buildVersion": "++Fortnite+Release-20.00-CL-19458861-Windows",
                 "catalogItemId": "5cb97847cee34581afdbc445400e2f77",
                 "expires": self.createDate(48),
                 "items": {
                     "MANIFEST": {
-                        "signature": "NocturnoBackend",
-                        "distribution": "https://nocturnoBackend.ol.epicgames.com/",
-                        "path": "Builds/Fortnite/Content/CloudDir/NocturnoBackend.manifest",
+                        "signature": "OldMP",
+                        "distribution": "https://OldMP.ol.epicgames.com/",
+                        "path": "Builds/Fortnite/Content/CloudDir/OldMP.manifest",
                         "hash": "55bb954f5596cadbe03693e1c06ca73368d427f3",
                         "additionalDistributions": []
                     },
                     "CHUNKS": {
-                        "signature": "NocturnoBackend",
-                        "distribution": "https://nocturnoBackend.ol.epicgames.com/",
-                        "path": "Builds/Fortnite/Content/CloudDir/NocturnoBackend.manifest",
+                        "signature": "OldMP",
+                        "distribution": "https://OldMP.ol.epicgames.com/",
+                        "path": "Builds/Fortnite/Content/CloudDir/OldMP.manifest",
                         "additionalDistributions": []
                     }
                 },
@@ -213,7 +213,7 @@ class NBackend():
         @app.route('/Builds/Fortnite/Content/CloudDir/*.manifest', methods=['GET'])
         def fortnitebuildclouddirmanifest():
 
-            manifest=open('data/connect/CloudDir/NocturnoBackend.manifest', 'r', encoding="utf-8").read()
+            manifest=open('data/connect/CloudDir/OldMP.manifest', 'r', encoding="utf-8").read()
 
             resp=app.response_class(
                 response=dumps(manifest),
@@ -225,7 +225,7 @@ class NBackend():
         @app.route('/Builds/Fortnite/Content/CloudDir/*.chunck', methods=['GET'])
         def fortnitebuildclouddirchunck():
 
-            chunck=open('data/connect/CloudDir/NocturnoBackend.chunc', 'r', encoding="utf-8").read()
+            chunck=open('data/connect/CloudDir/OldMP.chunc', 'r', encoding="utf-8").read()
 
             resp=app.response_class(
                 response=dumps(chunck),
@@ -237,7 +237,7 @@ class NBackend():
         @app.route('/Builds/Fortnite/Content/CloudDir/*.ini', methods=['GET'])
         def fortnitebuildclouddirini():
                 
-            ini=open('data/connect/CloudDir/NocturnoBackend.ini', 'r', encoding="utf-8").read()
+            ini=open('data/connect/CloudDir/OldMP.ini', 'r', encoding="utf-8").read()
 
             resp=app.response_class(
                 response=dumps(ini),
@@ -1266,8 +1266,8 @@ class NBackend():
             r={
                 "id": account,
                 "displayName": account,
-                "name": "Projectnocturno",
-                "email": f"{account}@projectnocturno.com",
+                "name": "OldMP",
+                "email": f"{account}@oldmp.com",
                 "failedLoginAttempts": 0,
                 "lastLogin": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
                 "numberOfDisplayNameChanges": 0,
@@ -1540,7 +1540,7 @@ class NBackend():
         def fortnitechatpcgame(idk1, idk2, idk3):
 
             resp=app.response_class(
-                response=dumps({ "GlobalChatRooms": [{"roomName":"NocturnoBackendglobal"}] }),
+                response=dumps({ "GlobalChatRooms": [{"roomName":"OldMPglobal"}] }),
                 status=200,
                 mimetype='application/json'
             )
@@ -1612,14 +1612,14 @@ class NBackend():
         @app.route('/party/api/v1/Fortnite/parties', methods=['POST'])
         def partyfortniteapiparties():
             
-            if not loads(request.get_data('join_info'))['join_info']:
+            if not loads(request.get_data())['join_info']:
                 resp=app.response_class(
                     response=dumps({}),
                     status=200,
                     mimetype='application/json'
                 )
                 return resp
-            if not loads(request.get_data('join_info'))['join_info']['connection']:
+            if not loads(request.get_data())['join_info']['connection']:
                 resp=app.response_class(
                     response=dumps({}),
                     status=200,
@@ -1633,22 +1633,22 @@ class NBackend():
                 "updated_at": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
                 "config": {
                     "type": "DEFAULT",
-                    f"{[i for i in loads(request.get_data('config'))['config']]}"
+                    f"{[i for i in loads(request.get_data())['config']]}"
                     "discoverability": "ALL",
                     "sub_type": "default",
                     "invite_ttl": 14400,
                     "intention_ttl": 60
                 },
                 "members": [{
-                    "account_id": (loads(request.get_data('join_info'))['join_info']['connection']['id'] or "").split("@prod")[0],
-                    "meta": loads(request.get_data('join_info'))['join_info']['meta'] or {},
+                    "account_id": (loads(request.get_data())['join_info']['connection']['id'] or "").split("@prod")[0],
+                    "meta": loads(request.get_data())['join_info']['meta'] or {},
                     "connections": [
                         {
-                            "id": loads(request.get_data('join_info'))['join_info']['connection']['id'] or "",
+                            "id": loads(request.get_data())['join_info']['connection']['id'] or "",
                             "connected_at": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
                             "updated_at": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
                             "yield_leadership": False,
-                            "meta": loads(request.get_data('join_info'))['join_info']['connection']['meta'] or {}
+                            "meta": loads(request.get_data())['join_info']['connection']['meta'] or {}
                         }
                     ],
                     "revision": 0,
@@ -1657,7 +1657,7 @@ class NBackend():
                     "role": "CAPTAIN"
                 }],
                 "applicants": [],
-                "meta": loads(request.get_data('meta'))['meta'] or {},
+                "meta": loads(request.get_data())['meta'] or {},
                 "invites": [],
                 "revision": 0,
                 "intentions": []
@@ -1676,7 +1676,7 @@ class NBackend():
             privacy=loads(open(f'data/account/privacy.json', 'r', encoding='utf-8').read())
                 
             privacy['accountId']=accountId
-            privacy['optOutOfPublicLeaderboards']=loads(request.get_data('optOutOfPublicLeaderboards'))['optOutOfPublicLeaderboards']
+            privacy['optOutOfPublicLeaderboards']=loads(request.get_data())['optOutOfPublicLeaderboards']
             
             open(f'data/account/privacy.json', 'w', encoding='utf-8').write(dumps(privacy, indent=4))
 
@@ -1708,7 +1708,7 @@ class NBackend():
                 )
                 return resp
             
-            granttype=request.get_data('grant_type').decode().split('&')[0].split('=')[1]
+            granttype=request.get_data().decode().split('&')[0].split('=')[1]
             
             print(granttype)
             
@@ -1726,8 +1726,8 @@ class NBackend():
                 }
                 
             elif granttype=="password":
-                username=str(request.get_data('username').decode()).split("&")[1].split('=')[1]
-                password=str(request.get_data('password').decode()).split("&")[2].split('=')[1]
+                username=str(request.get_data().decode()).split("&")[1].split('=')[1]
+                password=str(request.get_data().decode()).split("&")[2].split('=')[1]
                 
                 r=get(f'{api_url}/get/check.php?user={username}&pass={password}', proxies=proxy, verify=False).text
                 if not 'ok' in r:
@@ -1757,7 +1757,7 @@ class NBackend():
                     )
                     return resp
                 
-                self.checkProfile(username)
+                self.loadProfile(username)
 
                 session['username']=username
                 session['password']=password
@@ -1770,9 +1770,8 @@ class NBackend():
                         i['password']=enc(password.encode()).decode()
                 
             elif granttype=="refresh_token":
-                print(request.get_data('refresh_token'))
-                print(request.get_data())
-                refresktoken=request.get_data('refresh_token').decode().split('&')
+                
+                refresktoken=request.get_data().decode().split('&')
                 print(refresktoken)
                 if not refresktoken:
                     respon=self.createError(
@@ -1962,7 +1961,7 @@ class NBackend():
                 )
                 return resp
             
-            itemId=loads(request.get_data('offerId'))['offerId']
+            itemId=loads(request.get_data())['offerId']
             
             allprofiles=loads(open(f'data/profiles/profile0.json', 'r', encoding='utf-8').read())
             
@@ -2114,12 +2113,12 @@ class NBackend():
             #         else:
             #             pass
             
-            if loads(request.get_data('offerId'))['offerId'] and request.args.get('profileId')=="profile0" and PurchasedLlama==False:
+            if loads(request.get_data())['offerId'] and request.args.get('profileId')=="profile0" and PurchasedLlama==False:
                 for a, value in enumerate(catalog['storefronts']):
                     if value['name'].startswith("BRSeason"):
                         if not isinstance(value['name'].split("BRSeason")[1], int):
                             for i in value['catalogEntries']:
-                                if i['offerId'] == loads(request.get_data('offerId'))['offerId']:
+                                if i['offerId'] == loads(request.get_data())['offerId']:
                                     offer=i
 
                             if offer:
@@ -2356,7 +2355,7 @@ class NBackend():
                                         lootList=[]
                                         StartingTier=SeasonData[Season]['battlePassTier']
                                         EndingTier
-                                        SeasonData[Season]['battlePassTier'] += loads(request.get_data('purchaseQuantity'))['purchaseQuantity'] or 1
+                                        SeasonData[Season]['battlePassTier'] += loads(request.get_data())['purchaseQuantity'] or 1
                                         EndingTier=SeasonData[Season]['battlePassTier']
 
                                         for StartingTier in range(EndingTier):
@@ -2559,7 +2558,7 @@ class NBackend():
 
                     if value['name'].startswith("BR"):
                         for b, value in enumerate(catalog['storefronts'][a]['catalogEntries']):
-                            if value['offerId'] == loads(request.get_data('offerId'))['offerId']:
+                            if value['offerId'] == loads(request.get_data())['offerId']:
                                 for c, value in enumerate(catalog['storefronts'][a]['catalogEntries'][b]['itemGrants']):
                                     ID=value['templateId']
 
@@ -2623,7 +2622,7 @@ class NBackend():
                                     for key in profile['items']:
                                         if profile['items'][key]['templateId'].lower().startswith("currency:mtx"):
                                             if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
-                                                profile['items'][key]['quantity'] -= (catalog['storefronts'][a]['catalogEntries'][b]['prices'][0]['finalPrice']) * loads(request.get_data('purchaseQuantity'))['purchaseQuantity'] or 1
+                                                profile['items'][key]['quantity'] -= (catalog['storefronts'][a]['catalogEntries'][b]['prices'][0]['finalPrice']) * loads(request.get_data())['purchaseQuantity'] or 1
                                 
                                                 ApplyProfileChanges.append({
                                                     "changeType": "itemQuantityChanged",
@@ -2669,12 +2668,12 @@ class NBackend():
                             oldprofile[key]=profile
                     open(f'data/profiles/{request.args.get("profileId") or "profile0"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
 
-            if loads(request.get_data('offerId'))['offerId'] and request.args.get('profileId') == "common_core":
+            if loads(request.get_data())['offerId'] and request.args.get('profileId') == "common_core":
                 for a, value in enumerate(catalog['storefronts']):
                     if hasattr(value, 'name'):
                         if value['name'].startswith("BRSeason") or value['devName'].startswith("BRSeason"):
                             if not isinstance(value['name'].split("BRSeason")[1], int):
-                                offer=self.find(lambda x: x['offerId'] == loads(request.get_data('offerId'))['offerId'], value['catalogEntries'])
+                                offer=self.find(lambda x: x['offerId'] == loads(request.get_data())['offerId'], value['catalogEntries'])
                                 if offer:
                                     if len(MultiUpdate) == 0:
                                         MultiUpdate.append({
@@ -2909,7 +2908,7 @@ class NBackend():
                                             lootList=[]
                                             StartingTier=SeasonData[Season]['battlePassTier']
                                             EndingTier
-                                            SeasonData[Season]['battlePassTier'] += loads(request.get_data('purchaseQuantity'))['purchaseQuantity'] or 1
+                                            SeasonData[Season]['battlePassTier'] += loads(request.get_data())['purchaseQuantity'] or 1
                                             EndingTier=SeasonData[Season]['battlePassTier']
 
                                             for StartingTier in range(EndingTier):
@@ -3112,7 +3111,7 @@ class NBackend():
 
                         if value['name'].startswith("BR"):
                             for b, value in enumerate(catalog['storefronts'][a]['catalogEntries']):
-                                if value['offerId'] == loads(request.get_data('offerId'))['offerId']:
+                                if value['offerId'] == loads(request.get_data())['offerId']:
                                     for c, value in enumerate(catalog['storefronts'][a]['catalogEntries'][b]['itemGrants']):
                                         ID=value['templateId']
 
@@ -3174,7 +3173,7 @@ class NBackend():
                                         for key in profile['items']:
                                             if profile['items'][key]['templateId'].lower().startswith("currency:mtx"):
                                                 if profile['items'][key]['attributes']['platform'].lower() == profile['stats']['attributes']['current_mtx_platform'].lower() or profile['items'][key]['attributes']['platform'].lower() == "shared":
-                                                    profile['items'][key]['quantity'] -= (catalog['storefronts'][a]['catalogEntries'][b]['prices'][0]['finalPrice']) * loads(request.get_data('purchaseQuantity'))['purchaseQuantity'] or 1
+                                                    profile['items'][key]['quantity'] -= (catalog['storefronts'][a]['catalogEntries'][b]['prices'][0]['finalPrice']) * loads(request.get_data())['purchaseQuantity'] or 1
                                                             
                                                     ApplyProfileChanges.append({
                                                         "changeType": "itemQuantityChanged",
@@ -3286,7 +3285,7 @@ class NBackend():
             StatChanged=False
 
             if "party_assist_quest" in profile['stats']['attributes']:
-                profile['stats']['attributes']=loads(request.get_data('questToPinAsPartyAssist'))['questToPinAsPartyAssist'] or ""
+                profile['stats']['attributes']=loads(request.get_data())['questToPinAsPartyAssist'] or ""
                 StatChanged=True
             
             if StatChanged:
@@ -3358,7 +3357,7 @@ class NBackend():
             StatChanged=False
 
             if "pinned_quest" in profile['stats']['attributes']:
-                profile['stats']['attributes']=loads(request.get_data('pinned_quest'))['pinned_quest'] or ""
+                profile['stats']['attributes']=loads(request.get_data())['pinned_quest'] or ""
                 StatChanged=True
             
             if StatChanged:
@@ -3429,8 +3428,8 @@ class NBackend():
             QueryRevision=request.args.get('rvn') or -1
             StatChanged=False
             
-            if loads(request.get_data('targetItemId'))['targetItemId']:
-                profile['items'][loads(request.get_data('targetItemId'))['targetItemId']]['attributes']['favorite']=loads(request.get_data('bFavorite'))['bFavorite'] or False
+            if loads(request.get_data())['targetItemId']:
+                profile['items'][loads(request.get_data())['targetItemId']]['attributes']['favorite']=loads(request.get_data())['bFavorite'] or False
                 StatChanged=True
                 
             if StatChanged:
@@ -3439,9 +3438,9 @@ class NBackend():
                 
                 ApplyProfileChanges.append({
                     "changeType": "itemAttrChanged",
-                    "itemId": loads(request.get_data('targetItemId'))['targetItemId'],
+                    "itemId": loads(request.get_data())['targetItemId'],
                     "attributeName": "favorite",
-                    "attributeValue": profile['items'][loads(request.get_data('targetItemId'))['targetItemId']]['attributes']['favorite']
+                    "attributeValue": profile['items'][loads(request.get_data())['targetItemId']]['attributes']['favorite']
                 })
                 
                 oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
@@ -3502,9 +3501,9 @@ class NBackend():
             QueryRevision=request.args.get('rvn') or -1
             StatChanged=False
             
-            if loads(request.get_data('itemIds'))['itemIds']:
+            if loads(request.get_data())['itemIds']:
                 
-                itemIdsL=loads(request.get_data('itemIds'))['itemIds']
+                itemIdsL=loads(request.get_data())['itemIds']
                 
                 for i in range(len(itemIdsL)):
                     profile['items'][itemIdsL[i]]['attributes']['item_seen']=True
@@ -3593,11 +3592,11 @@ class NBackend():
             
             try:
                 
-                variantUpdatesL=loads(request.get_data('variantUpdates'))['variantUpdates']
+                variantUpdatesL=loads(request.get_data())['variantUpdates']
                 ReturnVariantsAsString=variantUpdatesL or []
                 
                 if "active" in ReturnVariantsAsString:
-                    itemToSlotJ=loads(request.get_data('itemToSlot'))['itemToSlot']
+                    itemToSlotJ=loads(request.get_data())['itemToSlot']
                     if len(profile['items'][itemToSlotJ]['attributes']['variants'])==0:
                         profile['items'][itemToSlotJ]['attributes']['variants']=variantUpdatesL or []
                     
@@ -3612,13 +3611,12 @@ class NBackend():
             except Exception as e:
                 pass
             
-            if loads(request.get_data('slotName'))['slotName']:
+            if loads(request.get_data())['slotName']:
                 
-                slotNameJ=loads(request.get_data('slotName'))['slotName']
-                itemToSlotJ=loads(request.get_data('itemToSlot'))['itemToSlot']
-                # r=get(f"{self.api_url}/post/item/item.php?urlkey={urlkey}&usrnm={account}&passwd=&token=&user={account}&item={itemToSlotJ}&style={slotNameJ.lower()}&action=add_favorite&target_user={account}", verify=False, proxies=proxy).text
-                # if r!="error":
-                #     pass
+                slotNameJ=loads(request.get_data())['slotName']
+                itemToSlotJ=loads(request.get_data())['itemToSlot']
+                
+                #req(f"INSERT INTO favorites ({slotNameJ.lower()}) VALUE ('{itemToSlotJ}') WHERE username='{session.get('username')}'")
                 
                 if slotNameJ=="Character":
                     profile['stats']['attributes']['favorite_character']=itemToSlotJ or ""
@@ -3656,14 +3654,14 @@ class NBackend():
                     pass
 
                 if slotNameJ=="Dance":
-                    indexWithinSlot=loads(request.get_data('indexWithinSlot'))['indexWithinSlot']
+                    indexWithinSlot=loads(request.get_data())['indexWithinSlot']
                     if indexWithinSlot>=0:
                         profile['stats']['attributes']['favorite_dance'][indexWithinSlot]=itemToSlotJ or ""
                     StatChanged=True
                     pass
 
                 if slotNameJ=="ItemWrap":
-                    indexwithinslot=loads(request.get_data('indexWithinSlot'))['indexWithinSlot'] or 0
+                    indexwithinslot=loads(request.get_data())['indexWithinSlot'] or 0
 
                     if indexwithinslot>=0 or indexwithinslot<=0:
                         if indexwithinslot==0:
@@ -3871,9 +3869,9 @@ class NBackend():
             QueryRevision=request.args.get('rvn') or -1
             StatChanged=False
             
-            if loads(request.get_data('homebaseBannerIconId'))['homebaseBannerIconId'] and loads(request.get_data('homebaseBannerColorId'))['homebaseBannerColorId']:
-                profile['stats']['attributes']['banner_icon']=loads(request.get_data('homebaseBannerIconId'))['homebaseBannerIconId']
-                profile['stats']['attributes']['banner_color']=loads(request.get_data('homebaseBannerColorId'))['homebaseBannerColorId']
+            if loads(request.get_data())['homebaseBannerIconId'] and loads(request.get_data())['homebaseBannerColorId']:
+                profile['stats']['attributes']['banner_icon']=loads(request.get_data())['homebaseBannerIconId']
+                profile['stats']['attributes']['banner_color']=loads(request.get_data())['homebaseBannerColorId']
                 StatChanged=True
                 
             if StatChanged:
@@ -4234,10 +4232,10 @@ class NBackend():
             QueryRevision=request.args['rvn'] or -1
             StatChanged=False
 
-            if "named_counters" in profile['stats']['attributes'] and loads(request.get_data('counterName'))['counterName']:
-                if loads(request.get_data('counterName'))['counterName'] in profile['stats']['attributes']['named_counters']:
-                    profile['stats']['attributes']['named_counters'][loads(request.get_data('counterName'))['counterName']]['current_count']+=1
-                    profile['stats']['attributes']['named_counters'][loads(request.get_data('counterName'))['counterName']]['last_incremented_time']=datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+            if "named_counters" in profile['stats']['attributes'] and loads(request.get_data())['counterName']:
+                if loads(request.get_data())['counterName'] in profile['stats']['attributes']['named_counters']:
+                    profile['stats']['attributes']['named_counters'][loads(request.get_data())['counterName']]['current_count']+=1
+                    profile['stats']['attributes']['named_counters'][loads(request.get_data())['counterName']]['last_incremented_time']=datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
                     
                     StatChanged=True
             
@@ -4283,8 +4281,13 @@ class NBackend():
         @app.route('/fortnite/api/game/v2/profile/', methods=['GET'])
         def handle_request_profile():
             if not request.args.get('profileId') and request.path.lower().startswith('/fortnite/api/game/v2/profile/'):
-                error = {'error': 'Profile not defined.'}
-                return Response(dumps(error), status=404, mimetype='application/json')
+                error={'error': 'Profile not defined.'}
+                resp=app.response_class(
+                    response=dumps(error),
+                    status=200,
+                    mimetype='application/json'
+                )
+                return resp
 
             for file in ['data/profiles/athena.json', 'data/profiles/profile0.json', 'data/common_core.json']:
                 memory = self.getVersion(request=request)
@@ -4487,25 +4490,25 @@ class NBackend():
             query_revision = request.args.get("rvn", -1)
             stat_changed = False
 
-            if loads(request.get_data('advance'))['advance']:
-                for i in loads(request.get_data('advance'))['advance']:
+            if loads(request.get_data())['advance']:
+                for i in loads(request.get_data())['advance']:
                     quests_to_update = []
                     for x in profile["items"]:
                         if profile['items'][x]["templateId"].lower().startswith("quest:"):
                             for y in profile['items'][x]['attributes']:
-                                if y.lower()==f"completion_{loads(request.get_data('advance'))['advance'][i]['statName']}":
+                                if y.lower()==f"completion_{loads(request.get_data())['advance'][i]['statName']}":
                                     quests_to_update.append(x)
                     
                     for i in len(quests_to_update):
                         b_incomplete = False
 
-                        profile["items"][quests_to_update[i]]["attributes"][f"completion_{loads(request.get_data('advance'))['advance'][i]['statName']}"] = loads(request.get_data('advance'))['advance'][i]["count"]
+                        profile["items"][quests_to_update[i]]["attributes"][f"completion_{loads(request.get_data())['advance'][i]['statName']}"] = loads(request.get_data())['advance'][i]["count"]
 
                         apply_profile_changes.append({
                             "changeType": "itemAttrChanged",
                             "itemId": quests_to_update[i],
-                            "attributeName": f"completion_{loads(request.get_data('advance'))['advance'][i]['statName']}",
-                            "attributeValue": loads(request.get_data('advance'))['advance'][i]["count"]
+                            "attributeName": f"completion_{loads(request.get_data())['advance'][i]['statName']}",
+                            "attributeValue": loads(request.get_data())['advance'][i]["count"]
                         })
                         if profile["items"][quests_to_update[i]]["attributes"]["quest_state"].lower() != "claimed":
                             for x in profile["items"][quests_to_update[i]]["attributes"]:
@@ -4601,7 +4604,7 @@ class NBackend():
             if "questId" in request.form and profile["stats"]["attributes"]["quest_manager"]["dailyQuestRerolls"] >= 1:
                 profile["stats"]["attributes"]["quest_manager"]["dailyQuestRerolls"] -= 1
 
-                del profile["items"][loads(request.get_data('questId'))['questId']]
+                del profile["items"][loads(request.get_data())['questId']]
 
                 profile["items"][NewQuestID] = {
                     "templateId": DailyQuestIDS[randomNumber]["templateId"],
@@ -4650,7 +4653,7 @@ class NBackend():
                 
                 ApplyProfileChanges.append({
                     "changeType": "itemRemoved",
-                    "itemId": loads(request.get_data('questId'))['questId']
+                    "itemId": loads(request.get_data())['questId']
                 })
                 
                 Notifications.append({
@@ -4947,16 +4950,16 @@ class NBackend():
         dt=dt+timedelta(hours=hour, minutes=min, seconds=sec)
         return dt.strftime("%Y-%m-%dT%H:%M:%SZ")
     
-    def loadProfile(self, username):
+    def loadProfile(self, username: str):
         
-        # mtx=int(get(f'{api_url}/get/stats/stats.php?user={username}&action=mtx', verify=False, proxies=proxy).json())
-        # items=list(get(f'{api_url}/get/stats/stats.php?user={username}&action=items', verify=False, proxies=proxy).json())
-        # level=int(get(f'{api_url}/get/stats/stats.php?user={username}&action=level', verify=False, proxies=proxy).json())
-        # xp=int(get(f'{api_url}/get/stats/stats.php?user={username}&action=exp', verify=False, proxies=proxy).json())
-        # top1=int(get(f'{api_url}/get/stats/stats.php?user={username}&action=top1', verify=False, proxies=proxy).json())
+        if self.checkProfile(username):
+            pass
+        else:
+            return True
         
         stats=req(f"SELECT top1 FROM stat WHERE username='{username}'")
         stats2=req(f"SELECT mtx, item, level, exp FROM users WHERE username='{username}'")
+        favorites=req(f"SELECT * FROM favorites WHERE username='{username}'")
         
         try:
             mtx=int(stats2['mtx'])
@@ -4964,6 +4967,15 @@ class NBackend():
             level=int(stats2['level'])
             xp=int(stats2['exp'])
             top1=int(stats['top1'])
+            
+            f_char=favorites['character']
+            f_back=favorites['backpack']
+            f_pic=favorites['pickaxe']
+            f_glid=favorites['glider']
+            f_sky=favorites['skydrivecontrail']
+            f_music=favorites['musicpack']
+            f_load=favorites['loadingscreen']
+            f_dance=favorites['dance']
             
         except:
             respon=self.createError(
@@ -4979,236 +4991,251 @@ class NBackend():
             return resp
         
         for i in ['athena.json', 'profile0.json', 'common_core.json', 'common_public.json', 'collections.json']:
-            file=loads(open(f'data/profiles/{i}', 'r', encoding='utf-8').read())
+            userprofile=loads(open(f'data/profiles/{i}', 'r', encoding='utf-8').read())
             
-            for user in file:
-                if user['accountId']=='defaultprofile':
-                    basicprofile=user.copy()
+            for key, val in enumerate(userprofile):
+                if val['accountId']==username:
                     
-            for user in file:
-                if user['accountId']==username:
-                    return False
-            
-            if basicprofile['profileId']=='athena':
-                exchange_table=[
-                    {'name': 'skull_trooper', 'id': 'CID_030_Athena_Commando_M_Halloween', 'price': 1500, 'style': 'skins'},
-                    {'name': 'ghoul_trooper', 'id': 'CID_029_Athena_Commando_F_Halloween', 'price': 0, 'style': 'skins'},
-                    {'name': 'recon_specialist', 'id': 'CID_024_Athena_Commando_F', 'price': 0, 'style': 'skins'},
-                    {'name': 'brawler', 'id': 'CID_021_Athena_Commando_F', 'price': 0, 'style': 'skins'},
-                    {'name': 'racon_expert', 'id': 'CID_022_Athena_Commando_F', 'price': 0, 'style': 'skins'},
-                    {'name': 'love_ranger', 'id': 'CID_070_Athena_Commando_M_Cupid', 'price': 0, 'style': 'skins'},
-                    {'name': 'cuddle_team_leader', 'id': 'CID_069_Athena_Commando_F_PinkBear', 'price': 0, 'style': 'skins'},
-                    {'name': 'e.l.f', 'id': 'CID_051_Athena_Commando_M_HolidayElf', 'price': 0, 'style': 'skins'},
-                    {'name': 'merry_marauder', 'id': 'CID_049_Athena_Commando_M_HolidayGingerbread', 'price': 0, 'style': 'skins'},
-                    {'name': 'nog_ops', 'id': 'CID_046_Athena_Commando_F_HolidaySweater', 'price': 0, 'style': 'skins'},
-                    {'name': 'funk_ops', 'id': 'CID_038_Athena_Commando_M_Disco', 'price': 0, 'style': 'skins'},
-                    {'name': 'rednosed_raider', 'id': 'CID_047_Athena_Commando_F_HolidayReindeer', 'price': 0, 'style': 'skins'},
-                    {'name': 'yuletide_ranger', 'id': 'CID_045_Athena_Commando_M_HolidaySweater', 'price': 0, 'style': 'skins'},
-                    {'name': 'brite_bomber', 'id': 'CID_044_Athena_Commando_F_SciPop', 'price': 0, 'style': 'skins'},
-                    {'name': 'crackshot', 'id': 'CID_050_Athena_Commando_M_HolidayNutcracker', 'price': 0, 'style': 'skins'},
-                    {'name': 'artic_assassin', 'id': 'CID_037_Athena_Commando_F_WinterCamo', 'price': 0, 'style': 'skins'},
-                    {'name': 'blue_team_leader', 'id': 'CID_052_Athena_Commando_F_PSBlue', 'price': 0, 'style': 'skins'},
-                    {'name': 'dazzle', 'id': 'CID_076_Athena_Commando_F_Sup', 'price': 0, 'style': 'skins'},
-                    {'name': 'jungle_scout', 'id': 'CID_074_Athena_Commando_F_Stripe', 'price': 0, 'style': 'skins'},
-                    {'name': 'mogul_master', 'id': 'CID_065_Athena_Commando_F_SkiGirl_FRA', 'price': 0, 'style': 'skins'},
-                    {'name': 'sash_sergeant', 'id': 'CID_072_Athena_Commando_M_Scout', 'price': 0, 'style': 'skins'},
-                    {'name': 'default_skin', 'id': 'CID_001_Athena_Commando_F_Default', 'price': 0, 'style': 'skins'},
-                    {'name': 'reaper', 'id': 'HalloweenScythe', 'price': 0, 'style': 'pickaxes'},
-                    {'name': 'close_shave', 'id': 'BoltonPickaxe', 'price': 0, 'style': 'pickaxes'},
-                    {'name': 'death_valley', 'id': 'Pickaxe_Deathvalley', 'price': 0, 'style': 'pickaxes'},
-                    {'name': 'candy_axe', 'id': 'Pickaxe_ID_015_HolidayCandyCane', 'price': 0, 'style': 'pickaxes'},
-                    {'name': 'disco_brawl', 'id': 'Pickaxe_ID_016_Disco', 'price': 0, 'style': 'pickaxes'},
-                    {'name': 'ice_breaker', 'id': 'Pickaxe_ID_014_WinterCamo', 'price': 0, 'style': 'pickaxes'},
-                    {'name': 'chomp_jr', 'id': 'Pickaxe_ID_017_Shark', 'price': 0, 'style': 'pickaxes'},
-                    {'name': 'plunja', 'id': 'Pickaxe_ID_024_Plunger', 'price': 0, 'style': 'pickaxes'},
-                    {'name': 'tat_axe', 'id': 'Pickaxe_ID_019_Heart', 'price': 0, 'style': 'pickaxes'},
-                    {'name': 'batsickle', 'id': 'SickleBatPickaxe', 'price': 0, 'style': 'pickaxes'},
-                    {'name': 'Default_Pickaxe', 'id': 'DefaultPickaxe', 'price': 0, 'style': 'pickaxes'},
-                    {'name': 'mako', 'id': 'Glider_Warthog', 'price': 0, 'style': 'gliders'},
-                    {'name': 'prismatic', 'id': 'Glider_Prismatic', 'price': 0, 'style': 'gliders'},
-                    {'name': 'gum_drop', 'id': 'Glider_ID_009_CandyCoat', 'price': 0, 'style': 'gliders'},
-                    {'name': 'cozy_coaster', 'id': 'Glider_ID_005_HolidaySweater', 'price': 0, 'style': 'gliders'},
-                    {'name': 'cloud_strike', 'id': 'Glider_ID_010_Storm', 'price': 0, 'style': 'gliders'},
-                    {'name': 'snowflake', 'id': 'Umbrella_Snowflake', 'price': 0, 'style': 'gliders'},
-                    {'name': 'umbrella', 'id': 'Solo_Umbrella', 'price': 0, 'style': 'gliders'},
-                    {'name': 'default_glider', 'id': 'DefaultGlider', 'price': 0, 'style': 'gliders'},
-                    {'name': 'royale_knight', 'id': 'CID_033_Athena_Commando_F_Medieval', 'price': 0, 'style': 'skins'},
-                    {'name': 'blue_squire', 'id': 'CID_032_Athena_Commando_M_Medieval', 'price': 0, 'style': 'skins'},
-                    {'name': 'sparkle_specialist', 'id': 'CID_039_Athena_Commando_F_Disco', 'price': 0, 'style': 'skins'},
-                    {'name': 'black_knight', 'id': 'CID_035_Athena_Commando_M_Medieval', 'price': 0, 'style': 'skins'},
-                    {'name': 'strike_specialist', 'id': 'CID_025_Athena_Commando_M', 'price': 0, 'style': 'skins'},
-                    {'name': 'circuit_breaker', 'id': 'CID_042_Athena_Commando_M_Cyberpunk', 'price': 0, 'style': 'skins'},
-                    {'name': 'renegade_raider', 'id': 'CID_028_Athena_Commando_F', 'price': 0, 'style': 'skins'},
-                    {'name': 'assault_trooper', 'id': 'CID_017_Athena_Commando_M', 'price': 0, 'style': 'skins'},
-                    {'name': 'red_knight', 'id': 'CID_034_Athena_Commando_F_Medieval', 'price': 0, 'style': 'skins'},
-                    {'name': 'pusle_axe', 'id': 'Pickaxe_ID_012_District', 'price': 0, 'style': 'pickaxes'},
-                    {'name': 'axecalibur', 'id': 'Pickaxe_ID_011_Medieval', 'price': 0, 'style': 'pickaxes'},
-                    {'name': 'ac_dc', 'id': 'Pickaxe_ID_013_Teslacoil', 'price': 0, 'style': 'pickaxes'},
-                    {'name': 'lucky', 'id': 'HappyPickaxe', 'price': 0, 'style': 'pickaxes'},
-                    {'name': 'shouldnt_have', 'id': 'Pickaxe_ID_022_HolidayGiftWrap', 'price': 0, 'style': 'pickaxes'},
-                    {'name': 'raider_revenge', 'id': 'Pickaxe_Lockjaw', 'price': 0, 'style': 'pickaxes'},
-                    {'name': 'the_brave', 'id': 'Glider_ID_002_Medieval', 'price': 0, 'style': 'gliders'},
-                    {'name': 'royale_x', 'id': 'Glider_ID_003_District', 'price': 0, 'style': 'gliders'},
-                    {'name': 'get_down', 'id': 'Glider_ID_004_Disco', 'price': 0, 'style': 'gliders'},
-                    {'name': 'voyager', 'id': 'Glider_Voyager', 'price': 0, 'style': 'gliders'},
-                    {'name': 'zephyr', 'id': 'Glider_ID_008_Graffiti', 'price': 0, 'style': 'gliders'},
-                    {'name': 'pink_flamingo', 'id': 'Pickaxe_Flamingo', 'price': 0, 'style': 'gliders'},
-                    {'name': 'roadtrip', 'id': 'Glider_RoadTrip', 'price': 0, 'style': 'gliders'}
-                ]
-                
-                conv_table=[
-                    {'name': 'skins', 'id': 'AthenaCharacter'}, 
-                    {'name': 'backpacks', 'id': 'AthenaBackpack'}, 
-                    {'name': 'gliders', 'id': 'AthenaGlider'},
-                    {'name': 'pickaxes', 'id': 'AthenaPickaxe'},
-                    {'name': 'musicspacks', 'id': 'AthenaMusicPack'},
-                    {'name': 'loadingscreens', 'id': 'AthenaLoadingScreen'}
-                ]
-                
-                new_items={
-                    "ettrr4h-2wedfgbn-8i9jsghj-lpw9t2to-loadout1": {
-                    "templateId": "CosmeticLocker:cosmeticlocker_athena",
-                    "attributes": {
-                        "locker_slots_data": {
-                            "slots": {
-                                "MusicPack": {
-                                    "items": [""]
-                                },
-                                "Character": {
-                                    "items": [""],
-                                    "activeVariants": [None]
-                                },
-                                "Backpack": {
-                                    "items": [""],
-                                    "activeVariants": [None]
-                                },
-                                "SkyDiveContrail": {
-                                    "items": [""],
-                                    "activeVariants": [None]
-                                },
-                                "Dance": {
-                                    "items": [
-                                        "AthenaDance:eid_dancemoves",
-                                        "",
-                                        "",
-                                        "",
-                                        "",
-                                        ""
-                                    ]
-                                },
-                                "LoadingScreen": {
-                                    "items": [
-                                        ""
-                                    ]
-                                },
-                                "Pickaxe": {
-                                    "items": ["AthenaPickaxe:DefaultPickaxe"],
-                                    "activeVariants": [None]
-                                },
-                                "Glider": {
-                                    "items": ["AthenaGlider:DefaultGlider"],
-                                    "activeVariants": [None]
-                                },
-                                "ItemWrap": {
-                                    "items": [
-                                        "",
-                                        "",
-                                        "",
-                                        "",
-                                        "",
-                                        "",
-                                        ""
-                                    ],
-                                    "activeVariants": [
-                                        None,
-                                        None,
-                                        None,
-                                        None,
-                                        None,
-                                        None,
-                                        None
-                                    ]
-                                }
-                            }
-                        },
-                        "use_count": 0,
-                        "banner_icon_template": "StandardBanner1",
-                        "banner_color_template": "DefaultColor14",
-                        "locker_name": "NocturnoServer",
-                        "item_seen": False,
-                        "favorite": False
-                    },
-                    "quantity": 1
-                    }
-                }
-                
-                items_id=[]
-                for p in items:
-                    for x in exchange_table:
-                        if p==x['name']:
-                            items_id.append(x['id'])
-                            
-                for p in items_id:
-                    for x in exchange_table:
-                        if p==x['id']:
-                            for z in conv_table:
-                                if z['name']==x['style']:
-                                    p=f"{z['id']}:{p}"
-                                    item_temp={
-                                        p: {
-                                            "templateId": p,
-                                            "attributes": {
-                                                "max_level_bonus": 0,
-                                                "level": 1,
-                                                "item_seen": True,
-                                                "xp": 0,
-                                                "variants": [],
-                                                "favorite": False
-                                            },
-                                            "quantity": 1
+                    if val['profileId']=='athena':
+                        exchange_table=[
+                            {'name': 'skull_trooper', 'id': 'CID_030_Athena_Commando_M_Halloween', 'price': 1500, 'style': 'skins'},
+                            {'name': 'ghoul_trooper', 'id': 'CID_029_Athena_Commando_F_Halloween', 'price': 0, 'style': 'skins'},
+                            {'name': 'recon_specialist', 'id': 'CID_024_Athena_Commando_F', 'price': 0, 'style': 'skins'},
+                            {'name': 'brawler', 'id': 'CID_021_Athena_Commando_F', 'price': 0, 'style': 'skins'},
+                            {'name': 'racon_expert', 'id': 'CID_022_Athena_Commando_F', 'price': 0, 'style': 'skins'},
+                            {'name': 'love_ranger', 'id': 'CID_070_Athena_Commando_M_Cupid', 'price': 0, 'style': 'skins'},
+                            {'name': 'cuddle_team_leader', 'id': 'CID_069_Athena_Commando_F_PinkBear', 'price': 0, 'style': 'skins'},
+                            {'name': 'e.l.f', 'id': 'CID_051_Athena_Commando_M_HolidayElf', 'price': 0, 'style': 'skins'},
+                            {'name': 'merry_marauder', 'id': 'CID_049_Athena_Commando_M_HolidayGingerbread', 'price': 0, 'style': 'skins'},
+                            {'name': 'nog_ops', 'id': 'CID_046_Athena_Commando_F_HolidaySweater', 'price': 0, 'style': 'skins'},
+                            {'name': 'funk_ops', 'id': 'CID_038_Athena_Commando_M_Disco', 'price': 0, 'style': 'skins'},
+                            {'name': 'rednosed_raider', 'id': 'CID_047_Athena_Commando_F_HolidayReindeer', 'price': 0, 'style': 'skins'},
+                            {'name': 'yuletide_ranger', 'id': 'CID_045_Athena_Commando_M_HolidaySweater', 'price': 0, 'style': 'skins'},
+                            {'name': 'brite_bomber', 'id': 'CID_044_Athena_Commando_F_SciPop', 'price': 0, 'style': 'skins'},
+                            {'name': 'crackshot', 'id': 'CID_050_Athena_Commando_M_HolidayNutcracker', 'price': 0, 'style': 'skins'},
+                            {'name': 'artic_assassin', 'id': 'CID_037_Athena_Commando_F_WinterCamo', 'price': 0, 'style': 'skins'},
+                            {'name': 'blue_team_leader', 'id': 'CID_052_Athena_Commando_F_PSBlue', 'price': 0, 'style': 'skins'},
+                            {'name': 'dazzle', 'id': 'CID_076_Athena_Commando_F_Sup', 'price': 0, 'style': 'skins'},
+                            {'name': 'jungle_scout', 'id': 'CID_074_Athena_Commando_F_Stripe', 'price': 0, 'style': 'skins'},
+                            {'name': 'mogul_master', 'id': 'CID_065_Athena_Commando_F_SkiGirl_FRA', 'price': 0, 'style': 'skins'},
+                            {'name': 'sash_sergeant', 'id': 'CID_072_Athena_Commando_M_Scout', 'price': 0, 'style': 'skins'},
+                            {'name': 'default_skin', 'id': 'CID_001_Athena_Commando_F_Default', 'price': 0, 'style': 'skins'},
+                            {'name': 'reaper', 'id': 'HalloweenScythe', 'price': 0, 'style': 'pickaxes'},
+                            {'name': 'close_shave', 'id': 'BoltonPickaxe', 'price': 0, 'style': 'pickaxes'},
+                            {'name': 'death_valley', 'id': 'Pickaxe_Deathvalley', 'price': 0, 'style': 'pickaxes'},
+                            {'name': 'candy_axe', 'id': 'Pickaxe_ID_015_HolidayCandyCane', 'price': 0, 'style': 'pickaxes'},
+                            {'name': 'disco_brawl', 'id': 'Pickaxe_ID_016_Disco', 'price': 0, 'style': 'pickaxes'},
+                            {'name': 'ice_breaker', 'id': 'Pickaxe_ID_014_WinterCamo', 'price': 0, 'style': 'pickaxes'},
+                            {'name': 'chomp_jr', 'id': 'Pickaxe_ID_017_Shark', 'price': 0, 'style': 'pickaxes'},
+                            {'name': 'plunja', 'id': 'Pickaxe_ID_024_Plunger', 'price': 0, 'style': 'pickaxes'},
+                            {'name': 'tat_axe', 'id': 'Pickaxe_ID_019_Heart', 'price': 0, 'style': 'pickaxes'},
+                            {'name': 'batsickle', 'id': 'SickleBatPickaxe', 'price': 0, 'style': 'pickaxes'},
+                            {'name': 'Default_Pickaxe', 'id': 'DefaultPickaxe', 'price': 0, 'style': 'pickaxes'},
+                            {'name': 'mako', 'id': 'Glider_Warthog', 'price': 0, 'style': 'gliders'},
+                            {'name': 'prismatic', 'id': 'Glider_Prismatic', 'price': 0, 'style': 'gliders'},
+                            {'name': 'gum_drop', 'id': 'Glider_ID_009_CandyCoat', 'price': 0, 'style': 'gliders'},
+                            {'name': 'cozy_coaster', 'id': 'Glider_ID_005_HolidaySweater', 'price': 0, 'style': 'gliders'},
+                            {'name': 'cloud_strike', 'id': 'Glider_ID_010_Storm', 'price': 0, 'style': 'gliders'},
+                            {'name': 'snowflake', 'id': 'Umbrella_Snowflake', 'price': 0, 'style': 'gliders'},
+                            {'name': 'umbrella', 'id': 'Solo_Umbrella', 'price': 0, 'style': 'gliders'},
+                            {'name': 'default_glider', 'id': 'DefaultGlider', 'price': 0, 'style': 'gliders'},
+                            {'name': 'royale_knight', 'id': 'CID_033_Athena_Commando_F_Medieval', 'price': 0, 'style': 'skins'},
+                            {'name': 'blue_squire', 'id': 'CID_032_Athena_Commando_M_Medieval', 'price': 0, 'style': 'skins'},
+                            {'name': 'sparkle_specialist', 'id': 'CID_039_Athena_Commando_F_Disco', 'price': 0, 'style': 'skins'},
+                            {'name': 'black_knight', 'id': 'CID_035_Athena_Commando_M_Medieval', 'price': 0, 'style': 'skins'},
+                            {'name': 'strike_specialist', 'id': 'CID_025_Athena_Commando_M', 'price': 0, 'style': 'skins'},
+                            {'name': 'circuit_breaker', 'id': 'CID_042_Athena_Commando_M_Cyberpunk', 'price': 0, 'style': 'skins'},
+                            {'name': 'renegade_raider', 'id': 'CID_028_Athena_Commando_F', 'price': 0, 'style': 'skins'},
+                            {'name': 'assault_trooper', 'id': 'CID_017_Athena_Commando_M', 'price': 0, 'style': 'skins'},
+                            {'name': 'red_knight', 'id': 'CID_034_Athena_Commando_F_Medieval', 'price': 0, 'style': 'skins'},
+                            {'name': 'pusle_axe', 'id': 'Pickaxe_ID_012_District', 'price': 0, 'style': 'pickaxes'},
+                            {'name': 'axecalibur', 'id': 'Pickaxe_ID_011_Medieval', 'price': 0, 'style': 'pickaxes'},
+                            {'name': 'ac_dc', 'id': 'Pickaxe_ID_013_Teslacoil', 'price': 0, 'style': 'pickaxes'},
+                            {'name': 'lucky', 'id': 'HappyPickaxe', 'price': 0, 'style': 'pickaxes'},
+                            {'name': 'shouldnt_have', 'id': 'Pickaxe_ID_022_HolidayGiftWrap', 'price': 0, 'style': 'pickaxes'},
+                            {'name': 'raider_revenge', 'id': 'Pickaxe_Lockjaw', 'price': 0, 'style': 'pickaxes'},
+                            {'name': 'the_brave', 'id': 'Glider_ID_002_Medieval', 'price': 0, 'style': 'gliders'},
+                            {'name': 'royale_x', 'id': 'Glider_ID_003_District', 'price': 0, 'style': 'gliders'},
+                            {'name': 'get_down', 'id': 'Glider_ID_004_Disco', 'price': 0, 'style': 'gliders'},
+                            {'name': 'voyager', 'id': 'Glider_Voyager', 'price': 0, 'style': 'gliders'},
+                            {'name': 'zephyr', 'id': 'Glider_ID_008_Graffiti', 'price': 0, 'style': 'gliders'},
+                            {'name': 'pink_flamingo', 'id': 'Pickaxe_Flamingo', 'price': 0, 'style': 'gliders'},
+                            {'name': 'roadtrip', 'id': 'Glider_RoadTrip', 'price': 0, 'style': 'gliders'}
+                        ]
+                        
+                        conv_table=[
+                            {'name': 'skins', 'id': 'AthenaCharacter'}, 
+                            {'name': 'backpacks', 'id': 'AthenaBackpack'}, 
+                            {'name': 'gliders', 'id': 'AthenaGlider'},
+                            {'name': 'pickaxes', 'id': 'AthenaPickaxe'},
+                            {'name': 'musicspacks', 'id': 'AthenaMusicPack'},
+                            {'name': 'loadingscreens', 'id': 'AthenaLoadingScreen'}
+                        ]
+                        
+                        new_items={
+                            "ettrr4h-2wedfgbn-8i9jsghj-lpw9t2to-loadout1": {
+                            "templateId": "CosmeticLocker:cosmeticlocker_athena",
+                            "attributes": {
+                                "locker_slots_data": {
+                                    "slots": {
+                                        "MusicPack": {
+                                            "items": [
+                                                ""
+                                            ]
+                                        },
+                                        "Character": {
+                                            "items": [
+                                                ""
+                                            ],
+                                            "activeVariants": [
+                                                None
+                                            ]
+                                        },
+                                        "Backpack": {
+                                            "items": [
+                                                ""
+                                            ],
+                                            "activeVariants": [
+                                                None
+                                            ]
+                                        },
+                                        "SkyDiveContrail": {
+                                            "items": [
+                                                ""
+                                            ],
+                                            "activeVariants": [
+                                                None
+                                            ]
+                                        },
+                                        "Dance": {
+                                            "items": [
+                                                "AthenaDance:eid_dancemoves",
+                                                "",
+                                                "",
+                                                "",
+                                                "",
+                                                ""
+                                            ]
+                                        },
+                                        "LoadingScreen": {
+                                            "items": [
+                                                ""
+                                            ]
+                                        },
+                                        "Pickaxe": {
+                                            "items": ["AthenaPickaxe:DefaultPickaxe"],
+                                            "activeVariants": [
+                                                None
+                                            ]
+                                        },
+                                        "Glider": {
+                                            "items": ["AthenaGlider:DefaultGlider"],
+                                            "activeVariants": [
+                                                None
+                                            ]
+                                        },
+                                        "ItemWrap": {
+                                            "items": [
+                                                "",
+                                                "",
+                                                "",
+                                                "",
+                                                "",
+                                                "",
+                                                ""
+                                            ],
+                                            "activeVariants": [
+                                                None,
+                                                None,
+                                                None,
+                                                None,
+                                                None,
+                                                None,
+                                                None
+                                            ]
                                         }
                                     }
-                                    new_items.update(item_temp)
-                
-                basicprofile['items']=dict(new_items)
-                basicprofile['stats']['attributes']['accountLevel']=level
-                basicprofile['stats']['attributes']['level']=level
-                basicprofile['stats']['attributes']['xp']=xp
-                basicprofile['stats']['attributes']['book_level']=0
-                basicprofile['stats']['attributes']['lifetime_wins']=top1
-                basicprofile['stats']['attributes']['book_xp']=0
-                basicprofile['stats']['attributes']['book_purchased']=False
+                                },
+                                "use_count": 0,
+                                "banner_icon_template": "StandardBanner1",
+                                "banner_color_template": "DefaultColor14",
+                                "locker_name": "OldMP",
+                                "item_seen": False,
+                                "favorite": False
+                            },
+                            "quantity": 1
+                            }
+                        }
+                        
+                        items_id=[]
+                        for p in items:
+                            for x in exchange_table:
+                                if p==x['name']:
+                                    items_id.append(x['id'])
+                                    
+                        for p in items_id:
+                            for x in exchange_table:
+                                if p==x['id']:
+                                    for z in conv_table:
+                                        if z['name']==x['style']:
+                                            p=f"{z['id']}:{p}"
+                                            item_temp={
+                                                p: {
+                                                    "templateId": p,
+                                                    "attributes": {
+                                                        "max_level_bonus": 0,
+                                                        "level": 1,
+                                                        "item_seen": True,
+                                                        "xp": 0,
+                                                        "variants": [],
+                                                        "favorite": False
+                                                    },
+                                                    "quantity": 1
+                                                }
+                                            }
+                                            new_items.update(item_temp)
+                        
+                        userprofile[key]['items']=dict(new_items)
+                        userprofile[key]['stats']['attributes']['accountLevel']=level
+                        userprofile[key]['stats']['attributes']['level']=level
+                        userprofile[key]['stats']['attributes']['xp']=xp
+                        userprofile[key]['stats']['attributes']['book_level']=0
+                        userprofile[key]['stats']['attributes']['lifetime_wins']=top1
+                        userprofile[key]['stats']['attributes']['book_xp']=0
+                        userprofile[key]['stats']['attributes']['book_purchased']=False
+                        
+                        userprofile[key]['stats']['attributes']['favorite_character']=f_char
+                        userprofile[key]['stats']['attributes']['favorite_loadingscreen']=f_load
+                        userprofile[key]['stats']['attributes']['favorite_backpack']=f_back
+                        userprofile[key]['stats']['attributes']['favorite_dance']=f_dance
+                        userprofile[key]['stats']['attributes']['favorite_skydivecontrail']=f_sky
+                        userprofile[key]['stats']['attributes']['favorite_pickaxe']=f_pic
+                        userprofile[key]['stats']['attributes']['favorite_glider']=f_glid
+                        userprofile[key]['stats']['attributes']['favorite_musicpack']=f_music
+                        userprofile[key]['stats']['attributes']['fortnite_character']=f_char
+                    
+                    elif userprofile[key]['profileId']=='common_core':
+                        userprofile[key]['items']['Currency']['quantity']=mtx
+                        userprofile[key]['items']['Token:FounderChatUnlock']['attributes']['level']=level
+                        userprofile[key]['items']['Token:FounderChatUnlock']['attributes']['xp']=xp
+                        
+                    elif userprofile[key]['profileId']=='profile0':
+                        userprofile[key]['stats']['attributes']['level']=level
+                        userprofile[key]['stats']['attributes']['xp']=xp
+                    
+                    userprofile[key]['rvn']=0
+                    userprofile[key]['commandRevision']=0
+                    userprofile[key]['_id']=username
+                    userprofile[key]['accountId']=username
+                    userprofile[key]['updated']=datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
             
-            elif basicprofile['profileId']=='common_core':
-                basicprofile['items']['Currency']['quantity']=mtx
-                basicprofile['items']['Token:FounderChatUnlock']['attributes']['level']=level
-                basicprofile['items']['Token:FounderChatUnlock']['attributes']['xp']=xp
-                
-            elif basicprofile['profileId']=='profile0':
-                basicprofile['stats']['attributes']['level']=level
-                basicprofile['stats']['attributes']['xp']=xp
-            
-            basicprofile['rvn']=0
-            basicprofile['commandRevision']=0
-            basicprofile['_id']=username
-            basicprofile['accountId']=username
-            basicprofile['created']=datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
-            basicprofile['updated']=datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
-                
-            file.append(basicprofile)
-            
-            open(f'data/profiles/{i}', 'w', encoding='utf-8').write(dumps(file, indent=4))
+                    open(f'data/profiles/{i}', 'w', encoding='utf-8').write(dumps(userprofile, indent=4))
     
-    def createProfile(self, username):
-        
-        # mtx=int(get(f'{api_url}/get/stats/stats.php?user={username}&action=mtx', verify=False, proxies=proxy).json())
-        # items=list(get(f'{api_url}/get/stats/stats.php?user={username}&action=items', verify=False, proxies=proxy).json())
-        # level=int(get(f'{api_url}/get/stats/stats.php?user={username}&action=level', verify=False, proxies=proxy).json())
-        # xp=int(get(f'{api_url}/get/stats/stats.php?user={username}&action=exp', verify=False, proxies=proxy).json())
-        # top1=int(get(f'{api_url}/get/stats/stats.php?user={username}&action=top1', verify=False, proxies=proxy).json())
+    def createProfile(self, username: str):
         
         stats=req(f"SELECT top1 FROM stat WHERE username='{username}'")
         stats2=req(f"SELECT mtx, item, level, exp FROM users WHERE username='{username}'")
+        favorites=req(f"SELECT * FROM favorites WHERE username='{username}'")
         
         try:
             mtx=int(stats2['mtx'])
@@ -5216,6 +5243,15 @@ class NBackend():
             level=int(stats2['level'])
             xp=int(stats2['exp'])
             top1=int(stats['top1'])
+            
+            f_char=favorites['character']
+            f_back=favorites['backpack']
+            f_pic=favorites['pickaxe']
+            f_glid=favorites['glider']
+            f_sky=favorites['skydrivecontrail']
+            f_music=favorites['musicpack']
+            f_load=favorites['loadingscreen']
+            f_dance=favorites['dance']
             
         except:
             respon=self.createError(
@@ -5324,19 +5360,33 @@ class NBackend():
                         "locker_slots_data": {
                             "slots": {
                                 "MusicPack": {
-                                    "items": [""]
+                                    "items": [
+                                        ""
+                                    ]
                                 },
                                 "Character": {
-                                    "items": [""],
-                                    "activeVariants": [None]
+                                    "items": [
+                                        ""
+                                    ],
+                                    "activeVariants": [
+                                        None
+                                    ]
                                 },
                                 "Backpack": {
-                                    "items": [""],
-                                    "activeVariants": [None]
+                                    "items": [
+                                        ""
+                                    ],
+                                    "activeVariants": [
+                                        None
+                                    ]
                                 },
                                 "SkyDiveContrail": {
-                                    "items": [""],
-                                    "activeVariants": [None]
+                                    "items": [
+                                        ""
+                                    ],
+                                    "activeVariants": [
+                                        None
+                                    ]
                                 },
                                 "Dance": {
                                     "items": [
@@ -5355,11 +5405,15 @@ class NBackend():
                                 },
                                 "Pickaxe": {
                                     "items": ["AthenaPickaxe:DefaultPickaxe"],
-                                    "activeVariants": [None]
+                                    "activeVariants": [
+                                        None
+                                    ]
                                 },
                                 "Glider": {
                                     "items": ["AthenaGlider:DefaultGlider"],
-                                    "activeVariants": [None]
+                                    "activeVariants": [
+                                        None
+                                    ]
                                 },
                                 "ItemWrap": {
                                     "items": [
@@ -5386,7 +5440,7 @@ class NBackend():
                         "use_count": 0,
                         "banner_icon_template": "StandardBanner1",
                         "banner_color_template": "DefaultColor14",
-                        "locker_name": "NocturnoServer",
+                        "locker_name": "OldMP",
                         "item_seen": False,
                         "favorite": False
                     },
@@ -5429,6 +5483,16 @@ class NBackend():
                 basicprofile['stats']['attributes']['book_level']=0
                 basicprofile['stats']['attributes']['lifetime_wins']=top1
                 basicprofile['stats']['attributes']['book_xp']=0
+                
+                basicprofile['stats']['attributes']['favorite_character']=f_char
+                basicprofile['stats']['attributes']['favorite_loadingscreen']=f_load
+                basicprofile['stats']['attributes']['favorite_backpack']=f_back
+                basicprofile['stats']['attributes']['favorite_dance']=f_dance
+                basicprofile['stats']['attributes']['favorite_skydivecontrail']=f_sky
+                basicprofile['stats']['attributes']['favorite_pickaxe']=f_pic
+                basicprofile['stats']['attributes']['favorite_glider']=f_glid
+                basicprofile['stats']['attributes']['favorite_musicpack']=f_music
+                basicprofile['stats']['attributes']['fortnite_character']=f_char
             
             elif basicprofile['profileId']=='common_core':
                 basicprofile['items']['Currency']['quantity']=mtx
@@ -5458,6 +5522,8 @@ class NBackend():
                 ext=True
         if not ext:
             self.createProfile(accountId)
+            return False
+        return True
     
     
 NBackend(api_url=api_url)
