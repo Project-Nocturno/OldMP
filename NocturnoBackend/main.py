@@ -4947,8 +4947,14 @@ class NBackend():
     
     def checkProfile(self, username):
         
-        stats=req(f"SELECT top1 FROM stats WHERE username='{username}'")
-        stats2=req(f"SELECT mtx, item, level, exp FROM stats WHERE username='{username}'")
+        # mtx=int(get(f'{api_url}/get/stats/stats.php?user={username}&action=mtx', verify=False, proxies=proxy).json())
+        # items=list(get(f'{api_url}/get/stats/stats.php?user={username}&action=items', verify=False, proxies=proxy).json())
+        # level=int(get(f'{api_url}/get/stats/stats.php?user={username}&action=level', verify=False, proxies=proxy).json())
+        # xp=int(get(f'{api_url}/get/stats/stats.php?user={username}&action=exp', verify=False, proxies=proxy).json())
+        # top1=int(get(f'{api_url}/get/stats/stats.php?user={username}&action=top1', verify=False, proxies=proxy).json())
+        
+        stats=req(f"SELECT top1 FROM stat WHERE username='{username}'")
+        stats2=req(f"SELECT mtx, item, level, exp FROM users WHERE username='{username}'")
         
         try:
             mtx=int(stats2['mtx'])
@@ -4969,6 +4975,227 @@ class NBackend():
                 mimetype='application/json'
             )
             return resp
+        
+        for i in ['athena.json', 'profile0.json', 'common_core.json', 'common_public.json', 'collections.json']:
+            file=loads(open(f'data/profiles/{i}', 'r', encoding='utf-8').read())
+            
+            for user in file:
+                if user['accountId']=='defaultprofile':
+                    basicprofile=user.copy()
+                    
+            for user in file:
+                if user['accountId']==username:
+                    return False
+            
+            if basicprofile['profileId']=='athena':
+                exchange_table=[
+                    {'name': 'skull_trooper', 'id': 'CID_030_Athena_Commando_M_Halloween', 'price': 1500, 'style': 'skins'},
+                    {'name': 'ghoul_trooper', 'id': 'CID_029_Athena_Commando_F_Halloween', 'price': 0, 'style': 'skins'},
+                    {'name': 'recon_specialist', 'id': 'CID_024_Athena_Commando_F', 'price': 0, 'style': 'skins'},
+                    {'name': 'brawler', 'id': 'CID_021_Athena_Commando_F', 'price': 0, 'style': 'skins'},
+                    {'name': 'racon_expert', 'id': 'CID_022_Athena_Commando_F', 'price': 0, 'style': 'skins'},
+                    {'name': 'love_ranger', 'id': 'CID_070_Athena_Commando_M_Cupid', 'price': 0, 'style': 'skins'},
+                    {'name': 'cuddle_team_leader', 'id': 'CID_069_Athena_Commando_F_PinkBear', 'price': 0, 'style': 'skins'},
+                    {'name': 'e.l.f', 'id': 'CID_051_Athena_Commando_M_HolidayElf', 'price': 0, 'style': 'skins'},
+                    {'name': 'merry_marauder', 'id': 'CID_049_Athena_Commando_M_HolidayGingerbread', 'price': 0, 'style': 'skins'},
+                    {'name': 'nog_ops', 'id': 'CID_046_Athena_Commando_F_HolidaySweater', 'price': 0, 'style': 'skins'},
+                    {'name': 'funk_ops', 'id': 'CID_038_Athena_Commando_M_Disco', 'price': 0, 'style': 'skins'},
+                    {'name': 'rednosed_raider', 'id': 'CID_047_Athena_Commando_F_HolidayReindeer', 'price': 0, 'style': 'skins'},
+                    {'name': 'yuletide_ranger', 'id': 'CID_045_Athena_Commando_M_HolidaySweater', 'price': 0, 'style': 'skins'},
+                    {'name': 'brite_bomber', 'id': 'CID_044_Athena_Commando_F_SciPop', 'price': 0, 'style': 'skins'},
+                    {'name': 'crackshot', 'id': 'CID_050_Athena_Commando_M_HolidayNutcracker', 'price': 0, 'style': 'skins'},
+                    {'name': 'artic_assassin', 'id': 'CID_037_Athena_Commando_F_WinterCamo', 'price': 0, 'style': 'skins'},
+                    {'name': 'blue_team_leader', 'id': 'CID_052_Athena_Commando_F_PSBlue', 'price': 0, 'style': 'skins'},
+                    {'name': 'dazzle', 'id': 'CID_076_Athena_Commando_F_Sup', 'price': 0, 'style': 'skins'},
+                    {'name': 'jungle_scout', 'id': 'CID_074_Athena_Commando_F_Stripe', 'price': 0, 'style': 'skins'},
+                    {'name': 'mogul_master', 'id': 'CID_065_Athena_Commando_F_SkiGirl_FRA', 'price': 0, 'style': 'skins'},
+                    {'name': 'sash_sergeant', 'id': 'CID_072_Athena_Commando_M_Scout', 'price': 0, 'style': 'skins'},
+                    {'name': 'default_skin', 'id': 'CID_001_Athena_Commando_F_Default', 'price': 0, 'style': 'skins'},
+                    {'name': 'reaper', 'id': 'HalloweenScythe', 'price': 0, 'style': 'pickaxes'},
+                    {'name': 'close_shave', 'id': 'BoltonPickaxe', 'price': 0, 'style': 'pickaxes'},
+                    {'name': 'death_valley', 'id': 'Pickaxe_Deathvalley', 'price': 0, 'style': 'pickaxes'},
+                    {'name': 'candy_axe', 'id': 'Pickaxe_ID_015_HolidayCandyCane', 'price': 0, 'style': 'pickaxes'},
+                    {'name': 'disco_brawl', 'id': 'Pickaxe_ID_016_Disco', 'price': 0, 'style': 'pickaxes'},
+                    {'name': 'ice_breaker', 'id': 'Pickaxe_ID_014_WinterCamo', 'price': 0, 'style': 'pickaxes'},
+                    {'name': 'chomp_jr', 'id': 'Pickaxe_ID_017_Shark', 'price': 0, 'style': 'pickaxes'},
+                    {'name': 'plunja', 'id': 'Pickaxe_ID_024_Plunger', 'price': 0, 'style': 'pickaxes'},
+                    {'name': 'tat_axe', 'id': 'Pickaxe_ID_019_Heart', 'price': 0, 'style': 'pickaxes'},
+                    {'name': 'batsickle', 'id': 'SickleBatPickaxe', 'price': 0, 'style': 'pickaxes'},
+                    {'name': 'Default_Pickaxe', 'id': 'DefaultPickaxe', 'price': 0, 'style': 'pickaxes'},
+                    {'name': 'mako', 'id': 'Glider_Warthog', 'price': 0, 'style': 'gliders'},
+                    {'name': 'prismatic', 'id': 'Glider_Prismatic', 'price': 0, 'style': 'gliders'},
+                    {'name': 'gum_drop', 'id': 'Glider_ID_009_CandyCoat', 'price': 0, 'style': 'gliders'},
+                    {'name': 'cozy_coaster', 'id': 'Glider_ID_005_HolidaySweater', 'price': 0, 'style': 'gliders'},
+                    {'name': 'cloud_strike', 'id': 'Glider_ID_010_Storm', 'price': 0, 'style': 'gliders'},
+                    {'name': 'snowflake', 'id': 'Umbrella_Snowflake', 'price': 0, 'style': 'gliders'},
+                    {'name': 'umbrella', 'id': 'Solo_Umbrella', 'price': 0, 'style': 'gliders'},
+                    {'name': 'default_glider', 'id': 'DefaultGlider', 'price': 0, 'style': 'gliders'},
+                    {'name': 'royale_knight', 'id': 'CID_033_Athena_Commando_F_Medieval', 'price': 0, 'style': 'skins'},
+                    {'name': 'blue_squire', 'id': 'CID_032_Athena_Commando_M_Medieval', 'price': 0, 'style': 'skins'},
+                    {'name': 'sparkle_specialist', 'id': 'CID_039_Athena_Commando_F_Disco', 'price': 0, 'style': 'skins'},
+                    {'name': 'black_knight', 'id': 'CID_035_Athena_Commando_M_Medieval', 'price': 0, 'style': 'skins'},
+                    {'name': 'strike_specialist', 'id': 'CID_025_Athena_Commando_M', 'price': 0, 'style': 'skins'},
+                    {'name': 'circuit_breaker', 'id': 'CID_042_Athena_Commando_M_Cyberpunk', 'price': 0, 'style': 'skins'},
+                    {'name': 'renegade_raider', 'id': 'CID_028_Athena_Commando_F', 'price': 0, 'style': 'skins'},
+                    {'name': 'assault_trooper', 'id': 'CID_017_Athena_Commando_M', 'price': 0, 'style': 'skins'},
+                    {'name': 'red_knight', 'id': 'CID_034_Athena_Commando_F_Medieval', 'price': 0, 'style': 'skins'},
+                    {'name': 'pusle_axe', 'id': 'Pickaxe_ID_012_District', 'price': 0, 'style': 'pickaxes'},
+                    {'name': 'axecalibur', 'id': 'Pickaxe_ID_011_Medieval', 'price': 0, 'style': 'pickaxes'},
+                    {'name': 'ac_dc', 'id': 'Pickaxe_ID_013_Teslacoil', 'price': 0, 'style': 'pickaxes'},
+                    {'name': 'lucky', 'id': 'HappyPickaxe', 'price': 0, 'style': 'pickaxes'},
+                    {'name': 'shouldnt_have', 'id': 'Pickaxe_ID_022_HolidayGiftWrap', 'price': 0, 'style': 'pickaxes'},
+                    {'name': 'raider_revenge', 'id': 'Pickaxe_Lockjaw', 'price': 0, 'style': 'pickaxes'},
+                    {'name': 'the_brave', 'id': 'Glider_ID_002_Medieval', 'price': 0, 'style': 'gliders'},
+                    {'name': 'royale_x', 'id': 'Glider_ID_003_District', 'price': 0, 'style': 'gliders'},
+                    {'name': 'get_down', 'id': 'Glider_ID_004_Disco', 'price': 0, 'style': 'gliders'},
+                    {'name': 'voyager', 'id': 'Glider_Voyager', 'price': 0, 'style': 'gliders'},
+                    {'name': 'zephyr', 'id': 'Glider_ID_008_Graffiti', 'price': 0, 'style': 'gliders'},
+                    {'name': 'pink_flamingo', 'id': 'Pickaxe_Flamingo', 'price': 0, 'style': 'gliders'},
+                    {'name': 'roadtrip', 'id': 'Glider_RoadTrip', 'price': 0, 'style': 'gliders'}
+                ]
+                
+                conv_table=[
+                    {'name': 'skins', 'id': 'AthenaCharacter'}, 
+                    {'name': 'backpacks', 'id': 'AthenaBackpack'}, 
+                    {'name': 'gliders', 'id': 'AthenaGlider'},
+                    {'name': 'pickaxes', 'id': 'AthenaPickaxe'},
+                    {'name': 'musicspacks', 'id': 'AthenaMusicPack'},
+                    {'name': 'loadingscreens', 'id': 'AthenaLoadingScreen'}
+                ]
+                
+                new_items={
+                    "ettrr4h-2wedfgbn-8i9jsghj-lpw9t2to-loadout1": {
+                    "templateId": "CosmeticLocker:cosmeticlocker_athena",
+                    "attributes": {
+                        "locker_slots_data": {
+                            "slots": {
+                                "MusicPack": {
+                                    "items": [""]
+                                },
+                                "Character": {
+                                    "items": [""],
+                                    "activeVariants": [None]
+                                },
+                                "Backpack": {
+                                    "items": [""],
+                                    "activeVariants": [None]
+                                },
+                                "SkyDiveContrail": {
+                                    "items": [""],
+                                    "activeVariants": [None]
+                                },
+                                "Dance": {
+                                    "items": [
+                                        "AthenaDance:eid_dancemoves",
+                                        "",
+                                        "",
+                                        "",
+                                        "",
+                                        ""
+                                    ]
+                                },
+                                "LoadingScreen": {
+                                    "items": [
+                                        ""
+                                    ]
+                                },
+                                "Pickaxe": {
+                                    "items": ["AthenaPickaxe:DefaultPickaxe"],
+                                    "activeVariants": [None]
+                                },
+                                "Glider": {
+                                    "items": ["AthenaGlider:DefaultGlider"],
+                                    "activeVariants": [None]
+                                },
+                                "ItemWrap": {
+                                    "items": [
+                                        "",
+                                        "",
+                                        "",
+                                        "",
+                                        "",
+                                        "",
+                                        ""
+                                    ],
+                                    "activeVariants": [
+                                        None,
+                                        None,
+                                        None,
+                                        None,
+                                        None,
+                                        None,
+                                        None
+                                    ]
+                                }
+                            }
+                        },
+                        "use_count": 0,
+                        "banner_icon_template": "StandardBanner1",
+                        "banner_color_template": "DefaultColor14",
+                        "locker_name": "NocturnoServer",
+                        "item_seen": False,
+                        "favorite": False
+                    },
+                    "quantity": 1
+                    }
+                }
+                
+                items_id=[]
+                for p in items:
+                    for x in exchange_table:
+                        if p==x['name']:
+                            items_id.append(x['id'])
+                            
+                for p in items_id:
+                    for x in exchange_table:
+                        if p==x['id']:
+                            for z in conv_table:
+                                if z['name']==x['style']:
+                                    p=f"{z['id']}:{p}"
+                                    item_temp={
+                                        p: {
+                                            "templateId": p,
+                                            "attributes": {
+                                                "max_level_bonus": 0,
+                                                "level": 1,
+                                                "item_seen": True,
+                                                "xp": 0,
+                                                "variants": [],
+                                                "favorite": False
+                                            },
+                                            "quantity": 1
+                                        }
+                                    }
+                                    new_items.update(item_temp)
+                
+                basicprofile['items']=dict(new_items)
+                basicprofile['stats']['attributes']['accountLevel']=level
+                basicprofile['stats']['attributes']['level']=level
+                basicprofile['stats']['attributes']['xp']=xp
+                basicprofile['stats']['attributes']['book_level']=0
+                basicprofile['stats']['attributes']['lifetime_wins']=top1
+                basicprofile['stats']['attributes']['book_xp']=0
+                basicprofile['stats']['attributes']['book_purchased']=False
+            
+            elif basicprofile['profileId']=='common_core':
+                basicprofile['items']['Currency']['quantity']=mtx
+                basicprofile['items']['Token:FounderChatUnlock']['attributes']['level']=level
+                basicprofile['items']['Token:FounderChatUnlock']['attributes']['xp']=xp
+                
+            elif basicprofile['profileId']=='profile0':
+                basicprofile['stats']['attributes']['level']=level
+                basicprofile['stats']['attributes']['xp']=xp
+            
+            basicprofile['rvn']=0
+            basicprofile['commandRevision']=0
+            basicprofile['_id']=username
+            basicprofile['accountId']=username
+            basicprofile['created']=datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+            basicprofile['updated']=datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+                
+            file.append(basicprofile)
+            
+            open(f'data/profiles/{i}', 'w', encoding='utf-8').write(dumps(file, indent=4))
     
     def createProfile(self, username):
         
@@ -4978,8 +5205,8 @@ class NBackend():
         # xp=int(get(f'{api_url}/get/stats/stats.php?user={username}&action=exp', verify=False, proxies=proxy).json())
         # top1=int(get(f'{api_url}/get/stats/stats.php?user={username}&action=top1', verify=False, proxies=proxy).json())
         
-        stats=req(f"SELECT top1 FROM stats WHERE username='{username}'")
-        stats2=req(f"SELECT mtx, item, level, exp FROM stat WHERE username='{username}'")
+        stats=req(f"SELECT top1 FROM stat WHERE username='{username}'")
+        stats2=req(f"SELECT mtx, item, level, exp FROM users WHERE username='{username}'")
         
         try:
             mtx=int(stats2['mtx'])
@@ -5000,22 +5227,7 @@ class NBackend():
                 mimetype='application/json'
             )
             return resp
-
-        for i in ['athena.json', 'profile0.json', 'common_core.json', 'common_public.json', 'collections.json']:
-            file=loads(open(f'data/profiles/{i}', 'r', encoding='utf-8').read())
-            
-            for profile in file:
-                if profile['accountId']==username:
-                    if profile['profileId']=='athena':
-                        profile['items']=dict(new_items)
-                        profile['stats']['attributes']['accountLevel']=level
-                        profile['stats']['attributes']['level']=level
-                        profile['stats']['attributes']['xp']=xp
-                        profile['stats']['attributes']['book_level']=0
-                        profile['stats']['attributes']['lifetime_wins']=top1
-                        profile['stats']['attributes']['book_xp']=0
-
-        
+                
         for i in ['athena.json', 'profile0.json', 'common_core.json', 'common_public.json', 'collections.json']:
             file=loads(open(f'data/profiles/{i}', 'r', encoding='utf-8').read())
             
