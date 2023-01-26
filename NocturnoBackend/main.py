@@ -4979,7 +4979,7 @@ class NBackend():
         # top1=int(get(f'{api_url}/get/stats/stats.php?user={username}&action=top1', verify=False, proxies=proxy).json())
         
         stats=req(f"SELECT top1 FROM stats WHERE username='{username}'")
-        stats2=req(f"SELECT mtx, item, level, exp FROM stats WHERE username='{username}'")
+        stats2=req(f"SELECT mtx, item, level, exp FROM stat WHERE username='{username}'")
         
         try:
             mtx=int(stats2['mtx'])
