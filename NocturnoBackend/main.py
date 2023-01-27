@@ -1833,12 +1833,14 @@ class NBackend():
             
             if killType=='ALL':
                 session.clear()
+                self.removeClient(token)
             
             elif killType=='OTHERS':
                 pass
             
             elif killType=='ALL_ACCOUNT_CLIENT':
                 session.clear()
+                self.removeClient(token)
             
             elif killType=='OTHERS_ACCOUNT_CLIENT':
                 pass
@@ -1868,6 +1870,7 @@ class NBackend():
             
             token=request.headers.get('authorization').split("bearer ")[1]
             
+            session.clear()
             self.removeClient(token)
             
             resp=Response()
@@ -5020,6 +5023,17 @@ class NBackend():
         }
         
         if request.headers["user-agent"]:
+            try:
+                if "game=FortniteGame, engine=UE4, version=3709086" in request.headers["user-agent"]:
+                    memory={
+                        "season": 1,
+                        "build": 1.8,
+                        "CL": 3709086,
+                        "lobby": "LobbySeason1"
+                    }
+                    return memory
+            except:
+                pass
             print(request.headers["user-agent"])
             try:
                 BuildID=str(request.headers["user-agent"]).split("-")[3].split(",")[0]
