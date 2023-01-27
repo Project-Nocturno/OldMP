@@ -1260,8 +1260,6 @@ class NBackend():
                     mimetype='application/json'
                 )
                 return resp
-            
-            self.checkProfile(session.get('username'))
 
             r={
                 "id": account,
@@ -1756,7 +1754,7 @@ class NBackend():
                         mimetype='application/json'
                     )
                     return resp
-                
+
                 self.loadProfile(username)
 
                 session['username']=username
@@ -3274,6 +3272,28 @@ class NBackend():
                 )
                 return resp
             
+            if request.args.get("profileId") in ['athena', 'profile0', 'common_core', 'common_public', 'collections']:
+                pass
+            else:
+                resp=app.response_class(
+                    response=dumps({
+                        "_id": session.get('username'),
+                        "created": "0001-01-01T00:00:00.000Z",
+                        "updated": "0001-01-01T00:00:00.000Z",
+                        "rvn": 0,
+                        "wipeNumber": 1,
+                        "accountId": session.get('username'),
+                        "profileId": request.args.get("profileId"),
+                        "version": "no_version",
+                        "items": {},
+                        "stats": {},
+                        "commandRevision": 0
+                    }),
+                    status=200,
+                    mimetype='application/json'
+                )
+                return resp
+            
             profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
             for prof in profiles:
                 if prof['accountId']==account:
@@ -3342,6 +3362,28 @@ class NBackend():
                 resp=app.response_class(
                     response=respon,
                     status=400,
+                    mimetype='application/json'
+                )
+                return resp
+            
+            if request.args.get("profileId") in ['athena', 'profile0', 'common_core', 'common_public', 'collections']:
+                pass
+            else:
+                resp=app.response_class(
+                    response=dumps({
+                        "_id": session.get('username'),
+                        "created": "0001-01-01T00:00:00.000Z",
+                        "updated": "0001-01-01T00:00:00.000Z",
+                        "rvn": 0,
+                        "wipeNumber": 1,
+                        "accountId": session.get('username'),
+                        "profileId": request.args.get("profileId"),
+                        "version": "no_version",
+                        "items": {},
+                        "stats": {},
+                        "commandRevision": 0
+                    }),
+                    status=200,
                     mimetype='application/json'
                 )
                 return resp
@@ -3417,7 +3459,29 @@ class NBackend():
                     mimetype='application/json'
                 )
                 return resp
-            
+
+            if request.args.get("profileId") in ['athena', 'profile0', 'common_core', 'common_public', 'collections']:
+                pass
+            else:
+                resp=app.response_class(
+                    response=dumps({
+                        "_id": session.get('username'),
+                        "created": "0001-01-01T00:00:00.000Z",
+                        "updated": "0001-01-01T00:00:00.000Z",
+                        "rvn": 0,
+                        "wipeNumber": 1,
+                        "accountId": session.get('username'),
+                        "profileId": request.args.get("profileId"),
+                        "version": "no_version",
+                        "items": {},
+                        "stats": {},
+                        "commandRevision": 0
+                    }),
+                    status=200,
+                    mimetype='application/json'
+                )
+                return resp
+
             profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
             for prof in profiles:
                 if prof['accountId']==account:
@@ -3487,6 +3551,28 @@ class NBackend():
                 resp=app.response_class(
                     response=respon,
                     status=400,
+                    mimetype='application/json'
+                )
+                return resp
+
+            if request.args.get("profileId") in ['athena', 'profile0', 'common_core', 'common_public', 'collections']:
+                pass
+            else:
+                resp=app.response_class(
+                    response=dumps({
+                        "_id": session.get('username'),
+                        "created": "0001-01-01T00:00:00.000Z",
+                        "updated": "0001-01-01T00:00:00.000Z",
+                        "rvn": 0,
+                        "wipeNumber": 1,
+                        "accountId": session.get('username'),
+                        "profileId": request.args.get("profileId"),
+                        "version": "no_version",
+                        "items": {},
+                        "stats": {},
+                        "commandRevision": 0
+                    }),
+                    status=200,
                     mimetype='application/json'
                 )
                 return resp
@@ -3565,6 +3651,28 @@ class NBackend():
                 resp=app.response_class(
                     response=respon,
                     status=400,
+                    mimetype='application/json'
+                )
+                return resp
+            
+            if request.args.get("profileId") in ['athena', 'profile0', 'common_core', 'common_public', 'collections']:
+                pass
+            else:
+                resp=app.response_class(
+                    response=dumps({
+                        "_id": session.get('username'),
+                        "created": "0001-01-01T00:00:00.000Z",
+                        "updated": "0001-01-01T00:00:00.000Z",
+                        "rvn": 0,
+                        "wipeNumber": 1,
+                        "accountId": session.get('username'),
+                        "profileId": request.args.get("profileId"),
+                        "version": "no_version",
+                        "items": {},
+                        "stats": {},
+                        "commandRevision": 0
+                    }),
+                    status=200,
                     mimetype='application/json'
                 )
                 return resp
@@ -3754,6 +3862,102 @@ class NBackend():
                 )
                 return resp
             
+            if request.args.get("profileId") in ['athena', 'profile0', 'common_core', 'common_public', 'collections']:
+                pass
+            else:
+                resp=app.response_class(
+                    response=dumps({
+                        "_id": session.get('username'),
+                        "created": "0001-01-01T00:00:00.000Z",
+                        "updated": "0001-01-01T00:00:00.000Z",
+                        "rvn": 0,
+                        "wipeNumber": 1,
+                        "accountId": session.get('username'),
+                        "profileId": request.args.get("profileId"),
+                        "version": "no_version",
+                        "items": {},
+                        "stats": {},
+                        "commandRevision": 0
+                    }),
+                    status=200,
+                    mimetype='application/json'
+                )
+                return resp
+            
+            profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
+            
+            for prof in profiles:
+                if prof['accountId']==account:
+                    profile=prof.copy()
+
+            ApplyProfileChanges=[]
+            BaseRevision=profile['rvn'] or 0
+            QueryRevision=request.args.get('rvn') or -1
+            
+            if QueryRevision!=BaseRevision:
+                ApplyProfileChanges=[{
+                    "changeType": "fullProfileUpdate",
+                    "profile": profile
+                }]
+            
+            r={
+                "profileRevision": profile['rvn'] or 0,
+                "profileId": request.args.get("profileId") or "athena",
+                "profileChangesBaseRevision": BaseRevision,
+                "profileChanges": ApplyProfileChanges,
+                "profileCommandRevision": profile['commandRevision'] or 0,
+                "serverTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
+                "responseVersion": 1
+            }
+            
+            resp=app.response_class(
+                response=dumps(r),
+                status=200,
+                mimetype='application/json'
+            )
+            return resp
+        
+        @app.route('/fortnite/api/game/v2/profile/<account>/client/GetMcpTimeForLogin', methods=['POST'])
+        def fortniteGetMcpTimeForLogin(account):
+            
+            for i in clients:
+                if i['ip']==request.remote_addr:
+                    userId=i['accountId']
+            if not account==userId:
+                respon=self.createError(
+                    "errors.com.epicgames.account.invalid_account_credentials",
+                    "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
+                    [], 18031, "invalid_grant"
+                )
+                resp=app.response_class(
+                    response=respon,
+                    status=400,
+                    mimetype='application/json'
+                )
+                return resp
+            
+            if request.args.get("profileId") in ['athena', 'profile0', 'common_core', 'common_public', 'collections']:
+                pass
+            else:
+                resp=app.response_class(
+                    response=dumps({
+                        "_id": session.get('username'),
+                        "created": "0001-01-01T00:00:00.000Z",
+                        "updated": "0001-01-01T00:00:00.000Z",
+                        "rvn": 0,
+                        "wipeNumber": 1,
+                        "accountId": session.get('username'),
+                        "profileId": request.args.get("profileId"),
+                        "version": "no_version",
+                        "items": {},
+                        "stats": {},
+                        "commandRevision": 0
+                    }),
+                    status=200,
+                    mimetype='application/json'
+                )
+                return resp
+            
             profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
             
             for prof in profiles:
@@ -3807,6 +4011,28 @@ class NBackend():
                 )
                 return resp
             
+            if request.args.get("profileId") in ['athena', 'profile0', 'common_core', 'common_public', 'collections']:
+                pass
+            else:
+                resp=app.response_class(
+                    response=dumps({
+                        "_id": session.get('username'),
+                        "created": "0001-01-01T00:00:00.000Z",
+                        "updated": "0001-01-01T00:00:00.000Z",
+                        "rvn": 0,
+                        "wipeNumber": 1,
+                        "accountId": session.get('username'),
+                        "profileId": request.args.get("profileId"),
+                        "version": "no_version",
+                        "items": {},
+                        "stats": {},
+                        "commandRevision": 0
+                    }),
+                    status=200,
+                    mimetype='application/json'
+                )
+                return resp
+            
             profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
             
             for prof in profiles:
@@ -3855,6 +4081,28 @@ class NBackend():
                 resp=app.response_class(
                     response=respon,
                     status=400,
+                    mimetype='application/json'
+                )
+                return resp
+            
+            if request.args.get("profileId") in ['athena', 'profile0', 'common_core', 'common_public', 'collections']:
+                pass
+            else:
+                resp=app.response_class(
+                    response=dumps({
+                        "_id": session.get('username'),
+                        "created": "0001-01-01T00:00:00.000Z",
+                        "updated": "0001-01-01T00:00:00.000Z",
+                        "rvn": 0,
+                        "wipeNumber": 1,
+                        "accountId": session.get('username'),
+                        "profileId": request.args.get("profileId"),
+                        "version": "no_version",
+                        "items": {},
+                        "stats": {},
+                        "commandRevision": 0
+                    }),
+                    status=200,
                     mimetype='application/json'
                 )
                 return resp
@@ -3935,6 +4183,28 @@ class NBackend():
                 resp=app.response_class(
                     response=respon,
                     status=400,
+                    mimetype='application/json'
+                )
+                return resp
+            
+            if request.args.get("profileId") in ['athena', 'profile0', 'common_core', 'common_public', 'collections']:
+                pass
+            else:
+                resp=app.response_class(
+                    response=dumps({
+                        "_id": session.get('username'),
+                        "created": "0001-01-01T00:00:00.000Z",
+                        "updated": "0001-01-01T00:00:00.000Z",
+                        "rvn": 0,
+                        "wipeNumber": 1,
+                        "accountId": session.get('username'),
+                        "profileId": request.args.get("profileId"),
+                        "version": "no_version",
+                        "items": {},
+                        "stats": {},
+                        "commandRevision": 0
+                    }),
+                    status=200,
                     mimetype='application/json'
                 )
                 return resp
@@ -4218,6 +4488,28 @@ class NBackend():
                 resp=app.response_class(
                     response=respon,
                     status=400,
+                    mimetype='application/json'
+                )
+                return resp
+            
+            if request.args.get("profileId") in ['athena', 'profile0', 'common_core', 'common_public', 'collections']:
+                pass
+            else:
+                resp=app.response_class(
+                    response=dumps({
+                        "_id": session.get('username'),
+                        "created": "0001-01-01T00:00:00.000Z",
+                        "updated": "0001-01-01T00:00:00.000Z",
+                        "rvn": 0,
+                        "wipeNumber": 1,
+                        "accountId": session.get('username'),
+                        "profileId": request.args.get("profileId"),
+                        "version": "no_version",
+                        "items": {},
+                        "stats": {},
+                        "commandRevision": 0
+                    }),
+                    status=200,
                     mimetype='application/json'
                 )
                 return resp
@@ -4579,6 +4871,28 @@ class NBackend():
                 )
                 return resp
             
+            if request.args.get("profileId") in ['athena', 'profile0', 'common_core', 'common_public', 'collections']:
+                pass
+            else:
+                resp=app.response_class(
+                    response=dumps({
+                        "_id": session.get('username'),
+                        "created": "0001-01-01T00:00:00.000Z",
+                        "updated": "0001-01-01T00:00:00.000Z",
+                        "rvn": 0,
+                        "wipeNumber": 1,
+                        "accountId": session.get('username'),
+                        "profileId": request.args.get("profileId"),
+                        "version": "no_version",
+                        "items": {},
+                        "stats": {},
+                        "commandRevision": 0
+                    }),
+                    status=200,
+                    mimetype='application/json'
+                )
+                return resp
+            
             profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
             for prof in profiles:
                 if prof['accountId']==account:
@@ -4706,6 +5020,7 @@ class NBackend():
         }
         
         if request.headers["user-agent"]:
+            print(request.headers["user-agent"])
             try:
                 BuildID=str(request.headers["user-agent"]).split("-")[3].split(",")[0]
                 if not isinstance(BuildID, int):
@@ -4954,7 +5269,9 @@ class NBackend():
         
         if self.checkProfile(username):
             pass
+            print('pass')
         else:
+            print('true')
             return True
         
         stats=req(f"SELECT top1 FROM stat WHERE username='{username}'")
@@ -4962,22 +5279,23 @@ class NBackend():
         favorites=req(f"SELECT * FROM favorites WHERE username='{username}'")
         
         try:
-            mtx=int(stats2['mtx'])
-            items=list(str(stats2['item']).split(', '))
-            level=int(stats2['level'])
-            xp=int(stats2['exp'])
-            top1=int(stats['top1'])
+            mtx=int(stats2[0][0])
+            items=list(str(stats2[0][1]).split(', '))
+            level=int(stats2[0][2])
+            xp=int(stats2[0][3])
+            top1=int(stats[0][0])
             
-            f_char=favorites['character']
-            f_back=favorites['backpack']
-            f_pic=favorites['pickaxe']
-            f_glid=favorites['glider']
-            f_sky=favorites['skydrivecontrail']
-            f_music=favorites['musicpack']
-            f_load=favorites['loadingscreen']
-            f_dance=favorites['dance']
+            f_char=favorites[0][0]
+            f_back=favorites[0][1]
+            f_pic=favorites[0][2]
+            f_glid=favorites[0][3]
+            f_sky=favorites[0][4]
+            f_music=favorites[0][5]
+            f_load=favorites[0][6]
+            f_dance=favorites[0][7]
             
         except:
+            print('except')
             respon=self.createError(
                 "errors.com.epicgames.account.invalid_profile",
                 "Your profile does not exist. Please verify your account on our website: https://www.nocturno.games/", 
@@ -5220,6 +5538,7 @@ class NBackend():
                         userprofile[key]['items']['Token:FounderChatUnlock']['attributes']['xp']=xp
                         
                     elif userprofile[key]['profileId']=='profile0':
+                        userprofile[key]['items']['c5e97bfa-d599-42d0-a07e-735507956ba9']['quantity']=mtx
                         userprofile[key]['stats']['attributes']['level']=level
                         userprofile[key]['stats']['attributes']['xp']=xp
                     
@@ -5238,20 +5557,20 @@ class NBackend():
         favorites=req(f"SELECT * FROM favorites WHERE username='{username}'")
         
         try:
-            mtx=int(stats2['mtx'])
-            items=list(str(stats2['item']).split(', '))
-            level=int(stats2['level'])
-            xp=int(stats2['exp'])
-            top1=int(stats['top1'])
+            mtx=int(stats2[0][0])
+            items=list(str(stats2[0][1]).split(', '))
+            level=int(stats2[0][2])
+            xp=int(stats2[0][3])
+            top1=int(stats[0][0])
             
-            f_char=favorites['character']
-            f_back=favorites['backpack']
-            f_pic=favorites['pickaxe']
-            f_glid=favorites['glider']
-            f_sky=favorites['skydrivecontrail']
-            f_music=favorites['musicpack']
-            f_load=favorites['loadingscreen']
-            f_dance=favorites['dance']
+            f_char=favorites[0][0]
+            f_back=favorites[0][1]
+            f_pic=favorites[0][2]
+            f_glid=favorites[0][3]
+            f_sky=favorites[0][4]
+            f_music=favorites[0][5]
+            f_load=favorites[0][6]
+            f_dance=favorites[0][7]
             
         except:
             respon=self.createError(
@@ -5500,6 +5819,7 @@ class NBackend():
                 basicprofile['items']['Token:FounderChatUnlock']['attributes']['xp']=xp
                 
             elif basicprofile['profileId']=='profile0':
+                basicprofile['items']['c5e97bfa-d599-42d0-a07e-735507956ba9']['quantity']=mtx
                 basicprofile['stats']['attributes']['level']=level
                 basicprofile['stats']['attributes']['xp']=xp
             
@@ -5519,8 +5839,10 @@ class NBackend():
         ext=False
         for user in athena:
             if user['accountId']==accountId:
+                print('exist True')
                 ext=True
         if not ext:
+            print('exist Not')
             self.createProfile(accountId)
             return False
         return True
