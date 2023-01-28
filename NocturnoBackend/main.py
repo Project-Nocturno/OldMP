@@ -60,6 +60,103 @@ class NBackend():
         self.api_url=api_url
         self.ospath=ospath
 
+        @app.route("/", methods=['GET', 'POST'])
+        def baseroute():
+            html="""
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="description" content="OldMP Fortnite Backend">
+        <meta name="keywords" content="Fortnite, OldMP, oldmp, Backend, Game, Old, OG">
+        <meta name="author" content="Project Nocturno">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>OldMP</title>
+        <style>
+            @import url("https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900&display=swap");
+            * {
+                text-align: center;
+                font-family: roboto,sans-serif;
+            }
+
+            body {
+                height: 100%;
+                margin: 0;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background: linear-gradient(70deg, rgb(13, 13, 217), rgb(3, 2, 20));
+            }
+
+            .test {
+                height: 1000px;
+                width: 1000px;
+                background: linear-gradient(70deg, rgb(5, 5, 50), rgb(0, 0, 0));
+            }
+
+            .first {
+                z-index: -1;
+                font-size: 100px;
+                font-weight: 800;
+                text-decoration: none;
+                margin-top: 25px;
+                line-height: 30px;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                color: rgb(255, 255, 255);
+                -webkit-text-stroke: 1px rgba(255, 255, 255, 0.5);
+            }
+
+            .copy {
+                z-index: -1;
+                font-size: 90px;
+                font-weight: 800;
+                text-decoration: none;
+                line-height: 20px;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                color: transparent;
+                -webkit-text-stroke: 1px rgba(255, 255, 255, 0.5);
+            }
+
+            .title {
+                margin: 50px;
+            }
+
+            .footer {
+                position: fixed;
+                left: 0;
+                bottom: 0;
+                padding: 15px;
+                width: 100%;
+                background-color: rgb(16, 16, 16);
+                color: white;
+                text-align: center;
+            }
+
+            .footer a {
+                text-decoration: none;
+                color: white;
+            }
+
+            .footer a:hover {
+                text-decoration: none;
+                color: rgba(255, 255, 255, 0.5);
+                transition: 0.5s;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="title">
+            <h1 class="first">OldMP</h1>
+            <h1 class="copy">OldMP</h1>
+            <h1 class="copy">OldMP</h1>
+            <h1 class="copy">OldMP</h1>
+        </div>
+        <div class="footer">
+            By <a href="https://www.nocturno.games" target="_blank">Project Nocturno</a> (Oldmp: 4lxprime#7714)
+        </div>
+    </body>
+</html>"""
+            return html
 
         @app.route('/adminacc', methods=['GET'])
         def adminacc():
@@ -1986,124 +2083,7 @@ class NBackend():
             QueryRevision=request.args.get('rvn') or -1
             PurchasedLlama=False
             AthenaModified=False
-            ItemExists=False
-            
-            exchange_table=[
-                {'name': 'tomatohead', 'id': 'CID_109_Athena_Commando_M_Pizza', 'price': 1500, 'style': 'skins'},
-                {'name': 'tricera_ops', 'id': 'CID_107_Athena_Commando_F_PajamaParty', 'price': 2000, 'style': 'skins'},
-                {'name': 'leviathan', 'id': 'CID_108_Athena_Commando_M_Fishhead', 'price': 2000, 'style': 'skins'},
-                {'name': 'cipher', 'id': 'CID_110_Athena_Commando_F_CircuitBreaker', 'price': 1200, 'style': 'skins'},
-                {'name': 'dark_vanguard', 'id': 'CID_105_Athena_Commando_F_SpaceBlack', 'price': 2000, 'style': 'skins'},
-                {'name': 'raven', 'id': 'CID_102_Athena_Commando_M_Raven', 'price': 2000, 'style': 'skins'},
-                {'name': 'whiplash', 'id': 'CID_106_Athena_Commando_F_Taxi', 'price': 800, 'style': 'skins'},
-                {'name': 'rabbit_raider', 'id': 'CID_103_Athena_Commando_M_Bunny', 'price': 1500, 'style': 'skins'},
-                {'name': 'bunny_brawler', 'id': 'CID_104_Athena_Commando_F_Bunny', 'price': 1500, 'style': 'skins'},
-                {'name': 'midnight_ops', 'id': 'CID_101_Athena_Commando_M_Stealth', 'price': 1200, 'style': 'skins'},
-                {'name': 'power_chord', 'id': 'CID_097_Athena_Commando_F_RockerPunk', 'price': 2000, 'style': 'skins'},
-                {'name': 'highland_warrior', 'id': 'CID_099_Athena_Commando_F_Scathach', 'price': 1500, 'style': 'skins'},
-                {'name': 'battle_hound', 'id': 'CID_100_Athena_Commando_M_CuChulainn', 'price': 2000, 'style': 'skins'},
-                {'name': 'green_clover', 'id': 'CID_098_Athena_Commando_F_StPatty', 'price': 800, 'style': 'skins'},
-                {'name': 'radiant_striker', 'id': 'CID_091_Athena_Commando_M_RedShirt', 'price': 1200, 'style': 'skins'},
-                {'name': 'brilliant_striker', 'id': 'CID_092_Athena_Commando_F_RedShirt', 'price': 1200, 'style': 'skins'},
-                {'name': 'burnout', 'id': 'CID_094_Athena_Commando_M_Rider', 'price': 1500, 'style': 'skins'},
-                {'name': 'rex', 'id': 'CID_093_Athena_Commando_M_Dinosaur', 'price': 2000, 'style': 'skins'},
-                {'name': 'crimson_scout', 'id': 'CID_086_Athena_Commando_M_RedSilk', 'price': 800, 'style': 'skins'},
-                {'name': 'scarlet_defender', 'id': 'CID_087_Athena_Commando_F_RedSilk', 'price': 800, 'style': 'skins'},
-                {'name': 'skull_trooper', 'id': 'CID_030_Athena_Commando_M_Halloween', 'price': 1500, 'style': 'skins'},
-                {'name': 'ghoul_trooper', 'id': 'CID_029_Athena_Commando_F_Halloween', 'price': 1500, 'style': 'skins'},
-                {'name': 'recon_specialist', 'id': 'CID_024_Athena_Commando_F', 'price': 1200, 'style': 'skins'},
-                {'name': 'brawler', 'id': 'CID_021_Athena_Commando_F', 'price': 1200, 'style': 'skins'},
-                {'name': 'racon_expert', 'id': 'CID_022_Athena_Commando_F', 'price': 1200, 'style': 'skins'},
-                {'name': 'love_ranger', 'id': 'CID_070_Athena_Commando_M_Cupid', 'price': 2000, 'style': 'skins'},
-                {'name': 'cuddle_team_leader', 'id': 'CID_069_Athena_Commando_F_PinkBear', 'price': 2000, 'style': 'skins'},
-                {'name': 'e.l.f', 'id': 'CID_051_Athena_Commando_M_HolidayElf', 'price': 1200, 'style': 'skins'},
-                {'name': 'merry_marauder', 'id': 'CID_049_Athena_Commando_M_HolidayGingerbread', 'price': 1200, 'style': 'skins'},
-                {'name': 'ginger_gunner', 'id': 'CID_048_Athena_Commando_F_HolidayGingerbread', 'price': 1500, 'style': 'skins'},
-                {'name': 'nog_ops', 'id': 'CID_046_Athena_Commando_F_HolidaySweater', 'price': 800, 'style': 'skins'},
-                {'name': 'funk_ops', 'id': 'CID_038_Athena_Commando_M_Disco', 'price': 1500, 'style': 'skins'},
-                {'name': 'rednosed_raider', 'id': 'CID_047_Athena_Commando_F_HolidayReindeer', 'price': 1200, 'style': 'skins'},
-                {'name': 'yuletide_ranger', 'id': 'CID_045_Athena_Commando_M_HolidaySweater', 'price': 800, 'style': 'skins'},
-                {'name': 'brite_bomber', 'id': 'CID_044_Athena_Commando_F_SciPop', 'price': 1200, 'style': 'skins'},
-                {'name': 'crackshot', 'id': 'CID_050_Athena_Commando_M_HolidayNutcracker', 'price': 2000, 'style': 'skins'},
-                {'name': 'artic_assassin', 'id': 'CID_037_Athena_Commando_F_WinterCamo', 'price': 1200, 'style': 'skins'},
-                {'name': 'blue_team_leader', 'id': 'CID_052_Athena_Commando_F_PSBlue', 'price': 1200, 'style': 'skins'},
-                {'name': 'dazzle', 'id': 'CID_076_Athena_Commando_F_Sup', 'price': 1200, 'style': 'skins'},
-                {'name': 'jungle_scout', 'id': 'CID_074_Athena_Commando_F_Stripe', 'price': 800, 'style': 'skins'},
-                {'name': 'mogul_master', 'id': 'CID_065_Athena_Commando_F_SkiGirl_FRA', 'price': 1500, 'style': 'skins'},
-                {'name': 'sash_sergeant', 'id': 'CID_072_Athena_Commando_M_Scout', 'price': 1200, 'style': 'skins'},
-                {'name': 'default_skin', 'id': 'CID_001_Athena_Commando_F_Default', 'price': 0, 'style': 'skins'},
-                {'name': 'axeroni', 'id': 'Pickaxe_ID_040_Pizza', 'price': 800, 'style': 'pickaxes'},
-                {'name': 'bitemark', 'id': 'Pickaxe_ID_041_PajamaParty', 'price': 1200, 'style': 'pickaxes'},
-                {'name': 'cutting_edge', 'id': 'Pickaxe_ID_042_CircuitBreaker', 'price': 800, 'style': 'pickaxes'},
-                {'name': 'carrot_stick', 'id': 'Pickaxe_ID_038_Carrot', 'price': 800, 'style': 'pickaxes'},
-                {'name': 'spectral_axe', 'id': 'Pickaxe_ID_035_Prismatic', 'price': 800, 'style': 'pickaxes'},
-                {'name': 'anarchy_axe', 'id': 'Pickaxe_ID_034_RockerPunk', 'price': 800, 'style': 'pickaxes'},
-                {'name': 'silver_fang', 'id': 'Pickaxe_ID_036_CuChulainn', 'price': 800, 'style': 'pickaxes'},
-                {'name': 'pot_o_gold', 'id': 'Pickaxe_ID_033_PotOfGold', 'price': 800, 'style': 'pickaxes'},
-                {'name': 'tactical_spade', 'id': 'Pickaxe_ID_032_Tactical', 'price': 500, 'style': 'pickaxes'},
-                {'name': 'empire_axe', 'id': 'Pickaxe_ID_030_ArtDeco', 'price': 800, 'style': 'pickaxes'},
-                {'name': 'pick_squeak', 'id': 'Pickaxe_ID_031_Squeak', 'price': 1500, 'style': 'pickaxes'},
-                {'name': 'rainbow_smash', 'id': 'Pickaxe_ID_026_Brite', 'price': 1500, 'style': 'pickaxes'},
-                {'name': 'reaper', 'id': 'HalloweenScythe', 'price': 2500, 'style': 'pickaxes'},
-                {'name': 'close_shave', 'id': 'BoltonPickaxe', 'price': 800, 'style': 'pickaxes'},
-                {'name': 'death_valley', 'id': 'Pickaxe_Deathvalley', 'price': 1500, 'style': 'pickaxes'},
-                {'name': 'candy_axe', 'id': 'Pickaxe_ID_015_HolidayCandyCane', 'price': 1500, 'style': 'pickaxes'},
-                {'name': 'disco_brawl', 'id': 'Pickaxe_ID_016_Disco', 'price': 1500, 'style': 'pickaxes'},
-                {'name': 'ice_breaker', 'id': 'Pickaxe_ID_014_WinterCamo', 'price': 500, 'style': 'pickaxes'},
-                {'name': 'chomp_jr', 'id': 'Pickaxe_ID_017_Shark', 'price': 1500, 'style': 'pickaxes'},
-                {'name': 'plunja', 'id': 'Pickaxe_ID_024_Plunger', 'price': 800, 'style': 'pickaxes'},
-                {'name': 'tat_axe', 'id': 'Pickaxe_ID_019_Heart', 'price': 800, 'style': 'pickaxes'},
-                {'name': 'batsickle', 'id': 'SickleBatPickaxe', 'price': 800, 'style': 'pickaxes'},
-                {'name': 'default_pickaxe', 'id': 'DefaultPickaxe', 'price': 0, 'style': 'pickaxes'},
-                {'name': 'rusty_rider', 'id': 'Glider_ID_021_Scavenger', 'price': 1200, 'style': 'gliders'},
-                {'name': 'googly', 'id': 'Glider_ID_028_Googly', 'price': 800, 'style': 'gliders'},
-                {'name': 'fossil_flyer', 'id': 'Glider_ID_029_PajamaParty', 'price': 500, 'style': 'gliders'},
-                {'name': 'planetary_probe', 'id': 'Glider_ID_027_Satelite', 'price': 1200, 'style': 'gliders'},
-                {'name': 'mainframe', 'id': 'Glider_ID_030_CircuitBreaker', 'price': 500, 'style': 'gliders'},
-                {'name': 'orbital_shuttle', 'id': 'Glider_ID_025_ShuttleA', 'price': 1200, 'style': 'gliders'},
-                {'name': 'deep_space_lander', 'id': 'Glider_ID_026_ShuttleB', 'price': 1200, 'style': 'gliders'},
-                {'name': 'feathered_flyer', 'id': 'Glider_ID_024_Reaper', 'price': 800, 'style': 'gliders'},
-                {'name': 'checker', 'id': 'Glider_ID_019_Taxi', 'price': 500, 'style': 'gliders'},
-                {'name': 'stage_dive', 'id': 'Glider_ID_022_RockerPunk', 'price': 800, 'style': 'gliders'},
-                {'name': 'rayale_dragon', 'id': 'Glider_ID_014_Dragon', 'price': 2000, 'style': 'gliders'},
-                {'name': 'mako', 'id': 'Glider_Warthog', 'price': 500, 'style': 'gliders'},
-                {'name': 'prismatic', 'id': 'Glider_Prismatic', 'price': 800, 'style': 'gliders'},
-                {'name': 'gum_drop', 'id': 'Glider_ID_009_CandyCoat', 'price': 800, 'style': 'gliders'},
-                {'name': 'cozy_coaster', 'id': 'Glider_ID_005_HolidaySweater', 'price': 800, 'style': 'gliders'},
-                {'name': 'cloud_strike', 'id': 'Glider_ID_010_Storm', 'price': 1200, 'style': 'gliders'},
-                {'name': 'paper_parasol', 'id': 'Umbrella_PaperParasol', 'price': 0, 'style': 'gliders'},
-                {'name': 'snowflake', 'id': 'Umbrella_Snowflake', 'price': 0, 'style': 'gliders'},
-                {'name': 'umbrella', 'id': 'Solo_Umbrella', 'price': 0, 'style': 'gliders'},
-                {'name': 'default_glider', 'id': 'DefaultGlider', 'price': 0, 'style': 'gliders'},
-                {'name': 'royale_knight', 'id': 'CID_033_Athena_Commando_F_Medieval', 'price': -1, 'style': 'skins'},
-                {'name': 'blue_squire', 'id': 'CID_032_Athena_Commando_M_Medieval', 'price': -1, 'style': 'skins'},
-                {'name': 'sparkle_specialist', 'id': 'CID_039_Athena_Commando_F_Disco', 'price': -1, 'style': 'skins'},
-                {'name': 'black_knight', 'id': 'CID_035_Athena_Commando_M_Medieval', 'price': -1, 'style': 'skins'},
-                {'name': 'pusle_axe', 'id': 'Pickaxe_ID_012_District', 'price': -1, 'style': 'pickaxes'},
-                {'name': 'axecalibur', 'id': 'Pickaxe_ID_011_Medieval', 'price': -1, 'style': 'pickaxes'},
-                {'name': 'ac_dc', 'id': 'Pickaxe_ID_013_Teslacoil', 'price': -1, 'style': 'pickaxes'},
-                {'name': 'the_brave', 'id': 'Glider_ID_002_Medieval', 'price': -1, 'style': 'gliders'},
-                {'name': 'royale_x', 'id': 'Glider_ID_003_District', 'price': -1, 'style': 'gliders'},
-                {'name': 'get_down', 'id': 'Glider_ID_004_Disco', 'price': -1, 'style': 'gliders'},
-                {'name': 'strike_specialist', 'id': 'CID_025_Athena_Commando_M', 'price': -1, 'style': 'skins'},
-                {'name': 'lucky', 'id': 'HappyPickaxe', 'price': -1, 'style': 'pickaxes'},
-                {'name': 'voyager', 'id': 'Glider_Voyager', 'price': -1, 'style': 'gliders'},
-                {'name': 'circuit_breaker', 'id': 'CID_042_Athena_Commando_M_Cyberpunk', 'price': -1, 'style': 'skins'},
-                {'name': 'shouldnt_have', 'id': 'Pickaxe_ID_022_HolidayGiftWrap', 'price': -1, 'style': 'pickaxes'},
-                {'name': 'zephyr', 'id': 'Glider_ID_008_Graffiti', 'price': -1, 'style': 'gliders'},
-                {'name': 'dab', 'id': 'EID_Dab', 'price': -1, 'style': 'dances'},
-                {'name': 'rogue_agent', 'id': 'CID_090_Athena_Commando_M_Tactical', 'price': -1, 'style': 'skins'},
-                {'name': 'spectre', 'id': 'Pickaxe_ID_037_Stealth', 'price': -1, 'style': 'pickaxes'},
-                {'name': 'storm_sigil', 'id': 'Glider_ID_023_CuChulainn', 'price': -1, 'style': 'gliders'},
-                {'name': 'renegade_raider', 'id': 'CID_028_Athena_Commando_F', 'price': -1, 'style': 'skins'},
-                {'name': 'assault_trooper', 'id': 'CID_017_Athena_Commando_M', 'price': -1, 'style': 'skins'},
-                {'name': 'raider_revenge', 'id': 'Pickaxe_Lockjaw', 'price': -1, 'style': 'pickaxes'},
-                {'name': 'arial_assault_one', 'id': 'Glider_ID_001', 'price': -1, 'style': 'gliders'},
-                {'name': 'red_knight', 'id': 'CID_034_Athena_Commando_F_Medieval', 'price': -1, 'style': 'skins'},
-                {'name': 'pink_flamingo', 'id': 'Pickaxe_Flamingo', 'price': -1, 'style': 'pickaxes'},
-                {'name': 'roadtrip', 'id': 'Glider_RoadTrip', 'price': -1, 'style': 'gliders'}
-            ]
-            
+            ItemExists=False            
             
             # for i in exchange_table:
             #     if itemId==i['id']:
@@ -4616,11 +4596,11 @@ class NBackend():
                         profiles['stats']['attributes']['season_match_boost'] = SeasonData['battlePassXPBoost']
                         profiles['stats']['attributes']['season_friend_match_boost'] = SeasonData['battlePassXPFriendBoost']
 
-                    oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
+                    oldprofile=loads(open(file, 'r', encoding='utf-8').read())
                     for key, val in enumerate(oldprofile):
                         if val['accountId']==session.get('accountId'):
                             oldprofile[key]=profile
-                    open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
+                    open(file, 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
 
             return Response(status=200)
 

@@ -173,8 +173,8 @@
     {
         "_id": "4lxprime",
         "created": "2023-01-27T22:39:24Z",
-        "updated": "2023-01-27T23:18:25Z",
-        "rvn": 3,
+        "updated": "2023-01-28T12:53:55Z",
+        "rvn": 1,
         "wipeNumber": 1,
         "accountId": "4lxprime",
         "profileId": "athena",
@@ -1070,8 +1070,8 @@
                 "inventory_limit_bonus": 0,
                 "last_applied_loadout": "",
                 "favorite_skydivecontrail": "",
-                "favorite_pickaxe": "AthenaPickaxe:HalloweenScythe",
-                "favorite_glider": "AthenaGlider:Glider_Prismatic",
+                "favorite_pickaxe": "AthenaPickaxe:Pickaxe_ID_016_Disco",
+                "favorite_glider": "AthenaGlider:Glider_ID_010_Storm",
                 "daily_rewards": {},
                 "xp": 1,
                 "season_friend_match_boost": 0,
@@ -1090,6 +1090,6 @@
                 "fortnite_character": "AthenaCharacter:CID_050_Athena_Commando_M_HolidayNutcracker"
             }
         },
-        "commandRevision": 3
+        "commandRevision": 1
     }
 ]
