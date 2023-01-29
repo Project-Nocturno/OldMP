@@ -10,7 +10,6 @@ from flask_session import Session
 from uuid import uuid4
 from datetime import datetime, timedelta
 from hashlib import sha256, sha1
-from configparser import ConfigParser
 import base64
 from cryptography.fernet import Fernet
 import mysql.connector
@@ -24,6 +23,11 @@ cnx=mysql.connector.connect(
     port='25060'
 )
 
+proxy={
+   'http': 'http://127.0.0.1:9999',
+   'https': 'http://127.0.0.1:9999',
+}
+
 urlkey="VEIDVOE9oN8O3C4TnU2RIN1O0rF82mUDSFJsdJOFKJKJSDgjkojsdJJKOGJJKOSJGKJOjsDJKO"
 enckey="1ldcQilhWsPDjlFyLFU3VJXCNJQW6gf6oI6CoLbeNSc="
 enc=Fernet(enckey).encrypt
@@ -31,9 +35,6 @@ dec=Fernet(enckey).decrypt
 
 website_url="https://www.nocturno.games"
 api_url="https://nocturno.games/api"
-
-config=ConfigParser()
-config.read(f'{ospath.dirname(ospath.realpath(__file__))}/config.ini')
 
 app=Flask("OldMP")
 app.config["SESSION_PERMANENT"] = False
@@ -615,18 +616,8 @@ class NBackend():
 
         @app.route('/fortnite/api/game/v2/matchmakingservice/ticket/player/<accountId>', methods=['GET'])
         def fortniteapigamev2mathcmakingplayerticket(accountId):
-            print(config)
-            ip=config['GameServer']['ip']
-            port=config['GameServer']['port']
-            print('\n')
-            print('\n')
-            print(request.view_args)
-            print('\n')
-            print(request.stream.read())
-            print('\n')
-            print(request.get_data())
-            print('\n')
-            print('\n')
+            ip=loads(open('conf.json', 'r', encoding='utf-8').read())['GameServer']['ip']
+            port=loads(open('conf.json', 'r', encoding='utf-8').read())['GameServer']['port']
 
             r={
                 "serviceUrl": "ws://127.0.0.1",
@@ -662,17 +653,8 @@ class NBackend():
         @app.route('/fortnite/api/matchmaking/session/<sessionId>', methods=['GET'])
         def apimatchmakingsessionid(sessionId):
 
-            ip=config['GameServer']['ip']
-            port=config['GameServer']['port']
-            print('\n')
-            print('\n')
-            print(request.view_args)
-            print('\n')
-            print(request.stream.read())
-            print('\n')
-            print(request.get_data())
-            print('\n')
-            print('\n')
+            ip=loads(open('conf.json', 'r', encoding='utf-8').read())['GameServer']['ip']
+            port=loads(open('conf.json', 'r', encoding='utf-8').read())['GameServer']['port']
 
             sessionCode={
                 "id": session.get('sessionId'),
@@ -1869,7 +1851,7 @@ class NBackend():
                 username=str(request.get_data().decode()).split("&")[1].split('=')[1]
                 password=str(request.get_data().decode()).split("&")[2].split('=')[1]
                 
-                r=get(f'{api_url}/get/check.php?user={username}&pass={password}', verify=False).text
+                r=get(f'{api_url}/get/check.php?user={username}&pass={password}', verify=False, proxies=proxy).text
                 if not 'ok' in r:
                     print("bad logins")
                     respon=self.createError(
@@ -4359,7 +4341,7 @@ class NBackend():
                         
                         ChallengeBundle=SeasonQuestIDS['ChallengeBundles'][i]
                         
-                        if config["Profile"]["bCompletedSeasonalQuests"]==True and "questStages" in ChallengeBundle:
+                        if loads(open('conf.json', 'r', encoding='utf-8').read())["Profile"]["bCompletedSeasonalQuests"]==True and "questStages" in ChallengeBundle:
                             ChallengeBundle['grantedquestinstanceids']=ChallengeBundle['grantedquestinstanceids']+ChallengeBundle['questStages']
                         
                         profile['items'][ChallengeBundle['itemGuid']]={
@@ -4383,7 +4365,7 @@ class NBackend():
                         
                         profile['items'][ChallengeBundle['itemGuid']]['attributes']['num_granted_bundle_quests']=len(ChallengeBundle['grantedquestinstanceids'])
                         
-                        if config["Profile"]["bCompletedSeasonalQuests"]:
+                        if loads(open('conf.json', 'r', encoding='utf-8').read())["Profile"]["bCompletedSeasonalQuests"]:
                             profile['items'][ChallengeBundle['itemGuid']]['attributes']['num_quests_completed']=len(ChallengeBundle['grantedquestinstanceids'])
                             profile['items'][ChallengeBundle['itemGuid']]['attributes']['num_progress_quests_completed']=len(ChallengeBundle['grantedquestinstanceids'])
                         
@@ -4428,11 +4410,11 @@ class NBackend():
                         "quantity": 1
                     }
                     
-                    if config["Profile"]['bCompletedSeasonalQuests']:
+                    if loads(open('conf.json', 'r', encoding='utf-8').read())["Profile"]['bCompletedSeasonalQuests']:
                         profile['items'][Quest['itemGuid']]['attributes']['quest_state']="Claimed"
                     
                     for x in range(len(Quest['objectives'])):
-                        if config["Profile"]['bCompletedSeasonalQuests']:
+                        if loads(open('conf.json', 'r', encoding='utf-8').read())["Profile"]['bCompletedSeasonalQuests']:
                             profile['items'][Quest['itemGuid']]['attributes'][f"completion_{Quest['objectives'][x]['name'][0]}"]=Quest['objectives'][x]['count']
                         else:
                             profile['items'][Quest['itemGuid']]['attributes'][f"completion_{Quest['objectives'][x]['name'][0]}"]=0
@@ -5188,7 +5170,7 @@ class NBackend():
 
     def getContentPages(self, request):
         
-        emergency=True
+        emergency=loads(open('conf.json', 'r', encoding='utf-8').read())["Content"]['loadEmergency']
         
         memory=self.getVersion(request=request)
         contentpage=loads(open(f'data/content/contentpages.json', 'r', encoding='utf-8').read())
@@ -5215,7 +5197,8 @@ class NBackend():
         try:
             if memory['build']<5.30:
                 for mode in news:
-                    contentpage[mode]['news']['messages'][0]['image']="https://cdn.discordapp.com/attachments/1012885147240124496/1049090228666781726/zyro-image.png"
+                    contentpage[mode]['news']['messages'][0]['image']="http://oldmp.software:3551/content/images/logo.png"
+                    contentpage[mode]['news']['messages'][0]['title']=f"Bienvenue sur Fortnite saison {memory['season']}"
                     contentpage[mode]['news']['messages'][1]['image']=""
         except:
             pass
@@ -5237,45 +5220,14 @@ class NBackend():
         
         try:
             if emergency:
-                contentpage.update({
-                    "emergencynotice": {
-                        "news": {
-                        "_type": "Battle Royale News",
-                        "messages": [
-                            {
-                                "hidden": True,
-                                "_type": "CommonUI Simple Message Base",
-                                "title": "Project Nocturno",
-                                "body": "Le projet Nocturno est fonctionnel!\nune mise a jour est prévue le 10/02/2023",
-                                "spotlight": True
-                            }
-                        ]
-                        }
-                    }
-                })
-                contentpage.update({
-                    "emergencynoticev2": {
-                        "jcr:isCheckedOut": True,
-                        "_title": "emergencynoticev2",
-                        "_noIndex": False,
-                        "jcr:baseVersion": "a7ca237317f1e771e921e2-7f15-4485-b2e2-553b809fa363",
-                        "emergencynotices": {
-                        "_type": "Emergency Notices",
-                        "emergencynotices": [
-                            {
-                                "gamemodes": [],
-                                "hidden": False,
-                                "_type": "CommonUI Emergency Notice Base",
-                                "title": "Project Nocturno",
-                                "body": "Le projet Nocturno est fonctionnel!\nune mise a jour est prévue le 10/02/2023"
-                            }
-                        ]
-                        },
-                        "_activeDate": "2018-08-06T19:00:26.217Z",
-                        "lastModified": "2021-12-01T15:55:56.012Z",
-                        "_locale": "en-US"
-                    }
-                })
+                contentpage.update(loads(open('conf.json', 'r', encoding='utf-8').read())['Content']['emergencymsg']['v1'])
+                contentpage.update(loads(open('conf.json', 'r', encoding='utf-8').read())['Content']['emergencymsg']['v2'])
+        
+        except:
+            pass
+        
+        try:
+            contentpage.update(loads(open('conf.json', 'r', encoding='utf-8').read())['Content']['loginmess'])
         
         except:
             pass

@@ -1,0 +1,69 @@
+{
+    "Profile": {
+        "bCompletedSeasonalQuests": false
+    },
+    "GameServer": {
+        "ip": "127.0.0.1",
+        "port": 7777
+    },
+    "Content": {
+        "loadEmergency": true,
+        "emergencymsg": {
+            "v2": {
+                "emergencynoticev2": {
+                    "jcr:isCheckedOut": true,
+                    "_title": "emergencynoticev2",
+                    "_noIndex": false,
+                    "jcr:baseVersion": "a7ca237317f1e771e921e2-7f15-4485-b2e2-553b809fa363",
+                    "emergencynotices": {
+                        "_type": "Emergency Notices",
+                        "emergencynotices": [
+                            {
+                                "gamemodes": [],
+                                "hidden": false,
+                                "_type": "CommonUI Emergency Notice Base",
+                                "title": "Project Nocturno",
+                                "body": "Le projet Nocturno est fonctionnel!\nune mise a jour est prévue le 10/02/2023"
+                            }
+                        ]
+                    },
+                    "_activeDate": "2018-08-06T19:00:26.217Z",
+                    "lastModified": "2021-12-01T15:55:56.012Z",
+                    "_locale": "en-US"
+                }
+            },
+            "v1": {
+                "emergencynotice": {
+                    "news": {
+                        "_type": "Battle Royale News",
+                        "messages": [
+                            {
+                                "hidden": true,
+                                "_type": "CommonUI Simple Message Base",
+                                "title": "Project Nocturno",
+                                "body": "Le projet Nocturno est fonctionnel!\nune mise a jour est prévue le 10/02/2023",
+                                "spotlight": true
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        "loginmess": {
+            "loginmessage": {
+                "_title": "LoginMessage",
+                "loginmessage": {
+                    "_type": "CommonUI Simple Message",
+                    "message": {
+                        "_type": "CommonUI Simple Message Base",
+                        "title": "Project Nocturno",
+                        "body": "Bienvenue sur Nocturno !\n\n\nPatch Notes:\nImportant:\n\n - Creation du NocturnoBack (serveur backend)\n - Creation du gameserver 3.5 (serveur de jeux)\n - Creation du site Nocturno (www.nocturno.games)\n - Creation du launcher Nocturno\n\nDiscord: https://discord.gg/nocturno\nTiktok: project.nocturno"
+                    }
+                },
+                "_activeDate": "2017-07-19T13:14:04.490Z",
+                "lastModified": "2018-03-15T07:10:22.222Z",
+                "_locale": "en-US"
+            }
+        }
+    }
+}

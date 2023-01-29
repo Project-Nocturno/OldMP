@@ -3,20 +3,6 @@
   "_activeDate": "2017-08-30T03:20:48.050Z",
   "lastModified": "2019-11-01T17:33:35.346Z",
   "_locale": "en-US",
-  "loginmessage": {
-    "_title": "LoginMessage",
-    "loginmessage": {
-      "_type": "CommonUI Simple Message",
-      "message": {
-        "_type": "CommonUI Simple Message Base",
-        "title": "Project Nocturno",
-        "body": "Bienvenue sur Nocturno !\n\n\nPatch Notes:\nImportant:\n\n - Creation du NocturnoBack (serveur backend)\n - Creation du gameserver 3.5 (serveur de jeux)\n - Creation du site Nocturno (www.nocturno.games)\n - Creation du launcher Nocturno\n\nDiscord: https://discord.gg/nocturno\nTiktok: project.nocturno"
-      }
-    },
-    "_activeDate": "2017-07-19T13:14:04.490Z",
-    "lastModified": "2018-03-15T07:10:22.222Z",
-    "_locale": "en-US"
-  },
   "subgameselectdata": {
     "saveTheWorldUnowned": {
       "_type": "CommonUI Simple Message",
