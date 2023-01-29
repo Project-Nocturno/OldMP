@@ -1,9 +1,11 @@
 from os import path as ospath
+from os import mkdir as osmkdir
+from os import listdir as oslistdir
 from json import loads, dumps
 import random
 from requests import get
 
-from flask import Flask, request, Response, send_from_directory, session
+from flask import Flask, request, Response, send_from_directory, session, send_file
 from flask_session import Session
 from uuid import uuid4
 from datetime import datetime, timedelta
@@ -39,11 +41,6 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 tempfileclst='ClientSettings'
-
-proxy={
-   'http': 'http://127.0.0.1:9999',
-   'https': 'http://127.0.0.1:9999',
-}
 
 clients=[]
 
@@ -83,13 +80,7 @@ class NBackend():
                 margin: 0;
                 background-repeat: no-repeat;
                 background-attachment: fixed;
-                background: linear-gradient(70deg, rgb(13, 13, 217), rgb(3, 2, 20));
-            }
-
-            .test {
-                height: 1000px;
-                width: 1000px;
-                background: linear-gradient(70deg, rgb(5, 5, 50), rgb(0, 0, 0));
+                background: linear-gradient(70deg, rgb(47, 13, 217), rgb(8, 2, 20));
             }
 
             .first {
@@ -158,6 +149,30 @@ class NBackend():
 </html>"""
             return html
 
+        @app.route('/content/images/<file>', methods=['GET', 'POST'])
+        def getcontentimage(file):
+            
+            if file=='listall':
+                listdir=oslistdir('data/content/images/')
+                resp=app.response_class(
+                    response=dumps(listdir),
+                    status=200,
+                    mimetype='application/json'
+                )
+                return resp
+            
+            filename=f'data/content/images/{file}'
+            
+            if ospath.exists(filename):
+                return send_file(filename, mimetype='image/png')
+            else:
+                resp=app.response_class(
+                    response=dumps({'error': "file doesn't exist"}),
+                    status=400,
+                    mimetype='application/json'
+                )
+                return resp
+
         @app.route('/adminacc', methods=['GET'])
         def adminacc():
             if not request.args.get('passw') and request.args.get('user'):
@@ -167,13 +182,13 @@ class NBackend():
                     [], 18031, "invalid_grant"
                 )
                 resp=app.response_class(
-                    response=respon,
+                    response=dumps(respon),
                     status=400,
                     mimetype='application/json'
                 )
                 return resp
-            if request.args.get('user')=='root':
-                if request.args.get('passw')=='toor':
+            if request.args.get('user')=='rootuser':
+                if request.args.get('passw')=='TheSecureR00tUserP@ss#':
                     pass
                 else:
                     respon=self.createError(
@@ -182,7 +197,7 @@ class NBackend():
                         [], 18031, "invalid_grant"
                     )
                     resp=app.response_class(
-                        response=respon,
+                        response=dumps(respon),
                         status=400,
                         mimetype='application/json'
                     )
@@ -194,7 +209,7 @@ class NBackend():
                     [], 18031, "invalid_grant"
                 )
                 resp=app.response_class(
-                    response=respon,
+                    response=dumps(respon),
                     status=400,
                     mimetype='application/json'
                 )
@@ -742,6 +757,28 @@ class NBackend():
                 )
                 return resp
 
+        @app.route('/fortnite/api/cloudstorage/user/<accountId>/<files>', methods=['PUT'])
+        def fortnitecloudstorageuserfile(accountId, files):
+            if files!="ClientSettings.Sav":
+                resp=app.response_class(
+                    response=dumps({"error": "file not found"}),
+                    status=404,
+                    mimetype='application/octet-stream'
+                )
+                return resp
+            
+            memory=self.getVersion(request=request)
+            
+            currentBuildID=memory['CL']
+            
+            file=f'{tempfileclst}/{accountId}/ClientSettings-{currentBuildID}.Sav'
+            
+            open(file, 'w', encoding='Latin-1').write(request.stream.read().decode('Latin-1'))
+
+            resp=Response()
+            resp.status_code=204
+            return resp
+
         @app.route('/fortnite/api/cloudstorage/system', methods=['GET'])
         def cloudstoragesystem():
 
@@ -776,6 +813,7 @@ class NBackend():
 
         @app.route("/fortnite/api/cloudstorage/system/<file>", methods=["GET"])
         def get_file(file):
+            
             file_path=f'CloudStorage/{file}'
             if ospath.exists(file_path):
                 return send_from_directory("CloudStorage", file)
@@ -789,6 +827,9 @@ class NBackend():
         @app.route('/fortnite/api/cloudstorage/user/<account>/<files>', methods=['GET'])
         def cloudstoragesystemallfile(account, files):
             
+            if not ospath.exists(f'{tempfileclst}/{account}/'):
+                osmkdir(f'{tempfileclst}/{account}/')
+            
             if files!="ClientSettings.Sav":
                 resp=app.response_class(
                     response=dumps({"error": "file not found"}),
@@ -800,8 +841,8 @@ class NBackend():
             memory=self.getVersion(request=request)
             currentBuildID=memory['CL']
             
-            if ospath.exists(f'{tempfileclst}/ClientSettings-{currentBuildID}.Sav'):
-                ParsedFile=open(f'{tempfileclst}/ClientSettings-{currentBuildID}.Sav', 'r', encoding="Latin-1").read()
+            if ospath.exists(f'{tempfileclst}/{account}/ClientSettings-{currentBuildID}.Sav'):
+                ParsedFile=open(f'{tempfileclst}/{account}/ClientSettings-{currentBuildID}.Sav', 'r', encoding="Latin-1").read()
                 resp=app.response_class(
                     response=ParsedFile,
                     status=200,
@@ -813,20 +854,24 @@ class NBackend():
                 resp=Response()
                 resp.status_code=200
                 return resp
-            
+
         @app.route(f'/fortnite/api/cloudstorage/user/<accountId>', methods=['GET'])
         def cloudstorageaccid(accountId):
+            
+            if not ospath.exists(f'{tempfileclst}/{accountId}/'):
+                osmkdir(f'{tempfileclst}/{accountId}/')
             
             memory=self.getVersion(request=request)
             currentBuildID=memory['CL']
             
-            file=f'{tempfileclst}/ClientSettings-{currentBuildID}.Sav'
+            file=f'{tempfileclst}/{accountId}/ClientSettings-{currentBuildID}.Sav'
             
             if ospath.exists(file):
                 
                 ParsedFile=open(file, 'r', encoding="Latin-1").read()
                 
                 mtime=ospath.getmtime(file)
+                
                 result=[{
                     "uniqueFilename": "ClientSettings.Sav",
                     "filename": "ClientSettings.Sav",
@@ -1352,7 +1397,7 @@ class NBackend():
                     [], 18031, "invalid_grant"
                 )
                 resp=app.response_class(
-                    response=respon,
+                    response=dumps(respon),
                     status=400,
                     mimetype='application/json'
                 )
@@ -1415,7 +1460,7 @@ class NBackend():
                     [], 18031, "invalid_grant"
                 )
                 resp=app.response_class(
-                    response=respon,
+                    response=dumps(respon),
                     status=400,
                     mimetype='application/json'
                 )
@@ -1797,7 +1842,7 @@ class NBackend():
                     [], 1011, "invalid_client"
                 )
                 resp=app.response_class(
-                    response=respon,
+                    response=dumps(respon),
                     status=400,
                     mimetype='application/json'
                 )
@@ -1824,7 +1869,7 @@ class NBackend():
                 username=str(request.get_data().decode()).split("&")[1].split('=')[1]
                 password=str(request.get_data().decode()).split("&")[2].split('=')[1]
                 
-                r=get(f'{api_url}/get/check.php?user={username}&pass={password}', proxies=proxy, verify=False).text
+                r=get(f'{api_url}/get/check.php?user={username}&pass={password}', verify=False).text
                 if not 'ok' in r:
                     print("bad logins")
                     respon=self.createError(
@@ -1833,7 +1878,7 @@ class NBackend():
                         [], 18031, "invalid_grant"
                     )
                     resp=app.response_class(
-                        response=respon,
+                        response=dumps(respon),
                         status=400,
                         mimetype='application/json'
                     )
@@ -1846,7 +1891,7 @@ class NBackend():
                         [], 1013, "invalid_request"
                     )
                     resp=app.response_class(
-                        response=respon,
+                        response=dumps(respon),
                         status=400,
                         mimetype='application/json'
                     )
@@ -1875,7 +1920,7 @@ class NBackend():
                         [], 1013, "invalid_request"
                     )
                     resp=app.response_class(
-                        response=respon,
+                        response=dumps(respon),
                         status=400,
                         mimetype='application/json'
                     )
@@ -1952,7 +1997,7 @@ class NBackend():
                     [], 1013, "invalid_request"
                 )
                 resp=app.response_class(
-                    response=respon,
+                    response=dumps(respon),
                     status=400,
                     mimetype='application/json'
                 )
@@ -1986,28 +2031,6 @@ class NBackend():
 
         @app.route('/party/api/v1/Fortnite/parties/', methods=['ALL'])
         def partyapiv1parties():
-
-            resp=Response()
-            resp.status_code=204
-            return resp
-
-        @app.route('/fortnite/api/cloudstorage/user/<accountId>/<files>', methods=['PUT'])
-        def fortnitecloudstorageuserfile(accountId, files):
-            if files!="ClientSettings.Sav":
-                resp=app.response_class(
-                    response=dumps({"error": "file not found"}),
-                    status=404,
-                    mimetype='application/octet-stream'
-                )
-                return resp
-            
-            memory=self.getVersion(request=request)
-            
-            currentBuildID=memory['CL']
-            
-            file=f'{tempfileclst}/ClientSettings-{currentBuildID}.Sav'
-            
-            open(file, 'w', encoding='Latin-1').write(request.stream.read().decode('Latin-1'))
 
             resp=Response()
             resp.status_code=204
@@ -2053,7 +2076,7 @@ class NBackend():
                     [], 18031, "invalid_grant"
                 )
                 resp=app.response_class(
-                    response=respon,
+                    response=dumps(respon),
                     status=400,
                     mimetype='application/json'
                 )
@@ -2558,7 +2581,7 @@ class NBackend():
                                                 "profileCommandRevision": athena['commandRevision'] or 0,
                                             })
 
-                                        if Notifications.length == 0:
+                                        if len(Notifications) == 0:
                                             Notifications.append({
                                                 "type": "CatalogPurchase",
                                                 "primary": True,
@@ -3249,7 +3272,7 @@ class NBackend():
                     [], 18031, "invalid_grant"
                 )
                 resp=app.response_class(
-                    response=respon,
+                    response=dumps(respon),
                     status=400,
                     mimetype='application/json'
                 )
@@ -3343,7 +3366,7 @@ class NBackend():
                     [], 18031, "invalid_grant"
                 )
                 resp=app.response_class(
-                    response=respon,
+                    response=dumps(respon),
                     status=400,
                     mimetype='application/json'
                 )
@@ -3437,7 +3460,7 @@ class NBackend():
                     [], 18031, "invalid_grant"
                 )
                 resp=app.response_class(
-                    response=respon,
+                    response=dumps(respon),
                     status=400,
                     mimetype='application/json'
                 )
@@ -3532,7 +3555,7 @@ class NBackend():
                     [], 18031, "invalid_grant"
                 )
                 resp=app.response_class(
-                    response=respon,
+                    response=dumps(respon),
                     status=400,
                     mimetype='application/json'
                 )
@@ -3632,7 +3655,7 @@ class NBackend():
                     [], 18031, "invalid_grant"
                 )
                 resp=app.response_class(
-                    response=respon,
+                    response=dumps(respon),
                     status=400,
                     mimetype='application/json'
                 )
@@ -3839,7 +3862,7 @@ class NBackend():
                     [], 18031, "invalid_grant"
                 )
                 resp=app.response_class(
-                    response=respon,
+                    response=dumps(respon),
                     status=400,
                     mimetype='application/json'
                 )
@@ -3913,7 +3936,7 @@ class NBackend():
                     [], 18031, "invalid_grant"
                 )
                 resp=app.response_class(
-                    response=respon,
+                    response=dumps(respon),
                     status=400,
                     mimetype='application/json'
                 )
@@ -3988,7 +4011,7 @@ class NBackend():
                     [], 18031, "invalid_grant"
                 )
                 resp=app.response_class(
-                    response=respon,
+                    response=dumps(respon),
                     status=400,
                     mimetype='application/json'
                 )
@@ -4062,7 +4085,7 @@ class NBackend():
                     [], 18031, "invalid_grant"
                 )
                 resp=app.response_class(
-                    response=respon,
+                    response=dumps(respon),
                     status=400,
                     mimetype='application/json'
                 )
@@ -4164,7 +4187,7 @@ class NBackend():
                     [], 18031, "invalid_grant"
                 )
                 resp=app.response_class(
-                    response=respon,
+                    response=dumps(respon),
                     status=400,
                     mimetype='application/json'
                 )
@@ -4469,7 +4492,7 @@ class NBackend():
                     [], 18031, "invalid_grant"
                 )
                 resp=app.response_class(
-                    response=respon,
+                    response=dumps(respon),
                     status=400,
                     mimetype='application/json'
                 )
@@ -4617,7 +4640,7 @@ class NBackend():
                     [], 18031, "invalid_grant"
                 )
                 resp=app.response_class(
-                    response=respon,
+                    response=dumps(respon),
                     status=400,
                     mimetype='application/json'
                 )
@@ -4749,7 +4772,7 @@ class NBackend():
                     [], 18031, "invalid_grant"
                 )
                 resp=app.response_class(
-                    response=respon,
+                    response=dumps(respon),
                     status=400,
                     mimetype='application/json'
                 )
@@ -4848,7 +4871,7 @@ class NBackend():
                     [], 18031, "invalid_grant"
                 )
                 resp=app.response_class(
-                    response=respon,
+                    response=dumps(respon),
                     status=400,
                     mimetype='application/json'
                 )
@@ -5164,11 +5187,12 @@ class NBackend():
         return catalog
 
     def getContentPages(self, request):
+        
+        emergency=True
+        
         memory=self.getVersion(request=request)
-        
         contentpage=loads(open(f'data/content/contentpages.json', 'r', encoding='utf-8').read())
-        
-        language="en"
+        language="fr"
         
         if request.headers["accept-language"]:
             if "-" in request.headers["accept-language"] and request.headers["accept-language"]!="es-419" and request.headers["accept-language"]!="pt-BR":
@@ -5184,6 +5208,7 @@ class NBackend():
             for mode in modes:
                 contentpage['subgameselectdata'][mode]['message']['title']=contentpage['subgameselectdata'][mode]['message']['title'][language]
                 contentpage['subgameselectdata'][mode]['message']['body']=contentpage['subgameselectdata'][mode]['message']['body'][language]
+                
         except:
             pass
         
@@ -5206,6 +5231,52 @@ class NBackend():
         try:
             contentpage['dynamicbackgrounds']['backgrounds']['backgrounds'][0]['stage']=f'season{memory["season"]}'
             contentpage['dynamicbackgrounds']['backgrounds']['backgrounds'][1]['stage']=f'season{memory["season"]}'
+            
+        except:
+            pass
+        
+        try:
+            if emergency:
+                contentpage.update({
+                    "emergencynotice": {
+                        "news": {
+                        "_type": "Battle Royale News",
+                        "messages": [
+                            {
+                                "hidden": True,
+                                "_type": "CommonUI Simple Message Base",
+                                "title": "Project Nocturno",
+                                "body": "Le projet Nocturno est fonctionnel!\nune mise a jour est prévue le 10/02/2023",
+                                "spotlight": True
+                            }
+                        ]
+                        }
+                    }
+                })
+                contentpage.update({
+                    "emergencynoticev2": {
+                        "jcr:isCheckedOut": True,
+                        "_title": "emergencynoticev2",
+                        "_noIndex": False,
+                        "jcr:baseVersion": "a7ca237317f1e771e921e2-7f15-4485-b2e2-553b809fa363",
+                        "emergencynotices": {
+                        "_type": "Emergency Notices",
+                        "emergencynotices": [
+                            {
+                                "gamemodes": [],
+                                "hidden": False,
+                                "_type": "CommonUI Emergency Notice Base",
+                                "title": "Project Nocturno",
+                                "body": "Le projet Nocturno est fonctionnel!\nune mise a jour est prévue le 10/02/2023"
+                            }
+                        ]
+                        },
+                        "_activeDate": "2018-08-06T19:00:26.217Z",
+                        "lastModified": "2021-12-01T15:55:56.012Z",
+                        "_locale": "en-US"
+                    }
+                })
+        
         except:
             pass
         
@@ -5296,7 +5367,7 @@ class NBackend():
                 [], 18031, "invalid_profile"
             )
             resp=app.response_class(
-                response=respon,
+                response=dumps(respon),
                 status=400,
                 mimetype='application/json'
             )
@@ -5573,7 +5644,7 @@ class NBackend():
                 [], 18031, "invalid_profile"
             )
             resp=app.response_class(
-                response=respon,
+                response=dumps(respon),
                 status=400,
                 mimetype='application/json'
             )

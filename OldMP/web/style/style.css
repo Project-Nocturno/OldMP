@@ -9,13 +9,7 @@ body {
     margin: 0;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    background: linear-gradient(70deg, rgb(13, 13, 217), rgb(3, 2, 20));
-}
-
-.test {
-    height: 1000px;
-    width: 1000px;
-    background: linear-gradient(70deg, rgb(5, 5, 50), rgb(0, 0, 0));
+    background: linear-gradient(70deg, rgb(47, 13, 217), rgb(8, 2, 20));
 }
 
 .first {

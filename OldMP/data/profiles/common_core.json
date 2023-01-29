@@ -30,37 +30,5 @@
         },
         "stats": {},
         "commandRevision": 0
-    },
-    {
-        "_id": "4lxprime",
-        "created": "2023-01-27T22:39:24Z",
-        "updated": "2023-01-28T12:53:55Z",
-        "rvn": 0,
-        "wipeNumber": 1,
-        "accountId": "4lxprime",
-        "profileId": "common_core",
-        "version": "no_version",
-        "items": {
-            "Currency": {
-                "templateId": "Currency:MtxPurchased",
-                "attributes": {
-                    "platform": "EpicPC"
-                },
-                "quantity": 11500
-            },
-            "Token:FounderChatUnlock": {
-                "templateId": "Token:FounderChatUnlock",
-                "attributes": {
-                    "max_level_bonus": 0,
-                    "level": 1,
-                    "item_seen": true,
-                    "xp": 1,
-                    "favorite": false
-                },
-                "quantity": 1
-            }
-        },
-        "stats": {},
-        "commandRevision": 0
     }
 ]
