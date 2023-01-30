@@ -2066,7 +2066,7 @@ class NBackend():
             
             itemId=loads(request.get_data())['offerId']
             
-            allprofiles=loads(open(f'data/profiles/profile0.json', 'r', encoding='utf-8').read())
+            allprofiles=loads(open(f'data/profiles/{request.args.get("profileId") or "profile0"}.json', 'r', encoding='utf-8').read())
             
             for prof in allprofiles:
                 if prof['accountId']==account:
@@ -2632,17 +2632,17 @@ class NBackend():
                         MultiUpdate[0]['profileRevision']=athena['rvn'] or 0
                         MultiUpdate[0]['profileCommandRevision']=athena['commandRevision'] or 0
 
-                    oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
+                    oldprofile=loads(open(f'data/profiles/athena.json', 'r', encoding='utf-8').read())
                     for key, val in enumerate(oldprofile):
                         if val['accountId']==account:
                             oldprofile[key]=athena
-                    open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
+                    open(f'data/profiles/athena.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
                     
-                    oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
+                    oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "profile0"}.json', 'r', encoding='utf-8').read())
                     for key, val in enumerate(oldprofile):
                         if val['accountId']==account:
                             oldprofile[key]=profile
-                    open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
+                    open(f'data/profiles/{request.args.get("profileId") or "profile0"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
 
                 if AthenaModified == False:
                     profile['rvn'] += 1
@@ -4709,7 +4709,7 @@ class NBackend():
                 for key, val in enumerate(oldprofile):
                     if val['accountId']==account:
                         oldprofile[key]=item_profile
-                open(f'data/profiles/{request.args.get("profileId") or "common_core"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
+                open(f'data/profiles/athena.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
                 
                 oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "common_core"}.json', 'r', encoding='utf-8').read())
                 for key, val in enumerate(oldprofile):
@@ -4739,105 +4739,6 @@ class NBackend():
                 status=200,
                 mimetype='application/json'
             )
-            return resp
-
-        @app.route("/fortnite/api/game/v2/profile/<account>/client/UpdateQuestClientObjectives", methods=["POST"])
-        def update_quest_client_objectives(account):
-            
-            for i in clients:
-                if i['ip']==request.remote_addr:
-                    userId=i['accountId']
-            if not account==userId:
-                respon=self.createError(
-                    "errors.com.epicgames.account.invalid_account_credentials",
-                    "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
-                    [], 18031, "invalid_grant"
-                )
-                resp=app.response_class(
-                    response=dumps(respon),
-                    status=400,
-                    mimetype='application/json'
-                )
-                return resp
-            
-            profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "campaign"}.json', 'r', encoding='utf-8').read())
-            for prof in profiles:
-                if prof['accountId']==account:
-                    profile=prof.copy()
-
-            apply_profile_changes = []
-            base_revision = profile.get("rvn", 0)
-            query_revision = request.args.get("rvn", -1)
-            stat_changed = False
-
-            if loads(request.get_data())['advance']:
-                for i in loads(request.get_data())['advance']:
-                    quests_to_update = []
-                    for x in profile["items"]:
-                        if profile['items'][x]["templateId"].lower().startswith("quest:"):
-                            for y in profile['items'][x]['attributes']:
-                                if y.lower()==f"completion_{loads(request.get_data())['advance'][i]['statName']}":
-                                    quests_to_update.append(x)
-                    
-                    for i in len(quests_to_update):
-                        b_incomplete = False
-
-                        profile["items"][quests_to_update[i]]["attributes"][f"completion_{loads(request.get_data())['advance'][i]['statName']}"] = loads(request.get_data())['advance'][i]["count"]
-
-                        apply_profile_changes.append({
-                            "changeType": "itemAttrChanged",
-                            "itemId": quests_to_update[i],
-                            "attributeName": f"completion_{loads(request.get_data())['advance'][i]['statName']}",
-                            "attributeValue": loads(request.get_data())['advance'][i]["count"]
-                        })
-                        if profile["items"][quests_to_update[i]]["attributes"]["quest_state"].lower() != "claimed":
-                            for x in profile["items"][quests_to_update[i]]["attributes"]:
-                                if x.lower().startswith("completion_"):
-                                    if profile['items'][quests_to_update[i]]['attributes']==0:
-                                        b_incomplete = True
-                                        
-                            if not b_incomplete:
-                                profile["items"][quests_to_update[i]]["attributes"]["quest_state"] = "Claimed"
-
-                                apply_profile_changes.append({
-                                    "changeType": "itemAttrChanged",
-                                    "itemId": quests_to_update[i],
-                                    "attributeName": "quest_state",
-                                    "attributeValue": profile["items"][quests_to_update[i]]["attributes"]["quest_state"]
-                                })
-                        stat_changed = True
-
-            if stat_changed:
-                profile["rvn"] += 1
-                profile["commandRevision"] += 1
-
-                oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "campaign"}.json', 'r', encoding='utf-8').read())
-                for key, val in enumerate(oldprofile):
-                    if val['accountId']==account:
-                        oldprofile[key]=profile
-                open(f'data/profiles/{request.args.get("profileId") or "campaign"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
-
-            if query_revision != base_revision:
-                apply_profile_changes = [{
-                    "changeType": "fullProfileUpdate",
-                    "profile": profile
-                }]
-                
-            r={
-                "profileRevision": profile['rvn'] or 0,
-                "profileId": "campaign",
-                "profileChangesBaseRevision": base_revision,
-                "profileChanges": apply_profile_changes,
-                "profileCommandRevision": profile['commandRevision'] or 0,
-                "serverTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
-                "responseVersion": 1
-            }
-
-            resp=app.response_class(
-                    response=dumps(r),
-                    status=200,
-                    mimetype='application/json'
-                )
             return resp
 
         @app.route("/fortnite/api/game/v2/profile/<account>/client/FortRerollDailyQuest", methods=["POST"])
