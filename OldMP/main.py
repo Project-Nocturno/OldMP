@@ -5,7 +5,7 @@ from json import loads, dumps
 import random
 from requests import get
 
-from flask import Flask, request, Response, send_from_directory, session, send_file
+from flask import Flask, request, Response, send_from_directory, session, send_file, render_template
 from flask_session import Session
 from uuid import uuid4
 from datetime import datetime, timedelta
@@ -22,6 +22,8 @@ cnx=mysql.connector.connect(
     database='nocturnoDB',
     port='25060'
 )
+
+startWithProxy=True
 
 proxy={
    'http': 'http://127.0.0.1:9999',
@@ -60,95 +62,18 @@ class NBackend():
 
         @app.route("/", methods=['GET', 'POST'])
         def baseroute():
-            html="""
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="description" content="OldMP Fortnite Backend">
-        <meta name="keywords" content="Fortnite, OldMP, oldmp, Backend, Game, Old, OG">
-        <meta name="author" content="Project Nocturno">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>OldMP</title>
-        <style>
-            @import url("https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900&display=swap");
-            * {
-                text-align: center;
-                font-family: roboto,sans-serif;
-            }
+            
+            presence=False
+            for i in clients:
+                if i['ip']==request.remote_addr:
+                    presence=True
 
-            body {
-                height: 100%;
-                margin: 0;
-                background-repeat: no-repeat;
-                background-attachment: fixed;
-                background: linear-gradient(70deg, rgb(47, 13, 217), rgb(8, 2, 20));
-            }
-
-            .first {
-                z-index: -1;
-                font-size: 100px;
-                font-weight: 800;
-                text-decoration: none;
-                margin-top: 25px;
-                line-height: 30px;
-                letter-spacing: 2px;
-                text-transform: uppercase;
-                color: rgb(255, 255, 255);
-                -webkit-text-stroke: 1px rgba(255, 255, 255, 0.5);
-            }
-
-            .copy {
-                z-index: -1;
-                font-size: 90px;
-                font-weight: 800;
-                text-decoration: none;
-                line-height: 20px;
-                letter-spacing: 2px;
-                text-transform: uppercase;
-                color: transparent;
-                -webkit-text-stroke: 1px rgba(255, 255, 255, 0.5);
-            }
-
-            .title {
-                margin: 50px;
-            }
-
-            .footer {
-                position: fixed;
-                left: 0;
-                bottom: 0;
-                padding: 15px;
-                width: 100%;
-                background-color: rgb(16, 16, 16);
-                color: white;
-                text-align: center;
-            }
-
-            .footer a {
-                text-decoration: none;
-                color: white;
-            }
-
-            .footer a:hover {
-                text-decoration: none;
-                color: rgba(255, 255, 255, 0.5);
-                transition: 0.5s;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="title">
-            <h1 class="first">OldMP</h1>
-            <h1 class="copy">OldMP</h1>
-            <h1 class="copy">OldMP</h1>
-            <h1 class="copy">OldMP</h1>
-        </div>
-        <div class="footer">
-            By <a href="https://www.nocturno.games" target="_blank">Project Nocturno</a> (Oldmp: 4lxprime#7714)
-        </div>
-    </body>
-</html>"""
-            return html
+            resp=app.response_class(
+                response=render_template('index.html', presence=presence),
+                status=200,
+                mimetype='text/html'
+            )
+            return resp
 
         @app.route('/content/images/<file>', methods=['GET', 'POST'])
         def getcontentimage(file):
@@ -166,6 +91,30 @@ class NBackend():
             
             if ospath.exists(filename):
                 return send_file(filename, mimetype='image/png')
+            else:
+                resp=app.response_class(
+                    response=dumps({'error': "file doesn't exist"}),
+                    status=400,
+                    mimetype='application/json'
+                )
+                return resp
+            
+        @app.route('/content/files/<file>', methods=['GET', 'POST'])
+        def getcontentfile(file):
+            
+            if file=='listall':
+                listdir=oslistdir('data/content/')
+                resp=app.response_class(
+                    response=dumps(listdir),
+                    status=200,
+                    mimetype='application/json'
+                )
+                return resp
+            
+            filename=f'data/content/{file}'
+            
+            if ospath.exists(filename):
+                return send_file(filename, mimetype='application/json')
             else:
                 resp=app.response_class(
                     response=dumps({'error': "file doesn't exist"}),
@@ -1851,7 +1800,11 @@ class NBackend():
                 username=str(request.get_data().decode()).split("&")[1].split('=')[1]
                 password=str(request.get_data().decode()).split("&")[2].split('=')[1]
                 
-                r=get(f'{api_url}/get/check.php?user={username}&pass={password}', verify=False, proxies=proxy).text
+                if startWithProxy:
+                    r=get(f'{api_url}/get/check.php?user={username}&pass={password}', verify=False, proxies=proxy).text
+                else:
+                    r=get(f'{api_url}/get/check.php?user={username}&pass={password}', verify=False).text
+                    
                 if not 'ok' in r:
                     print("bad logins")
                     respon=self.createError(
@@ -2101,7 +2054,7 @@ class NBackend():
             
             if loads(request.get_data())['offerId'] and request.args.get('profileId')=="profile0" and PurchasedLlama==False:
                 for a, value in enumerate(catalog['storefronts']):
-                    if value['name'].startswith("BRSeason"):
+                    if value['name'].lower().startswith("BRSeason"):
                         if not isinstance(value['name'].split("BRSeason")[1], int):
                             for i in value['catalogEntries']:
                                 if i['offerId'] == loads(request.get_data())['offerId']:
@@ -2111,7 +2064,7 @@ class NBackend():
                                 if len(MultiUpdate) == 0:
                                     MultiUpdate.append({
                                         "profileRevision": athena['rvn'] or 0,
-                                        "profileId": request.args.get("profileid") or "athena",
+                                        "profileId": request.args.get("profileId") or "athena",
                                         "profileChangesBaseRevision": athena['rvn'] or 0,
                                         "profileChanges": [],
                                         "profileCommandRevision": athena['commandRevision'] or 0,
@@ -2119,7 +2072,7 @@ class NBackend():
 
                                 Season=value['name'].split("BR")[1]
                                 print(f'\n\n{Season}\n\n')
-                                BattlePass=loads(open(f'data/items/season3.json', 'r', encoding='utf-8').read())
+                                BattlePass=loads(open(f'data/items/season{Season}.json', 'r', encoding='utf-8').read())
 
                                 if BattlePass:
                                     SeasonData=loads(open(f'data/items/seasondata.json', 'r', encoding='utf-8').read())
@@ -2344,7 +2297,7 @@ class NBackend():
                                         SeasonData[Season]['battlePassTier'] += loads(request.get_data())['purchaseQuantity'] or 1
                                         EndingTier=SeasonData[Season]['battlePassTier']
 
-                                        for StartingTier in range(EndingTier):
+                                        for i in range(StartingTier, EndingTier):
                                             FreeTier=BattlePass['freeRewards'][i] or {}
                                             PaidTier=BattlePass['paidRewards'][i] or {}
 
@@ -2557,7 +2510,7 @@ class NBackend():
                                         if len(MultiUpdate) == 0:
                                             MultiUpdate.append({
                                                 "profileRevision": athena['rvn'] or 0,
-                                                "profileId": request.args.get("profileid") or "athena",
+                                                "profileId": request.args.get("profileId") or "athena",
                                                 "profileChangesBaseRevision": athena['rvn'] or 0,
                                                 "profileChanges": [],
                                                 "profileCommandRevision": athena['commandRevision'] or 0,
@@ -2593,10 +2546,10 @@ class NBackend():
                                             "item": athena['items'][ID]
                                         })
 
-                                        Notifications[0]['lootResult'].lower().append({
+                                        Notifications[0]['lootResult']['items'].append({
                                             "itemType": value['templateId'],
                                             "itemGuid": ID,
-                                            "itemProfile": request.args.get("profileid") or "athena",
+                                            "itemProfile": request.args.get("profileId") or "athena",
                                             "quantity": value['quantity']
                                         })
 
@@ -2664,7 +2617,7 @@ class NBackend():
                                     if len(MultiUpdate) == 0:
                                         MultiUpdate.append({
                                             "profileRevision": athena['rvn'] or 0,
-                                            "profileId": request.args.get("profileid") or "athena",
+                                            "profileId": request.args.get("profileId") or "athena",
                                             "profileChangesBaseRevision": athena['rvn'] or 0,
                                             "profileChanges": [],
                                             "profileCommandRevision": athena['commandRevision'] or 0,
@@ -3100,7 +3053,6 @@ class NBackend():
                                 if value['offerId'] == loads(request.get_data())['offerId']:
                                     for c, value in enumerate(catalog['storefronts'][a]['catalogEntries'][b]['itemGrants']):
                                         ID=value['templateId']
-
                                         for key in athena['items']:
                                             if value['templateId'].lower() == athena['items'][key]['templateId'].lower():
                                                 ItemExists=True
@@ -3109,7 +3061,7 @@ class NBackend():
                                             if len(MultiUpdate) == 0:
                                                 MultiUpdate.append({
                                                     "profileRevision": athena['rvn'] or 0,
-                                                    "profileId": request.args.get("profileid") or "athena",
+                                                    "profileId": request.args.get("profileId") or "athena",
                                                     "profileChangesBaseRevision": athena['rvn'] or 0,
                                                     "profileChanges": [],
                                                     "profileCommandRevision": athena['commandRevision'] or 0,
@@ -3148,7 +3100,7 @@ class NBackend():
                                             Notifications[0]['lootResult']['items'].append({
                                                 "itemType": value['templateId'],
                                                 "itemGuid": ID,
-                                                "itemProfile": request.args.get("profileid") or "athena",
+                                                "itemProfile": request.args.get("profileId") or "athena",
                                                 "quantity": value['quantity']
                                             })
 
@@ -3274,7 +3226,76 @@ class NBackend():
                         "profileId": request.args.get("profileId"),
                         "version": "no_version",
                         "items": {},
-                        "stats": {},
+                        "stats": {
+                            "attributes": {
+                                "player_loadout": {
+                                    "bPlayerIsNew": False,
+                                    "pinnedSchematicInstances": [],
+                                    "primaryQuickBarRecord": {
+                                    "slots": [
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        }
+                                    ]
+                                    },
+                                    "secondaryQuickBarRecord": {
+                                    "slots": [
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        }
+                                    ]
+                                    },
+                                    "zonesCompleted": 0
+                                },
+                                "theater_unique_id": "",
+                                "past_lifetime_zones_completed": 0,
+                                "last_event_instance_key": "",
+                                "last_zones_completed": 0,
+                                "inventory_limit_bonus": 0
+                                }
+                            },
                         "commandRevision": 0
                     }),
                     status=200,
@@ -3368,7 +3389,76 @@ class NBackend():
                         "profileId": request.args.get("profileId"),
                         "version": "no_version",
                         "items": {},
-                        "stats": {},
+                        "stats": {
+                            "attributes": {
+                                "player_loadout": {
+                                    "bPlayerIsNew": False,
+                                    "pinnedSchematicInstances": [],
+                                    "primaryQuickBarRecord": {
+                                    "slots": [
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        }
+                                    ]
+                                    },
+                                    "secondaryQuickBarRecord": {
+                                    "slots": [
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        }
+                                    ]
+                                    },
+                                    "zonesCompleted": 0
+                                },
+                                "theater_unique_id": "",
+                                "past_lifetime_zones_completed": 0,
+                                "last_event_instance_key": "",
+                                "last_zones_completed": 0,
+                                "inventory_limit_bonus": 0
+                                }
+                            },
                         "commandRevision": 0
                     }),
                     status=200,
@@ -3462,7 +3552,76 @@ class NBackend():
                         "profileId": request.args.get("profileId"),
                         "version": "no_version",
                         "items": {},
-                        "stats": {},
+                        "stats": {
+                            "attributes": {
+                                "player_loadout": {
+                                    "bPlayerIsNew": False,
+                                    "pinnedSchematicInstances": [],
+                                    "primaryQuickBarRecord": {
+                                    "slots": [
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        }
+                                    ]
+                                    },
+                                    "secondaryQuickBarRecord": {
+                                    "slots": [
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        }
+                                    ]
+                                    },
+                                    "zonesCompleted": 0
+                                },
+                                "theater_unique_id": "",
+                                "past_lifetime_zones_completed": 0,
+                                "last_event_instance_key": "",
+                                "last_zones_completed": 0,
+                                "inventory_limit_bonus": 0
+                                }
+                            },
                         "commandRevision": 0
                     }),
                     status=200,
@@ -3557,7 +3716,76 @@ class NBackend():
                         "profileId": request.args.get("profileId"),
                         "version": "no_version",
                         "items": {},
-                        "stats": {},
+                        "stats": {
+                            "attributes": {
+                                "player_loadout": {
+                                    "bPlayerIsNew": False,
+                                    "pinnedSchematicInstances": [],
+                                    "primaryQuickBarRecord": {
+                                    "slots": [
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        }
+                                    ]
+                                    },
+                                    "secondaryQuickBarRecord": {
+                                    "slots": [
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        }
+                                    ]
+                                    },
+                                    "zonesCompleted": 0
+                                },
+                                "theater_unique_id": "",
+                                "past_lifetime_zones_completed": 0,
+                                "last_event_instance_key": "",
+                                "last_zones_completed": 0,
+                                "inventory_limit_bonus": 0
+                                }
+                            },
                         "commandRevision": 0
                     }),
                     status=200,
@@ -3657,7 +3885,76 @@ class NBackend():
                         "profileId": request.args.get("profileId"),
                         "version": "no_version",
                         "items": {},
-                        "stats": {},
+                        "stats": {
+                            "attributes": {
+                                "player_loadout": {
+                                    "bPlayerIsNew": False,
+                                    "pinnedSchematicInstances": [],
+                                    "primaryQuickBarRecord": {
+                                    "slots": [
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        }
+                                    ]
+                                    },
+                                    "secondaryQuickBarRecord": {
+                                    "slots": [
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        }
+                                    ]
+                                    },
+                                    "zonesCompleted": 0
+                                },
+                                "theater_unique_id": "",
+                                "past_lifetime_zones_completed": 0,
+                                "last_event_instance_key": "",
+                                "last_zones_completed": 0,
+                                "inventory_limit_bonus": 0
+                                }
+                            },
                         "commandRevision": 0
                     }),
                     status=200,
@@ -3864,7 +4161,76 @@ class NBackend():
                         "profileId": request.args.get("profileId"),
                         "version": "no_version",
                         "items": {},
-                        "stats": {},
+                        "stats": {
+                            "attributes": {
+                                "player_loadout": {
+                                    "bPlayerIsNew": False,
+                                    "pinnedSchematicInstances": [],
+                                    "primaryQuickBarRecord": {
+                                    "slots": [
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        }
+                                    ]
+                                    },
+                                    "secondaryQuickBarRecord": {
+                                    "slots": [
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        }
+                                    ]
+                                    },
+                                    "zonesCompleted": 0
+                                },
+                                "theater_unique_id": "",
+                                "past_lifetime_zones_completed": 0,
+                                "last_event_instance_key": "",
+                                "last_zones_completed": 0,
+                                "inventory_limit_bonus": 0
+                                }
+                            },
                         "commandRevision": 0
                     }),
                     status=200,
@@ -3938,7 +4304,76 @@ class NBackend():
                         "profileId": request.args.get("profileId"),
                         "version": "no_version",
                         "items": {},
-                        "stats": {},
+                        "stats": {
+                            "attributes": {
+                                "player_loadout": {
+                                    "bPlayerIsNew": False,
+                                    "pinnedSchematicInstances": [],
+                                    "primaryQuickBarRecord": {
+                                    "slots": [
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        }
+                                    ]
+                                    },
+                                    "secondaryQuickBarRecord": {
+                                    "slots": [
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        }
+                                    ]
+                                    },
+                                    "zonesCompleted": 0
+                                },
+                                "theater_unique_id": "",
+                                "past_lifetime_zones_completed": 0,
+                                "last_event_instance_key": "",
+                                "last_zones_completed": 0,
+                                "inventory_limit_bonus": 0
+                                }
+                            },
                         "commandRevision": 0
                     }),
                     status=200,
@@ -4013,7 +4448,76 @@ class NBackend():
                         "profileId": request.args.get("profileId"),
                         "version": "no_version",
                         "items": {},
-                        "stats": {},
+                        "stats": {
+                            "attributes": {
+                                "player_loadout": {
+                                    "bPlayerIsNew": False,
+                                    "pinnedSchematicInstances": [],
+                                    "primaryQuickBarRecord": {
+                                    "slots": [
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        }
+                                    ]
+                                    },
+                                    "secondaryQuickBarRecord": {
+                                    "slots": [
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        }
+                                    ]
+                                    },
+                                    "zonesCompleted": 0
+                                },
+                                "theater_unique_id": "",
+                                "past_lifetime_zones_completed": 0,
+                                "last_event_instance_key": "",
+                                "last_zones_completed": 0,
+                                "inventory_limit_bonus": 0
+                                }
+                            },
                         "commandRevision": 0
                     }),
                     status=200,
@@ -4087,7 +4591,76 @@ class NBackend():
                         "profileId": request.args.get("profileId"),
                         "version": "no_version",
                         "items": {},
-                        "stats": {},
+                        "stats": {
+                            "attributes": {
+                                "player_loadout": {
+                                    "bPlayerIsNew": False,
+                                    "pinnedSchematicInstances": [],
+                                    "primaryQuickBarRecord": {
+                                    "slots": [
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        }
+                                    ]
+                                    },
+                                    "secondaryQuickBarRecord": {
+                                    "slots": [
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        }
+                                    ]
+                                    },
+                                    "zonesCompleted": 0
+                                },
+                                "theater_unique_id": "",
+                                "past_lifetime_zones_completed": 0,
+                                "last_event_instance_key": "",
+                                "last_zones_completed": 0,
+                                "inventory_limit_bonus": 0
+                                }
+                            },
                         "commandRevision": 0
                     }),
                     status=200,
@@ -4189,7 +4762,76 @@ class NBackend():
                         "profileId": request.args.get("profileId"),
                         "version": "no_version",
                         "items": {},
-                        "stats": {},
+                        "stats": {
+                            "attributes": {
+                                "player_loadout": {
+                                    "bPlayerIsNew": False,
+                                    "pinnedSchematicInstances": [],
+                                    "primaryQuickBarRecord": {
+                                    "slots": [
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        }
+                                    ]
+                                    },
+                                    "secondaryQuickBarRecord": {
+                                    "slots": [
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        }
+                                    ]
+                                    },
+                                    "zonesCompleted": 0
+                                },
+                                "theater_unique_id": "",
+                                "past_lifetime_zones_completed": 0,
+                                "last_event_instance_key": "",
+                                "last_zones_completed": 0,
+                                "inventory_limit_bonus": 0
+                                }
+                            },
                         "commandRevision": 0
                     }),
                     status=200,
@@ -4290,7 +4932,7 @@ class NBackend():
             for key in profile['items']:
                 if str(key)[0]=="S" and isinstance(str(key)[1], int) and (str(key)[2]=="-" or isinstance(str(key)[2], int) and str(key)[3]=="-"):
                     if not str(key).startswith(f"S{memory['season']}-"):
-                        profile.lower().pop(key)
+                        profile['items'].pop(key)
                         
                         ApplyProfileChanges.append({
                             "changeType": "itemRemoved",
@@ -4494,7 +5136,76 @@ class NBackend():
                         "profileId": request.args.get("profileId"),
                         "version": "no_version",
                         "items": {},
-                        "stats": {},
+                        "stats": {
+                            "attributes": {
+                                "player_loadout": {
+                                    "bPlayerIsNew": False,
+                                    "pinnedSchematicInstances": [],
+                                    "primaryQuickBarRecord": {
+                                    "slots": [
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        }
+                                    ]
+                                    },
+                                    "secondaryQuickBarRecord": {
+                                    "slots": [
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        }
+                                    ]
+                                    },
+                                    "zonesCompleted": 0
+                                },
+                                "theater_unique_id": "",
+                                "past_lifetime_zones_completed": 0,
+                                "last_event_instance_key": "",
+                                "last_zones_completed": 0,
+                                "inventory_limit_bonus": 0
+                                }
+                            },
                         "commandRevision": 0
                     }),
                     status=200,
@@ -4774,7 +5485,76 @@ class NBackend():
                         "profileId": request.args.get("profileId"),
                         "version": "no_version",
                         "items": {},
-                        "stats": {},
+                        "stats": {
+                            "attributes": {
+                                "player_loadout": {
+                                    "bPlayerIsNew": False,
+                                    "pinnedSchematicInstances": [],
+                                    "primaryQuickBarRecord": {
+                                    "slots": [
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        }
+                                    ]
+                                    },
+                                    "secondaryQuickBarRecord": {
+                                    "slots": [
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        },
+                                        {
+                                        "items": []
+                                        }
+                                    ]
+                                    },
+                                    "zonesCompleted": 0
+                                },
+                                "theater_unique_id": "",
+                                "past_lifetime_zones_completed": 0,
+                                "last_event_instance_key": "",
+                                "last_zones_completed": 0,
+                                "inventory_limit_bonus": 0
+                                }
+                            },
                         "commandRevision": 0
                     }),
                     status=200,

@@ -57,7 +57,7 @@
                     "message": {
                         "_type": "CommonUI Simple Message Base",
                         "title": "Project Nocturno",
-                        "body": "Bienvenue sur Nocturno !\n\n\nPatch Notes:\nImportant:\n\n - Creation du NocturnoBack (serveur backend)\n - Creation du gameserver 3.5 (serveur de jeux)\n - Creation du site Nocturno (www.nocturno.games)\n - Creation du launcher Nocturno\n\nDiscord: https://discord.gg/nocturno\nTiktok: project.nocturno"
+                        "body": "Bienvenue sur Nocturno !\n\n\nPatch Notes:\nImportant:\n\n - Creation du NocturnoBack (serveur backend)\n - Creation du gameserver 1.8 (serveur de jeux)\n - Creation du site Nocturno (www.nocturno.games)\n - Creation du launcher Nocturno\n\nDiscord: https://discord.gg/nocturno\nTiktok: project.nocturno"
                     }
                 },
                 "_activeDate": "2017-07-19T13:14:04.490Z",
