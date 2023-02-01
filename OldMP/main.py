@@ -14,7 +14,7 @@ import base64
 from cryptography.fernet import Fernet
 import mysql.connector
 
-from PIL import Image, ImageDraw, ImageFilter
+from PIL import Image
 import time
 from threading import Thread
 
@@ -69,17 +69,16 @@ class Loops():
     def makemap(self):
         while 1:
             img=Image.open('data/content/images/MiniMapAthena.png')
-            cursorImg=Image.open('data/content/images/cursor.png')
-            cursorImg.resize(40, 40)
+            #cursorImg.resize(40, 40)
             for player in palyerscoords:
-                cursor=cursorImg.copy()
-                img.paste(cursor, player)
+                cursor=Image.open('data/content/images/cursor.png').copy()
+                img.paste(cursor)
             img.save('data/content/images/ActMiniMapAthena.png')
             time.sleep(30)
 
 tl=Thread(target=Loops().makemap)
-#tl.setDaemon(True)
-#tl.start()
+tl.setDaemon(True)
+tl.start()
 
 class OldMPWeb():
     def __init__(self):
@@ -164,7 +163,7 @@ class OldMPWeb():
                 palyerscoords.append((x/1, y/1))
                 
             else:
-                respon=self.createError(
+                respon=OldMP().createError(
                     "errors.com.epicgames.account.invalid_grants",
                     "Your acces key is incorrect",
                     [], 18031, "invalid_grant"
@@ -179,7 +178,7 @@ class OldMPWeb():
         @appweb.route('/adminacc', methods=['GET'])
         def adminacc():
             if not request.args.get('passw') and request.args.get('user'):
-                respon=self.createError(
+                respon=OldMP().createError(
                     "errors.com.epicgames.account.invalid_admin_account_credentials",
                     "Your admin username and/or password are incorrect",
                     [], 18031, "invalid_grant"
@@ -194,7 +193,7 @@ class OldMPWeb():
                 if request.args.get('passw')=='TheSecureR00tUserP@ss#':
                     pass
                 else:
-                    respon=self.createError(
+                    respon=OldMP().createError(
                         "errors.com.epicgames.account.invalid_admin_account_credentials",
                         "Your admin username and/or password are incorrect",
                         [], 18031, "invalid_grant"
@@ -206,7 +205,7 @@ class OldMPWeb():
                     )
                     return resp
             else:
-                respon=self.createError(
+                respon=OldMP().createError(
                     "errors.com.epicgames.account.invalid_admin_account_credentials",
                     "Your admin username and/or password are incorrect",
                     [], 18031, "invalid_grant"
