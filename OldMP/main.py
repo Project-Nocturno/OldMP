@@ -14,6 +14,10 @@ import base64
 from cryptography.fernet import Fernet
 import mysql.connector
 
+from PIL import Image, ImageDraw, ImageFilter
+import time
+from threading import Thread
+
 
 cnx=mysql.connector.connect(
     user='doadmin',
@@ -39,6 +43,8 @@ website_url="https://www.nocturno.games"
 api_url="https://nocturno.games/api"
 
 app=Flask("OldMP")
+appweb=Flask("OldMPWeb")
+
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
@@ -46,6 +52,7 @@ Session(app)
 tempfileclst='ClientSettings'
 
 clients=[]
+palyerscoords=[]
 
 
 def req(sql: str):
@@ -55,12 +62,29 @@ def req(sql: str):
     cursor.close()
     return results
 
-class NBackend():
-    def __init__(self, api_url: str="https://nocturno.games/api"):
-        self.api_url=api_url
-        self.ospath=ospath
+class Loops():
+    def __init__(self):
+        pass
+    
+    def makemap(self):
+        while 1:
+            img=Image.open('data/content/images/MiniMapAthena.png')
+            cursorImg=Image.open('data/content/images/cursor.png')
+            cursorImg.resize(40, 40)
+            for player in palyerscoords:
+                cursor=cursorImg.copy()
+                img.paste(cursor, player)
+            img.save('data/content/images/ActMiniMapAthena.png')
+            time.sleep(30)
 
-        @app.route("/", methods=['GET', 'POST'])
+tl=Thread(target=Loops().makemap)
+#tl.setDaemon(True)
+#tl.start()
+
+class OldMPWeb():
+    def __init__(self):
+        
+        @appweb.route("/", methods=['GET', 'POST'])
         def baseroute():
             
             presence=False
@@ -68,19 +92,19 @@ class NBackend():
                 if i['ip']==request.remote_addr:
                     presence=True
 
-            resp=app.response_class(
+            resp=appweb.response_class(
                 response=render_template('index.html', presence=presence),
                 status=200,
                 mimetype='text/html'
             )
             return resp
 
-        @app.route('/content/images/<file>', methods=['GET', 'POST'])
+        @appweb.route('/content/images/<file>', methods=['GET', 'POST'])
         def getcontentimage(file):
             
             if file=='listall':
                 listdir=oslistdir('data/content/images/')
-                resp=app.response_class(
+                resp=appweb.response_class(
                     response=dumps(listdir),
                     status=200,
                     mimetype='application/json'
@@ -92,19 +116,19 @@ class NBackend():
             if ospath.exists(filename):
                 return send_file(filename, mimetype='image/png')
             else:
-                resp=app.response_class(
+                resp=appweb.response_class(
                     response=dumps({'error': "file doesn't exist"}),
                     status=400,
                     mimetype='application/json'
                 )
                 return resp
             
-        @app.route('/content/files/<file>', methods=['GET', 'POST'])
+        @appweb.route('/content/files/<file>', methods=['GET', 'POST'])
         def getcontentfile(file):
             
             if file=='listall':
                 listdir=oslistdir('data/content/')
-                resp=app.response_class(
+                resp=appweb.response_class(
                     response=dumps(listdir),
                     status=200,
                     mimetype='application/json'
@@ -116,14 +140,43 @@ class NBackend():
             if ospath.exists(filename):
                 return send_file(filename, mimetype='application/json')
             else:
-                resp=app.response_class(
+                resp=appweb.response_class(
                     response=dumps({'error': "file doesn't exist"}),
                     status=400,
                     mimetype='application/json'
                 )
                 return resp
 
-        @app.route('/adminacc', methods=['GET'])
+        @appweb.route('/map', methods=['GET', 'POST'])
+        def spawnmap():
+            if ospath.exists('data/content/images/ActMiniMapAthena.png'):
+                return send_file('data/content/images/ActMiniMapAthena.png', mimetype='image/png')
+            
+            else:
+                return send_file('data/content/images/MiniMapAthena.png', mimetype='image/png')
+            
+        @appweb.route('/map/setcoords', methods=['POST'])
+        def mapsetcoords():
+            if request.args.get('acceskey')=="zEnc087zzsO3oHKmVymVIDb51wn_FqqsTM1BxKRcm7g=":
+                coords: str=request.stream.read()
+                x: int=coords.split('|')[0]
+                y: int=coords.split('|')[1]
+                palyerscoords.append((x/1, y/1))
+                
+            else:
+                respon=self.createError(
+                    "errors.com.epicgames.account.invalid_grants",
+                    "Your acces key is incorrect",
+                    [], 18031, "invalid_grant"
+                )
+                resp=appweb.response_class(
+                    response=dumps(respon),
+                    status=400,
+                    mimetype='application/json'
+                )
+                return resp
+
+        @appweb.route('/adminacc', methods=['GET'])
         def adminacc():
             if not request.args.get('passw') and request.args.get('user'):
                 respon=self.createError(
@@ -131,7 +184,7 @@ class NBackend():
                     "Your admin username and/or password are incorrect",
                     [], 18031, "invalid_grant"
                 )
-                resp=app.response_class(
+                resp=appweb.response_class(
                     response=dumps(respon),
                     status=400,
                     mimetype='application/json'
@@ -146,7 +199,7 @@ class NBackend():
                         "Your admin username and/or password are incorrect",
                         [], 18031, "invalid_grant"
                     )
-                    resp=app.response_class(
+                    resp=appweb.response_class(
                         response=dumps(respon),
                         status=400,
                         mimetype='application/json'
@@ -158,19 +211,26 @@ class NBackend():
                     "Your admin username and/or password are incorrect",
                     [], 18031, "invalid_grant"
                 )
-                resp=app.response_class(
+                resp=appweb.response_class(
                     response=dumps(respon),
                     status=400,
                     mimetype='application/json'
                 )
                 return resp
             
-            resp=app.response_class(
+            resp=appweb.response_class(
                 response=dumps(clients),
                 status=200,
                 mimetype='application/json'
             )
             return resp
+        
+        appweb.run('0.0.0.0', 80, debug=False)
+
+class OldMP():
+    def __init__(self, api_url: str="https://nocturno.games/api"):
+        self.api_url=api_url
+        self.ospath=ospath
 
         @app.route('/clearitemsforshop', methods=['GET'])
         def cleanitem():
@@ -6545,5 +6605,8 @@ class NBackend():
             return False
         return True
     
-    
-NBackend(api_url=api_url)
+
+tweb=Thread(target=OldMPWeb)
+tweb.setDaemon(True)
+tweb.start()
+OldMP(api_url=api_url)
