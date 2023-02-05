@@ -1,0 +1,9 @@
+[
+    {
+        "accountId": "defaultprofile",
+        "status": "ACCEPTED",
+        "direction": "OUTBOUND",
+        "created": "0001-01-01T00:00:00.000Z",
+        "favorite": false
+    }
+]

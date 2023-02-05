@@ -6,6 +6,10 @@
         "ip": "127.0.0.1",
         "port": 7777
     },
+    "MatchMaking": {
+        "ip": "127.0.0.1",
+        "port": 3552
+    },
     "Content": {
         "loadEmergency": true,
         "emergencymsg": {
