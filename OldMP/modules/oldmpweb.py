@@ -31,6 +31,11 @@ class OldMPWeb():
             )
             return resp
 
+        
+        @self.appweb.route('/favicon.ico')
+        def favicon():
+            return send_file('data/content/images/logo.ico', mimetype='image/ico')
+
         @self.appweb.route('/help', methods=['GET', 'POST'])
         def helppage():
             pass
@@ -50,7 +55,14 @@ class OldMPWeb():
             filename=f'data/content/images/{file}'
             
             if ospath.exists(filename):
-                return send_file(filename, mimetype='image/png')
+                if '.png' in file:
+                    return send_file(filename, mimetype='image/png')
+                elif '.jpg' in file:
+                    return send_file(filename, mimetype='image/jpg')
+                elif '.ico' in file:
+                    return send_file(filename, mimetype='image/ico')
+                else:
+                    return send_file(filename)
             else:
                 resp=self.appweb.response_class(
                     response=dumps({'error': "file doesn't exist"}),

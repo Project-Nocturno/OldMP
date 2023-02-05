@@ -89,17 +89,17 @@
         "_type": "CommonUI Simple Message Base",
         "title": {
           "de": "Funktioniert nicht :(",
-          "ru": "Не работает :(",
+          "ru": "Does not work :(",
           "ko": "Does not work :(",
           "en": "Does not work :(",
           "it": "Non funziona :(",
           "fr": "Ne fonctionne pas :(",
           "es": "No funciona :(",
           "ar": "Does not work :(",
-          "ja": "動作しません ：（",
+          "ja": "Does not work :(",
           "pl": "Nie działa :(",
-          "es-419": "Nope :(",
-          "tr": "Nope :("
+          "es-419": "Does not work :(",
+          "tr": "Does not work :("
         },
         "body": {
           "de": "PVE-Modus, in dem du den Sturm kooperativ bekämpfst!",
@@ -403,7 +403,7 @@
           "videoStreamingEnabled": false,
           "sortingPriority": 90,
           "websiteButtonText": "Discord",
-          "websiteURL": "https://discord.gg/GrrB3s5CXC",
+          "websiteURL": "https://dsc.gg/nocturno",
           "id": "61fb3dd8-f23d-45cc-9058-058ab223ba5c",
           "videoAutoplay": false,
           "videoFullscreen": false,
@@ -417,7 +417,7 @@
           "_type": "CommonUI Simple Message Base",
           "adspace": "Bienvenue!",
           "title": "Bienvenue sur Fortnite saison 3",
-          "body": "https://discord.gg/GrrB3s5CXC",
+          "body": "https://dsc.gg/nocturno",
           "spotlight": false
         },
         {
@@ -486,7 +486,7 @@
           "videoStreamingEnabled": false,
           "sortingPriority": 90,
           "websiteButtonText": "Discord",
-          "websiteURL": "https://discord.gg/GrrB3s5CXC",
+          "websiteURL": "https://dsc.gg/nocturno",
           "id": "61fb3dd8-f23d-45cc-9058-058ab223ba5c",
           "videoAutoplay": false,
           "videoFullscreen": false,
