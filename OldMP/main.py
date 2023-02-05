@@ -9,6 +9,9 @@ from modules.oldmp import OldMP as oldmp
 from modules.loops import Loops as loops
 
 
+backendP=3551 # backend port
+websiteP=80 # base web port
+
 cnx=mysql.connector.connect(
     user='doadmin',
     password='AVNS_-j7sW3k0hYO3J6dIq_q',
@@ -46,8 +49,8 @@ tl=Thread(target=loops(palyerscoords).makemap)
 tl.setDaemon(True)
 tl.start()
 
-tweb=Thread(target=oldmpweb, args=(clients, palyerscoords, appweb))
+tweb=Thread(target=oldmpweb, args=(clients, palyerscoords, appweb, websiteP))
 tweb.setDaemon(True)
 tweb.start()
 
-oldmp(dec, enc, session, app, clients, tempfileclst, startWithProxy, api_url, proxy)
+oldmp(dec, enc, session, app, clients, tempfileclst, startWithProxy, api_url, proxy, backendP)

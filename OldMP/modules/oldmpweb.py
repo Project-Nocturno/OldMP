@@ -8,12 +8,13 @@ class OldMPWeb():
     def __init__(self, 
             clients: list=[], 
             palyerscoords: list=[], 
-            appweb: Flask=Flask("OldMPWeb")
+            appweb: Flask=Flask("OldMPWeb"),
+            port: int=80
         ):
         
-        self.functions=func(request=request, app=self.appweb, clients=self.clients)
         self.clients=clients
         self.appweb=appweb
+        self.functions=func(request=request, app=self.appweb, clients=self.clients)
         
         @self.appweb.route("/", methods=['GET', 'POST'])
         def baseroute():
@@ -29,6 +30,10 @@ class OldMPWeb():
                 mimetype='text/html'
             )
             return resp
+
+        @self.appweb.route('/help', methods=['GET', 'POST'])
+        def helppage():
+            pass
 
         @self.appweb.route('/content/images/<file>', methods=['GET', 'POST'])
         def getcontentimage(file):
@@ -171,4 +176,4 @@ class OldMPWeb():
             )
             return resp
         
-        self.appweb.run('0.0.0.0', 80, debug=False)
+        self.appweb.run('0.0.0.0', port, debug=False)

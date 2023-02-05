@@ -26,7 +26,8 @@ class OldMP():
             proxy: dict={
                 'http': 'http://127.0.0.1:9999', 
                 'https': 'http://127.0.0.1:9999',
-            }
+            },
+            port: int=3551
         ):
 
         self.functions=func(request=request, app=app, clients=clients)
@@ -4623,4 +4624,4 @@ class OldMP():
             return resp
 
 
-        app.run('0.0.0.0', 3551, debug=False)
+        app.run('0.0.0.0', port, debug=False)
