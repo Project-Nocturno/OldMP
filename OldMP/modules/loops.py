@@ -11,6 +11,8 @@ class Loops():
             #cursorImg.resize(40, 40)
             for player in self.palyerscoords:
                 cursor=Image.open('data/content/images/cursor.png').copy()
-                img.paste(cursor)
+                img.paste(cursor, player)
+            cursor=Image.open('data/content/images/cursor.png').copy()
+            img.paste(cursor, (0, 0))
             img.save('data/content/images/ActMiniMapAthena.png')
             time.sleep(30)

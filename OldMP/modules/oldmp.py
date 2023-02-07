@@ -4,7 +4,7 @@ from os import stat as osstat
 from json import loads, dumps
 import random
 from requests import get
-from flask import Flask, request, Response, send_from_directory
+from flask import Flask, request, Response, send_from_directory, session as flsess
 from uuid import uuid4
 from datetime import datetime
 from hashlib import sha256, sha1
@@ -17,7 +17,7 @@ class OldMP():
     def __init__(self, 
             dec, 
             enc, 
-            session,
+            session: flsess,
             app: Flask=Flask('OldMP'), 
             clients: list=[], 
             tempfileclst: str='data/clientsettings', 
@@ -1931,10 +1931,10 @@ class OldMP():
 
                                 Season=value['name'].split("BR")[1]
                                 print(f'\n\n{Season}\n\n')
-                                BattlePass=loads(open(f'data/items/season{Season}.json', 'r', encoding='utf-8').read())
+                                BattlePass=loads(open(f'data/items/season/season{Season}.json', 'r', encoding='utf-8').read())
 
                                 if BattlePass:
-                                    SeasonData=loads(open(f'data/items/seasondata.json', 'r', encoding='utf-8').read())
+                                    SeasonData=loads(open(f'data/items/season/seasondata.json', 'r', encoding='utf-8').read())
 
                                     if BattlePass['battlePassOfferId'] == offer['offerId'] or BattlePass['battleBundleOfferId'] == offer['offerId']:
                                         lootList=[]
@@ -2352,7 +2352,7 @@ class OldMP():
 
                                         AthenaModified=True
 
-                                    open(f'data/items/seasondata.json', 'w', encoding='utf-8').write(dumps(SeasonData, indent=4))
+                                    open(f'data/items/season/seasondata.json', 'w', encoding='utf-8').write(dumps(SeasonData, indent=4))
 
                     if value['name'].startswith("BR"):
                         for b, value in enumerate(catalog['storefronts'][a]['catalogEntries']):
@@ -2484,10 +2484,10 @@ class OldMP():
 
                                     Season=value['name'].split("BR")[1]
                                     print(f'\n\n{Season}\n\n')
-                                    BattlePass=loads(open(f'data/items/season{int(Season)}.json', 'r', encoding='utf-8').read())
+                                    BattlePass=loads(open(f'data/items/season/season{int(Season)}.json', 'r', encoding='utf-8').read())
 
                                     if BattlePass:
-                                        SeasonData=loads(open(f'data/items/seasondata.json', 'r', encoding='utf-8').read())
+                                        SeasonData=loads(open(f'data/items/season/seasondata.json', 'r', encoding='utf-8').read())
 
                                         if BattlePass['battlePassOfferId'] == offer['offerId'] or BattlePass['battleBundleOfferId'] == offer['offerId']:
                                             lootList=[]
@@ -2905,7 +2905,7 @@ class OldMP():
 
                                             AthenaModified=True
 
-                                        open(f'data/items/seasondata.json', 'w', encoding='utf-8').write(dumps(SeasonData, indent=4))
+                                        open(f'data/items/season/seasondata.json', 'w', encoding='utf-8').write(dumps(SeasonData, indent=4))
 
                         if value['name'].startswith("BR"):
                             for b, value in enumerate(catalog['storefronts'][a]['catalogEntries']):
@@ -4324,7 +4324,7 @@ class OldMP():
                     profile['commandRevision'] = 0
 
                 if file == 'athena.json':
-                    SeasonData=loads(open(f'data/items/seasondata.json', 'r', encoding='utf-8').read())
+                    SeasonData=loads(open(f'data/items/season/seasondata.json', 'r', encoding='utf-8').read())
                     profiles['stats']['attributes']['season_num'] = memory['season']
 
                     if f'Season{memory["season"]}' in SeasonData:

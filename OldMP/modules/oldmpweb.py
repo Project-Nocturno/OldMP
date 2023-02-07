@@ -76,6 +76,13 @@ class OldMPWeb():
             
             if file=='listall':
                 listdir=oslistdir('data/content/')
+                listseason=oslistdir('data/content/season')
+                [listdir.append(i) for i in listseason]
+                for i in listdir:
+                    if not '.' in i:
+                        listdir.remove(i)
+                listdir.remove('season')
+                        
                 resp=self.appweb.response_class(
                     response=dumps(listdir),
                     status=200,
@@ -83,7 +90,10 @@ class OldMPWeb():
                 )
                 return resp
             
-            filename=f'data/content/{file}'
+            if 'season' in file:
+                filename=f'data/content/season/{file}'
+            else:
+                filename=f'data/content/{file}'
             
             if ospath.exists(filename):
                 return send_file(filename, mimetype='application/json')

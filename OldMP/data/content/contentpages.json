@@ -362,11 +362,11 @@
       "motds": [
         {
           "entryType": "Website",
-          "image": "",
-          "tileImage": "",
+          "image": "http://oldmp.software:3551/content/images/oldmp.png",
+          "tileImage": "http://oldmp.software:3551/content/images/oldmp.png",
           "videoMute": false,
           "hidden": false,
-          "tabTitleOverride": "OldMP",
+          "tabTitleOverride": "OldMP by Nocturno",
           "_type": "CommonUI Simple Message MOTD",
           "title": {
             "ar": "Welcome to OldMP!",
@@ -445,11 +445,11 @@
       "motds": [
         {
           "entryType": "Website",
-          "image": "",
-          "tileImage": "",
+          "image": "http://oldmp.software:3551/content/images/oldmp.png",
+          "tileImage": "http://oldmp.software:3551/content/images/oldmp.png",
           "videoMute": false,
           "hidden": false,
-          "tabTitleOverride": "OldMP",
+          "tabTitleOverride": "OldMP by Nocturno",
           "_type": "CommonUI Simple Message MOTD",
           "title": {
             "ar": "Welcome to OldMP!",

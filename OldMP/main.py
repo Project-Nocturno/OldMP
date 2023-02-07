@@ -7,6 +7,8 @@ from threading import Thread
 from modules.oldmpweb import OldMPWeb as oldmpweb
 from modules.oldmp import OldMP as oldmp
 from modules.loops import Loops as loops
+from modules.xmpp import Xmpp as xmpp
+from modules.matchmaker import MatchMakerV2 as matchmaker2
 
 
 backendP=3551 # backend port
