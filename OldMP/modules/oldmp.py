@@ -111,14 +111,14 @@ class OldMP():
                     "MANIFEST": {
                         "signature": "OldMP",
                         "distribution": "https://oldmp.ol.epicgames.com/",
-                        "path": "Builds/Fortnite/Content/CloudDir/OldMP.manifest",
-                        "hash": "55bb954f5596cadbe03693e1c06ca73368d427f3",
+                        "path": "",
+                        "hash": "",
                         "additionalDistributions": []
                     },
                     "CHUNKS": {
                         "signature": "OldMP",
                         "distribution": "https://oldmp.ol.epicgames.com/",
-                        "path": "Builds/Fortnite/Content/CloudDir/OldMP.manifest",
+                        "path": "",
                         "additionalDistributions": []
                     }
                 },
