@@ -774,3 +774,9 @@ class OldMPFunc():
             self.createProfile(accountId)
             return False
         return True
+    
+    def logs(self, logst: bool, msg):
+        if logst:
+            print(f'\nSERVER:[{self.createDate(0, 0, 0)}] - {msg}\n')
+        else:
+            pass

@@ -18,6 +18,7 @@ class OldMP():
             dec, 
             enc, 
             session: flsess,
+            logsapp: bool=True,
             app: Flask=Flask('OldMP'), 
             clients: list=[], 
             tempfileclst: str='data/clientsettings', 
@@ -31,6 +32,9 @@ class OldMP():
         ):
 
         self.functions=func(request=request, app=app, clients=clients)
+        self.NLogs=func(request=request, app=app, clients=clients).logs
+
+        self.NLogs(logsapp, "OmdMP started!")
 
         @app.route('/clearitemsforshop', methods=['GET'])
         def cleanitemforshop():
@@ -413,6 +417,8 @@ class OldMP():
             )
             return resp
 
+        # MatchMaking
+
         @app.route('/fortnite/api/matchmaking/session/findPlayer/<account>', methods=['GET'])
         def apisessionfindplayer(account):
             resp=Response()
@@ -544,6 +550,8 @@ class OldMP():
                 )
                 return resp
 
+        # CloudStorage
+
         @app.route('/fortnite/api/cloudstorage/user/<accountId>/<files>', methods=['PUT'])
         def fortnitecloudstorageuserfile(accountId, files):
             if files!="ClientSettings.Sav":
@@ -559,7 +567,6 @@ class OldMP():
             
             file=f'{tempfileclst}/{accountId}/ClientSettings-{currentBuildID}.Sav'
             data=request.stream.read().decode('Latin-1')
-            print(len(data))
             open(file, 'w', encoding='Latin-1').write(data)
 
             resp=Response()
@@ -777,8 +784,8 @@ class OldMP():
                     """
                     break
             
-            open(f'data/account/friendslist.json', 'w', encoding='utf-8').write(dumps(friendslist, indent=4))
-            open(f'data/account/friendslist2.json', 'w', encoding='utf-8').write(dumps(friendslist2, indent=4))
+            open(f'data/friends/{accountId}/friendslist.json', 'w', encoding='utf-8').write(dumps(friendslist, indent=4))
+            open(f'data/friends/{accountId}/friendslist2.json', 'w', encoding='utf-8').write(dumps(friendslist2, indent=4))
 
             resp=app.response_class(
                 response=dumps(friendslist),
@@ -790,8 +797,8 @@ class OldMP():
         @app.route(f'/friends/api/v1/<accountId>/summary', methods=['GET'])
         def friendsaccountIDsummary(accountId):
                 
-            friendslist=loads(open(f'data/account/friendslist.json', 'r', encoding='utf-8').read())
-            friendslist2=loads(open(f'data/account/friendslist2.json', 'r', encoding='utf-8').read())
+            friendslist=loads(open(f'data/friends/{accountId}/friendslist.json', 'r', encoding='utf-8').read())
+            friendslist2=loads(open(f'data/friends/{accountId}/friendslist2.json', 'r', encoding='utf-8').read())
 
             for i in friendslist2[0]['friends']['accountId']:
                 if i!=accountId:
@@ -835,8 +842,8 @@ class OldMP():
                     """
                     break
             
-            open(f'data/account/friendslist.json', 'w', encoding='utf-8').write(dumps(friendslist, indent=4))
-            open(f'data/account/friendslist2.json', 'w', encoding='utf-8').write(dumps(friendslist2, indent=4))
+            open(f'data/friends/{accountId}/friendslist.json', 'w', encoding='utf-8').write(dumps(friendslist, indent=4))
+            open(f'data/friends/{accountId}/friendslist2.json', 'w', encoding='utf-8').write(dumps(friendslist2, indent=4))
 
             resp=app.response_class(
                 response=dumps(friendslist),
@@ -1636,7 +1643,7 @@ class OldMP():
             
             granttype=request.get_data().decode().split('&')[0].split('=')[1]
             
-            print(granttype)
+            self.NLogs(logsapp, f"Grant type: {ganttype}")
             
             if granttype=="client_credentials":
                 auth=self.functions.genClient(ip, clientId, enc)
@@ -1661,7 +1668,7 @@ class OldMP():
                     r=get(f'{api_url}/get/check.php?user={username}&pass={password}', verify=False).text
                     
                 if not 'ok' in r:
-                    print("bad logins")
+                    self.NLogs(logsapp, "Clients bad logins")
                     respon=self.functions.createError(
                         "errors.com.epicgames.account.invalid_account_credentials",
                         "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
@@ -1701,9 +1708,9 @@ class OldMP():
                 
             elif granttype=="refresh_token":
                 
-                refresktoken=request.get_data().decode().split('&')
-                print(refresktoken)
-                if not refresktoken:
+                refreshtoken=request.get_data().decode().split('&')
+                self.NLogs(logsapp, f"Refresh token: {refreshtoken}")
+                if not refreshtoken:
                     respon=self.functions.createError(
                         "errors.com.epicgames.common.oauth.invalid_request",
                         "Refresh token is required.", 
@@ -1761,7 +1768,7 @@ class OldMP():
 
             killType=request.args.get('killType')
             
-            print(killType)
+            self.NLogs(logsapp, f"Kill type: {killType}")
             
             if killType=='ALL':
                 session.clear()
@@ -1930,7 +1937,7 @@ class OldMP():
                                     })
 
                                 Season=value['name'].split("BR")[1]
-                                print(f'\n\n{Season}\n\n')
+                                self.NLogs(logsapp, f"Season: {Season}")
                                 BattlePass=loads(open(f'data/items/season/season{Season}.json', 'r', encoding='utf-8').read())
 
                                 if BattlePass:
@@ -2483,7 +2490,7 @@ class OldMP():
                                         })
 
                                     Season=value['name'].split("BR")[1]
-                                    print(f'\n\n{Season}\n\n')
+                                    self.NLogs(logsapp, f"Season: {Season}")
                                     BattlePass=loads(open(f'data/items/season/season{int(Season)}.json', 'r', encoding='utf-8').read())
 
                                     if BattlePass:

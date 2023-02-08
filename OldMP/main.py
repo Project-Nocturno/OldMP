@@ -25,6 +25,7 @@ proxy={
    'http': 'http://127.0.0.1:9999',
    'https': 'http://127.0.0.1:9999',
 }
+logsapp=True
 
 urlkey="VEIDVOE9oN8O3C4TnU2RIN1O0rF82mUDSFJsdJOFKJKJSDgjkojsdJJKOGJJKOSJGKJOjsDJKO"
 enckey="1ldcQilhWsPDjlFyLFU3VJXCNJQW6gf6oI6CoLbeNSc="
@@ -53,4 +54,4 @@ tweb=Thread(target=oldmpweb, args=(clients, palyerscoords, appweb, websiteP))
 tweb.setDaemon(True)
 tweb.start()
 
-oldmp(dec, enc, session, app, clients, tempfileclst, startWithProxy, api_url, proxy, backendP)
+oldmp(dec, enc, session, logsapp, app, clients, tempfileclst, startWithProxy, api_url, proxy, backendP)

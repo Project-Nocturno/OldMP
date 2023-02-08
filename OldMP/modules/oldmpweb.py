@@ -5,7 +5,8 @@ from os import listdir as oslistdir
 from os import path as ospath
 
 class OldMPWeb():
-    def __init__(self, 
+    def __init__(self,
+            logsapp: bool=True,
             clients: list=[], 
             palyerscoords: list=[], 
             appweb: Flask=Flask("OldMPWeb"),
@@ -15,6 +16,9 @@ class OldMPWeb():
         self.clients=clients
         self.appweb=appweb
         self.functions=func(request=request, app=self.appweb, clients=self.clients)
+        self.NLogs=func(request=request, app=self.appweb, clients=self.clients).logs
+
+        self.NLogs(logsapp, "OmdMP started!")
         
         @self.appweb.route("/", methods=['GET', 'POST'])
         def baseroute():
