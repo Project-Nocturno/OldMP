@@ -7,12 +7,14 @@ class Loops():
     
     def makemap(self):
         while 1:
-            img=Image.open('data/content/images/MiniMapAthena.png')
-            #cursorImg.resize(40, 40)
-            for player in self.palyerscoords:
+            map=Image.open('data/content/images/MiniMapAthena.png')
+            
+            for player in [(200, 500), (1532, 862)]:
                 cursor=Image.open('data/content/images/cursor.png').copy()
-                img.paste(cursor, player)
-            cursor=Image.open('data/content/images/cursor.png').copy()
-            img.paste(cursor, (0, 0))
-            img.save('data/content/images/ActMiniMapAthena.png')
+                cursor.thumbnail((40, 40))
+                map=map.convert("RGBA")
+                cursor=cursor.convert("RGBA")
+                map.paste(cursor, player, cursor)
+            
+            map.save('data/content/images/ActMiniMapAthena.png', format="png")
             time.sleep(30)

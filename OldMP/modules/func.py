@@ -1,23 +1,27 @@
-from flask import Flask, request
+from flask import Flask
 from json import loads, dumps
 from datetime import datetime, timedelta
 import mysql.connector
 from os import mkdir as osmkdir
 from uuid import uuid4
 
-cnx=mysql.connector.connect(
-    user='doadmin',
-    password='AVNS_-j7sW3k0hYO3J6dIq_q',
-    host='db-mysql-tor1-84534-do-user-12821157-0.b.db.ondigitalocean.com',
-    database='nocturnoDB',
-    port='25060'
-)
-
 class OldMPFunc():
-    def __init__(self, request: request, app: Flask, clients: list):
+    def __init__(
+        self, 
+        request,
+        app: Flask, 
+        clients: list, 
+        logsapp: bool=True,
+        cnx: mysql.connector=mysql.connector.connect()
+    ):
         self.request=request
         self.app=app
         self.clients=clients
+        self.cnx=cnx
+        
+        self.logsapp=logsapp
+        self.NLogs=self.logs
+        self.NLogs(self.logsapp, "OmdMP started!")
         
         self.exchange_table=[
             {'name': 'skull_trooper', 'id': 'CID_030_Athena_Commando_M_Halloween', 'price': 1500, 'style': 'skins'},
@@ -194,7 +198,7 @@ class OldMPFunc():
         }
     
     def req(self, sql: str):
-        cursor=cnx.cursor()
+        cursor=self.cnx.cursor()
         cursor.execute(sql)
         results=cursor.fetchall()
         cursor.close()
@@ -209,7 +213,7 @@ class OldMPFunc():
         }
         
         if self.request.headers["user-agent"]:
-            print(self.request.headers["user-agent"])
+            self.NLogs(self.logsapp, self.request.headers["user-agent"])
             try:
                 BuildID=str(self.request.headers["user-agent"]).split("-")[3].split(",")[0]
                 if not isinstance(BuildID, int):
@@ -261,13 +265,12 @@ class OldMPFunc():
                 memory['CL']=CL
                 memory['lobby']="LobbyWinterDecor"
 
-        print(memory)
         return memory
 
 
 
     def getShop(self):
-        catalog_config=loads(open(f'data/items/catalogconfig.json', 'r', encoding='utf-8').read())
+        catalog_config=loads(open(f'data/content/catalogconfig.json', 'r', encoding='utf-8').read())
         catalog=loads(open(f'data/items/catalog.json', 'r', encoding='utf-8').read())
 
         for value in catalog_config:
@@ -386,7 +389,7 @@ class OldMPFunc():
         language="fr"
         
         if self.request.headers["accept-language"]:
-            if "-" in self.request.headers["accept-language"] and self.request.headers["accept-language"]!="es-419" and request.headers["accept-language"]!="pt-BR":
+            if "-" in self.request.headers["accept-language"] and self.request.headers["accept-language"]!="es-419" and self.request.headers["accept-language"]!="pt-BR":
                 language=self.request.headers["accept-language"].split("-")[0]
             else:
                 language=self.request.headers["accept-language"]
@@ -495,9 +498,7 @@ class OldMPFunc():
         
         if self.checkProfile(username):
             pass
-            print('pass')
         else:
-            print('true')
             return True
         
         stats=self.req(f"SELECT top1 FROM stat WHERE username='{username}'")
@@ -521,7 +522,7 @@ class OldMPFunc():
             f_dance=favorites[0][7]
             
         except:
-            print('except')
+            self.NLogs(self.logsapp, "error")
             respon=self.createError(
                 "errors.com.epicgames.account.invalid_profile",
                 "Your profile does not exist. Please verify your account on our website: https://www.nocturno.games/", 
@@ -767,10 +768,8 @@ class OldMPFunc():
         ext=False
         for user in athena:
             if user['accountId']==accountId:
-                print('exist True')
                 ext=True
         if not ext:
-            print('exist Not')
             self.createProfile(accountId)
             return False
         return True

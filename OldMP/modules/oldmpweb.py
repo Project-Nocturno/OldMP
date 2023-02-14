@@ -5,20 +5,22 @@ from os import listdir as oslistdir
 from os import path as ospath
 
 class OldMPWeb():
-    def __init__(self,
-            logsapp: bool=True,
-            clients: list=[], 
-            palyerscoords: list=[], 
-            appweb: Flask=Flask("OldMPWeb"),
-            port: int=80
-        ):
+    def __init__(
+        self,
+        cnx,
+        logsapp: bool=True,
+        clients: list=[], 
+        palyerscoords: list=[], 
+        appweb: Flask=Flask("OldMPWeb"),
+        port: int=80
+    ):
         
         self.clients=clients
         self.appweb=appweb
-        self.functions=func(request=request, app=self.appweb, clients=self.clients)
-        self.NLogs=func(request=request, app=self.appweb, clients=self.clients).logs
+        self.functions=func(request=request, app=appweb, clients=clients, cnx=cnx)
+        self.NLogs=self.functions.logs
 
-        self.NLogs(logsapp, "OmdMP started!")
+        self.NLogs(logsapp, "OmdMPWeb started!")
         
         @self.appweb.route("/", methods=['GET', 'POST'])
         def baseroute():
@@ -35,6 +37,14 @@ class OldMPWeb():
             )
             return resp
 
+        @self.appweb.route('/status')
+        def getstatus():
+            resp=self.appweb.response_class(
+                response=dumps({'status': 'online'}),
+                status=200,
+                mimetype='application/json'
+            )
+            return resp
         
         @self.appweb.route('/favicon.ico')
         def favicon():
@@ -125,19 +135,35 @@ class OldMPWeb():
 
         @self.appweb.route('/map', methods=['GET', 'POST'])
         def spawnmap():
-            if ospath.exists('data/content/images/ActMiniMapAthena.png'):
-                return send_file('data/content/images/ActMiniMapAthena.png', mimetype='image/png')
             
+            presence=False
+            for i in self.clients:
+                if i['ip']==request.remote_addr:
+                    presence=True
+
+            if ospath.exists('data/content/images/ActMiniMapAthena.png'):
+                mapFile='ActMiniMapAthena.png'
             else:
-                return send_file('data/content/images/MiniMapAthena.png', mimetype='image/png')
+                mapFile='MiniMapAthena.png'
+
+            resp=self.appweb.response_class(
+                response=render_template('map.html', presence=presence, mapFile=mapFile),
+                status=200,
+                mimetype='text/html'
+            )
+            return resp
+            # if ospath.exists('data/content/images/ActMiniMapAthena.png'):
+            #     return send_file('data/content/images/ActMiniMapAthena.png', mimetype='image/png')
+            
+            # else:
+            #     return send_file('data/content/images/MiniMapAthena.png', mimetype='image/png')
             
         @self.appweb.route('/map/setcoords', methods=['POST'])
         def mapsetcoords():
             if request.args.get('acceskey')=="zEnc087zzsO3oHKmVymVIDb51wn_FqqsTM1BxKRcm7g=":
-                coords: str=request.stream.read()
-                x: int=coords.split('|')[0]
-                y: int=coords.split('|')[1]
-                palyerscoords.append((x/1, y/1))
+                x: int=request.args.get('x')
+                z: int=request.args.get('z')
+                palyerscoords.append((x/1, z/1))
                 
             else:
                 respon=self.functions.createError(

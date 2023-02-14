@@ -1,0 +1,85 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="description" content="OldMP Fortnite Backend">
+        <meta name="keywords" content="Fortnite, OldMP, oldmp, Backend, Game, Old, OG, nocturno, project nocturno, projet nocturno, backend python">
+        <meta name="author" content="Project Nocturno">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="refresh" content="300">
+        <meta name='subject' content='Fortnite multi-versions backend server made by Project Nocturno'>
+        <title>OldMP</title>
+        <style>
+            @import url("https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900&display=swap");
+            * {
+                text-align: center;
+                font-family: roboto,sans-serif;
+                --mainclr: rgb(16, 16, 16)
+            }
+
+            body {
+                height: 100%;
+                margin: 0;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background: linear-gradient(70deg, rgb(47, 13, 217), rgb(8, 2, 20));
+            }
+
+            .footer {
+                z-index: 10;
+                position: fixed;
+                left: 0;
+                bottom: 0;
+                padding: 15px;
+                width: 100%;
+                background-color: var(--mainclr);
+                color: white;
+                text-align: center;
+            }
+
+            .footer a {
+                text-decoration: none;
+                color: white;
+                text-align: right;
+            }
+
+            .footer a:hover {
+                text-decoration: none;
+                color: rgba(255, 255, 255, 0.5);
+                transition: 0.5s;
+            }
+
+            ::selection {
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+            .mainc {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-wrap: wrap;
+                color: white;
+                margin-top: 20px;
+            }
+
+            img {
+                height: 50%;
+                width: 50%;
+                z-index: 8;
+            }
+        </style>
+    </head>
+    <body>
+        {% if presence %}
+            <div class="mainc">
+                <p>Vous êtes en game, vous ne pouvez pas voir la carte des joueurs :/</p>
+            </div>
+        {% else %}
+            <div class="mainc">
+                <img src="{{ url_for('static', filename=mapFile) }}" alt="partie en cours">
+            </div>
+        {% endif %}
+        <div class="footer">
+            By <a href="https://www.nocturno.games" target="_blank">Project Nocturno</a> (Oldmp: 4lxprime#7714)
+        </div>
+    </body>
+</html>
