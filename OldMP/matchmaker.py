@@ -3,8 +3,29 @@ import hashlib
 import json
 import asyncio
 from datetime import datetime
+import socket
 
 #based on https://github.com/Lawin0129/FortMatchmaker by lawin
+
+class MatchMakerV1():
+    def __init__(self, MMP: int=3553):
+        self.port=MMP
+    
+    def main(self):
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            s.bind(('0.0.0.0', self.port))
+            s.listen()
+            conn, addr = s.accept()
+            with conn:
+                print(addr)
+                while 1:
+                    data=conn.recv(1024)
+                    if not data:
+                        break
+                    
+                    print(data)
+
+MatchMakerV1().main()
 
 class MatchMakerV2():
     def __init__(self, MMP: int=3553):

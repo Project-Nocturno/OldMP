@@ -1,9 +1,10 @@
-from flask import Flask, request, render_template, session
-from flask_session import Session
+from flask import Flask, request, render_template
 from .func import OldMPFunc as func
 from json import dumps
 from uuid import uuid4
 from requests import get
+
+from modules.session import Session as sessions
 
 class OldMPLauncher():
     def __init__(
@@ -20,7 +21,8 @@ class OldMPLauncher():
             'http': 'http://127.0.0.1:9999', 
             'https': 'http://127.0.0.1:9999',
         },
-        startWithProxy: bool=False
+        startWithProxy: bool=False,
+        sessionL: dict={}
     ):
         
         self.applaunch=applaunch
@@ -28,7 +30,7 @@ class OldMPLauncher():
         self.NLogs=self.functions.logs
         self.api_url=api_url
         self.proxy=proxy
-
+        self.session=sessions(sessionL, request.remote_addr)
         self.NLogs(logsapp, "OmdMPLauncher started!")
         
         @self.applaunch.route("/", methods=['GET'])
@@ -70,9 +72,9 @@ class OldMPLauncher():
                     rg=get(f'{self.api_url}/get/check.php?user={username}&pass={password}')
                     
                 if not 'ok' in rg:
-                    session['username']=username
-                    session['password']=password
-                    session['deviceId']=request.args.get('device_id')
+                    self.session.put('username', username)
+                    self.session.put('password', password)
+                    self.session.put('deviceId', request.args.get('device_id'))
                 
                 else:
                     respon=self.functions.createError(
@@ -93,13 +95,13 @@ class OldMPLauncher():
             sessionId=uuid4().replace('-', '')
             
             r={
-                'accountId': session['username'],
-                'access_token': enc(f"sessionId:{sessionId}|deviceId:{session['deviceId']}|ip:{request.remote_addr}".encode()).decode(),
+                'accountId': self.session.get('username'),
+                'access_token': enc(f"sessionId:{sessionId}|deviceId:{self.session.get('deviceId')}|ip:{request.remote_addr}".encode()).decode(),
                 'session_id': sessionId,
                 'expire_in': 14400,
                 'expire_at': self.functions.createDate(4),
-                'display_name': session['username'],
-                'device_id': session['deviceId']
+                'display_name': self.session.get('username'),
+                'device_id': self.session.get('deviceId')
             }
 
             resp=self.applaunch.response_class(

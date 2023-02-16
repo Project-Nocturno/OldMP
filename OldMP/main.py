@@ -1,4 +1,4 @@
-from flask import Flask, session
+from flask import Flask
 from cryptography.fernet import Fernet
 import mysql.connector
 from threading import Thread
@@ -17,6 +17,7 @@ launcherP=4971 # launcher port
 
 clients=[]
 palyerscoords=[]
+session={}
 
 # db conn
 cnx=mysql.connector.connect(
@@ -46,15 +47,8 @@ dec=Fernet(enckey).decrypt
 
 # all the backend services conf
 app=Flask("OldMP") # lobby emulator conf
-app.config["SESSION_PERMANENT"]=True
-app.secret_key="NocturnoIsBetterIsAnGoodToken?Idk[OldMP]"
-
 appweb=Flask("OldMPWeb") # website conf
-appweb.secret_key="NocturnoIsBetterIsAnGoodToken?Idk[OldMPWeb]"
-
 applaunch=Flask("OldMPLauncher") # launcher backend services conf
-applaunch.config["SESSION_PERMANENT"]=True
-applaunch.secret_key="NocturnoIsBetterIsAnGoodToken?Idk[OldMPLauncher]"
 
 # start all the backend services
 tl=Thread(target=loops(palyerscoords).makemap)
@@ -86,7 +80,8 @@ tlaunch=Thread( # thread for the launcher backend services
         clients,
         api_url,
         proxy,
-        startWithProxy
+        startWithProxy,
+        session
     )
 )
 tlaunch.setDaemon(True)
@@ -103,5 +98,6 @@ oldmp( # start the main backend service
     startWithProxy,
     api_url,
     proxy,
-    backendP
+    backendP,
+    session
 )
