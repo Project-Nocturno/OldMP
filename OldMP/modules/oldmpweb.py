@@ -37,6 +37,15 @@ class OldMPWeb():
             )
             return resp
 
+        @self.appweb.route('/players')
+        def getplayers():
+            resp=self.appweb.response_class(
+                response=dumps({'players': len(self.clients)}),
+                status=200,
+                mimetype='application/json'
+            )
+            return resp
+        
         @self.appweb.route('/status')
         def getstatus():
             resp=self.appweb.response_class(

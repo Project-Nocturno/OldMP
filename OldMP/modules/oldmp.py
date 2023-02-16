@@ -5,7 +5,6 @@ from json import loads, dumps
 import random
 from requests import get
 from flask import Flask, request, Response, send_from_directory, session
-from flask_session import Session
 from uuid import uuid4
 from datetime import datetime
 from hashlib import sha256, sha1
@@ -23,7 +22,6 @@ class OldMP():
         logsapp: bool=True,
         app: Flask=Flask('OldMP'), 
         clients: list=[], 
-        tempfileclst: str='data/clientsettings', 
         startWithProxy: bool=False, 
         api_url: str='https://nocturno.games/api', 
         proxy: dict={
@@ -35,7 +33,6 @@ class OldMP():
 
         self.functions=func(request=request, app=app, clients=clients, cnx=cnx)
         self.NLogs=self.functions.logs
-        Session(app)
         self.NLogs(logsapp, "OmdMP started!")
 
         @app.route('/clearitemsforshop', methods=['GET'])
@@ -151,10 +148,8 @@ class OldMP():
         @app.route('/Builds/Fortnite/Content/CloudDir/*.chunck', methods=['GET'])
         def fortnitebuildclouddirchunck():
 
-            chunck=open('data/connect/CloudDir/OldMP.chunc', 'r', encoding="utf-8").read()
-
             resp=app.response_class(
-                response=dumps(chunck),
+                response="",
                 status=200,
                 mimetype='application/octet-stream'
             )
@@ -423,12 +418,14 @@ class OldMP():
 
         @app.route('/fortnite/api/matchmaking/session/findPlayer/<account>', methods=['GET'])
         def apisessionfindplayer(account):
+            
             resp=Response()
             resp.status_code=200
             return resp
 
         @app.route('/fortnite/api/game/v2/matchmakingservice/ticket/player/<accountId>', methods=['GET'])
         def fortniteapigamev2mathcmakingplayerticket(accountId):
+            
             ip=loads(open('conf.json', 'r', encoding='utf-8').read())['MatchMaking']['ip']
             port=loads(open('conf.json', 'r', encoding='utf-8').read())['MatchMaking']['port']
 
@@ -556,6 +553,8 @@ class OldMP():
 
         @app.route('/fortnite/api/cloudstorage/user/<accountId>/<files>', methods=['PUT'])
         def fortnitecloudstorageuserfile(accountId, files):
+            # set account
+            
             if files!="ClientSettings.Sav":
                 resp=app.response_class(
                     response=dumps({"error": "file not found"}),
@@ -567,7 +566,7 @@ class OldMP():
             memory=self.functions.getVersion()
             currentBuildID=memory['CL']
             
-            file=f'{tempfileclst}/{accountId}/ClientSettings-{currentBuildID}.Sav'
+            file=f'data/clientsettings/{accountId}/ClientSettings-{currentBuildID}.Sav'
             data=request.stream.read().decode('Latin-1')
             open(file, 'w', encoding='Latin-1').write(data)
 
@@ -621,8 +620,8 @@ class OldMP():
         @app.route('/fortnite/api/cloudstorage/user/<account>/<files>', methods=['GET'])
         def cloudstoragesystemallfile(account, files):
             
-            if not ospath.exists(f'{tempfileclst}/{account}/'):
-                osmkdir(f'{tempfileclst}/{account}/')
+            if not ospath.exists(f'data/clientsettings/{account}/'):
+                osmkdir(f'data/clientsettings/{account}/')
             
             if files!="ClientSettings.Sav":
                 resp=app.response_class(
@@ -636,13 +635,13 @@ class OldMP():
             currentBuildID=memory['CL']
             season=memory['season']
             
-            if season<2:
+            if int(season)<3:
                 resp=Response()
                 resp.status_code=204
                 return resp
             else:
-                if ospath.exists(f'{tempfileclst}/{account}/ClientSettings-{currentBuildID}.Sav'):
-                    return send_from_directory(f'{tempfileclst}/{account}/', f'ClientSettings-{currentBuildID}.Sav')
+                if ospath.exists(f'data/clientsettings/{account}/ClientSettings-{currentBuildID}.Sav'):
+                    return send_from_directory(f'data/clientsettings/{account}/', f'ClientSettings-{currentBuildID}.Sav')
                 
                 else:
                     resp=Response()
@@ -652,13 +651,15 @@ class OldMP():
         @app.route(f'/fortnite/api/cloudstorage/user/<accountId>', methods=['GET'])
         def cloudstorageaccid(accountId):
             
-            if not ospath.exists(f'{tempfileclst}/{accountId}/'):
-                osmkdir(f'{tempfileclst}/{accountId}/')
+            # set account
+            
+            if not ospath.exists(f'data/clientsettings/{accountId}/'):
+                osmkdir(f'data/clientsettings/{accountId}/')
             
             memory=self.functions.getVersion()
             currentBuildID=memory['CL']
             
-            file=f'{tempfileclst}/{accountId}/ClientSettings-{currentBuildID}.Sav'
+            file=f'data/clientsettings/{accountId}/ClientSettings-{currentBuildID}.Sav'
             
             if ospath.exists(file):
                 
@@ -701,10 +702,10 @@ class OldMP():
             contentpages=self.functions.getContentPages()
             
             resp=app.response_class(
-                    response=dumps(contentpages),
-                    status=200,
-                    mimetype='application/json'
-                )
+                response=dumps(contentpages),
+                status=200,
+                mimetype='application/json'
+            )
             return resp
 
         @app.route('/links/api/fn/mnemonic/', methods=['GET'])
@@ -744,6 +745,8 @@ class OldMP():
 
         @app.route(f'/friends/api/public/friends/<accountId>', methods=['GET'])
         def friendsaccountID(accountId):
+            
+            # set account
             
             friendslist=loads(open(f'data/friends/{accountId}/friendslist.json', 'r', encoding='utf-8').read())
             friendslist2=loads(open(f'data/friends/{accountId}/friendslist2.json', 'r', encoding='utf-8').read())
@@ -796,6 +799,8 @@ class OldMP():
 
         @app.route(f'/friends/api/v1/<accountId>/summary', methods=['GET'])
         def friendsaccountIDsummary(accountId):
+            
+            # set account
                 
             friendslist=loads(open(f'data/friends/{accountId}/friendslist.json', 'r', encoding='utf-8').read())
             friendslist2=loads(open(f'data/friends/{accountId}/friendslist2.json', 'r', encoding='utf-8').read())
@@ -906,9 +911,13 @@ class OldMP():
         @app.route('/lightswitch/api/service/bulk/status', methods=['GET'])
         def lightswitchservicebulkstatus():
             
-            print(f"SELECT status FROM users WHERE `username`='{session.get('username')}'")
-            stat=self.functions.req(f"SELECT status FROM users WHERE `username`='{session.get('username')}'")[0]
-            print(stat)
+            stat=self.functions.req(f"SELECT status FROM users WHERE `ip`='{request.remote_addr}'")
+            status=False
+            if stat==[]:
+                pass
+            else:
+                if 'ban' in stat[0]:
+                    status=True
             
             service2=[{
                 "serviceInstanceId": "fortnite",
@@ -922,7 +931,7 @@ class OldMP():
                     "PLAY",
                     "DOWNLOAD"
                 ],
-                "banned": False,
+                "banned": status,
                 "launcherInfoDTO": {
                     "appName": "Fortnite",
                     "catalogItemId": "4fe75bbc5a674f4f9b356b5c90567da5",
@@ -956,6 +965,8 @@ class OldMP():
 
         @app.route(f'/fortnite/api/game/v2/privacy/account/<accountId>', methods=['GET'])
         def privacyaccountid(accountId):
+            
+            # set account
             
             privacy=loads(open(f'data/account/privacy.json', 'r', encoding='utf-8').read())
             
@@ -1147,6 +1158,9 @@ class OldMP():
 
         @app.route('/account/api/public/account', methods=['GET'])
         def accountpublicaccount():
+            
+            # set account
+            
             response=[]
             accountIds=request.args.getlist('accountId')
             for accountId in accountIds:
@@ -1183,6 +1197,8 @@ class OldMP():
         @app.route(f'/account/api/public/account/<account>', methods=['GET'])
         def accountpublicaccountid(account):
             
+            # set account
+            
             userId=""
             for i in clients:
                 if i['ip']==request.remote_addr:
@@ -1204,16 +1220,16 @@ class OldMP():
                 "id": account,
                 "displayName": account,
                 "name": account,
-                "email": f"{account}@oldmp.software",
+                "email": f"{account}@oldmp.softawre",
                 "failedLoginAttempts": 0,
                 "lastLogin": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
                 "numberOfDisplayNameChanges": 0,
                 "ageGroup": "UNKNOWN",
                 "headless": False,
-                "country": "US",
-                "lastName": "Client",
+                "country": "FR",
+                "lastName": "MP",
                 "preferredLanguage": "fr",
-                "canUpdateDisplayName": False,
+                "canUpdateDisplayName": True,
                 "tfaEnabled": False,
                 "emailVerified": True,
                 "minorVerified": False,
@@ -1244,7 +1260,7 @@ class OldMP():
             btoken=request.headers.get('authorization').split("bearer ")[1]
             tkn=btoken.split('NOCTURNOISBETTER_')[1].encode()
             token=dec(tkn).decode()
-            
+
             username=session.get('username')
             password=session.get('password')
             
@@ -1315,14 +1331,14 @@ class OldMP():
                 "cln": "17951730",
                 "build": "444",
                 "moduleName": "Fortnite-Core",
-                "buildDate": "2023-02-08T22:39:50.223Z",
+                "buildDate": "2021-10-27T21:00:51.697Z",
                 "version": "18.30",
                 "branch": "Release-18.30",
                 "modules": {
                 "Epic-LightSwitch-AccessControlCore": {
                     "cln": "17237679",
                     "build": "b2130",
-                    "buildDate": "2023-02-08T22:39:50.223Z",
+                    "buildDate": "2021-08-19T18:56:08.144Z",
                     "version": "1.0.0",
                     "branch": "trunk"
                 },
@@ -1336,7 +1352,7 @@ class OldMP():
                 "epic-common-core": {
                     "cln": "17909521",
                     "build": "3217",
-                    "buildDate": "2023-02-06T14:32:45.290Z",
+                    "buildDate": "2021-10-25T18:41:12.486Z",
                     "version": "3.0",
                     "branch": "TRUNK"
                 }
@@ -1415,6 +1431,8 @@ class OldMP():
         @app.route('/fortnite/api/statsv2/account/<accountId>', methods=['GET'])
         def fortnitestatsv2account(accountId):
 
+            # set account
+
             r={
                 "startTime": 0,
                 "endTime": 0,
@@ -1431,6 +1449,8 @@ class OldMP():
 
         @app.route('/statsproxy/api/statsv2/account/<accountId>', methods=['GET'])
         def statproxystatsv2account(accountId):
+
+            # set account
 
             r={
                 "startTime": 0,
@@ -1495,6 +1515,13 @@ class OldMP():
 
         @app.route('/datarouter/api/v1/public/data', methods=['POST'])
         def datarouterapipublicdata():
+
+            data=request.stream.read()
+            # token=session.get('auth')['token']
+            # print(token)
+            
+            # if data.decode()["Events"][1]["EventName"]=='SessionEnd':
+            #     self.functions.removeClient(token)
 
             resp=Response()
             resp.status_code=204
@@ -1610,6 +1637,8 @@ class OldMP():
         @app.route(f'/fortnite/api/game/v2/privacy/account/<accountId>', methods=['POST'])
         def fortniteapigamev2accountId(accountId):
 
+            # set account
+
             privacy=loads(open(f'data/account/privacy.json', 'r', encoding='utf-8').read())
                 
             privacy['accountId']=accountId
@@ -1651,6 +1680,7 @@ class OldMP():
             
             if granttype=="client_credentials":
                 auth=self.functions.genClient(ip, clientId, enc)
+                print(auth)
                 session['auth']=auth
                 r={
                     "access_token": auth['token'],
@@ -1704,6 +1734,7 @@ class OldMP():
                 session['password']=password
                 session['ip']=ip
                 session['clientId']=clientId
+                
                 for i in clients:
                     if i['ip']==ip:
                         i['accountId']=username
@@ -1787,7 +1818,7 @@ class OldMP():
                 pass
             
             elif killType=='OTHERS_ACCOUNT_CLIENT_SERVICE':
-                self.functions.removeClient(token)
+                pass
             
             else:
                 respon=self.functions.createError(
@@ -1876,13 +1907,13 @@ class OldMP():
                     elif date<f"{date}T23:59:59.999Z":
                         date=f"{date}T23:59:59.999Z"
                 
-                theater=theater.replace('2017-07-25T23:59:59.999Z', date)
-                
             except:
                 pass
             
+            theater=theater.replace('2017-07-25T23:59:59.999Z', date)
+            
             resp=app.response_class(
-                response=dumps(theater),
+                response=dumps({}),
                 status=200,
                 mimetype='application/json'
             )
@@ -1890,6 +1921,8 @@ class OldMP():
 
         @app.route('/fortnite/api/game/v2/profile/<account>/client/PurchaseCatalogEntry', methods=['POST'])
         def PurchaseCatalogEntry(account):
+            
+            # set account
             
             userId=""
             for i in clients:
@@ -3099,6 +3132,8 @@ class OldMP():
         @app.route('/fortnite/api/game/v2/profile/<account>/client/SetPartyAssistQuest', methods=['POSt'])
         def mcpSetPartyAssistQuest(account):
             
+            # set account
+            
             userId=""
             for i in clients:
                 if i['ip']==request.remote_addr:
@@ -3185,6 +3220,8 @@ class OldMP():
 
         @app.route('/fortnite/api/game/v2/profile/<account>/client/AthenaPinQuest', methods=['POST'])
         def mcpAthenaPinQuest(account):
+            
+            # set account
             
             userId=""
             for i in clients:
@@ -3273,6 +3310,8 @@ class OldMP():
         @app.route('/fortnite/api/game/v2/profile/<account>/client/SetItemFavoriteStatus', methods=['POST'])
         def SetItemFavoriteStatus(account):
             
+            # set account
+            
             userId=""
             for i in clients:
                 if i['ip']==request.remote_addr:
@@ -3360,6 +3399,8 @@ class OldMP():
 
         @app.route('/fortnite/api/game/v2/profile/<account>/client/MarkItemSeen', methods=['POST'])
         def MarkItemSeen(account):
+            
+            # set account
             
             userId=""
             for i in clients:
@@ -3453,6 +3494,8 @@ class OldMP():
 
         @app.route('/fortnite/api/game/v2/profile/<account>/client/EquipBattleRoyaleCustomization', methods=['POST'])
         def EquipBattleRoyaleCustomization(account):
+            
+            # set account
             
             userId=""
             for i in clients:
@@ -3653,6 +3696,8 @@ class OldMP():
         @app.route('/fortnite/api/game/v2/profile/<account>/client/QueryProfile', methods=['POST'])
         def fortnitegameapiclientall(account):
             
+            # set account
+            
             userId=""
             for i in clients:
                 if i['ip']==request.remote_addr:
@@ -3719,6 +3764,8 @@ class OldMP():
         
         @app.route('/fortnite/api/game/v2/profile/<account>/client/GetMcpTimeForLogin', methods=['POST'])
         def fortniteGetMcpTimeForLogin(account):
+            
+            # set account
             
             userId=""
             for i in clients:
@@ -3788,6 +3835,8 @@ class OldMP():
         @app.route('/fortnite/api/game/v2/profile/<account>/client/SetMtxPlatform', methods=['POST'])
         def fortnitegameapiclientall2(account):
             
+            # set account
+            
             userId=""
             for i in clients:
                 if i['ip']==request.remote_addr:
@@ -3854,6 +3903,8 @@ class OldMP():
 
         @app.route('/fortnite/api/game/v2/profile/<account>/client/SetBattleRoyaleBanner', methods=['POST', 'GET'])
         def SetBattleRoyaleBanner(account):
+            
+            # set account
             
             userId=""
             for i in clients:
@@ -3949,6 +4000,8 @@ class OldMP():
 
         @app.route('/fortnite/api/game/v2/profile/<account>/client/ClientQuestLogin', methods=['POST'])
         def ClientQuestLogin(account):
+            
+            # set account
             
             userId=""
             for i in clients:
@@ -4248,6 +4301,8 @@ class OldMP():
         @app.route('/fortnite/api/game/v2/profile/<account>/client/IncrementNamedCounterStat', methods=['POSt'])
         def IncrementNamedCounterStat(account):
             
+            # set account
+            
             userId=""
             for i in clients:
                 if i['ip']==request.remote_addr:
@@ -4389,6 +4444,8 @@ class OldMP():
         @app.route("/fortnite/api/game/v2/profile/<account>/client/RefundMtxPurchase", methods=["POST"])
         def refund_mtx_purchase(account):
             
+            # set account
+            
             userId=""
             for i in clients:
                 if i['ip']==request.remote_addr:
@@ -4521,6 +4578,8 @@ class OldMP():
 
         @app.route("/fortnite/api/game/v2/profile/<account>/client/FortRerollDailyQuest", methods=["POST"])
         def FortRerollDailyQuest(account):
+            
+            # set account
             
             userId=""
             for i in clients:

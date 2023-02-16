@@ -24,7 +24,6 @@ class OldMPLauncher():
     ):
         
         self.applaunch=applaunch
-        Session(applaunch)
         self.functions=func(request=request, app=applaunch, clients=clients, cnx=cnx)
         self.NLogs=self.functions.logs
         self.api_url=api_url

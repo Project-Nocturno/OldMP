@@ -21,7 +21,6 @@ class OldMPFunc():
         
         self.logsapp=logsapp
         self.NLogs=self.logs
-        self.NLogs(self.logsapp, "OmdMP started!")
         
         self.exchange_table=[
             {'name': 'skull_trooper', 'id': 'CID_030_Athena_Commando_M_Halloween', 'price': 1500, 'style': 'skins'},
@@ -213,7 +212,6 @@ class OldMPFunc():
         }
         
         if self.request.headers["user-agent"]:
-            self.NLogs(self.logsapp, self.request.headers["user-agent"])
             try:
                 BuildID=str(self.request.headers["user-agent"]).split("-")[3].split(",")[0]
                 if not isinstance(BuildID, int):

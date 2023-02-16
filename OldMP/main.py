@@ -1,7 +1,8 @@
-from flask import Flask
+from flask import Flask, session
 from cryptography.fernet import Fernet
 import mysql.connector
 from threading import Thread
+from time import sleep
 
 from modules.oldmpweb import OldMPWeb as oldmpweb
 from modules.oldmp import OldMP as oldmp
@@ -14,6 +15,10 @@ websiteP=80 # base web port
 launcherP=4971 # launcher port
 # 20228
 
+clients=[]
+palyerscoords=[]
+
+# db conn
 cnx=mysql.connector.connect(
     user='doadmin',
     password='AVNS_-j7sW3k0hYO3J6dIq_q',
@@ -22,7 +27,7 @@ cnx=mysql.connector.connect(
     port='25060'
 )
 
-
+# proxy parameters
 startWithProxy=True
 proxy={
    'http': 'http://127.0.0.1:9999',
@@ -30,42 +35,73 @@ proxy={
 }
 logsapp=True
 
-
+# all the website and encryption
+website_url="https://www.nocturno.games"
+api_url="https://nocturno.games/api"
 urlkey="VEIDVOE9oN8O3C4TnU2RIN1O0rF82mUDSFJsdJOFKJKJSDgjkojsdJJKOGJJKOSJGKJOjsDJKO"
+
 enckey="1ldcQilhWsPDjlFyLFU3VJXCNJQW6gf6oI6CoLbeNSc="
 enc=Fernet(enckey).encrypt
 dec=Fernet(enckey).decrypt
 
+# all the backend services conf
+app=Flask("OldMP") # lobby emulator conf
+app.config["SESSION_PERMANENT"]=True
+app.secret_key="NocturnoIsBetterIsAnGoodToken?Idk[OldMP]"
 
-website_url="https://www.nocturno.games"
-api_url="https://nocturno.games/api"
+appweb=Flask("OldMPWeb") # website conf
+appweb.secret_key="NocturnoIsBetterIsAnGoodToken?Idk[OldMPWeb]"
 
+applaunch=Flask("OldMPLauncher") # launcher backend services conf
+applaunch.config["SESSION_PERMANENT"]=True
+applaunch.secret_key="NocturnoIsBetterIsAnGoodToken?Idk[OldMPLauncher]"
 
-app=Flask("OldMP")
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
-
-appweb=Flask("OldMPWeb")
-
-applaunch=Flask("OldMPLauncher")
-applaunch.config["SESSION_PERMANENT"] = False
-applaunch.config["SESSION_TYPE"] = "filesystem"
-
-tempfileclst='data/clientsettings'
-clients=[]
-palyerscoords=[]
-
-
+# start all the backend services
 tl=Thread(target=loops(palyerscoords).makemap)
 tl.setDaemon(True)
 tl.start()
 
-tweb=Thread(target=oldmpweb, args=(cnx, logsapp, clients, palyerscoords, appweb, websiteP))
+tweb=Thread( # thread for the website services
+    target=oldmpweb, args=(
+        cnx,
+        logsapp,
+        clients,
+        palyerscoords,
+        appweb,
+        websiteP
+    )
+)
 tweb.setDaemon(True)
 tweb.start()
+sleep(1)
 
-tlaunch=Thread(target=oldmplauncher, args=(enc, dec, cnx, logsapp, applaunch, launcherP, clients, api_url, proxy, startWithProxy))
+tlaunch=Thread( # thread for the launcher backend services
+    target=oldmplauncher, args=(
+        enc,
+        dec,
+        cnx,
+        logsapp,
+        applaunch,
+        launcherP,
+        clients,
+        api_url,
+        proxy,
+        startWithProxy
+    )
+)
 tlaunch.setDaemon(True)
 tlaunch.start()
 
-oldmp(cnx, dec, enc, logsapp, app, clients, tempfileclst, startWithProxy, api_url, proxy, backendP)
+sleep(1)
+oldmp( # start the main backend service
+    cnx,
+    dec,
+    enc,
+    logsapp,
+    app,
+    clients,
+    startWithProxy,
+    api_url,
+    proxy,
+    backendP
+)
