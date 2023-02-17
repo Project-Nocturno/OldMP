@@ -18,6 +18,7 @@ launcherP=4971 # launcher port
 clients=[]
 palyerscoords=[]
 session={}
+rps={}
 
 # db conn
 cnx=mysql.connector.connect(
@@ -62,7 +63,8 @@ tweb=Thread( # thread for the website services
         clients,
         palyerscoords,
         appweb,
-        websiteP
+        websiteP,
+        rps
     )
 )
 tweb.setDaemon(True)
@@ -81,7 +83,8 @@ tlaunch=Thread( # thread for the launcher backend services
         api_url,
         proxy,
         startWithProxy,
-        session
+        session,
+        rps
     )
 )
 tlaunch.setDaemon(True)
@@ -99,5 +102,6 @@ oldmp( # start the main backend service
     api_url,
     proxy,
     backendP,
-    session
+    session,
+    rps
 )

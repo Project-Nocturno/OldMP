@@ -21,9 +21,11 @@ class OldMPLauncher():
             'https': 'http://127.0.0.1:9999',
         },
         startWithProxy: bool=False,
-        sessionL: dict={}
+        sessionL: dict={},
+        rps: dict={}
     ):
         
+        self.version='0.1'
         self.applaunch=applaunch
         self.functions=func(request=request, app=applaunch, clients=clients, cnx=cnx)
         self.NLogs=self.functions.logs
@@ -45,7 +47,7 @@ class OldMPLauncher():
         def versioncheck():
 
             resp=self.applaunch.response_class(
-                response='0.1',
+                response=self.version,
                 status=200,
                 mimetype='text/plain'
             )
@@ -144,9 +146,9 @@ class OldMPLauncher():
         def rpc():
 
             resp=self.applaunch.response_class(
-                response='0.1',
+                response=dumps({}),
                 status=200,
-                mimetype='text/plain'
+                mimetype='application/json'
             )
             return resp
         

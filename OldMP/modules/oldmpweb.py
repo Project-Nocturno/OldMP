@@ -12,7 +12,8 @@ class OldMPWeb():
         clients: list=[], 
         palyerscoords: list=[], 
         appweb: Flask=Flask("OldMPWeb"),
-        port: int=80
+        port: int=80,
+        rps: dict={}
     ):
         
         self.clients=clients

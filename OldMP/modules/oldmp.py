@@ -30,12 +30,37 @@ class OldMP():
             'https': 'http://127.0.0.1:9999',
         },
         port: int=3551,
-        sessionL: dict={}
+        sessionL: dict={},
+        rps: dict={}
     ):
 
         self.functions=func(request=request, app=app, clients=clients, cnx=cnx)
         self.NLogs=self.functions.logs
         self.NLogs(logsapp, "OmdMP started!")
+
+        @app.before_request
+        def checkrps():
+            exist=False
+            for i in rps:
+                if i==request.remote_addr:
+                    exist=True
+            if exist:
+                if rps[request.remote_addr]>=5:
+                    respon=self.functions.createError(
+                        "errors.com.epicgames.account.too_many_requests",
+                        "You have made more than the limited number of requests", 
+                        [], 18031, "too_many_requests"
+                    )
+                    resp=app.response_class(
+                        response=dumps(respon),
+                        status=400,
+                        mimetype='application/json'
+                    )
+                    return resp
+                else:
+                    rps[request.remote_addr]+=1
+            
+            
 
         @app.route('/clearitemsforshop', methods=['GET'])
         def cleanitemforshop():
