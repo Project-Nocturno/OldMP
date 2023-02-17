@@ -660,7 +660,7 @@ class OldMPFunc():
             {
                 "friends": [
                     {
-                        "accountId": "4lxprime",
+                        "accountId": "defaultprofile",
                         "groups": [],
                         "mutual": 0,
                         "alias": "",

@@ -36,14 +36,13 @@ class OldMP():
         self.functions=func(request=request, app=app, clients=clients, cnx=cnx)
         self.NLogs=self.functions.logs
         self.NLogs(logsapp, "OmdMP started!")
-        self.session=sessions(sessionL, request.remote_addr)
 
         @app.route('/clearitemsforshop', methods=['GET'])
         def cleanitemforshop():
             
             athena=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
             for i in athena:
-                if i['accountId']==self.session.get('username'):
+                if i['accountId']==sessions(sessionL, request.remote_addr).get('username'):
                     athena=i
             shop=loads(open(f'data/content/catalogconfig.json', 'r', encoding='utf-8').read())
             StatChanged=False
@@ -197,7 +196,7 @@ class OldMP():
                 "startTime": 0,
                 "endTime": 0,
                 "stats": {},
-                "accountId": self.session.get('username')
+                "accountId": sessions(sessionL, request.remote_addr).get('username')
             }
 
             resp=app.response_class(
@@ -451,8 +450,8 @@ class OldMP():
         def fortniteapigamev2mathcmakingsessionid(accountId, sessionId):
 
             r={
-                "accountId": self.session.get('username'),
-                "sessionId": self.session.get('sessionId'),
+                "accountId": sessions(sessionL, request.remote_addr).get('username'),
+                "sessionId": sessions(sessionL, request.remote_addr).get('sessionId'),
                 "key": "KvOWLwXTUO6XyXsZGpK0_GvEKZatDxwb34-rJNUW8Fs="
             }
 
@@ -470,7 +469,7 @@ class OldMP():
             port=loads(open('conf.json', 'r', encoding='utf-8').read())['GameServer']['port']
 
             sessionCode={
-                "id": self.session.get('sessionId'),
+                "id": sessions(sessionL, request.remote_addr).get('sessionId'),
                 "ownerId": str(uuid4()).replace("-", "").upper(),
                 "ownerName": "[DS]fortnite-liveeugcec1c2e30ubrcore0a-z8hj-1968",
                 "serverName": "[DS]fortnite-liveeugcec1c2e30ubrcore0a-z8hj-1968",
@@ -1266,8 +1265,8 @@ class OldMP():
             tkn=btoken.split('NOCTURNOISBETTER_')[1].encode()
             token=dec(tkn).decode()
 
-            username=self.session.get('username')
-            password=self.session.get('password')
+            username=sessions(sessionL, request.remote_addr).get('username')
+            password=sessions(sessionL, request.remote_addr).get('password')
             
             if username and password:
                 pass
@@ -1291,13 +1290,13 @@ class OldMP():
                 "client_id": token.split('|')[0].split(':')[1],
                 "internal_client": True,
                 "client_service": "fortnite",
-                "account_id": self.session.get('username'),
+                "account_id": sessions(sessionL, request.remote_addr).get('username'),
                 "expires_in": 86400,
                 "expires_at": self.functions.createDate(24),
                 "auth_method": "exchange_code",
-                "display_name": self.session.get('username'),
+                "display_name": sessions(sessionL, request.remote_addr).get('username'),
                 "app": "fortnite",
-                "in_app_id": self.session.get('username'),
+                "in_app_id": sessions(sessionL, request.remote_addr).get('username'),
                 "device_id": token.split('|')[2].split(':')[1]
             }
 
@@ -1522,7 +1521,12 @@ class OldMP():
         def datarouterapipublicdata():
 
             data=request.stream.read()
-            # token=self.session.get('auth')['token']
+            print(data)
+            try:
+                if (data['Events'][0]['Location']=='InGame'):
+                    print(data['Events'][0]['PlayerLocation'])
+            except: pass
+            # token=sessions(sessionL, request.remote_addr).get('auth')['token']
             # print(token)
             
             # if data.decode()["Events"][1]["EventName"]=='SessionEnd':
@@ -1686,7 +1690,7 @@ class OldMP():
             if granttype=="client_credentials":
                 auth=self.functions.genClient(ip, clientId, enc)
                 print(auth)
-                self.session.put('auth', auth)
+                sessions(sessionL, request.remote_addr).put('auth', auth)
                 r={
                     "access_token": auth['token'],
                     "expires_in": 14400,
@@ -1735,9 +1739,9 @@ class OldMP():
 
                 self.functions.loadProfile(username)
 
-                self.session.put('username', username)
-                self.session.put('password', password)
-                self.session.put('clientId', clientId)
+                sessions(sessionL, request.remote_addr).put('username', username)
+                sessions(sessionL, request.remote_addr).put('password', password)
+                sessions(sessionL, request.remote_addr).put('clientId', clientId)
                 
                 for i in clients:
                     if i['ip']==ip:
@@ -1766,21 +1770,21 @@ class OldMP():
                 pass
 
             r={
-                "access_token": self.session.get('auth')['token'],
+                "access_token": sessions(sessionL, request.remote_addr).get('auth')['token'],
                 "expires_in": 28800,
                 "expires_at": self.functions.createDate(8),
                 "token_type": "bearer",
-                "refresh_token": self.session.get('auth')['token'],
+                "refresh_token": sessions(sessionL, request.remote_addr).get('auth')['token'],
                 "refresh_expires": 86400,
                 "refresh_expires_at": self.functions.createDate(24),
-                "account_id": self.session.get('username'),
-                "client_id": self.session.get('clientId'),
+                "account_id": sessions(sessionL, request.remote_addr).get('username'),
+                "client_id": sessions(sessionL, request.remote_addr).get('clientId'),
                 "internal_client": True,
                 "client_service": "fortnite",
-                "displayName": self.session.get('username'),
+                "displayName": sessions(sessionL, request.remote_addr).get('username'),
                 "app": "fortnite",
-                "in_app_id": self.session.get('username'),
-                "device_id": self.session.get('auth')['deviceId']
+                "in_app_id": sessions(sessionL, request.remote_addr).get('username'),
+                "device_id": sessions(sessionL, request.remote_addr).get('auth')['deviceId']
             }
 
             resp=app.response_class(
@@ -3159,8 +3163,8 @@ class OldMP():
                 pass
             else:
                 profile=loads(open(f'data/unusedprofiles/{request.args.get("profileId")}.json', 'r', encoding='utf-8').read())
-                profile['_id']=self.session.get('username')
-                profile['accountId']=self.session.get('username')
+                profile['_id']=sessions(sessionL, request.remote_addr).get('username')
+                profile['accountId']=sessions(sessionL, request.remote_addr).get('username')
                 
                 resp=app.response_class(
                     response=dumps(profile),
@@ -3248,8 +3252,8 @@ class OldMP():
                 pass
             else:
                 profile=loads(open(f'data/unusedprofiles/{request.args.get("profileId")}.json', 'r', encoding='utf-8').read())
-                profile['_id']=self.session.get('username')
-                profile['accountId']=self.session.get('username')
+                profile['_id']=sessions(sessionL, request.remote_addr).get('username')
+                profile['accountId']=sessions(sessionL, request.remote_addr).get('username')
                 
                 resp=app.response_class(
                     response=dumps(profile),
@@ -3337,8 +3341,8 @@ class OldMP():
                 pass
             else:
                 profile=loads(open(f'data/unusedprofiles/{request.args.get("profileId")}.json', 'r', encoding='utf-8').read())
-                profile['_id']=self.session.get('username')
-                profile['accountId']=self.session.get('username')
+                profile['_id']=sessions(sessionL, request.remote_addr).get('username')
+                profile['accountId']=sessions(sessionL, request.remote_addr).get('username')
                 
                 resp=app.response_class(
                     response=dumps(profile),
@@ -3427,8 +3431,8 @@ class OldMP():
                 pass
             else:
                 profile=loads(open(f'data/unusedprofiles/{request.args.get("profileId")}.json', 'r', encoding='utf-8').read())
-                profile['_id']=self.session.get('username')
-                profile['accountId']=self.session.get('username')
+                profile['_id']=sessions(sessionL, request.remote_addr).get('username')
+                profile['accountId']=sessions(sessionL, request.remote_addr).get('username')
                 
                 resp=app.response_class(
                     response=dumps(profile),
@@ -3522,8 +3526,8 @@ class OldMP():
                 pass
             else:
                 profile=loads(open(f'data/unusedprofiles/{request.args.get("profileId")}.json', 'r', encoding='utf-8').read())
-                profile['_id']=self.session.get('username')
-                profile['accountId']=self.session.get('username')
+                profile['_id']=sessions(sessionL, request.remote_addr).get('username')
+                profile['accountId']=sessions(sessionL, request.remote_addr).get('username')
                 
                 resp=app.response_class(
                     response=dumps(profile),
@@ -3723,8 +3727,8 @@ class OldMP():
                 pass
             else:
                 profile=loads(open(f'data/unusedprofiles/{request.args.get("profileId")}.json', 'r', encoding='utf-8').read())
-                profile['_id']=self.session.get('username')
-                profile['accountId']=self.session.get('username')
+                profile['_id']=sessions(sessionL, request.remote_addr).get('username')
+                profile['accountId']=sessions(sessionL, request.remote_addr).get('username')
                 
                 resp=app.response_class(
                     response=dumps(profile),
@@ -3792,8 +3796,8 @@ class OldMP():
                 pass
             else:
                 profile=loads(open(f'data/unusedprofiles/{request.args.get("profileId")}.json', 'r', encoding='utf-8').read())
-                profile['_id']=self.session.get('username')
-                profile['accountId']=self.session.get('username')
+                profile['_id']=sessions(sessionL, request.remote_addr).get('username')
+                profile['accountId']=sessions(sessionL, request.remote_addr).get('username')
                 
                 resp=app.response_class(
                     response=dumps(profile),
@@ -3862,8 +3866,8 @@ class OldMP():
                 pass
             else:
                 profile=loads(open(f'data/unusedprofiles/{request.args.get("profileId")}.json', 'r', encoding='utf-8').read())
-                profile['_id']=self.session.get('username')
-                profile['accountId']=self.session.get('username')
+                profile['_id']=sessions(sessionL, request.remote_addr).get('username')
+                profile['accountId']=sessions(sessionL, request.remote_addr).get('username')
                 
                 resp=app.response_class(
                     response=dumps(profile),
@@ -3931,8 +3935,8 @@ class OldMP():
                 pass
             else:
                 profile=loads(open(f'data/unusedprofiles/{request.args.get("profileId")}.json', 'r', encoding='utf-8').read())
-                profile['_id']=self.session.get('username')
-                profile['accountId']=self.session.get('username')
+                profile['_id']=sessions(sessionL, request.remote_addr).get('username')
+                profile['accountId']=sessions(sessionL, request.remote_addr).get('username')
                 
                 resp=app.response_class(
                     response=dumps(profile),
@@ -4028,8 +4032,8 @@ class OldMP():
                 pass
             else:
                 profile=loads(open(f'data/unusedprofiles/{request.args.get("profileId")}.json', 'r', encoding='utf-8').read())
-                profile['_id']=self.session.get('username')
-                profile['accountId']=self.session.get('username')
+                profile['_id']=sessions(sessionL, request.remote_addr).get('username')
+                profile['accountId']=sessions(sessionL, request.remote_addr).get('username')
                 
                 resp=app.response_class(
                     response=dumps(profile),
@@ -4328,8 +4332,8 @@ class OldMP():
                 pass
             else:
                 profile=loads(open(f'data/unusedprofiles/{request.args.get("profileId")}.json', 'r', encoding='utf-8').read())
-                profile['_id']=self.session.get('username')
-                profile['accountId']=self.session.get('username')
+                profile['_id']=sessions(sessionL, request.remote_addr).get('username')
+                profile['accountId']=sessions(sessionL, request.remote_addr).get('username')
                 
                 resp=app.response_class(
                     response=dumps(profile),
@@ -4411,7 +4415,7 @@ class OldMP():
                 profiles=loads(open(file, 'r', encoding='utf-8').read())
 
                 for prof in profiles:
-                    if prof['accountId']==self.session.get('accountId'):
+                    if prof['accountId']==sessions(sessionL, request.remote_addr).get('accountId'):
                         profile=prof.copy()
                         
                 if not profile.get('rvn'):
@@ -4439,7 +4443,7 @@ class OldMP():
 
                     oldprofile=loads(open(file, 'r', encoding='utf-8').read())
                     for key, val in enumerate(oldprofile):
-                        if val['accountId']==self.session.get('accountId'):
+                        if val['accountId']==sessions(sessionL, request.remote_addr).get('accountId'):
                             oldprofile[key]=profile
                     open(file, 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
 
@@ -4606,8 +4610,8 @@ class OldMP():
                 pass
             else:
                 profile=loads(open(f'data/unusedprofiles/{request.args.get("profileId")}.json', 'r', encoding='utf-8').read())
-                profile['_id']=self.session.get('username')
-                profile['accountId']=self.session.get('username')
+                profile['_id']=sessions(sessionL, request.remote_addr).get('username')
+                profile['accountId']=sessions(sessionL, request.remote_addr).get('username')
                 
                 resp=app.response_class(
                     response=dumps(profile),

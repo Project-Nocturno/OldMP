@@ -29,7 +29,8 @@ class Session():
                 self.ip: {}
             })
             
-        return self.session[self.ip][key]
+        try: return self.session[self.ip][key]
+        except: return ""
     
     def clear(self):
         

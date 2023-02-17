@@ -1,7 +1,6 @@
-from flask import Flask, request, render_template
+from flask import Flask, request
 from .func import OldMPFunc as func
 from json import dumps
-from uuid import uuid4
 from requests import get
 
 from modules.session import Session as sessions
@@ -30,7 +29,6 @@ class OldMPLauncher():
         self.NLogs=self.functions.logs
         self.api_url=api_url
         self.proxy=proxy
-        self.session=sessions(sessionL, request.remote_addr)
         self.NLogs(logsapp, "OmdMPLauncher started!")
         
         @self.applaunch.route("/", methods=['GET'])
@@ -43,15 +41,24 @@ class OldMPLauncher():
             )
             return resp
         
+        @self.applaunch.route("/versioncheck", methods=['GET'])
+        def versioncheck():
+
+            resp=self.applaunch.response_class(
+                response='0.1',
+                status=200,
+                mimetype='text/plain'
+            )
+            return resp
+        
         @self.applaunch.route("/auth", methods=['GET'])
         def authsys():
 
             grant_type=request.args.get('grant_type')
+            username=request.args.get('username')
+            password=request.args.get('password')
             
             if grant_type=='password':
-                
-                username=request.args.get('username')
-                password=request.args.get('password')
                 
                 if not username or not password:
                     respon=self.functions.createError(
@@ -72,9 +79,9 @@ class OldMPLauncher():
                     rg=get(f'{self.api_url}/get/check.php?user={username}&pass={password}')
                     
                 if not 'ok' in rg:
-                    self.session.put('username', username)
-                    self.session.put('password', password)
-                    self.session.put('deviceId', request.args.get('device_id'))
+                    sessions(sessionL, request.remote_addr).put('username', username)
+                    sessions(sessionL, request.remote_addr).put('password', password)
+                    sessions(sessionL, request.remote_addr).put('launcher', True)
                 
                 else:
                     respon=self.functions.createError(
@@ -90,18 +97,40 @@ class OldMPLauncher():
                     return resp
             
             elif grant_type=='refresh':
-                pass
-            
-            sessionId=uuid4().replace('-', '')
+                username=request.args.get('username')
+                password=request.args.get('password')
+                
+                if not username or not password:
+                    respon=self.functions.createError(
+                        "errors.com.epicgames.common.oauth.invalid_request",
+                        "Username/password is required.", 
+                        [], 1013, "invalid_request"
+                    )
+                    resp=applaunch.response_class(
+                        response=dumps(respon),
+                        status=400,
+                        mimetype='application/json'
+                    )
+                    return resp
+                
+                if not username==sessions(sessionL, request.remote_addr).get('username') and password==sessions(sessionL, request.remote_addr).get('password'):
+                    respon=self.functions.createError(
+                        "errors.com.epicgames.account.invalid_account_credentials",
+                        "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
+                        [], 18031, "invalid_grant"
+                    )
+                    resp=applaunch.response_class(
+                        response=dumps(respon),
+                        status=400,
+                        mimetype='application/json'
+                    )
+                    return resp
             
             r={
-                'accountId': self.session.get('username'),
-                'access_token': enc(f"sessionId:{sessionId}|deviceId:{self.session.get('deviceId')}|ip:{request.remote_addr}".encode()).decode(),
-                'session_id': sessionId,
+                'accountId': sessions(sessionL, request.remote_addr).get('username'),
+                'display_name': sessions(sessionL, request.remote_addr).get('username'),
                 'expire_in': 14400,
-                'expire_at': self.functions.createDate(4),
-                'display_name': self.session.get('username'),
-                'device_id': self.session.get('deviceId')
+                'expire_at': self.functions.createDate(4)
             }
 
             resp=self.applaunch.response_class(
@@ -110,7 +139,16 @@ class OldMPLauncher():
                 mimetype='application/json'
             )
             return resp
+        
+        @self.applaunch.route("/rpc/", methods=['GET'])
+        def rpc():
 
+            resp=self.applaunch.response_class(
+                response='0.1',
+                status=200,
+                mimetype='text/plain'
+            )
+            return resp
         
         
         self.applaunch.run('0.0.0.0', port, debug=False)
