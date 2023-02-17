@@ -1,6 +1,6 @@
-from flask import Flask, request
+from flask import Flask, request, send_file
 from .func import OldMPFunc as func
-from json import dumps
+from json import dumps, loads
 from requests import get
 
 from modules.session import Session as sessions
@@ -43,11 +43,27 @@ class OldMPLauncher():
             )
             return resp
         
+        @self.applaunch.route('/favicon.ico')
+        def favicon():
+            return send_file('data/content/images/logo.ico', mimetype='image/ico')
+        
         @self.applaunch.route("/versioncheck", methods=['GET'])
         def versioncheck():
 
             resp=self.applaunch.response_class(
                 response=self.version,
+                status=200,
+                mimetype='text/plain'
+            )
+            return resp
+        
+        @self.applaunch.route("/status", methods=['GET'])
+        def getstatusw():
+
+            status=loads(open('conf.json', 'r', encoding='utf-8').read())['Status']['launcher']
+
+            resp=self.applaunch.response_class(
+                response=status,
                 status=200,
                 mimetype='text/plain'
             )

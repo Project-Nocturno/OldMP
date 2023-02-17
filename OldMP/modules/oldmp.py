@@ -31,9 +31,11 @@ class OldMP():
         },
         port: int=3551,
         sessionL: dict={},
-        rps: dict={}
+        rps: dict={}, 
+        playerscoords: list=[]
     ):
 
+        self.playerscoords=playerscoords
         self.functions=func(request=request, app=app, clients=clients, cnx=cnx)
         self.NLogs=self.functions.logs
         self.NLogs(logsapp, "OmdMP started!")
@@ -41,11 +43,12 @@ class OldMP():
         @app.before_request
         def checkrps():
             exist=False
+            print(rps)
             for i in rps:
                 if i==request.remote_addr:
                     exist=True
             if exist:
-                if rps[request.remote_addr]>=5:
+                if rps[request.remote_addr]>=20:
                     respon=self.functions.createError(
                         "errors.com.epicgames.account.too_many_requests",
                         "You have made more than the limited number of requests", 
@@ -59,6 +62,8 @@ class OldMP():
                     return resp
                 else:
                     rps[request.remote_addr]+=1
+            else:
+                rps.update({request.remote_addr: 0})
             
             
 
@@ -1547,15 +1552,14 @@ class OldMP():
 
             data=request.stream.read()
             print(data)
-            try:
-                if (data['Events'][0]['Location']=='InGame'):
-                    print(data['Events'][0]['PlayerLocation'])
-            except: pass
-            # token=sessions(sessionL, request.remote_addr).get('auth')['token']
-            # print(token)
-            
-            # if data.decode()["Events"][1]["EventName"]=='SessionEnd':
-            #     self.functions.removeClient(token)
+            for events in data.decode()['Events']:
+                for event in events:
+                    if event=='PlayerLocation':
+                        print(events[event])
+                        coords=events[event].split(',')
+                        x: int=coords[0]
+                        y: int=coords[1]
+                        self.playerscoords.append((x, y))
 
             resp=Response()
             resp.status_code=204
@@ -1840,12 +1844,14 @@ class OldMP():
             
             if killType=='ALL':
                 self.functions.removeClient(token)
+                sessions(sessionL, request.remote_addr).clear()
             
             elif killType=='OTHERS':
                 pass
             
             elif killType=='ALL_ACCOUNT_CLIENT':
                 self.functions.removeClient(token)
+                sessions(sessionL, request.remote_addr).clear()
             
             elif killType=='OTHERS_ACCOUNT_CLIENT':
                 pass
@@ -1877,6 +1883,7 @@ class OldMP():
             token=request.headers.get('authorization').split("bearer ")[1]
 
             self.functions.removeClient(token)
+            sessions(sessionL, request.remote_addr).clear()
             
             resp=Response()
             resp.status_code=204

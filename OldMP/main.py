@@ -16,7 +16,7 @@ launcherP=4971 # launcher port
 # 20228
 
 clients=[]
-palyerscoords=[]
+playerscoords=[]
 session={}
 rps={}
 
@@ -52,7 +52,11 @@ appweb=Flask("OldMPWeb") # website conf
 applaunch=Flask("OldMPLauncher") # launcher backend services conf
 
 # start all the backend services
-tl=Thread(target=loops(palyerscoords).makemap)
+tl=Thread(target=loops(playerscoords, rps).makemap)
+tl.setDaemon(True)
+tl.start()
+
+tl=Thread(target=loops(playerscoords, rps).updaterps)
 tl.setDaemon(True)
 tl.start()
 
@@ -61,7 +65,7 @@ tweb=Thread( # thread for the website services
         cnx,
         logsapp,
         clients,
-        palyerscoords,
+        playerscoords,
         appweb,
         websiteP,
         rps
@@ -103,5 +107,6 @@ oldmp( # start the main backend service
     proxy,
     backendP,
     session,
-    rps
+    rps,
+    playerscoords
 )

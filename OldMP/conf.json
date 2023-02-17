@@ -2,6 +2,11 @@
     "Profile": {
         "bCompletedSeasonalQuests": false
     },
+    "Status": {
+        "launcher": "online",
+        "backend": "online",
+        "website": "online"
+    },
     "GameServer": {
         "ip": "127.0.0.1",
         "port": 7777

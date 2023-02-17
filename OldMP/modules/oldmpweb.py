@@ -10,7 +10,7 @@ class OldMPWeb():
         cnx,
         logsapp: bool=True,
         clients: list=[], 
-        palyerscoords: list=[], 
+        playerscoords: list=[], 
         appweb: Flask=Flask("OldMPWeb"),
         port: int=80,
         rps: dict={}
@@ -173,7 +173,7 @@ class OldMPWeb():
             if request.args.get('acceskey')=="zEnc087zzsO3oHKmVymVIDb51wn_FqqsTM1BxKRcm7g=":
                 x: int=request.args.get('x')
                 z: int=request.args.get('z')
-                palyerscoords.append((x/1, z/1))
+                playerscoords.append((x/1, z/1))
                 
             else:
                 respon=self.functions.createError(
