@@ -3,20 +3,17 @@ from json import loads, dumps
 from datetime import datetime, timedelta
 import mysql.connector
 from os import mkdir as osmkdir
-from uuid import uuid4
 
 class OldMPFunc():
     def __init__(
-        self, 
+        self,
         request,
-        app: Flask, 
-        clients: list, 
+        app: Flask,
         logsapp: bool=True,
         cnx: mysql.connector=mysql.connector.connect()
     ):
         self.request=request
         self.app=app
-        self.clients=clients
         self.cnx=cnx
         
         self.logsapp=logsapp
@@ -450,27 +447,9 @@ class OldMPFunc():
                 return element
         return None
     
-    def genClient(self, ip: str, clientId, enc):
-        sessionId=str(uuid4()).replace("-", "")
-        deviceId=str(uuid4()).replace("-", "")
-        token=enc(f"clientId:{clientId}|sessionId:{sessionId}|deviceId:{deviceId}|ip:{ip}".encode()).decode()
-        temp={
-            'token': f'NOCTURNOISBETTER_{token}',
-            'accountId': '',
-            'clientId': clientId,
-            'deviceId': deviceId,
-            'sessionId': sessionId,
-            'displayName': '',
-            'ip': ip,
-            'password': ''
-        }
-        self.clients.append(temp)
-        return temp
-    
-    def removeClient(self, token: str):
-        for i in self.clients:
-            if i['token']==token:
-                self.clients.remove(i)
+    def genToken(self, ip: str, clientId, enc):
+
+        return f'NOCTURNOISBETTER_{enc(f"clientId:{clientId}|ip:{ip}".encode()).decode()}'
                 
     def createError(self, errorCode, errorMessage, messageVars, numericErrorCode, error):
         response={

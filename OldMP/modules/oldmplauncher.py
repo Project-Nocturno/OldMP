@@ -2,6 +2,7 @@ from flask import Flask, request, send_file
 from .func import OldMPFunc as func
 from json import dumps, loads
 from requests import get
+from uuid import uuid4
 
 from modules.session import Session as sessions
 
@@ -14,7 +15,6 @@ class OldMPLauncher():
         logsapp: bool=True,
         applaunch: Flask=Flask("OldMPLauncher"),
         port: int=4971,
-        clients: list=[],
         api_url: str='https://nocturno.games/api', 
         proxy: dict={
             'http': 'http://127.0.0.1:9999', 
@@ -27,11 +27,35 @@ class OldMPLauncher():
         
         self.version='0.1'
         self.applaunch=applaunch
-        self.functions=func(request=request, app=applaunch, clients=clients, cnx=cnx)
+        self.functions=func(request=request, app=applaunch, cnx=cnx)
         self.NLogs=self.functions.logs
         self.api_url=api_url
         self.proxy=proxy
         self.NLogs(logsapp, "OmdMPLauncher started!")
+        
+        @applaunch.before_request
+        def checkrps():
+            exist=False
+            for i in rps:
+                if i==request.remote_addr:
+                    exist=True
+            if exist:
+                if rps[request.remote_addr]>=20:
+                    respon=self.functions.createError(
+                        "errors.com.epicgames.account.too_many_requests",
+                        "You have made more than the limited number of requests", 
+                        [], 18031, "too_many_requests"
+                    )
+                    resp=applaunch.response_class(
+                        response=dumps(respon),
+                        status=400,
+                        mimetype='application/json'
+                    )
+                    return resp
+                else:
+                    rps[request.remote_addr]+=1
+            else:
+                rps.update({request.remote_addr: 0})
         
         @self.applaunch.route("/", methods=['GET'])
         def baseroute():
@@ -99,6 +123,8 @@ class OldMPLauncher():
                 if not 'ok' in rg:
                     sessions(sessionL, request.remote_addr).put('username', username)
                     sessions(sessionL, request.remote_addr).put('password', password)
+                    sessions(sessionL, request.remote_addr).put('deviceId', str(uuid4()).replace("-", ""))
+                    sessions(sessionL, request.remote_addr).put('sessionId', str(uuid4()).replace("-", ""))
                     sessions(sessionL, request.remote_addr).put('launcher', True)
                 
                 else:
@@ -147,6 +173,8 @@ class OldMPLauncher():
             r={
                 'accountId': sessions(sessionL, request.remote_addr).get('username'),
                 'display_name': sessions(sessionL, request.remote_addr).get('username'),
+                'device_id': sessions(sessionL, request.remote_addr).get('deviceId'),
+                'session_id': sessions(sessionL, request.remote_addr).get('sessionId'),
                 'expire_in': 14400,
                 'expire_at': self.functions.createDate(4)
             }
@@ -160,9 +188,28 @@ class OldMPLauncher():
         
         @self.applaunch.route("/rpc/", methods=['GET'])
         def rpc():
-
+            if sessions(sessionL, request.remote_addr).get('InGame')==True:
+                r={
+                    'username': sessions(sessionL, request.remote_addr).get('username'),
+                    'character': sessions(sessionL, request.remote_addr).get('character'),
+                    'party': {
+                        'mapName': sessions(sessionL, request.remote_addr).get('mapName'),
+                        'playerLeft': sessions(sessionL, request.remote_addr).get('partyPlayerLeft')
+                    }
+                }
+                
+            else:
+                r={
+                    'username': sessions(sessionL, request.remote_addr).get('username'),
+                    'character': sessions(sessionL, request.remote_addr).get('character'),
+                    'party': {
+                        'mapName': 'Lobby',
+                        'playerLeft': 0
+                    }
+                }
+            
             resp=self.applaunch.response_class(
-                response=dumps({}),
+                response=dumps(r),
                 status=200,
                 mimetype='application/json'
             )

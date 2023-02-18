@@ -15,7 +15,6 @@ websiteP=80 # base web port
 launcherP=4971 # launcher port
 # 20228
 
-clients=[]
 playerscoords=[]
 session={}
 rps={}
@@ -64,11 +63,11 @@ tweb=Thread( # thread for the website services
     target=oldmpweb, args=(
         cnx,
         logsapp,
-        clients,
         playerscoords,
         appweb,
         websiteP,
-        rps
+        rps,
+        session
     )
 )
 tweb.setDaemon(True)
@@ -83,7 +82,6 @@ tlaunch=Thread( # thread for the launcher backend services
         logsapp,
         applaunch,
         launcherP,
-        clients,
         api_url,
         proxy,
         startWithProxy,
@@ -101,7 +99,6 @@ oldmp( # start the main backend service
     enc,
     logsapp,
     app,
-    clients,
     startWithProxy,
     api_url,
     proxy,

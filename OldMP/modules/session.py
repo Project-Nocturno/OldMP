@@ -30,7 +30,22 @@ class Session():
             })
             
         try: return self.session[self.ip][key]
-        except: return ""
+        except: 
+            print(f'\nbadinfos-{key}\n')
+            return ""
+    
+    def exist(self):
+        
+        exist=False
+        for i in self.session:
+            if i==self.ip:
+                exist=True
+        
+        return exist
+    
+    def len(self):
+        
+        return len(self.session)
     
     def clear(self):
         

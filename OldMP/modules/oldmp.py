@@ -22,7 +22,6 @@ class OldMP():
         enc, 
         logsapp: bool=True,
         app: Flask=Flask('OldMP'), 
-        clients: list=[], 
         startWithProxy: bool=False, 
         api_url: str='https://nocturno.games/api', 
         proxy: dict={
@@ -36,14 +35,13 @@ class OldMP():
     ):
 
         self.playerscoords=playerscoords
-        self.functions=func(request=request, app=app, clients=clients, cnx=cnx)
+        self.functions=func(request=request, app=app, cnx=cnx)
         self.NLogs=self.functions.logs
         self.NLogs(logsapp, "OmdMP started!")
 
         @app.before_request
         def checkrps():
             exist=False
-            print(rps)
             for i in rps:
                 if i==request.remote_addr:
                     exist=True
@@ -1233,11 +1231,7 @@ class OldMP():
             
             # set account
             
-            userId=""
-            for i in clients:
-                if i['ip']==request.remote_addr:
-                    userId=i['accountId']
-            if not account==userId:
+            if not account==sessions(sessionL, request.remote_addr).get('username'):
                 respon=self.functions.createError(
                     "errors.com.epicgames.account.invalid_account_credentials",
                     "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
@@ -1315,9 +1309,9 @@ class OldMP():
             
             r={
                 "token": btoken,
-                "session_id": token.split('|')[1].split(':')[1],
+                "session_id": sessions(sessionL, request.remote_addr).get('sessionId'),
                 "token_type": "bearer",
-                "client_id": token.split('|')[0].split(':')[1],
+                "client_id": sessions(sessionL, request.remote_addr).get('clientId'),
                 "internal_client": True,
                 "client_service": "fortnite",
                 "account_id": sessions(sessionL, request.remote_addr).get('username'),
@@ -1327,7 +1321,7 @@ class OldMP():
                 "display_name": sessions(sessionL, request.remote_addr).get('username'),
                 "app": "fortnite",
                 "in_app_id": sessions(sessionL, request.remote_addr).get('username'),
-                "device_id": token.split('|')[2].split(':')[1]
+                "device_id": sessions(sessionL, request.remote_addr).get('deviceId')
             }
 
             resp=app.response_class(
@@ -1552,7 +1546,7 @@ class OldMP():
 
             data=request.stream.read()
             print(data)
-            for events in data.decode()['Events']:
+            for events in loads(data.decode())['Events']:
                 for event in events:
                     if event=='PlayerLocation':
                         print(events[event])
@@ -1560,6 +1554,20 @@ class OldMP():
                         x: int=coords[0]
                         y: int=coords[1]
                         self.playerscoords.append((x, y))
+                        
+                    elif event=='AthenaPlayersLeft':
+                        print(events[event])
+                        sessions(sessionL, request.remote_addr).put('partyPlayerLeft', int(events[event]))
+                        
+                    elif event=='Location':
+                        if events[event]=='InGame':
+                            sessions(sessionL, request.remote_addr).put('InGame', True)
+                        else:
+                            sessions(sessionL, request.remote_addr).put('InGame', False)
+                    
+                    elif event=='AthenaMapName':
+                        print(events[event])
+                        sessions(sessionL, request.remote_addr).put('mapName', events[event])
 
             resp=Response()
             resp.status_code=204
@@ -1717,11 +1725,10 @@ class OldMP():
             self.NLogs(logsapp, f"Grant type: {granttype}")
             
             if granttype=="client_credentials":
-                auth=self.functions.genClient(ip, clientId, enc)
-                print(auth)
-                sessions(sessionL, request.remote_addr).put('auth', auth)
+                token=self.functions.genToken(ip, clientId, enc)
+                sessions(sessionL, request.remote_addr).put('token', token)
                 r={
-                    "access_token": auth['token'],
+                    "access_token": token,
                     "expires_in": 14400,
                     "expires_at": self.functions.createDate(4),
                     "token_type": "bearer",
@@ -1772,12 +1779,6 @@ class OldMP():
                 sessions(sessionL, request.remote_addr).put('password', password)
                 sessions(sessionL, request.remote_addr).put('clientId', clientId)
                 
-                for i in clients:
-                    if i['ip']==ip:
-                        i['accountId']=username
-                        i['displayName']=username
-                        i['password']=enc(password.encode()).decode()
-                
             elif granttype=="refresh_token":
                 
                 refreshtoken=request.get_data().decode().split('&')
@@ -1799,11 +1800,11 @@ class OldMP():
                 pass
 
             r={
-                "access_token": sessions(sessionL, request.remote_addr).get('auth')['token'],
+                "access_token": sessions(sessionL, request.remote_addr).get('token'),
                 "expires_in": 28800,
                 "expires_at": self.functions.createDate(8),
                 "token_type": "bearer",
-                "refresh_token": sessions(sessionL, request.remote_addr).get('auth')['token'],
+                "refresh_token": sessions(sessionL, request.remote_addr).get('token'),
                 "refresh_expires": 86400,
                 "refresh_expires_at": self.functions.createDate(24),
                 "account_id": sessions(sessionL, request.remote_addr).get('username'),
@@ -1813,7 +1814,7 @@ class OldMP():
                 "displayName": sessions(sessionL, request.remote_addr).get('username'),
                 "app": "fortnite",
                 "in_app_id": sessions(sessionL, request.remote_addr).get('username'),
-                "device_id": sessions(sessionL, request.remote_addr).get('auth')['deviceId']
+                "device_id": sessions(sessionL, request.remote_addr).get('deviceId')
             }
 
             resp=app.response_class(
@@ -1843,14 +1844,12 @@ class OldMP():
             self.NLogs(logsapp, f"Kill type: {killType}")
             
             if killType=='ALL':
-                self.functions.removeClient(token)
                 sessions(sessionL, request.remote_addr).clear()
             
             elif killType=='OTHERS':
                 pass
             
             elif killType=='ALL_ACCOUNT_CLIENT':
-                self.functions.removeClient(token)
                 sessions(sessionL, request.remote_addr).clear()
             
             elif killType=='OTHERS_ACCOUNT_CLIENT':
@@ -1865,7 +1864,7 @@ class OldMP():
                     "A valid killType is required.",
                     [], 1013, "invalid_request"
                 )
-                self.functions.removeClient(token)
+                sessions(sessionL, request.remote_addr).clear()
                 resp=app.response_class(
                     response=dumps(respon),
                     status=400,
@@ -1880,9 +1879,6 @@ class OldMP():
         @app.route('/account/api/oauth/sessions/kill/<token>', methods=['DELETE'])
         def accountoauthsessionskillall(token):
             
-            token=request.headers.get('authorization').split("bearer ")[1]
-
-            self.functions.removeClient(token)
             sessions(sessionL, request.remote_addr).clear()
             
             resp=Response()
@@ -1964,11 +1960,7 @@ class OldMP():
             
             # set account
             
-            userId=""
-            for i in clients:
-                if i['ip']==request.remote_addr:
-                    userId=i['accountId']
-            if not account==userId:
+            if not account==sessions(sessionL, request.remote_addr).get('username'):
                 respon=self.functions.createError(
                     "errors.com.epicgames.account.invalid_account_credentials",
                     "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
@@ -3174,11 +3166,7 @@ class OldMP():
             
             # set account
             
-            userId=""
-            for i in clients:
-                if i['ip']==request.remote_addr:
-                    userId=i['accountId']
-            if not account==userId:
+            if not account==sessions(sessionL, request.remote_addr).get('username'):
                 respon=self.functions.createError(
                     "errors.com.epicgames.account.invalid_account_credentials",
                     "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
@@ -3263,11 +3251,7 @@ class OldMP():
             
             # set account
             
-            userId=""
-            for i in clients:
-                if i['ip']==request.remote_addr:
-                    userId=i['accountId']
-            if not account==userId:
+            if not account==sessions(sessionL, request.remote_addr).get('username'):
                 respon=self.functions.createError(
                     "errors.com.epicgames.account.invalid_account_credentials",
                     "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
@@ -3352,11 +3336,7 @@ class OldMP():
             
             # set account
             
-            userId=""
-            for i in clients:
-                if i['ip']==request.remote_addr:
-                    userId=i['accountId']
-            if not account==userId:
+            if not account==sessions(sessionL, request.remote_addr).get('username'):
                 respon=self.functions.createError(
                     "errors.com.epicgames.account.invalid_account_credentials",
                     "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
@@ -3442,11 +3422,7 @@ class OldMP():
             
             # set account
             
-            userId=""
-            for i in clients:
-                if i['ip']==request.remote_addr:
-                    userId=i['accountId']
-            if not account==userId:
+            if not account==sessions(sessionL, request.remote_addr).get('username'):
                 respon=self.functions.createError(
                     "errors.com.epicgames.account.invalid_account_credentials",
                     "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
@@ -3537,11 +3513,7 @@ class OldMP():
             
             # set account
             
-            userId=""
-            for i in clients:
-                if i['ip']==request.remote_addr:
-                    userId=i['accountId']
-            if not account==userId:
+            if not account==sessions(sessionL, request.remote_addr).get('username'):
                 respon=self.functions.createError(
                     "errors.com.epicgames.account.invalid_account_credentials",
                     "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
@@ -3614,9 +3586,10 @@ class OldMP():
                 
                 slotNameJ=loads(request.get_data())['slotName']
                 itemToSlotJ=loads(request.get_data())['itemToSlot']
-                self.functions.req(f"UPDATE favorites SET `{slotNameJ.lower()}`='{itemToSlotJ}' WHERE `username`='{account}'")
+                self.functions.req(f"UPDATE favorites SET `{slotNameJ.lower()}`='{itemToSlotJ}' WHERE `username`='{sessions(sessionL, request.remote_addr).get('username')}'")
                 
                 if slotNameJ=="Character":
+                    sessions(sessionL, request.remote_addr).put('character', itemToSlotJ)
                     profile['stats']['attributes']['favorite_character']=itemToSlotJ or ""
                     StatChanged=True
                     pass
@@ -3738,11 +3711,7 @@ class OldMP():
             
             # set account
             
-            userId=""
-            for i in clients:
-                if i['ip']==request.remote_addr:
-                    userId=i['accountId']
-            if not account==userId:
+            if not account==sessions(sessionL, request.remote_addr).get('username'):
                 respon=self.functions.createError(
                     "errors.com.epicgames.account.invalid_account_credentials",
                     "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
@@ -3807,11 +3776,7 @@ class OldMP():
             
             # set account
             
-            userId=""
-            for i in clients:
-                if i['ip']==request.remote_addr:
-                    userId=i['accountId']
-            if not account==userId:
+            if not account==sessions(sessionL, request.remote_addr).get('username'):
                 respon=self.functions.createError(
                     "errors.com.epicgames.account.invalid_account_credentials",
                     "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
@@ -3877,11 +3842,7 @@ class OldMP():
             
             # set account
             
-            userId=""
-            for i in clients:
-                if i['ip']==request.remote_addr:
-                    userId=i['accountId']
-            if not account==userId:
+            if not account==sessions(sessionL, request.remote_addr).get('username'):
                 respon=self.functions.createError(
                     "errors.com.epicgames.account.invalid_account_credentials",
                     "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
@@ -3946,11 +3907,7 @@ class OldMP():
             
             # set account
             
-            userId=""
-            for i in clients:
-                if i['ip']==request.remote_addr:
-                    userId=i['accountId']
-            if not account==userId:
+            if not account==sessions(sessionL, request.remote_addr).get('username'):
                 respon=self.functions.createError(
                     "errors.com.epicgames.account.invalid_account_credentials",
                     "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
@@ -4043,11 +4000,7 @@ class OldMP():
             
             # set account
             
-            userId=""
-            for i in clients:
-                if i['ip']==request.remote_addr:
-                    userId=i['accountId']
-            if not account==userId:
+            if not account==sessions(sessionL, request.remote_addr).get('username'):
                 respon=self.functions.createError(
                     "errors.com.epicgames.account.invalid_account_credentials",
                     "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
@@ -4343,11 +4296,7 @@ class OldMP():
             
             # set account
             
-            userId=""
-            for i in clients:
-                if i['ip']==request.remote_addr:
-                    userId=i['accountId']
-            if not account==userId:
+            if not account==sessions(sessionL, request.remote_addr).get('username'):
                 respon=self.functions.createError(
                     "errors.com.epicgames.account.invalid_account_credentials",
                     "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
@@ -4486,11 +4435,7 @@ class OldMP():
             
             # set account
             
-            userId=""
-            for i in clients:
-                if i['ip']==request.remote_addr:
-                    userId=i['accountId']
-            if not account==userId:
+            if not account==sessions(sessionL, request.remote_addr).get('username'):
                 respon=self.functions.createError(
                     "errors.com.epicgames.account.invalid_account_credentials",
                     "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
@@ -4621,11 +4566,7 @@ class OldMP():
             
             # set account
             
-            userId=""
-            for i in clients:
-                if i['ip']==request.remote_addr:
-                    userId=i['accountId']
-            if not account==userId:
+            if not account==sessions(sessionL, request.remote_addr).get('username'):
                 respon=self.functions.createError(
                     "errors.com.epicgames.account.invalid_account_credentials",
                     "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 

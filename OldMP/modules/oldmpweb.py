@@ -4,32 +4,54 @@ from json import dumps, loads
 from os import listdir as oslistdir
 from os import path as ospath
 
+from modules.session import Session as sessions
+
 class OldMPWeb():
     def __init__(
         self,
         cnx,
         logsapp: bool=True,
-        clients: list=[], 
         playerscoords: list=[], 
         appweb: Flask=Flask("OldMPWeb"),
         port: int=80,
-        rps: dict={}
+        rps: dict={},
+        sessionL: dict={},
     ):
         
-        self.clients=clients
         self.appweb=appweb
-        self.functions=func(request=request, app=appweb, clients=clients, cnx=cnx)
+        self.functions=func(request=request, app=appweb, cnx=cnx)
         self.NLogs=self.functions.logs
 
         self.NLogs(logsapp, "OmdMPWeb started!")
         
+        @appweb.before_request
+        def checkrps():
+            exist=False
+            for i in rps:
+                if i==request.remote_addr:
+                    exist=True
+            if exist:
+                if rps[request.remote_addr]>=20:
+                    respon=self.functions.createError(
+                        "errors.com.epicgames.account.too_many_requests",
+                        "You have made more than the limited number of requests", 
+                        [], 18031, "too_many_requests"
+                    )
+                    resp=appweb.response_class(
+                        response=dumps(respon),
+                        status=400,
+                        mimetype='application/json'
+                    )
+                    return resp
+                else:
+                    rps[request.remote_addr]+=1
+            else:
+                rps.update({request.remote_addr: 0})
+        
         @self.appweb.route("/", methods=['GET', 'POST'])
         def baseroute():
             
-            presence=False
-            for i in self.clients:
-                if i['ip']==request.remote_addr:
-                    presence=True
+            presence=sessions(sessionL, request.remote_addr).exist()
 
             resp=self.appweb.response_class(
                 response=render_template('index.html', presence=presence),
@@ -41,7 +63,7 @@ class OldMPWeb():
         @self.appweb.route('/players')
         def getplayers():
             resp=self.appweb.response_class(
-                response=dumps({'players': len(self.clients)}),
+                response=dumps({'players': sessions(sessionL, request.remote_addr).len()}),
                 status=200,
                 mimetype='application/json'
             )
@@ -49,8 +71,11 @@ class OldMPWeb():
         
         @self.appweb.route('/status')
         def getstatus():
+            
+            status=loads(open('conf.json', 'r', encoding='utf-8').read())['Status']['backend']
+            
             resp=self.appweb.response_class(
-                response=dumps({'status': 'online'}),
+                response=dumps({'status': status}),
                 status=200,
                 mimetype='application/json'
             )
@@ -146,10 +171,7 @@ class OldMPWeb():
         @self.appweb.route('/map', methods=['GET', 'POST'])
         def spawnmap():
             
-            presence=False
-            for i in self.clients:
-                if i['ip']==request.remote_addr:
-                    presence=True
+            presence=sessions(sessionL, request.remote_addr).exist()
 
             if ospath.exists('data/content/images/ActMiniMapAthena.png'):
                 mapFile='ActMiniMapAthena.png'
@@ -232,7 +254,7 @@ class OldMPWeb():
                 return resp
             
             resp=self.appweb.response_class(
-                response=dumps(self.clients),
+                response=dumps(sessionL),
                 status=200,
                 mimetype='application/json'
             )
