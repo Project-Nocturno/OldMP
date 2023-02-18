@@ -50,7 +50,7 @@ app=Flask("OldMP") # lobby emulator conf
 appweb=Flask("OldMPWeb") # website conf
 applaunch=Flask("OldMPLauncher") # launcher backend services conf
 
-# start all the backend services
+# start all the back services
 tl=Thread(target=loops(playerscoords, rps).makemap)
 tl.setDaemon(True)
 tl.start()
@@ -72,8 +72,8 @@ tweb=Thread( # thread for the website services
 )
 tweb.setDaemon(True)
 tweb.start()
-sleep(1)
 
+sleep(1)
 tlaunch=Thread( # thread for the launcher backend services
     target=oldmplauncher, args=(
         enc,

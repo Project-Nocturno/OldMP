@@ -40,7 +40,7 @@ class OldMPLauncher():
                 if i==request.remote_addr:
                     exist=True
             if exist:
-                if rps[request.remote_addr]>=20:
+                if rps[request.remote_addr]>=5:
                     respon=self.functions.createError(
                         "errors.com.epicgames.account.too_many_requests",
                         "You have made more than the limited number of requests", 

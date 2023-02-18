@@ -1781,7 +1781,7 @@ class OldMP():
                 
             elif granttype=="refresh_token":
                 
-                refreshtoken=request.get_data().decode().split('&')
+                refreshtoken=request.get_data().decode().split('&')[1].split('=')[1]
                 self.NLogs(logsapp, f"Refresh token: {refreshtoken}")
                 if not refreshtoken:
                     respon=self.functions.createError(
@@ -1794,10 +1794,40 @@ class OldMP():
                         status=400,
                         mimetype='application/json'
                     )
-                    return resp 
+                    return resp
+                
+                try:
+                    refresh_token=dec(str(refreshtoken).replace('NOCTURNOISBETTER_', '').encode()).decode()
+                    if not token.split('|')[1].split(':')[1]==request.remote_addr:
+                        respon=self.functions.createError(
+                            "errors.com.epicgames.account.auth_token.invalid_refresh_token",
+                            f"Sorry the refresh token '{refresh_token}' is invalid", 
+                            [refresh_token], 18036, "invalid_grant"
+                        )
+                        resp=app.response_class(
+                            response=dumps(respon),
+                            status=400,
+                            mimetype='application/json'
+                        )
+                        return resp
+                except:
+                    self.NLogs(logsapp, "refreshtoken Error")
             
             elif granttype=="exchange_code":
                 pass
+        
+            else:
+                respon=self.functions.createError(
+                    "errors.com.epicgames.common.oauth.unsupported_grant_type",
+                    f"Unsupported grant type: {granttype}", 
+                    [], 1016, "unsupported_grant_type"
+                )
+                resp=app.response_class(
+                    response=dumps(respon),
+                    status=400,
+                    mimetype='application/json'
+                )
+                return resp
 
             r={
                 "access_token": sessions(sessionL, request.remote_addr).get('token'),
