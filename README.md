@@ -63,12 +63,13 @@ def datarouterapipublicdata():
     resp=Response()
     resp.status_code=204
     return resp # retourne un code 204
-```
+```  
+Le ratelimite pour ce service est de `20` rps  
 
 ## OldMPWeb
 Le site web de OldMP est par defaut sur le port 80, il permet d'apporter une interface web pour les administarteurs et pour les utilisateurs, il y a egalement un systeme de carte (avec les emplacements de tous les joueurs de la partie) qui as été developper sur l'url `/map`.  
-Il y a differentes fonctions qui permettent de recuperer les contents publiques (images et fichiers json) comme `/content/files/<file>` pour des fichiers json ou `/content/images/<file>` pour des images, pour lister tous les fichiers on utilise la commande `listall` a la place de `<file>`.
-Le ratelimite pour ce service est de `5`  
+Il y a differentes fonctions qui permettent de recuperer les contents publiques (images et fichiers json) comme `/content/files/<file>` pour des fichiers json ou `/content/images/<file>` pour des images, pour lister tous les fichiers on utilise la commande `listall` a la place de `<file>`.  
+Le ratelimite pour ce service est de `5` rps  
 Le code est [ici](https://github.com/Project-Nocturno/OldMP/blob/main/OldMP/modules/oldmpweb.py)
 
 ## OldMPLauncher
@@ -111,7 +112,7 @@ et si il est in-game:
 ```  
 Un systeme de status avec l'url `/launcher/status` qui retourne (`online`, `maintenance` ou `offline`) au format text.
 Un systeme de news avec l'url `/launcher/news` qui vas retourner les news au format text.  
-Le ratelimite pour ce service est de `5`  
+Le ratelimite pour ce service est de `5` rps  
 Le code est [ici](https://github.com/Project-Nocturno/OldMP/blob/main/OldMP/modules/oldmplauncher.py)
 # Versions compatibles
 ## Versions:
