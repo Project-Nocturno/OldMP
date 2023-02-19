@@ -597,8 +597,8 @@ class OldMP():
             currentBuildID=memory['CL']
             
             file=f'data/clientsettings/{accountId}/ClientSettings-{currentBuildID}.Sav'
-            data=request.stream.read().decode('Latin-1')
-            open(file, 'w', encoding='Latin-1').write(data)
+            data=request.stream.read().decode('latin1')
+            open(file, 'w', encoding='latin1').write(data)
 
             resp=Response()
             resp.status_code=204
@@ -1550,7 +1550,7 @@ class OldMP():
                 for event in events:
                     if event=='PlayerLocation':
                         print(events[event])
-                        coords=events[event].split(',')
+                        coords=str(events[event]).split(',')
                         x: int=coords[0]
                         y: int=coords[1]
                         self.playerscoords.append((x, y))
@@ -1568,6 +1568,11 @@ class OldMP():
                     elif event=='AthenaMapName':
                         print(events[event])
                         sessions(sessionL, request.remote_addr).put('mapName', events[event])
+                    
+                    elif event=='EventName':
+                        if events[event]=='SessionEnd':
+                            print('session clear')
+                            sessions(sessionL, request.remote_addr).clear()
 
             resp=Response()
             resp.status_code=204
@@ -1952,34 +1957,34 @@ class OldMP():
         @app.route('/fortnite/api/game/v2/world/info', methods=['GET'])
         def apigamev2wotldinfo():
             
-            theater=open('data/content/worldstw.json', 'r', encoding='utf-8').read()
-            memory=self.functions.getVersion()
-            date=datetime.now().strftime("%Y-%m-%d")
+            theater=loads(open('data/content/worldstw.json', 'r', encoding='utf-8').read())
+            # memory=self.functions.getVersion()
+            # date=datetime.now().strftime("%Y-%m-%d")
             
-            try:
-                if memory['season']>=9:
-                    date=f"{date}T23:59:59.999Z"
+            # try:
+            #     if memory['season']>=9:
+            #         date=f"{date}T23:59:59.999Z"
                 
-                else:
-                    if date<f"{date}T05:59:59.999Z":
-                        date=f"{date}T05:59:59.999Z"
+            #     else:
+            #         if date<f"{date}T05:59:59.999Z":
+            #             date=f"{date}T05:59:59.999Z"
                     
-                    elif date<f"{date}T11:59:59.999Z":
-                        date=f"{date}T11:59:59.999Z"
+            #         elif date<f"{date}T11:59:59.999Z":
+            #             date=f"{date}T11:59:59.999Z"
                         
-                    elif date<f"{date}T17:59:59.999Z":
-                        date=f"{date}T17:59:59.999Z"
+            #         elif date<f"{date}T17:59:59.999Z":
+            #             date=f"{date}T17:59:59.999Z"
                         
-                    elif date<f"{date}T23:59:59.999Z":
-                        date=f"{date}T23:59:59.999Z"
+            #         elif date<f"{date}T23:59:59.999Z":
+            #             date=f"{date}T23:59:59.999Z"
                 
-            except:
-                pass
+            # except:
+            #     pass
             
-            theater=theater.replace('2017-07-25T23:59:59.999Z', date)
+            # theater=theater.replace('2017-07-25T23:59:59.999Z', date)
             
             resp=app.response_class(
-                response=dumps({}),
+                response=dumps(theater),
                 status=200,
                 mimetype='application/json'
             )
@@ -3216,8 +3221,28 @@ class OldMP():
                 profile['_id']=sessions(sessionL, request.remote_addr).get('username')
                 profile['accountId']=sessions(sessionL, request.remote_addr).get('username')
                 
+                ApplyProfileChanges=[]
+                BaseRevision=profile['rvn'] or 0
+                QueryRevision=request.args.get('rvn') or -1
+                
+                if QueryRevision!=BaseRevision:
+                    ApplyProfileChanges=[{
+                        "changeType": "fullProfileUpdate",
+                        "profile": profile
+                    }]
+                
+                r={
+                    "profileRevision": profile['rvn'] or 0,
+                    "profileId": request.args.get("profileId"),
+                    "profileChangesBaseRevision": BaseRevision,
+                    "profileChanges": ApplyProfileChanges,
+                    "profileCommandRevision": profile['commandRevision'] or 0,
+                    "serverTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
+                    "responseVersion": 1
+                }
+                
                 resp=app.response_class(
-                    response=dumps(profile),
+                    response=dumps(r),
                     status=200,
                     mimetype='application/json'
                 )
@@ -3301,8 +3326,28 @@ class OldMP():
                 profile['_id']=sessions(sessionL, request.remote_addr).get('username')
                 profile['accountId']=sessions(sessionL, request.remote_addr).get('username')
                 
+                ApplyProfileChanges=[]
+                BaseRevision=profile['rvn'] or 0
+                QueryRevision=request.args.get('rvn') or -1
+                
+                if QueryRevision!=BaseRevision:
+                    ApplyProfileChanges=[{
+                        "changeType": "fullProfileUpdate",
+                        "profile": profile
+                    }]
+                
+                r={
+                    "profileRevision": profile['rvn'] or 0,
+                    "profileId": request.args.get("profileId"),
+                    "profileChangesBaseRevision": BaseRevision,
+                    "profileChanges": ApplyProfileChanges,
+                    "profileCommandRevision": profile['commandRevision'] or 0,
+                    "serverTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
+                    "responseVersion": 1
+                }
+                
                 resp=app.response_class(
-                    response=dumps(profile),
+                    response=dumps(r),
                     status=200,
                     mimetype='application/json'
                 )
@@ -3386,8 +3431,28 @@ class OldMP():
                 profile['_id']=sessions(sessionL, request.remote_addr).get('username')
                 profile['accountId']=sessions(sessionL, request.remote_addr).get('username')
                 
+                ApplyProfileChanges=[]
+                BaseRevision=profile['rvn'] or 0
+                QueryRevision=request.args.get('rvn') or -1
+                
+                if QueryRevision!=BaseRevision:
+                    ApplyProfileChanges=[{
+                        "changeType": "fullProfileUpdate",
+                        "profile": profile
+                    }]
+                
+                r={
+                    "profileRevision": profile['rvn'] or 0,
+                    "profileId": request.args.get("profileId"),
+                    "profileChangesBaseRevision": BaseRevision,
+                    "profileChanges": ApplyProfileChanges,
+                    "profileCommandRevision": profile['commandRevision'] or 0,
+                    "serverTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
+                    "responseVersion": 1
+                }
+                
                 resp=app.response_class(
-                    response=dumps(profile),
+                    response=dumps(r),
                     status=200,
                     mimetype='application/json'
                 )
@@ -3472,8 +3537,28 @@ class OldMP():
                 profile['_id']=sessions(sessionL, request.remote_addr).get('username')
                 profile['accountId']=sessions(sessionL, request.remote_addr).get('username')
                 
+                ApplyProfileChanges=[]
+                BaseRevision=profile['rvn'] or 0
+                QueryRevision=request.args.get('rvn') or -1
+                
+                if QueryRevision!=BaseRevision:
+                    ApplyProfileChanges=[{
+                        "changeType": "fullProfileUpdate",
+                        "profile": profile
+                    }]
+                
+                r={
+                    "profileRevision": profile['rvn'] or 0,
+                    "profileId": request.args.get("profileId"),
+                    "profileChangesBaseRevision": BaseRevision,
+                    "profileChanges": ApplyProfileChanges,
+                    "profileCommandRevision": profile['commandRevision'] or 0,
+                    "serverTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
+                    "responseVersion": 1
+                }
+                
                 resp=app.response_class(
-                    response=dumps(profile),
+                    response=dumps(r),
                     status=200,
                     mimetype='application/json'
                 )
@@ -3563,8 +3648,28 @@ class OldMP():
                 profile['_id']=sessions(sessionL, request.remote_addr).get('username')
                 profile['accountId']=sessions(sessionL, request.remote_addr).get('username')
                 
+                ApplyProfileChanges=[]
+                BaseRevision=profile['rvn'] or 0
+                QueryRevision=request.args.get('rvn') or -1
+                
+                if QueryRevision!=BaseRevision:
+                    ApplyProfileChanges=[{
+                        "changeType": "fullProfileUpdate",
+                        "profile": profile
+                    }]
+                
+                r={
+                    "profileRevision": profile['rvn'] or 0,
+                    "profileId": request.args.get("profileId"),
+                    "profileChangesBaseRevision": BaseRevision,
+                    "profileChanges": ApplyProfileChanges,
+                    "profileCommandRevision": profile['commandRevision'] or 0,
+                    "serverTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
+                    "responseVersion": 1
+                }
+                
                 resp=app.response_class(
-                    response=dumps(profile),
+                    response=dumps(r),
                     status=200,
                     mimetype='application/json'
                 )
@@ -3755,14 +3860,35 @@ class OldMP():
                 return resp
             
             if request.args.get("profileId") in ['athena', 'profile0', 'common_core', 'common_public']:
+                print('pass')
                 pass
             else:
                 profile=loads(open(f'data/unusedprofiles/{request.args.get("profileId")}.json', 'r', encoding='utf-8').read())
                 profile['_id']=sessions(sessionL, request.remote_addr).get('username')
                 profile['accountId']=sessions(sessionL, request.remote_addr).get('username')
                 
+                ApplyProfileChanges=[]
+                BaseRevision=profile['rvn'] or 0
+                QueryRevision=request.args.get('rvn') or -1
+                
+                if QueryRevision!=BaseRevision:
+                    ApplyProfileChanges=[{
+                        "changeType": "fullProfileUpdate",
+                        "profile": profile
+                    }]
+                
+                r={
+                    "profileRevision": profile['rvn'] or 0,
+                    "profileId": request.args.get("profileId"),
+                    "profileChangesBaseRevision": BaseRevision,
+                    "profileChanges": ApplyProfileChanges,
+                    "profileCommandRevision": profile['commandRevision'] or 0,
+                    "serverTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
+                    "responseVersion": 1
+                }
+                
                 resp=app.response_class(
-                    response=dumps(profile),
+                    response=dumps(r),
                     status=200,
                     mimetype='application/json'
                 )
@@ -3826,8 +3952,28 @@ class OldMP():
                 profile['_id']=sessions(sessionL, request.remote_addr).get('username')
                 profile['accountId']=sessions(sessionL, request.remote_addr).get('username')
                 
+                ApplyProfileChanges=[]
+                BaseRevision=profile['rvn'] or 0
+                QueryRevision=request.args.get('rvn') or -1
+                
+                if QueryRevision!=BaseRevision:
+                    ApplyProfileChanges=[{
+                        "changeType": "fullProfileUpdate",
+                        "profile": profile
+                    }]
+                
+                r={
+                    "profileRevision": profile['rvn'] or 0,
+                    "profileId": request.args.get("profileId"),
+                    "profileChangesBaseRevision": BaseRevision,
+                    "profileChanges": ApplyProfileChanges,
+                    "profileCommandRevision": profile['commandRevision'] or 0,
+                    "serverTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
+                    "responseVersion": 1
+                }
+                
                 resp=app.response_class(
-                    response=dumps(profile),
+                    response=dumps(r),
                     status=200,
                     mimetype='application/json'
                 )
@@ -3892,8 +4038,28 @@ class OldMP():
                 profile['_id']=sessions(sessionL, request.remote_addr).get('username')
                 profile['accountId']=sessions(sessionL, request.remote_addr).get('username')
                 
+                ApplyProfileChanges=[]
+                BaseRevision=profile['rvn'] or 0
+                QueryRevision=request.args.get('rvn') or -1
+                
+                if QueryRevision!=BaseRevision:
+                    ApplyProfileChanges=[{
+                        "changeType": "fullProfileUpdate",
+                        "profile": profile
+                    }]
+                
+                r={
+                    "profileRevision": profile['rvn'] or 0,
+                    "profileId": request.args.get("profileId"),
+                    "profileChangesBaseRevision": BaseRevision,
+                    "profileChanges": ApplyProfileChanges,
+                    "profileCommandRevision": profile['commandRevision'] or 0,
+                    "serverTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
+                    "responseVersion": 1
+                }
+                
                 resp=app.response_class(
-                    response=dumps(profile),
+                    response=dumps(r),
                     status=200,
                     mimetype='application/json'
                 )
@@ -3957,8 +4123,28 @@ class OldMP():
                 profile['_id']=sessions(sessionL, request.remote_addr).get('username')
                 profile['accountId']=sessions(sessionL, request.remote_addr).get('username')
                 
+                ApplyProfileChanges=[]
+                BaseRevision=profile['rvn'] or 0
+                QueryRevision=request.args.get('rvn') or -1
+                
+                if QueryRevision!=BaseRevision:
+                    ApplyProfileChanges=[{
+                        "changeType": "fullProfileUpdate",
+                        "profile": profile
+                    }]
+                
+                r={
+                    "profileRevision": profile['rvn'] or 0,
+                    "profileId": request.args.get("profileId"),
+                    "profileChangesBaseRevision": BaseRevision,
+                    "profileChanges": ApplyProfileChanges,
+                    "profileCommandRevision": profile['commandRevision'] or 0,
+                    "serverTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
+                    "responseVersion": 1
+                }
+                
                 resp=app.response_class(
-                    response=dumps(profile),
+                    response=dumps(r),
                     status=200,
                     mimetype='application/json'
                 )
@@ -4050,8 +4236,28 @@ class OldMP():
                 profile['_id']=sessions(sessionL, request.remote_addr).get('username')
                 profile['accountId']=sessions(sessionL, request.remote_addr).get('username')
                 
+                ApplyProfileChanges=[]
+                BaseRevision=profile['rvn'] or 0
+                QueryRevision=request.args.get('rvn') or -1
+                
+                if QueryRevision!=BaseRevision:
+                    ApplyProfileChanges=[{
+                        "changeType": "fullProfileUpdate",
+                        "profile": profile
+                    }]
+                
+                r={
+                    "profileRevision": profile['rvn'] or 0,
+                    "profileId": request.args.get("profileId"),
+                    "profileChangesBaseRevision": BaseRevision,
+                    "profileChanges": ApplyProfileChanges,
+                    "profileCommandRevision": profile['commandRevision'] or 0,
+                    "serverTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
+                    "responseVersion": 1
+                }
+                
                 resp=app.response_class(
-                    response=dumps(profile),
+                    response=dumps(r),
                     status=200,
                     mimetype='application/json'
                 )
@@ -4346,8 +4552,28 @@ class OldMP():
                 profile['_id']=sessions(sessionL, request.remote_addr).get('username')
                 profile['accountId']=sessions(sessionL, request.remote_addr).get('username')
                 
+                ApplyProfileChanges=[]
+                BaseRevision=profile['rvn'] or 0
+                QueryRevision=request.args.get('rvn') or -1
+                
+                if QueryRevision!=BaseRevision:
+                    ApplyProfileChanges=[{
+                        "changeType": "fullProfileUpdate",
+                        "profile": profile
+                    }]
+                
+                r={
+                    "profileRevision": profile['rvn'] or 0,
+                    "profileId": request.args.get("profileId"),
+                    "profileChangesBaseRevision": BaseRevision,
+                    "profileChanges": ApplyProfileChanges,
+                    "profileCommandRevision": profile['commandRevision'] or 0,
+                    "serverTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
+                    "responseVersion": 1
+                }
+                
                 resp=app.response_class(
-                    response=dumps(profile),
+                    response=dumps(r),
                     status=200,
                     mimetype='application/json'
                 )
@@ -4616,8 +4842,28 @@ class OldMP():
                 profile['_id']=sessions(sessionL, request.remote_addr).get('username')
                 profile['accountId']=sessions(sessionL, request.remote_addr).get('username')
                 
+                ApplyProfileChanges=[]
+                BaseRevision=profile['rvn'] or 0
+                QueryRevision=request.args.get('rvn') or -1
+                
+                if QueryRevision!=BaseRevision:
+                    ApplyProfileChanges=[{
+                        "changeType": "fullProfileUpdate",
+                        "profile": profile
+                    }]
+                
+                r={
+                    "profileRevision": profile['rvn'] or 0,
+                    "profileId": request.args.get("profileId"),
+                    "profileChangesBaseRevision": BaseRevision,
+                    "profileChanges": ApplyProfileChanges,
+                    "profileCommandRevision": profile['commandRevision'] or 0,
+                    "serverTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
+                    "responseVersion": 1
+                }
+                
                 resp=app.response_class(
-                    response=dumps(profile),
+                    response=dumps(r),
                     status=200,
                     mimetype='application/json'
                 )

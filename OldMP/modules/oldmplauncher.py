@@ -71,7 +71,7 @@ class OldMPLauncher():
         def favicon():
             return send_file('data/content/images/logo.ico', mimetype='image/ico')
         
-        @self.applaunch.route("/versioncheck", methods=['GET'])
+        @self.applaunch.route("/launcher/versioncheck", methods=['GET'])
         def versioncheck():
 
             resp=self.applaunch.response_class(
@@ -81,7 +81,7 @@ class OldMPLauncher():
             )
             return resp
         
-        @self.applaunch.route("/status", methods=['GET'])
+        @self.applaunch.route("/launcher/status", methods=['GET'])
         def getstatusw():
 
             status=loads(open('conf.json', 'r', encoding='utf-8').read())['Status']['launcher']
@@ -93,7 +93,19 @@ class OldMPLauncher():
             )
             return resp
         
-        @self.applaunch.route("/auth", methods=['GET'])
+        @self.applaunch.route("/launcher/news", methods=['GET'])
+        def getnews():
+
+            news="Tu peux rejouer à l'ancien Fortnite&#xD;&#xA;grâce au Project Nocturno, tout ça&#xD;&#xA;gratuitement ! Le Project Nocturno&#xD;&#xA;reprends à l'identique l'ancien&#xD;&#xA;Fortnite: (Les skins, les niveaux,&#xD;&#xA;les v-bucks et la boutique). &#xD;&#xA;Tu pourras aussi avoir des amis et&#xD;&#xA;jouer avec eux !&#xA;"
+
+            resp=self.applaunch.response_class(
+                response=news,
+                status=200,
+                mimetype='text/plain'
+            )
+            return resp
+        
+        @self.applaunch.route("/launcher/auth", methods=['GET'])
         def authsys():
 
             grant_type=request.args.get('grant_type')
@@ -186,7 +198,7 @@ class OldMPLauncher():
             )
             return resp
         
-        @self.applaunch.route("/rpc/", methods=['GET'])
+        @self.applaunch.route("/launcher/rpc/", methods=['GET'])
         def rpc():
             if sessions(sessionL, request.remote_addr).get('InGame')==True:
                 r={
