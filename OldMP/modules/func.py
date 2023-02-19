@@ -441,6 +441,9 @@ class OldMPFunc():
         
         return contentpage
     
+    def sendXmppMessageToAll(self, req):
+        pass
+    
     def find(self, pred, iterable):
         for element in iterable:
             if pred(element):

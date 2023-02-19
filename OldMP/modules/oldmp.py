@@ -234,8 +234,8 @@ class OldMP():
             )
             return resp
 
-        @app.route('/api/v1/events/Fortnite/download/', methods=['GET'])
-        def apieventsdownload():
+        @app.route('/api/v1/events/Fortnite/download/<accountId>', methods=['GET'])
+        def apieventsdownload(accountId):
             resp=app.response_class(
                 response=dumps({}),
                 status=200,
@@ -780,48 +780,57 @@ class OldMP():
             
             # set account
             
+            memory=self.functions.getVersion()
             friendslist=loads(open(f'data/friends/{accountId}/friendslist.json', 'r', encoding='utf-8').read())
             friendslist2=loads(open(f'data/friends/{accountId}/friendslist2.json', 'r', encoding='utf-8').read())
 
-            for z in friendslist:
-                if z['accountId']!=accountId:
-                    FriendObject={
-                        "accountId": accountId,
-                        "status": "ACCEPTED",
-                        "direction": "OUTBOUND",
-                        "created": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
-                        "favorite": False
-                    }
-                    friendslist.append(FriendObject)
-                    friendslist2['friends'].append({
-                        "accountId": FriendObject['accountId'],
-                        "groups": [],
-                        "mutual": 0,
-                        "alias": "",
-                        "note": "",
-                        "favorite": FriendObject['favorite'],
-                        "created": FriendObject['created']
-                    })
-                    
-                    """
-                    sendXmppMessageToAll({
-                            "payload": FriendObject,
-                            "type": "com.epicgames.friends.core.apiobjects.Friend",
-                            "timestamp": FriendObject.created
-                        })
+            if not any(i['accountId']==request.args.get('accountId') for i in friendslist):
+                FriendObject={
+                    "accountId": accountId,
+                    "status": "ACCEPTED",
+                    "direction": "OUTBOUND",
+                    "created": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
+                    "favorite": False
+                }
+                friendslist.append(FriendObject)
+                friendslist2['friends'].append({
+                    "accountId": FriendObject['accountId'],
+                    "groups": [],
+                    "mutual": 0,
+                    "alias": "",
+                    "note": "",
+                    "favorite": FriendObject['favorite'],
+                    "created": FriendObject['created']
+                })
+                
+                self.functions.sendXmppMessageToAll({
+                    "payload": FriendObject,
+                    "type": "com.epicgames.friends.core.apiobjects.Friend",
+                    "timestamp": FriendObject['created']
+                })
 
-                    sendXmppMessageToAll({
-                        "type": "FRIENDSHIP_REQUEST",
-                        "timestamp": FriendObject.created,
-                        "from": FriendObject.accountId,
-                        "status": FriendObject.status
-                    })
-                    """
-                    break
+                self.functions.sendXmppMessageToAll({
+                    "type": "FRIENDSHIP_REQUEST",
+                    "timestamp": FriendObject['created'],
+                    "from": FriendObject['accountId'],
+                    "status": FriendObject['status']
+                })
             
             open(f'data/friends/{accountId}/friendslist.json', 'w', encoding='utf-8').write(dumps(friendslist, indent=4))
             open(f'data/friends/{accountId}/friendslist2.json', 'w', encoding='utf-8').write(dumps(friendslist2, indent=4))
 
+            if memory['season']>=7:
+                friends=friendslist.copy()
+                for i in friends:
+                    if i['accountId']==request.args.get('accountId'):
+                        friends.remove(i)
+                resp=app.response_class(
+                    response=dumps(friends),
+                    status=200,
+                    mimetype='application/json'
+                )
+                return resp
+            
             resp=app.response_class(
                 response=dumps(friendslist),
                 status=200,
@@ -837,47 +846,43 @@ class OldMP():
             friendslist=loads(open(f'data/friends/{accountId}/friendslist.json', 'r', encoding='utf-8').read())
             friendslist2=loads(open(f'data/friends/{accountId}/friendslist2.json', 'r', encoding='utf-8').read())
 
-            for i in friendslist2[0]['friends']['accountId']:
-                if i!=accountId:
-                    FriendObject={
-                        "accountId": accountId,
-                        "groups": [],
-                        "mutual": 0,
-                        "alias": "",
-                        "note": "",
-                        "favorite": False,
-                        "created": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
-                    }
-                    friendslist2['friends'].append(FriendObject)
-                    friendslist.append({
+            if not any(i['accountId']==request.args.get('accountId') for i in friendslist2['friends']):
+                FriendObject={
+                    "accountId": accountId,
+                    "groups": [],
+                    "mutual": 0,
+                    "alias": "",
+                    "note": "",
+                    "favorite": False,
+                    "created": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+                }
+                friendslist2['friends'].append(FriendObject)
+                friendslist.append({
+                    "accountId": FriendObject['accountId'],
+                    "status": "ACCEPTED",
+                    "direction": "OUTBOUND",
+                    "favorite": FriendObject['favorite'],
+                    "created": FriendObject['created']
+                })
+                
+                self.functions.sendXmppMessageToAll({
+                    "payload": {
                         "accountId": FriendObject['accountId'],
                         "status": "ACCEPTED",
                         "direction": "OUTBOUND",
-                        "favorite": FriendObject['favorite'],
-                        "created": FriendObject['created']
-                    })
-                    
-                    """
-                    sendXmppMessageToAll({
-                        "payload": {
-                            "accountId": FriendObject.accountId,
-                            "status": "ACCEPTED",
-                            "direction": "OUTBOUND",
-                            "created": FriendObject.created,
-                            "favorite": FriendObject.favorite
-                        },
-                        "type": "com.epicgames.friends.core.apiobjects.Friend",
-                        "timestamp": FriendObject.created
-                    })
+                        "created": FriendObject['created'],
+                        "favorite": FriendObject['favorite']
+                    },
+                    "type": "com.epicgames.friends.core.apiobjects.Friend",
+                    "timestamp": FriendObject['created']
+                })
 
-                    sendXmppMessageToAll({
-                        "type": "FRIENDSHIP_REQUEST",
-                        "timestamp": FriendObject.created,
-                        "from": FriendObject.accountId,
-                        "status": "ACCEPTED"
-                    })
-                    """
-                    break
+                self.functions.sendXmppMessageToAll({
+                    "type": "FRIENDSHIP_REQUEST",
+                    "timestamp": FriendObject['created'],
+                    "from": FriendObject['accountId'],
+                    "status": "ACCEPTED"
+                })
             
             open(f'data/friends/{accountId}/friendslist.json', 'w', encoding='utf-8').write(dumps(friendslist, indent=4))
             open(f'data/friends/{accountId}/friendslist2.json', 'w', encoding='utf-8').write(dumps(friendslist2, indent=4))
