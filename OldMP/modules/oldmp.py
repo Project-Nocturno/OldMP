@@ -1729,6 +1729,13 @@ class OldMP():
                     "client_service": "fortnite"
                 }
                 
+                resp=app.response_class(
+                    response=dumps(r),
+                    status=200,
+                    mimetype='application/json'
+                )
+                return resp
+                
             elif granttype=="password":
                 username=str(request.get_data().decode()).split("&")[1].split('=')[1]
                 password=str(request.get_data().decode()).split("&")[2].split('=')[1]
