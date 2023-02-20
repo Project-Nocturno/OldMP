@@ -516,79 +516,76 @@ class OldMPFunc():
             return resp
         
         for i in ['athena.json', 'profile0.json', 'common_core.json', 'common_public.json']:
-            userprofile=loads(open(f'data/profiles/{i}', 'r', encoding='utf-8').read())
+            profiles=loads(open(f'data/profiles/{i}', 'r', encoding='utf-8').read())
+                    
+            if i.replace('.json', '')=='athena':
+                
+                newitems=self.new_items.copy()
+                
+                items_id=[]
+                for p in items:
+                    for x in self.exchange_table:
+                        if p==x['name']:
+                            items_id.append(x['id'])
+                            
+                for p in items_id:
+                    for x in self.exchange_table:
+                        if p==x['id']:
+                            for z in self.conv_table:
+                                if z['name']==x['style']:
+                                    p=f"{z['id']}:{p}"
+                                    item_temp={
+                                        p: {
+                                            "templateId": p,
+                                            "attributes": {
+                                                "max_level_bonus": 0,
+                                                "level": 1,
+                                                "item_seen": True,
+                                                "xp": 0,
+                                                "variants": [],
+                                                "favorite": False
+                                            },
+                                            "quantity": 1
+                                        }
+                                    }
+                                    newitems.update(item_temp)
+                
+                profiles[username]['items']=dict(newitems)
+                profiles[username]['stats']['attributes']['accountLevel']=level
+                profiles[username]['stats']['attributes']['level']=level
+                profiles[username]['stats']['attributes']['xp']=xp
+                profiles[username]['stats']['attributes']['book_level']=0
+                profiles[username]['stats']['attributes']['lifetime_wins']=top1
+                profiles[username]['stats']['attributes']['book_xp']=0
+                profiles[username]['stats']['attributes']['book_purchased']=False
+                
+                profiles[username]['stats']['attributes']['favorite_character']=f_char
+                profiles[username]['stats']['attributes']['favorite_loadingscreen']=f_load
+                profiles[username]['stats']['attributes']['favorite_backpack']=f_back
+                profiles[username]['stats']['attributes']['favorite_dance']=f_dance
+                profiles[username]['stats']['attributes']['favorite_skydivecontrail']=f_sky
+                profiles[username]['stats']['attributes']['favorite_pickaxe']=f_pic
+                profiles[username]['stats']['attributes']['favorite_glider']=f_glid
+                profiles[username]['stats']['attributes']['favorite_musicpack']=f_music
+                profiles[username]['stats']['attributes']['fortnite_character']=f_char
             
-            for key, val in enumerate(userprofile):
-                if val['accountId']==username:
-                    
-                    if val['profileId']=='athena':
-                        
-                        newitems=self.new_items.copy()
-                        
-                        items_id=[]
-                        for p in items:
-                            for x in self.exchange_table:
-                                if p==x['name']:
-                                    items_id.append(x['id'])
-                                    
-                        for p in items_id:
-                            for x in self.exchange_table:
-                                if p==x['id']:
-                                    for z in self.conv_table:
-                                        if z['name']==x['style']:
-                                            p=f"{z['id']}:{p}"
-                                            item_temp={
-                                                p: {
-                                                    "templateId": p,
-                                                    "attributes": {
-                                                        "max_level_bonus": 0,
-                                                        "level": 1,
-                                                        "item_seen": True,
-                                                        "xp": 0,
-                                                        "variants": [],
-                                                        "favorite": False
-                                                    },
-                                                    "quantity": 1
-                                                }
-                                            }
-                                            newitems.update(item_temp)
-                        
-                        userprofile[key]['items']=dict(newitems)
-                        userprofile[key]['stats']['attributes']['accountLevel']=level
-                        userprofile[key]['stats']['attributes']['level']=level
-                        userprofile[key]['stats']['attributes']['xp']=xp
-                        userprofile[key]['stats']['attributes']['book_level']=0
-                        userprofile[key]['stats']['attributes']['lifetime_wins']=top1
-                        userprofile[key]['stats']['attributes']['book_xp']=0
-                        userprofile[key]['stats']['attributes']['book_purchased']=False
-                        
-                        userprofile[key]['stats']['attributes']['favorite_character']=f_char
-                        userprofile[key]['stats']['attributes']['favorite_loadingscreen']=f_load
-                        userprofile[key]['stats']['attributes']['favorite_backpack']=f_back
-                        userprofile[key]['stats']['attributes']['favorite_dance']=f_dance
-                        userprofile[key]['stats']['attributes']['favorite_skydivecontrail']=f_sky
-                        userprofile[key]['stats']['attributes']['favorite_pickaxe']=f_pic
-                        userprofile[key]['stats']['attributes']['favorite_glider']=f_glid
-                        userprofile[key]['stats']['attributes']['favorite_musicpack']=f_music
-                        userprofile[key]['stats']['attributes']['fortnite_character']=f_char
-                    
-                    elif userprofile[key]['profileId']=='common_core':
-                        userprofile[key]['items']['Currency']['quantity']=mtx
-                        userprofile[key]['items']['Token:FounderChatUnlock']['attributes']['level']=level
-                        userprofile[key]['items']['Token:FounderChatUnlock']['attributes']['xp']=xp
-                        
-                    elif userprofile[key]['profileId']=='profile0':
-                        userprofile[key]['items']['c5e97bfa-d599-42d0-a07e-735507956ba9']['quantity']=mtx
-                        userprofile[key]['stats']['attributes']['level']=level
-                        userprofile[key]['stats']['attributes']['xp']=xp
-                    
-                    userprofile[key]['rvn']=0
-                    userprofile[key]['commandRevision']=0
-                    userprofile[key]['_id']=username
-                    userprofile[key]['accountId']=username
-                    userprofile[key]['updated']=datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+            elif i.replace('.json', '')=='common_core':
+                profiles[username]['items']['Currency']['quantity']=mtx
+                profiles[username]['items']['Token:FounderChatUnlock']['attributes']['level']=level
+                profiles[username]['items']['Token:FounderChatUnlock']['attributes']['xp']=xp
+                
+            elif i.replace('.json', '')=='profile0':
+                profiles[username]['items']['c5e97bfa-d599-42d0-a07e-735507956ba9']['quantity']=mtx
+                profiles[username]['stats']['attributes']['level']=level
+                profiles[username]['stats']['attributes']['xp']=xp
             
-                    open(f'data/profiles/{i}', 'w', encoding='utf-8').write(dumps(userprofile, indent=4))
+            profiles[username]['rvn']=0
+            profiles[username]['commandRevision']=0
+            profiles[username]['_id']=username
+            profiles[username]['accountId']=username
+            profiles[username]['updated']=datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+    
+            open(f'data/profiles/{i}', 'w', encoding='utf-8').write(dumps(profiles, indent=4))
     
     def createProfile(self, username: str):
         
@@ -664,12 +661,9 @@ class OldMPFunc():
         for i in ['athena.json', 'profile0.json', 'common_core.json', 'common_public.json']:
             file=loads(open(f'data/profiles/{i}', 'r', encoding='utf-8').read())
             
-            for user in file:
-                if user['accountId']=='defaultprofile':
-                    basicprofile=user.copy()
+            basicprofile=file['defaultprofile'].copy()
                     
-            for user in file:
-                if user['accountId']==username:
+            if file[username]:
                     return False
             
             if basicprofile['profileId']=='athena':
@@ -739,16 +733,16 @@ class OldMPFunc():
             basicprofile['created']=datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
             basicprofile['updated']=datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
                 
-            file.append(basicprofile)
+            file.update({username: basicprofile})
             
             open(f'data/profiles/{i}', 'w', encoding='utf-8').write(dumps(file, indent=4))
     
     def checkProfile(self, accountId):
         athena=loads(open('data/profiles/athena.json', 'r', encoding='utf-8').read())
         ext=False
-        for user in athena:
-            if user['accountId']==accountId:
-                ext=True
+        if athena[accountId]:
+            print('ext')
+            ext=True
         if not ext:
             self.createProfile(accountId)
             return False

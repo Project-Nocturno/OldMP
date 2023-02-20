@@ -21,6 +21,7 @@ class OldMPWeb():
         self.appweb=appweb
         self.functions=func(request=request, app=appweb, cnx=cnx)
         self.NLogs=self.functions.logs
+        self.session=sessions(session=sessionL, req=request)
 
         self.NLogs(logsapp, "OmdMPWeb started!")
         
@@ -51,7 +52,7 @@ class OldMPWeb():
         @self.appweb.route("/", methods=['GET', 'POST'])
         def baseroute():
             
-            presence=sessions(sessionL, request.remote_addr).exist()
+            presence=self.session.exist()
 
             resp=self.appweb.response_class(
                 response=render_template('index.html', presence=presence),
@@ -63,7 +64,7 @@ class OldMPWeb():
         @self.appweb.route('/players')
         def getplayers():
             resp=self.appweb.response_class(
-                response=dumps({'players': sessions(sessionL, request.remote_addr).len()}),
+                response=dumps({'players': self.session.len()}),
                 status=200,
                 mimetype='application/json'
             )
@@ -171,7 +172,7 @@ class OldMPWeb():
         @self.appweb.route('/map', methods=['GET', 'POST'])
         def spawnmap():
             
-            presence=sessions(sessionL, request.remote_addr).exist()
+            presence=self.session.exist()
 
             if ospath.exists('data/content/images/ActMiniMapAthena.png'):
                 mapFile='ActMiniMapAthena.png'

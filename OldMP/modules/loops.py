@@ -15,7 +15,7 @@ class Loops():
                 cursor.thumbnail((40, 40))
                 map=map.convert("RGBA")
                 cursor=cursor.convert("RGBA")
-                map.paste(cursor, (player[0]/2, player[1]/2), cursor)
+                map.paste(cursor, (round(player[0]*0.0079), round(player[1]*0.0079)), cursor)
             
             map.save('data/content/images/ActMiniMapAthena.png', format="png")
             time.sleep(30)

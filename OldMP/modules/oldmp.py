@@ -38,6 +38,7 @@ class OldMP():
         self.functions=func(request=request, app=app, cnx=cnx)
         self.NLogs=self.functions.logs
         self.NLogs(logsapp, "OmdMP started!")
+        self.session=sessions(session=sessionL, req=request)
 
         @app.before_request
         def checkrps():
@@ -68,10 +69,7 @@ class OldMP():
         @app.route('/clearitemsforshop', methods=['GET'])
         def cleanitemforshop():
             
-            athena=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-            for i in athena:
-                if i['accountId']==sessions(sessionL, request.remote_addr).get('username'):
-                    athena=i
+            athena=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())[self.session.get('username')].copy()
             shop=loads(open(f'data/content/catalogconfig.json', 'r', encoding='utf-8').read())
             StatChanged=False
             
@@ -224,7 +222,7 @@ class OldMP():
                 "startTime": 0,
                 "endTime": 0,
                 "stats": {},
-                "accountId": sessions(sessionL, request.remote_addr).get('username')
+                "accountId": self.session.get('username')
             }
 
             resp=app.response_class(
@@ -478,8 +476,8 @@ class OldMP():
         def fortniteapigamev2mathcmakingsessionid(accountId, sessionId):
 
             r={
-                "accountId": sessions(sessionL, request.remote_addr).get('username'),
-                "sessionId": sessions(sessionL, request.remote_addr).get('sessionId'),
+                "accountId": self.session.get('username'),
+                "sessionId": self.session.get('sessionId'),
                 "key": "KvOWLwXTUO6XyXsZGpK0_GvEKZatDxwb34-rJNUW8Fs="
             }
 
@@ -497,7 +495,7 @@ class OldMP():
             port=loads(open('conf.json', 'r', encoding='utf-8').read())['GameServer']['port']
 
             sessionCode={
-                "id": sessions(sessionL, request.remote_addr).get('sessionId'),
+                "id": self.session.get('sessionId'),
                 "ownerId": str(uuid4()).replace("-", "").upper(),
                 "ownerName": "[DS]fortnite-liveeugcec1c2e30ubrcore0a-z8hj-1968",
                 "serverName": "[DS]fortnite-liveeugcec1c2e30ubrcore0a-z8hj-1968",
@@ -583,7 +581,6 @@ class OldMP():
 
         @app.route('/fortnite/api/cloudstorage/user/<accountId>/<files>', methods=['PUT'])
         def fortnitecloudstorageuserfile(accountId, files):
-            # set account
             
             if files!="ClientSettings.Sav":
                 resp=app.response_class(
@@ -596,7 +593,7 @@ class OldMP():
             memory=self.functions.getVersion()
             currentBuildID=memory['CL']
             
-            file=f'data/clientsettings/{accountId}/ClientSettings-{currentBuildID}.Sav'
+            file=f'data/clientsettings/{self.session.get("username")}/ClientSettings-{currentBuildID}.Sav'
             data=request.stream.read().decode('latin1')
             open(file, 'w', encoding='latin1').write(data)
 
@@ -652,8 +649,8 @@ class OldMP():
         @app.route('/fortnite/api/cloudstorage/user/<account>/<files>', methods=['GET'])
         def cloudstoragesystemallfile(account, files):
             
-            if not ospath.exists(f'data/clientsettings/{account}/'):
-                osmkdir(f'data/clientsettings/{account}/')
+            if not ospath.exists(f'data/clientsettings/{self.session.get("username")}/'):
+                osmkdir(f'data/clientsettings/{self.session.get("username")}/')
             
             if files!="ClientSettings.Sav":
                 resp=app.response_class(
@@ -672,8 +669,8 @@ class OldMP():
                 resp.status_code=204
                 return resp
             else:
-                if ospath.exists(f'data/clientsettings/{account}/ClientSettings-{currentBuildID}.Sav'):
-                    return send_from_directory(f'data/clientsettings/{account}/', f'ClientSettings-{currentBuildID}.Sav')
+                if ospath.exists(f'data/clientsettings/{self.session.get("username")}/ClientSettings-{currentBuildID}.Sav'):
+                    return send_from_directory(f'data/clientsettings/{self.session.get("username")}/', f'ClientSettings-{currentBuildID}.Sav')
                 
                 else:
                     resp=Response()
@@ -683,15 +680,14 @@ class OldMP():
         @app.route(f'/fortnite/api/cloudstorage/user/<accountId>', methods=['GET'])
         def cloudstorageaccid(accountId):
             
-            # set account
             
-            if not ospath.exists(f'data/clientsettings/{accountId}/'):
-                osmkdir(f'data/clientsettings/{accountId}/')
+            if not ospath.exists(f'data/clientsettings/{self.session.get("username")}/'):
+                osmkdir(f'data/clientsettings/{self.session.get("username")}/')
             
             memory=self.functions.getVersion()
             currentBuildID=memory['CL']
             
-            file=f'data/clientsettings/{accountId}/ClientSettings-{currentBuildID}.Sav'
+            file=f'data/clientsettings/{self.session.get("username")}/ClientSettings-{currentBuildID}.Sav'
             
             if ospath.exists(file):
                 
@@ -707,7 +703,7 @@ class OldMP():
                     "uploaded": osstat(file).st_mtime,
                     "storageType": "S3",
                     "storageIds": {},
-                    "accountId": accountId,
+                    "accountId": self.session.get('username'),
                     "doNotCache": True
                 }]
                 
@@ -778,15 +774,14 @@ class OldMP():
         @app.route(f'/friends/api/public/friends/<accountId>', methods=['GET'])
         def friendsaccountID(accountId):
             
-            # set account
             
             memory=self.functions.getVersion()
-            friendslist=loads(open(f'data/friends/{accountId}/friendslist.json', 'r', encoding='utf-8').read())
-            friendslist2=loads(open(f'data/friends/{accountId}/friendslist2.json', 'r', encoding='utf-8').read())
+            friendslist=loads(open(f'data/friends/{self.session.get("username")}/friendslist.json', 'r', encoding='utf-8').read())
+            friendslist2=loads(open(f'data/friends/{self.session.get("username")}/friendslist2.json', 'r', encoding='utf-8').read())
 
             if not any(i['accountId']==request.args.get('accountId') for i in friendslist):
                 FriendObject={
-                    "accountId": accountId,
+                    "accountId": self.session.get("username"),
                     "status": "ACCEPTED",
                     "direction": "OUTBOUND",
                     "created": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -816,11 +811,12 @@ class OldMP():
                     "status": FriendObject['status']
                 })
             
-            open(f'data/friends/{accountId}/friendslist.json', 'w', encoding='utf-8').write(dumps(friendslist, indent=4))
-            open(f'data/friends/{accountId}/friendslist2.json', 'w', encoding='utf-8').write(dumps(friendslist2, indent=4))
+            open(f'data/friends/{self.session.get("username")}/friendslist.json', 'w', encoding='utf-8').write(dumps(friendslist, indent=4))
+            open(f'data/friends/{self.session.get("username")}/friendslist2.json', 'w', encoding='utf-8').write(dumps(friendslist2, indent=4))
 
             if memory['season']>=7:
                 friends=friendslist.copy()
+                print(friends + "dsfiughiuhjd<qfbvhuhijdsfguhhdsfiuhjgh")
                 for i in friends:
                     if i['accountId']==request.args.get('accountId'):
                         friends.remove(i)
@@ -841,14 +837,13 @@ class OldMP():
         @app.route(f'/friends/api/v1/<accountId>/summary', methods=['GET'])
         def friendsaccountIDsummary(accountId):
             
-            # set account
                 
-            friendslist=loads(open(f'data/friends/{accountId}/friendslist.json', 'r', encoding='utf-8').read())
-            friendslist2=loads(open(f'data/friends/{accountId}/friendslist2.json', 'r', encoding='utf-8').read())
+            friendslist=loads(open(f'data/friends/{self.session.get("username")}/friendslist.json', 'r', encoding='utf-8').read())
+            friendslist2=loads(open(f'data/friends/{self.session.get("username")}/friendslist2.json', 'r', encoding='utf-8').read())
 
             if not any(i['accountId']==request.args.get('accountId') for i in friendslist2['friends']):
                 FriendObject={
-                    "accountId": accountId,
+                    "accountId": self.session.get("username"),
                     "groups": [],
                     "mutual": 0,
                     "alias": "",
@@ -884,8 +879,8 @@ class OldMP():
                     "status": "ACCEPTED"
                 })
             
-            open(f'data/friends/{accountId}/friendslist.json', 'w', encoding='utf-8').write(dumps(friendslist, indent=4))
-            open(f'data/friends/{accountId}/friendslist2.json', 'w', encoding='utf-8').write(dumps(friendslist2, indent=4))
+            open(f'data/friends/{self.session.get("username")}/friendslist.json', 'w', encoding='utf-8').write(dumps(friendslist, indent=4))
+            open(f'data/friends/{self.session.get("username")}/friendslist2.json', 'w', encoding='utf-8').write(dumps(friendslist2, indent=4))
 
             resp=app.response_class(
                 response=dumps(friendslist),
@@ -1003,11 +998,10 @@ class OldMP():
         @app.route(f'/fortnite/api/game/v2/privacy/account/<accountId>', methods=['GET'])
         def privacyaccountid(accountId):
             
-            # set account
             
             privacy=loads(open(f'data/account/privacy.json', 'r', encoding='utf-8').read())
             
-            privacy['accountId']=accountId
+            privacy['accountId']=self.session.get('username')
 
             resp=app.response_class(
                 response=dumps(privacy),
@@ -1196,8 +1190,6 @@ class OldMP():
         @app.route('/account/api/public/account', methods=['GET'])
         def accountpublicaccount():
             
-            # set account
-            
             response=[]
             accountIds=request.args.getlist('accountId')
             for accountId in accountIds:
@@ -1234,26 +1226,12 @@ class OldMP():
         @app.route(f'/account/api/public/account/<account>', methods=['GET'])
         def accountpublicaccountid(account):
             
-            # set account
             
-            if not account==sessions(sessionL, request.remote_addr).get('username'):
-                respon=self.functions.createError(
-                    "errors.com.epicgames.account.invalid_account_credentials",
-                    "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
-                    [], 18031, "invalid_grant"
-                )
-                resp=app.response_class(
-                    response=dumps(respon),
-                    status=400,
-                    mimetype='application/json'
-                )
-                return resp
-
             r={
-                "id": account,
-                "displayName": account,
-                "name": account,
-                "email": f"{account}@oldmp.softawre",
+                "id": self.session.get('username'),
+                "displayName": self.session.get('username'),
+                "name": self.session.get('username'),
+                "email": f"{self.session.get('username')}@oldmp.softawre",
                 "failedLoginAttempts": 0,
                 "lastLogin": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
                 "numberOfDisplayNameChanges": 0,
@@ -1294,8 +1272,8 @@ class OldMP():
             tkn=btoken.split('NOCTURNOISBETTER_')[1].encode()
             token=dec(tkn).decode()
 
-            username=sessions(sessionL, request.remote_addr).get('username')
-            password=sessions(sessionL, request.remote_addr).get('password')
+            username=self.session.get('username')
+            password=self.session.get('password')
             
             if username and password:
                 pass
@@ -1314,19 +1292,19 @@ class OldMP():
             
             r={
                 "token": btoken,
-                "session_id": sessions(sessionL, request.remote_addr).get('sessionId'),
+                "session_id": self.session.get('sessionId'),
                 "token_type": "bearer",
-                "client_id": sessions(sessionL, request.remote_addr).get('clientId'),
+                "client_id": self.session.get('clientId'),
                 "internal_client": True,
                 "client_service": "fortnite",
-                "account_id": sessions(sessionL, request.remote_addr).get('username'),
+                "account_id": self.session.get('username'),
                 "expires_in": 86400,
                 "expires_at": self.functions.createDate(24),
                 "auth_method": "exchange_code",
-                "display_name": sessions(sessionL, request.remote_addr).get('username'),
+                "display_name": self.session.get('username'),
                 "app": "fortnite",
-                "in_app_id": sessions(sessionL, request.remote_addr).get('username'),
-                "device_id": sessions(sessionL, request.remote_addr).get('deviceId')
+                "in_app_id": self.session.get('username'),
+                "device_id": self.session.get('deviceId')
             }
 
             resp=app.response_class(
@@ -1470,7 +1448,7 @@ class OldMP():
                 "startTime": 0,
                 "endTime": 0,
                 "stats": {},
-                "accountId": accountId
+                "accountId": self.session.get('username')
             }
 
             resp=app.response_class(
@@ -1489,7 +1467,7 @@ class OldMP():
                 "startTime": 0,
                 "endTime": 0,
                 "stats": {},
-                "accountId": accountId
+                "accountId": self.session.get('username')
             }
 
             resp=app.response_class(
@@ -1554,30 +1532,34 @@ class OldMP():
             for events in loads(data.decode())['Events']:
                 for event in events:
                     if event=='PlayerLocation':
-                        print(events[event])
-                        coords=str(events[event]).split(',')
-                        x: int=coords[0]
-                        y: int=coords[1]
-                        self.playerscoords.append((x, y))
+                        if events[event]=='':
+                            pass
+                        else:
+                            print(events[event])
+                            coords=str(events[event]).split(',')
+                            print(coords)
+                            x=int(round(coords[0]))
+                            y=int(round(coords[1]))
+                            self.playerscoords.append((x, y))
                         
                     elif event=='AthenaPlayersLeft':
                         print(events[event])
-                        sessions(sessionL, request.remote_addr).put('partyPlayerLeft', int(events[event]))
+                        self.session.put('partyPlayerLeft', int(events[event]))
                         
                     elif event=='Location':
                         if events[event]=='InGame':
-                            sessions(sessionL, request.remote_addr).put('InGame', True)
+                            self.session.put('InGame', True)
                         else:
-                            sessions(sessionL, request.remote_addr).put('InGame', False)
+                            self.session.put('InGame', False)
                     
                     elif event=='AthenaMapName':
                         print(events[event])
-                        sessions(sessionL, request.remote_addr).put('mapName', events[event])
+                        self.session.put('mapName', events[event])
                     
                     elif event=='EventName':
                         if events[event]=='SessionEnd':
                             print('session clear')
-                            sessions(sessionL, request.remote_addr).clear()
+                            self.session.clear()
 
             resp=Response()
             resp.status_code=204
@@ -1697,7 +1679,7 @@ class OldMP():
 
             privacy=loads(open(f'data/account/privacy.json', 'r', encoding='utf-8').read())
                 
-            privacy['accountId']=accountId
+            privacy['accountId']=self.session.get('username')
             privacy['optOutOfPublicLeaderboards']=loads(request.get_data())['optOutOfPublicLeaderboards']
             
             open(f'data/account/privacy.json', 'w', encoding='utf-8').write(dumps(privacy, indent=4))
@@ -1736,7 +1718,7 @@ class OldMP():
             
             if granttype=="client_credentials":
                 token=self.functions.genToken(ip, clientId, enc)
-                sessions(sessionL, request.remote_addr).put('token', token)
+                self.session.put('token', token)
                 r={
                     "access_token": token,
                     "expires_in": 14400,
@@ -1785,9 +1767,9 @@ class OldMP():
 
                 self.functions.loadProfile(username)
 
-                sessions(sessionL, request.remote_addr).put('username', username)
-                sessions(sessionL, request.remote_addr).put('password', password)
-                sessions(sessionL, request.remote_addr).put('clientId', clientId)
+                self.session.put('username', username)
+                self.session.put('password', password)
+                self.session.put('clientId', clientId)
                 
             elif granttype=="refresh_token":
                 
@@ -1840,21 +1822,21 @@ class OldMP():
                 return resp
 
             r={
-                "access_token": sessions(sessionL, request.remote_addr).get('token'),
+                "access_token": self.session.get('token'),
                 "expires_in": 28800,
                 "expires_at": self.functions.createDate(8),
                 "token_type": "bearer",
-                "refresh_token": sessions(sessionL, request.remote_addr).get('token'),
+                "refresh_token": self.session.get('token'),
                 "refresh_expires": 86400,
                 "refresh_expires_at": self.functions.createDate(24),
-                "account_id": sessions(sessionL, request.remote_addr).get('username'),
-                "client_id": sessions(sessionL, request.remote_addr).get('clientId'),
+                "account_id": self.session.get('username'),
+                "client_id": self.session.get('clientId'),
                 "internal_client": True,
                 "client_service": "fortnite",
-                "displayName": sessions(sessionL, request.remote_addr).get('username'),
+                "displayName": self.session.get('username'),
                 "app": "fortnite",
-                "in_app_id": sessions(sessionL, request.remote_addr).get('username'),
-                "device_id": sessions(sessionL, request.remote_addr).get('deviceId')
+                "in_app_id": self.session.get('username'),
+                "device_id": self.session.get('deviceId')
             }
 
             resp=app.response_class(
@@ -1884,13 +1866,13 @@ class OldMP():
             self.NLogs(logsapp, f"Kill type: {killType}")
             
             if killType=='ALL':
-                sessions(sessionL, request.remote_addr).clear()
+                self.session.clear()
             
             elif killType=='OTHERS':
                 pass
             
             elif killType=='ALL_ACCOUNT_CLIENT':
-                sessions(sessionL, request.remote_addr).clear()
+                self.session.clear()
             
             elif killType=='OTHERS_ACCOUNT_CLIENT':
                 pass
@@ -1904,7 +1886,7 @@ class OldMP():
                     "A valid killType is required.",
                     [], 1013, "invalid_request"
                 )
-                sessions(sessionL, request.remote_addr).clear()
+                self.session.clear()
                 resp=app.response_class(
                     response=dumps(respon),
                     status=400,
@@ -1919,7 +1901,7 @@ class OldMP():
         @app.route('/account/api/oauth/sessions/kill/<token>', methods=['DELETE'])
         def accountoauthsessionskillall(token):
             
-            sessions(sessionL, request.remote_addr).clear()
+            self.session.clear()
             
             resp=Response()
             resp.status_code=204
@@ -1998,34 +1980,11 @@ class OldMP():
         @app.route('/fortnite/api/game/v2/profile/<account>/client/PurchaseCatalogEntry', methods=['POST'])
         def PurchaseCatalogEntry(account):
             
-            # set account
-            
-            if not account==sessions(sessionL, request.remote_addr).get('username'):
-                respon=self.functions.createError(
-                    "errors.com.epicgames.account.invalid_account_credentials",
-                    "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
-                    [], 18031, "invalid_grant"
-                )
-                resp=app.response_class(
-                    response=dumps(respon),
-                    status=400,
-                    mimetype='application/json'
-                )
-                return resp
             
             itemId=loads(request.get_data())['offerId']
             
-            allprofiles=loads(open(f'data/profiles/{request.args.get("profileId") or "profile0"}.json', 'r', encoding='utf-8').read())
-            
-            for prof in allprofiles:
-                if prof['accountId']==account:
-                    profile=prof.copy()
-                    
-            athena=loads(open(f'data/profiles/athena.json', 'r', encoding='utf-8').read())
-            
-            for i in athena:
-                if i['accountId']==account:
-                    athena=i
+            profile=loads(open(f'data/profiles/{request.args.get("profileId") or "profile0"}.json', 'r', encoding='utf-8').read())[self.session.get('username')].copy()   
+            athena=loads(open(f'data/profiles/athena.json', 'r', encoding='utf-8').read())[self.session.get('username')].copy()
                     
             catalog=self.functions.getShop()
             
@@ -2068,18 +2027,18 @@ class OldMP():
                                 BattlePass=loads(open(f'data/items/season/{Season}.json', 'r', encoding='utf-8').read())
                                 
                                 if BattlePass:
-                                    SeasonData=loads(open(f'data/items/season/seasondata.json', 'r', encoding='utf-8').read())
+                                    SeasonData=loads(open(f'data/profiles/seasondata.json', 'r', encoding='utf-8').read())
 
                                     if BattlePass['battlePassOfferId'] == offer['offerId'] or BattlePass['battleBundleOfferId'] == offer['offerId']:
                                         lootList=[]
-                                        EndingTier=SeasonData[Season]['battlePassTier']
-                                        SeasonData[Season]['battlePassPurchased']=True
+                                        EndingTier=SeasonData[self.session.get('username')][Season]['battlePassTier']
+                                        SeasonData[self.session.get('username')][Season]['battlePassPurchased']=True
 
                                         if BattlePass['battleBundleOfferId'] == offer['offerId']:
-                                            SeasonData[Season]['battlePassTier'] += 25
-                                            if SeasonData[Season]['battlePassTier'] > 100:
-                                                SeasonData[Season]['battlePassTier']=100
-                                            EndingTier=SeasonData[Season]['battlePassTier']
+                                            SeasonData[self.session.get('username')][Season]['battlePassTier'] += 25
+                                            if SeasonData[self.session.get('username')][Season]['battlePassTier'] > 100:
+                                                SeasonData[self.session.get('username')][Season]['battlePassTier']=100
+                                            EndingTier=SeasonData[self.session.get('username')][Season]['battlePassTier']
                                         
                                         for i in range(EndingTier):
                                             FreeTier=BattlePass['freeRewards'][i] or {}
@@ -2087,21 +2046,21 @@ class OldMP():
 
                                             for item in FreeTier:
                                                 if item.lower() == "token:athenaseasonxpboost":
-                                                    SeasonData[Season]['battlePassXPBoost'] += FreeTier[item]
+                                                    SeasonData[self.session.get('username')][Season]['battlePassXPBoost'] += FreeTier[item]
 
                                                     MultiUpdate[0]['profileChanges'].append({
                                                         "changeType": "statModified",
                                                         "name": "season_match_boost",
-                                                        "value": SeasonData[Season]['battlePassXPBoost']
+                                                        "value": SeasonData[self.session.get('username')][Season]['battlePassXPBoost']
                                                     })
 
                                                 if item.lower() == "token:athenaseasonfriendxpboost":
-                                                    SeasonData[Season]['battlePassXPFriendBoost'] += FreeTier[item]
+                                                    SeasonData[self.session.get('username')][Season]['battlePassXPFriendBoost'] += FreeTier[item]
 
                                                     MultiUpdate[0]['profileChanges'].append({
                                                         "changeType": "statModified",
                                                         "name": "season_friend_match_boost",
-                                                        "value": SeasonData[Season]['battlePassXPFriendBoost']
+                                                        "value": SeasonData[self.session.get('username')][Season]['battlePassXPFriendBoost']
                                                     })
                                                     
                                                 if item.lower().startswith("currency:mtx"):
@@ -2158,21 +2117,21 @@ class OldMP():
 
                                             for item in FreeTier:
                                                 if item.lower() == "token:athenaseasonxpboost":
-                                                    SeasonData[Season]['battlePassXPBoost'] += FreeTier[item]
+                                                    SeasonData[self.session.get('username')][Season]['battlePassXPBoost'] += FreeTier[item]
 
                                                     MultiUpdate[0]['profileChanges'].append({
                                                         "changeType": "statModified",
                                                         "name": "season_match_boost",
-                                                        "value": SeasonData[Season]['battlePassXPBoost']
+                                                        "value": SeasonData[self.session.get('username')][Season]['battlePassXPBoost']
                                                     })
 
                                                 if item.lower() == "token:athenaseasonfriendxpboost":
-                                                    SeasonData[Season]['battlePassXPFriendBoost'] += FreeTier[item]
+                                                    SeasonData[self.session.get('username')][Season]['battlePassXPFriendBoost'] += FreeTier[item]
 
                                                     MultiUpdate[0]['profileChanges'].append({
                                                         "changeType": "statModified",
                                                         "name": "season_friend_match_boost",
-                                                        "value": SeasonData[Season]['battlePassXPFriendBoost']
+                                                        "value": SeasonData[self.session.get('username')][Season]['battlePassXPFriendBoost']
                                                     })
 
                                                 if item.lower().startswith("currency:mtx"):
@@ -2229,31 +2188,31 @@ class OldMP():
 
                                                 for item in PaidTier:
                                                     if item.lower()=="token:athenaseasonxpboost":
-                                                        SeasonData[Season]['battlePassXPBoost']+=PaidTier[item]
+                                                        SeasonData[self.session.get('username')][Season]['battlePassXPBoost']+=PaidTier[item]
                                                         
                                                         MultiUpdate[0]['profileChanges'].append({
                                                             "changeType": "statModified",
                                                             "name": "season_match_boost",
-                                                            "value": SeasonData[Season]['battlePassXPBoost']
+                                                            "value": SeasonData[self.session.get('username')][Season]['battlePassXPBoost']
                                                         })
 
                                             for item in PaidTier:
                                                 if item.lower() == "token:athenaseasonxpboost":
-                                                    SeasonData[Season]['battlePassXPBoost'] += PaidTier[item]
+                                                    SeasonData[self.session.get('username')][Season]['battlePassXPBoost'] += PaidTier[item]
 
                                                     MultiUpdate[0]['profileChanges'].append({
                                                         "changeType": "statModified",
                                                         "name": "season_match_boost",
-                                                        "value": SeasonData[Season]['battlePassXPBoost']
+                                                        "value": SeasonData[self.session.get('username')][Season]['battlePassXPBoost']
                                                     })
 
                                                 if item.lower() == "token:athenaseasonfriendxpboost":
-                                                    SeasonData[Season]['battlePassXPFriendBoost'] += PaidTier[item]
+                                                    SeasonData[self.session.get('username')][Season]['battlePassXPFriendBoost'] += PaidTier[item]
 
                                                     MultiUpdate[0]['profileChanges'].append({
                                                         "changeType": "statModified",
                                                         "name": "season_friend_match_boost",
-                                                        "value": SeasonData[Season]['battlePassXPFriendBoost']
+                                                        "value": SeasonData[self.session.get('username')][Season]['battlePassXPFriendBoost']
                                                     })
 
                                                 if item.lower().startswith("currency:mtx"):
@@ -2311,12 +2270,12 @@ class OldMP():
 
                                                 for item in PaidTier:
                                                     if item.lower()=="token:athenaseasonxpboost":
-                                                        SeasonData[Season]['battlePassXPBoost']+=PaidTier[item]
+                                                        SeasonData[self.session.get('username')][Season]['battlePassXPBoost']+=PaidTier[item]
                                                         
                                                         MultiUpdate[0]['profileChanges'].append({
                                                             "changeType": "statModified",
                                                             "name": "season_match_boost",
-                                                            "value": SeasonData[Season]['battlePassXPBoost']
+                                                            "value": SeasonData[self.session.get('username')][Season]['battlePassXPBoost']
                                                         })
                                                         
                                             GiftBoxID=str(uuid4()).replace("-", "")
@@ -2343,23 +2302,23 @@ class OldMP():
                                             MultiUpdate[0]['profileChanges'].append({
                                                 "changeType": "statModified",
                                                 "name": "book_purchased",
-                                                "value": SeasonData[Season]['battlePassPurchased']
+                                                "value": SeasonData[self.session.get('username')][Season]['battlePassPurchased']
                                             })
 
                                             MultiUpdate[0]['profileChanges'].append({
                                                 "changeType": "statModified",
                                                 "name": "book_level",
-                                                "value": SeasonData[Season]['battlePassTier']
+                                                "value": SeasonData[self.session.get('username')][Season]['battlePassTier']
                                             })
 
                                             AthenaModified=True
                                             
                                         if BattlePass['tierOfferId'] == offer['offerId']:
                                             lootList=[]
-                                            StartingTier=SeasonData[Season]['battlePassTier']
+                                            StartingTier=SeasonData[self.session.get('username')][Season]['battlePassTier']
                                             EndingTier
-                                            SeasonData[Season]['battlePassTier'] += loads(request.get_data())['purchaseQuantity'] or 1
-                                            EndingTier=SeasonData[Season]['battlePassTier']
+                                            SeasonData[self.session.get('username')][Season]['battlePassTier'] += loads(request.get_data())['purchaseQuantity'] or 1
+                                            EndingTier=SeasonData[self.session.get('username')][Season]['battlePassTier']
 
                                             for i in range(StartingTier, EndingTier):
                                                 FreeTier=BattlePass['freeRewards'][i] or {}
@@ -2367,21 +2326,21 @@ class OldMP():
 
                                                 for item in FreeTier:
                                                     if item.lower() == "token:athenaseasonxpboost":
-                                                        SeasonData[Season]['battlePassXPBoost'] += FreeTier[item]
+                                                        SeasonData[self.session.get('username')][Season]['battlePassXPBoost'] += FreeTier[item]
 
                                                         MultiUpdate[0]['profileChanges'].append({
                                                             "changeType": "statModified",
                                                             "name": "season_match_boost",
-                                                            "value": SeasonData[Season]['battlePassXPBoost']
+                                                            "value": SeasonData[self.session.get('username')][Season]['battlePassXPBoost']
                                                         })
                                                         
                                                     if item.lower() == "token:athenaseasonfriendxpboost":
-                                                        SeasonData[Season]['battlePassXPFriendBoost'] += FreeTier[item]
+                                                        SeasonData[self.session.get('username')][Season]['battlePassXPFriendBoost'] += FreeTier[item]
 
                                                         MultiUpdate[0]['profileChanges'].append({
                                                             "changeType": "statModified",
                                                             "name": "season_friend_match_boost",
-                                                            "value": SeasonData[Season]['battlePassXPFriendBoost']
+                                                            "value": SeasonData[self.session.get('username')][Season]['battlePassXPFriendBoost']
                                                         })
                                                     
                                                     if item.lower().startswith("currency:mtx"):
@@ -2438,21 +2397,21 @@ class OldMP():
                                                 
                                                 for item in PaidTier:
                                                     if item.lower() == "token:athenaseasonxpboost":
-                                                        SeasonData[Season]['battlePassXPBoost'] += PaidTier[item]
+                                                        SeasonData[self.session.get('username')][Season]['battlePassXPBoost'] += PaidTier[item]
 
                                                         MultiUpdate[0]['profileChanges'].append({
                                                             "changeType": "statModified",
                                                             "name": "season_match_boost",
-                                                            "value": SeasonData[Season]['battlePassXPBoost']
+                                                            "value": SeasonData[self.session.get('username')][Season]['battlePassXPBoost']
                                                         })
 
                                                     if item.lower() == "token:athenaseasonfriendxpboost":
-                                                        SeasonData[Season]['battlePassXPFriendBoost'] += PaidTier[item]
+                                                        SeasonData[self.session.get('username')][Season]['battlePassXPFriendBoost'] += PaidTier[item]
 
                                                         MultiUpdate[0]['profileChanges'].append({
                                                             "changeType": "statModified",
                                                             "name": "season_friend_match_boost",
-                                                            "value": SeasonData[Season]['battlePassXPFriendBoost']
+                                                            "value": SeasonData[self.session.get('username')][Season]['battlePassXPFriendBoost']
                                                         })
 
                                                     if item.lower().startswith("currency:mtx"):
@@ -2529,12 +2488,12 @@ class OldMP():
                                             MultiUpdate[0]['profileChanges'].append({
                                                 "changeType": "statModified",
                                                 "name": "book_level",
-                                                "value": SeasonData[Season]['battlePassTier']
+                                                "value": SeasonData[self.session.get('username')][Season]['battlePassTier']
                                             })
 
                                             AthenaModified=True
 
-                                        open(f'data/items/season/seasondata.json', 'w', encoding='utf-8').write(dumps(SeasonData, indent=4))
+                                        open(f'data/profiles/seasondata.json', 'w', encoding='utf-8').write(dumps(SeasonData, indent=4))
                         
                         if value['name'].startswith("BR"):
                             for b, value in enumerate(catalog['storefronts'][a]['catalogEntries']):
@@ -2626,15 +2585,11 @@ class OldMP():
                             MultiUpdate[0]['profileCommandRevision']=athena['commandRevision'] or 0
 
                         oldprofile=loads(open(f'data/profiles/athena.json', 'r', encoding='utf-8').read())
-                        for key, val in enumerate(oldprofile):
-                            if val['accountId']==account:
-                                oldprofile[key]=athena
+                        oldprofile[self.session.get('username')]=athena
                         open(f'data/profiles/athena.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
                         
                         oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "profile0"}.json', 'r', encoding='utf-8').read())
-                        for key, val in enumerate(oldprofile):
-                            if val['accountId']==account:
-                                oldprofile[key]=profile
+                        oldprofile[self.session.get('username')]=profile
                         open(f'data/profiles/{request.args.get("profileId") or "profile0"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
 
                     if AthenaModified == False:
@@ -2642,9 +2597,7 @@ class OldMP():
                         profile['commandRevision'] += 1
 
                         oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "profile0"}.json', 'r', encoding='utf-8').read())
-                        for key, val in enumerate(oldprofile):
-                            if val['accountId']==account:
-                                oldprofile[key]=profile
+                        oldprofile[self.session.get('username')]=profile
                         open(f'data/profiles/{request.args.get("profileId") or "profile0"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
                     
                 if loads(request.get_data())['offerId'] and profile['profileId'] == "common_core":
@@ -2668,18 +2621,18 @@ class OldMP():
                                 BattlePass=loads(open(f'data/items/season/{Season}.json', 'r', encoding='utf-8').read())
                                 
                                 if BattlePass:
-                                    SeasonData=loads(open(f'data/items/season/seasondata.json', 'r', encoding='utf-8').read())
+                                    SeasonData=loads(open(f'data/profiles/seasondata.json', 'r', encoding='utf-8').read())
 
                                     if BattlePass['battlePassOfferId'] == offer['offerId'] or BattlePass['battleBundleOfferId'] == offer['offerId']:
                                         lootList=[]
-                                        EndingTier=SeasonData[Season]['battlePassTier']
-                                        SeasonData[Season]['battlePassPurchased']=True
+                                        EndingTier=SeasonData[self.session.get('username')][Season]['battlePassTier']
+                                        SeasonData[self.session.get('username')][Season]['battlePassPurchased']=True
 
                                         if BattlePass['battleBundleOfferId'] == offer['offerId']:
-                                            SeasonData[Season]['battlePassTier'] += 25
-                                            if SeasonData[Season]['battlePassTier'] > 100:
-                                                SeasonData[Season]['battlePassTier']=100
-                                            EndingTier=SeasonData[Season]['battlePassTier']
+                                            SeasonData[self.session.get('username')][Season]['battlePassTier'] += 25
+                                            if SeasonData[self.session.get('username')][Season]['battlePassTier'] > 100:
+                                                SeasonData[self.session.get('username')][Season]['battlePassTier']=100
+                                            EndingTier=SeasonData[self.session.get('username')][Season]['battlePassTier']
 
                                         for i in range(EndingTier):
                                             FreeTier=BattlePass['freeRewards'][i] or {}
@@ -2687,21 +2640,21 @@ class OldMP():
                                             
                                             for item in FreeTier:
                                                 if item.lower() == "token:athenaseasonxpboost":
-                                                    SeasonData[Season]['battlePassXPBoost'] += FreeTier[item]
+                                                    SeasonData[self.session.get('username')][Season]['battlePassXPBoost'] += FreeTier[item]
 
                                                     MultiUpdate[0]['profileChanges'].append({
                                                         "changeType": "statModified",
                                                         "name": "season_match_boost",
-                                                        "value": SeasonData[Season]['battlePassXPBoost']
+                                                        "value": SeasonData[self.session.get('username')][Season]['battlePassXPBoost']
                                                     })
 
                                                 if item.lower() == "token:athenaseasonfriendxpboost":
-                                                    SeasonData[Season]['battlePassXPFriendBoost'] += FreeTier[item]
+                                                    SeasonData[self.session.get('username')][Season]['battlePassXPFriendBoost'] += FreeTier[item]
 
                                                     MultiUpdate[0]['profileChanges'].append({
                                                         "changeType": "statModified",
                                                         "name": "season_friend_match_boost",
-                                                        "value": SeasonData[Season]['battlePassXPFriendBoost']
+                                                        "value": SeasonData[self.session.get('username')][Season]['battlePassXPFriendBoost']
                                                     })
                                                     
                                                 if item.lower().startswith("currency:mtx"):
@@ -2758,21 +2711,21 @@ class OldMP():
                                                 
                                             for item in PaidTier:
                                                 if item.lower() == "token:athenaseasonxpboost":
-                                                    SeasonData[Season]['battlePassXPBoost'] += PaidTier[item]
+                                                    SeasonData[self.session.get('username')][Season]['battlePassXPBoost'] += PaidTier[item]
 
                                                     MultiUpdate[0]['profileChanges'].append({
                                                         "changeType": "statModified",
                                                         "name": "season_match_boost",
-                                                        "value": SeasonData[Season]['battlePassXPBoost']
+                                                        "value": SeasonData[self.session.get('username')][Season]['battlePassXPBoost']
                                                     })
 
                                                 if item.lower() == "token:athenaseasonfriendxpboost":
-                                                    SeasonData[Season]['battlePassXPFriendBoost'] += PaidTier[item]
+                                                    SeasonData[self.session.get('username')][Season]['battlePassXPFriendBoost'] += PaidTier[item]
 
                                                     MultiUpdate[0]['profileChanges'].append({
                                                         "changeType": "statModified",
                                                         "name": "season_friend_match_boost",
-                                                        "value": SeasonData[Season]['battlePassXPFriendBoost']
+                                                        "value": SeasonData[self.session.get('username')][Season]['battlePassXPFriendBoost']
                                                     })
 
                                                 if item.lower().startswith("currency:mtx"):
@@ -2851,23 +2804,23 @@ class OldMP():
                                         MultiUpdate[0]['profileChanges'].append({
                                             "changeType": "statModified",
                                             "name": "book_purchased",
-                                            "value": SeasonData[Season]['battlePassPurchased']
+                                            "value": SeasonData[self.session.get('username')][Season]['battlePassPurchased']
                                         })
 
                                         MultiUpdate[0]['profileChanges'].append({
                                             "changeType": "statModified",
                                             "name": "book_level",
-                                            "value": SeasonData[Season]['battlePassTier']
+                                            "value": SeasonData[self.session.get('username')][Season]['battlePassTier']
                                         })
 
                                         AthenaModified=True
                                         
                                     if BattlePass['tierOfferId'] == offer['offerId']:
                                         lootList=[]
-                                        StartingTier=SeasonData[Season]['battlePassTier']
+                                        StartingTier=SeasonData[self.session.get('username')][Season]['battlePassTier']
                                         EndingTier
-                                        SeasonData[Season]['battlePassTier'] += loads(request.get_data())['purchaseQuantity'] or 1
-                                        EndingTier=SeasonData[Season]['battlePassTier']
+                                        SeasonData[self.session.get('username')][Season]['battlePassTier'] += loads(request.get_data())['purchaseQuantity'] or 1
+                                        EndingTier=SeasonData[self.session.get('username')][Season]['battlePassTier']
 
                                         for StartingTier in range(EndingTier):
                                             FreeTier=BattlePass['freeRewards'][i] or {}
@@ -2875,21 +2828,21 @@ class OldMP():
 
                                             for item in FreeTier:
                                                 if item.lower() == "token:athenaseasonxpboost":
-                                                    SeasonData[Season]['battlePassXPBoost'] += FreeTier[item]
+                                                    SeasonData[self.session.get('username')][Season]['battlePassXPBoost'] += FreeTier[item]
 
                                                     MultiUpdate[0]['profileChanges'].append({
                                                         "changeType": "statModified",
                                                         "name": "season_match_boost",
-                                                        "value": SeasonData[Season]['battlePassXPBoost']
+                                                        "value": SeasonData[self.session.get('username')][Season]['battlePassXPBoost']
                                                     })
 
                                                 if item.lower() == "token:athenaseasonfriendxpboost":
-                                                    SeasonData[Season]['battlePassXPFriendBoost'] += FreeTier[item]
+                                                    SeasonData[self.session.get('username')][Season]['battlePassXPFriendBoost'] += FreeTier[item]
 
                                                     MultiUpdate[0]['profileChanges'].append({
                                                         "changeType": "statModified",
                                                         "name": "season_friend_match_boost",
-                                                        "value": SeasonData[Season]['battlePassXPFriendBoost']
+                                                        "value": SeasonData[self.session.get('username')][Season]['battlePassXPFriendBoost']
                                                     })
                                                     
                                                 if item.lower().startswith("currency:mtx"):
@@ -2945,21 +2898,21 @@ class OldMP():
                                                 
                                             for item in PaidTier:
                                                 if item.lower() == "token:athenaseasonxpboost":
-                                                    SeasonData[Season]['battlePassXPBoost'] += PaidTier[item]
+                                                    SeasonData[self.session.get('username')][Season]['battlePassXPBoost'] += PaidTier[item]
 
                                                     MultiUpdate[0]['profileChanges'].append({
                                                         "changeType": "statModified",
                                                         "name": "season_match_boost",
-                                                        "value": SeasonData[Season]['battlePassXPBoost']
+                                                        "value": SeasonData[self.session.get('username')][Season]['battlePassXPBoost']
                                                     })
 
                                                 if item.lower() == "token:athenaseasonfriendxpboost":
-                                                    SeasonData[Season]['battlePassXPFriendBoost'] += PaidTier[item]
+                                                    SeasonData[self.session.get('username')][Season]['battlePassXPFriendBoost'] += PaidTier[item]
 
                                                     MultiUpdate[0]['profileChanges'].append({
                                                         "changeType": "statModified",
                                                         "name": "season_friend_match_boost",
-                                                        "value": SeasonData[Season]['battlePassXPFriendBoost']
+                                                        "value": SeasonData[self.session.get('username')][Season]['battlePassXPFriendBoost']
                                                     })
 
                                                 if item.lower().startswith("currency:mtx"):
@@ -3037,12 +2990,12 @@ class OldMP():
                                         MultiUpdate[0]['profileChanges'].append({
                                             "changeType": "statModified",
                                             "name": "book_level",
-                                            "value": SeasonData[Season]['battlePassTier']
+                                            "value": SeasonData[self.session.get('username')][Season]['battlePassTier']
                                         })
 
                                         AthenaModified=True
 
-                                    open(f'data/items/season/seasondata.json', 'w', encoding='utf-8').write(dumps(SeasonData, indent=4))
+                                    open(f'data/profiles/seasondata.json', 'w', encoding='utf-8').write(dumps(SeasonData, indent=4))
                     
                     if value['name'].startswith("BR"):
                         for b, value in enumerate(catalog['storefronts'][a]['catalogEntries']):
@@ -3152,16 +3105,13 @@ class OldMP():
                         MultiUpdate[0]['profileCommandRevision']=athena['commandRevision'] or 0
 
                     oldprofile=loads(open('data/profiles/athena.json', 'r', encoding='utf-8').read())
-                    for key, val in enumerate(oldprofile):
-                        if val['accountId']==account:
-                            oldprofile[key]=athena
+                    oldprofile[self.session.get('username')]=athena
                     open('data/profiles/athena.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
                     
                     oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "common_core"}.json', 'r', encoding='utf-8').read())
-                    for key, val in enumerate(oldprofile):
-                        if val['accountId']==account:
-                            oldprofile[key]=profile
+                    oldprofile[self.session.get('username')]=profile
                     open(f'data/profiles/{request.args.get("profileId") or "common_core"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
+        
 
                 if AthenaModified == False:
                     profile['rvn'] += 1
@@ -3172,9 +3122,7 @@ class OldMP():
                         MultiUpdate[0]['profileCommandRevision']=profile['commandRevision'] or 0
                         
                     oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "common_core"}.json', 'r', encoding='utf-8').read())
-                    for key, val in enumerate(oldprofile):
-                        if val['accountId']==account:
-                            oldprofile[key]=profile
+                    oldprofile[self.session.get('username')]=profile
                     open(f'data/profiles/{request.args.get("profileId") or "common_core"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
 
             if QueryRevision != BaseRevision:
@@ -3204,59 +3152,26 @@ class OldMP():
         @app.route('/fortnite/api/game/v2/profile/<account>/client/SetPartyAssistQuest', methods=['POSt'])
         def mcpSetPartyAssistQuest(account):
             
-            # set account
             
-            if not account==sessions(sessionL, request.remote_addr).get('username'):
-                respon=self.functions.createError(
-                    "errors.com.epicgames.account.invalid_account_credentials",
-                    "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
-                    [], 18031, "invalid_grant"
-                )
-                resp=app.response_class(
-                    response=dumps(respon),
-                    status=400,
-                    mimetype='application/json'
-                )
-                return resp
-            
-            if request.args.get("profileId") in ['athena', 'profile0', 'common_core', 'common_public']:
-                pass
-            else:
-                profile=loads(open(f'data/unusedprofiles/{request.args.get("profileId")}.json', 'r', encoding='utf-8').read())
-                profile['_id']=sessions(sessionL, request.remote_addr).get('username')
-                profile['accountId']=sessions(sessionL, request.remote_addr).get('username')
-                
-                ApplyProfileChanges=[]
-                BaseRevision=profile['rvn'] or 0
-                QueryRevision=request.args.get('rvn') or -1
-                
-                if QueryRevision!=BaseRevision:
-                    ApplyProfileChanges=[{
-                        "changeType": "fullProfileUpdate",
-                        "profile": profile
-                    }]
-                
+            if not ospath.exists(f'data/profiles/{request.args.get("profileId")}.json'):
                 r={
-                    "profileRevision": profile['rvn'] or 0,
+                    "profileRevision": 0,
                     "profileId": request.args.get("profileId"),
-                    "profileChangesBaseRevision": BaseRevision,
-                    "profileChanges": ApplyProfileChanges,
-                    "profileCommandRevision": profile['commandRevision'] or 0,
+                    "profileChangesBaseRevision": 0,
+                    "profileChanges": [],
+                    "profileCommandRevision": 0,
                     "serverTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
                     "responseVersion": 1
                 }
-                
+
                 resp=app.response_class(
-                    response=dumps(r),
-                    status=200,
-                    mimetype='application/json'
-                )
+                        response=dumps(r),
+                        status=200,
+                        mimetype='application/json'
+                    )
                 return resp
             
-            profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-            for prof in profiles:
-                if prof['accountId']==account:
-                    profile=prof.copy()
+            profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())[self.session.get('username')].copy()
             
             ApplyProfileChanges=[]
             BaseRevision=profile['rvn'] or 0
@@ -3278,9 +3193,7 @@ class OldMP():
                 })
 
                 oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-                for key, val in enumerate(oldprofile):
-                    if val['accountId']==account:
-                        oldprofile[key]=profile
+                oldprofile[self.session.get('username')]=profile
                 open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
             
             if QueryRevision!=BaseRevision:
@@ -3309,59 +3222,26 @@ class OldMP():
         @app.route('/fortnite/api/game/v2/profile/<account>/client/AthenaPinQuest', methods=['POST'])
         def mcpAthenaPinQuest(account):
             
-            # set account
             
-            if not account==sessions(sessionL, request.remote_addr).get('username'):
-                respon=self.functions.createError(
-                    "errors.com.epicgames.account.invalid_account_credentials",
-                    "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
-                    [], 18031, "invalid_grant"
-                )
-                resp=app.response_class(
-                    response=dumps(respon),
-                    status=400,
-                    mimetype='application/json'
-                )
-                return resp
-            
-            if request.args.get("profileId") in ['athena', 'profile0', 'common_core', 'common_public']:
-                pass
-            else:
-                profile=loads(open(f'data/unusedprofiles/{request.args.get("profileId")}.json', 'r', encoding='utf-8').read())
-                profile['_id']=sessions(sessionL, request.remote_addr).get('username')
-                profile['accountId']=sessions(sessionL, request.remote_addr).get('username')
-                
-                ApplyProfileChanges=[]
-                BaseRevision=profile['rvn'] or 0
-                QueryRevision=request.args.get('rvn') or -1
-                
-                if QueryRevision!=BaseRevision:
-                    ApplyProfileChanges=[{
-                        "changeType": "fullProfileUpdate",
-                        "profile": profile
-                    }]
-                
+            if not ospath.exists(f'data/profiles/{request.args.get("profileId")}.json'):
                 r={
-                    "profileRevision": profile['rvn'] or 0,
+                    "profileRevision": 0,
                     "profileId": request.args.get("profileId"),
-                    "profileChangesBaseRevision": BaseRevision,
-                    "profileChanges": ApplyProfileChanges,
-                    "profileCommandRevision": profile['commandRevision'] or 0,
+                    "profileChangesBaseRevision": 0,
+                    "profileChanges": [],
+                    "profileCommandRevision": 0,
                     "serverTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
                     "responseVersion": 1
                 }
-                
+
                 resp=app.response_class(
-                    response=dumps(r),
-                    status=200,
-                    mimetype='application/json'
-                )
+                        response=dumps(r),
+                        status=200,
+                        mimetype='application/json'
+                    )
                 return resp
             
-            profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-            for prof in profiles:
-                if prof['accountId']==account:
-                    profile=prof.copy()
+            profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())[self.session.get('username')].copy()
 
             ApplyProfileChanges=[]
             BaseRevision=profile['rvn'] or 0
@@ -3383,9 +3263,7 @@ class OldMP():
                 })
 
                 oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-                for key, val in enumerate(oldprofile):
-                    if val['accountId']==account:
-                        oldprofile[key]=profile
+                oldprofile[self.session.get('username')]=profile
                 open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
             
             if QueryRevision!=BaseRevision:
@@ -3414,59 +3292,26 @@ class OldMP():
         @app.route('/fortnite/api/game/v2/profile/<account>/client/SetItemFavoriteStatus', methods=['POST'])
         def SetItemFavoriteStatus(account):
             
-            # set account
             
-            if not account==sessions(sessionL, request.remote_addr).get('username'):
-                respon=self.functions.createError(
-                    "errors.com.epicgames.account.invalid_account_credentials",
-                    "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
-                    [], 18031, "invalid_grant"
-                )
-                resp=app.response_class(
-                    response=dumps(respon),
-                    status=400,
-                    mimetype='application/json'
-                )
-                return resp
-
-            if request.args.get("profileId") in ['athena', 'profile0', 'common_core', 'common_public']:
-                pass
-            else:
-                profile=loads(open(f'data/unusedprofiles/{request.args.get("profileId")}.json', 'r', encoding='utf-8').read())
-                profile['_id']=sessions(sessionL, request.remote_addr).get('username')
-                profile['accountId']=sessions(sessionL, request.remote_addr).get('username')
-                
-                ApplyProfileChanges=[]
-                BaseRevision=profile['rvn'] or 0
-                QueryRevision=request.args.get('rvn') or -1
-                
-                if QueryRevision!=BaseRevision:
-                    ApplyProfileChanges=[{
-                        "changeType": "fullProfileUpdate",
-                        "profile": profile
-                    }]
-                
+            if not ospath.exists(f'data/profiles/{request.args.get("profileId")}.json'):
                 r={
-                    "profileRevision": profile['rvn'] or 0,
+                    "profileRevision": 0,
                     "profileId": request.args.get("profileId"),
-                    "profileChangesBaseRevision": BaseRevision,
-                    "profileChanges": ApplyProfileChanges,
-                    "profileCommandRevision": profile['commandRevision'] or 0,
+                    "profileChangesBaseRevision": 0,
+                    "profileChanges": [],
+                    "profileCommandRevision": 0,
                     "serverTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
                     "responseVersion": 1
                 }
-                
+
                 resp=app.response_class(
-                    response=dumps(r),
-                    status=200,
-                    mimetype='application/json'
-                )
+                        response=dumps(r),
+                        status=200,
+                        mimetype='application/json'
+                    )
                 return resp
 
-            profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-            for prof in profiles:
-                if prof['accountId']==account:
-                    profile=prof.copy()
+            profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())[self.session.get('username')].copy()
 
             ApplyProfileChanges=[]
             BaseRevision=profile['rvn'] or 0
@@ -3489,9 +3334,7 @@ class OldMP():
                 })
                 
                 oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-                for key, val in enumerate(oldprofile):
-                    if val['accountId']==account:
-                        oldprofile[key]=profile
+                oldprofile[self.session.get('username')]=profile
                 open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
             
             if QueryRevision!=BaseRevision:
@@ -3520,59 +3363,26 @@ class OldMP():
         @app.route('/fortnite/api/game/v2/profile/<account>/client/MarkItemSeen', methods=['POST'])
         def MarkItemSeen(account):
             
-            # set account
             
-            if not account==sessions(sessionL, request.remote_addr).get('username'):
-                respon=self.functions.createError(
-                    "errors.com.epicgames.account.invalid_account_credentials",
-                    "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
-                    [], 18031, "invalid_grant"
-                )
-                resp=app.response_class(
-                    response=dumps(respon),
-                    status=400,
-                    mimetype='application/json'
-                )
-                return resp
-
-            if request.args.get("profileId") in ['athena', 'profile0', 'common_core', 'common_public']:
-                pass
-            else:
-                profile=loads(open(f'data/unusedprofiles/{request.args.get("profileId")}.json', 'r', encoding='utf-8').read())
-                profile['_id']=sessions(sessionL, request.remote_addr).get('username')
-                profile['accountId']=sessions(sessionL, request.remote_addr).get('username')
-                
-                ApplyProfileChanges=[]
-                BaseRevision=profile['rvn'] or 0
-                QueryRevision=request.args.get('rvn') or -1
-                
-                if QueryRevision!=BaseRevision:
-                    ApplyProfileChanges=[{
-                        "changeType": "fullProfileUpdate",
-                        "profile": profile
-                    }]
-                
+            if not ospath.exists(f'data/profiles/{request.args.get("profileId")}.json'):
                 r={
-                    "profileRevision": profile['rvn'] or 0,
+                    "profileRevision": 0,
                     "profileId": request.args.get("profileId"),
-                    "profileChangesBaseRevision": BaseRevision,
-                    "profileChanges": ApplyProfileChanges,
-                    "profileCommandRevision": profile['commandRevision'] or 0,
+                    "profileChangesBaseRevision": 0,
+                    "profileChanges": [],
+                    "profileCommandRevision": 0,
                     "serverTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
                     "responseVersion": 1
                 }
-                
+
                 resp=app.response_class(
-                    response=dumps(r),
-                    status=200,
-                    mimetype='application/json'
-                )
+                        response=dumps(r),
+                        status=200,
+                        mimetype='application/json'
+                    )
                 return resp
             
-            profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-            for prof in profiles:
-                if prof['accountId']==account:
-                    profile=prof.copy()
+            profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())[self.session.get('username')].copy()
 
             ApplyProfileChanges=[]
             BaseRevision=profile['rvn'] or 0
@@ -3600,9 +3410,7 @@ class OldMP():
                 profile['commandRevision']+=1
                 
                 oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-                for key, val in enumerate(oldprofile):
-                    if val['accountId']==account:
-                        oldprofile[key]=profile
+                oldprofile[self.session.get('username')]=profile
                 open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
             
             if QueryRevision!=BaseRevision:
@@ -3631,59 +3439,26 @@ class OldMP():
         @app.route('/fortnite/api/game/v2/profile/<account>/client/EquipBattleRoyaleCustomization', methods=['POST'])
         def EquipBattleRoyaleCustomization(account):
             
-            # set account
             
-            if not account==sessions(sessionL, request.remote_addr).get('username'):
-                respon=self.functions.createError(
-                    "errors.com.epicgames.account.invalid_account_credentials",
-                    "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
-                    [], 18031, "invalid_grant"
-                )
-                resp=app.response_class(
-                    response=dumps(respon),
-                    status=400,
-                    mimetype='application/json'
-                )
-                return resp
-            
-            if request.args.get("profileId") in ['athena', 'profile0', 'common_core', 'common_public']:
-                pass
-            else:
-                profile=loads(open(f'data/unusedprofiles/{request.args.get("profileId")}.json', 'r', encoding='utf-8').read())
-                profile['_id']=sessions(sessionL, request.remote_addr).get('username')
-                profile['accountId']=sessions(sessionL, request.remote_addr).get('username')
-                
-                ApplyProfileChanges=[]
-                BaseRevision=profile['rvn'] or 0
-                QueryRevision=request.args.get('rvn') or -1
-                
-                if QueryRevision!=BaseRevision:
-                    ApplyProfileChanges=[{
-                        "changeType": "fullProfileUpdate",
-                        "profile": profile
-                    }]
-                
+            if not ospath.exists(f'data/profiles/{request.args.get("profileId")}.json'):
                 r={
-                    "profileRevision": profile['rvn'] or 0,
+                    "profileRevision": 0,
                     "profileId": request.args.get("profileId"),
-                    "profileChangesBaseRevision": BaseRevision,
-                    "profileChanges": ApplyProfileChanges,
-                    "profileCommandRevision": profile['commandRevision'] or 0,
+                    "profileChangesBaseRevision": 0,
+                    "profileChanges": [],
+                    "profileCommandRevision": 0,
                     "serverTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
                     "responseVersion": 1
                 }
-                
+
                 resp=app.response_class(
-                    response=dumps(r),
-                    status=200,
-                    mimetype='application/json'
-                )
+                        response=dumps(r),
+                        status=200,
+                        mimetype='application/json'
+                    )
                 return resp
             
-            profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-            for prof in profiles:
-                if prof['accountId']==account:
-                    profile=prof.copy()
+            profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())[self.session.get('username')].copy()
             
             try:
                 if not profile['stats']['attributes']['favorite_dance']:
@@ -3726,10 +3501,10 @@ class OldMP():
                 
                 slotNameJ=loads(request.get_data())['slotName']
                 itemToSlotJ=loads(request.get_data())['itemToSlot']
-                self.functions.req(f"UPDATE favorites SET `{slotNameJ.lower()}`='{itemToSlotJ}' WHERE `username`='{sessions(sessionL, request.remote_addr).get('username')}'")
+                self.functions.req(f"UPDATE favorites SET `{slotNameJ.lower()}`='{itemToSlotJ}' WHERE `username`='{self.session.get('username')}'")
                 
                 if slotNameJ=="Character":
-                    sessions(sessionL, request.remote_addr).put('character', itemToSlotJ)
+                    self.session.put('character', itemToSlotJ)
                     profile['stats']['attributes']['favorite_character']=itemToSlotJ or ""
                     StatChanged=True
                     pass
@@ -3811,9 +3586,7 @@ class OldMP():
                         "attributeValue": profile['items'][itemToSlotJ]['attributes']['variants']
                     })
                 oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-                for key, val in enumerate(oldprofile):
-                    if val['accountId']==account:
-                        oldprofile[key]=profile
+                oldprofile[self.session.get('username')]=profile
                 open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
 
             if QueryRevision!=BaseRevision:
@@ -3849,28 +3622,14 @@ class OldMP():
         @app.route('/fortnite/api/game/v2/profile/<account>/client/QueryProfile', methods=['POST'])
         def fortnitegameapiclientall(account):
             
-            # set account
-            
-            if not account==sessions(sessionL, request.remote_addr).get('username'):
-                respon=self.functions.createError(
-                    "errors.com.epicgames.account.invalid_account_credentials",
-                    "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
-                    [], 18031, "invalid_grant"
-                )
-                resp=app.response_class(
-                    response=dumps(respon),
-                    status=400,
-                    mimetype='application/json'
-                )
-                return resp
             
             if request.args.get("profileId") in ['athena', 'profile0', 'common_core', 'common_public']:
                 print('pass')
                 pass
             else:
                 profile=loads(open(f'data/unusedprofiles/{request.args.get("profileId")}.json', 'r', encoding='utf-8').read())
-                profile['_id']=sessions(sessionL, request.remote_addr).get('username')
-                profile['accountId']=sessions(sessionL, request.remote_addr).get('username')
+                profile['_id']=self.session.get('username')
+                profile['accountId']=self.session.get('username')
                 
                 ApplyProfileChanges=[]
                 BaseRevision=profile['rvn'] or 0
@@ -3899,11 +3658,7 @@ class OldMP():
                 )
                 return resp
             
-            profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-            
-            for prof in profiles:
-                if prof['accountId']==account:
-                    profile=prof.copy()
+            profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())[self.session.get('username')].copy()
 
             ApplyProfileChanges=[]
             BaseRevision=profile['rvn'] or 0
@@ -3935,60 +3690,26 @@ class OldMP():
         @app.route('/fortnite/api/game/v2/profile/<account>/client/GetMcpTimeForLogin', methods=['POST'])
         def fortniteGetMcpTimeForLogin(account):
             
-            # set account
             
-            if not account==sessions(sessionL, request.remote_addr).get('username'):
-                respon=self.functions.createError(
-                    "errors.com.epicgames.account.invalid_account_credentials",
-                    "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
-                    [], 18031, "invalid_grant"
-                )
-                resp=app.response_class(
-                    response=dumps(respon),
-                    status=400,
-                    mimetype='application/json'
-                )
-                return resp
-            
-            if request.args.get("profileId") in ['athena', 'profile0', 'common_core', 'common_public']:
-                pass
-            else:
-                profile=loads(open(f'data/unusedprofiles/{request.args.get("profileId")}.json', 'r', encoding='utf-8').read())
-                profile['_id']=sessions(sessionL, request.remote_addr).get('username')
-                profile['accountId']=sessions(sessionL, request.remote_addr).get('username')
-                
-                ApplyProfileChanges=[]
-                BaseRevision=profile['rvn'] or 0
-                QueryRevision=request.args.get('rvn') or -1
-                
-                if QueryRevision!=BaseRevision:
-                    ApplyProfileChanges=[{
-                        "changeType": "fullProfileUpdate",
-                        "profile": profile
-                    }]
-                
+            if not ospath.exists(f'data/profiles/{request.args.get("profileId")}.json'):
                 r={
-                    "profileRevision": profile['rvn'] or 0,
+                    "profileRevision": 0,
                     "profileId": request.args.get("profileId"),
-                    "profileChangesBaseRevision": BaseRevision,
-                    "profileChanges": ApplyProfileChanges,
-                    "profileCommandRevision": profile['commandRevision'] or 0,
+                    "profileChangesBaseRevision": 0,
+                    "profileChanges": [],
+                    "profileCommandRevision": 0,
                     "serverTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
                     "responseVersion": 1
                 }
-                
+
                 resp=app.response_class(
-                    response=dumps(r),
-                    status=200,
-                    mimetype='application/json'
-                )
+                        response=dumps(r),
+                        status=200,
+                        mimetype='application/json'
+                    )
                 return resp
             
-            profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-            
-            for prof in profiles:
-                if prof['accountId']==account:
-                    profile=prof.copy()
+            profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())[self.session.get('username')].copy()
 
             ApplyProfileChanges=[]
             BaseRevision=profile['rvn'] or 0
@@ -4021,60 +3742,26 @@ class OldMP():
         @app.route('/fortnite/api/game/v2/profile/<account>/client/SetMtxPlatform', methods=['POST'])
         def fortnitegameapiclientall2(account):
             
-            # set account
             
-            if not account==sessions(sessionL, request.remote_addr).get('username'):
-                respon=self.functions.createError(
-                    "errors.com.epicgames.account.invalid_account_credentials",
-                    "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
-                    [], 18031, "invalid_grant"
-                )
-                resp=app.response_class(
-                    response=dumps(respon),
-                    status=400,
-                    mimetype='application/json'
-                )
-                return resp
-            
-            if request.args.get("profileId") in ['athena', 'profile0', 'common_core', 'common_public']:
-                pass
-            else:
-                profile=loads(open(f'data/unusedprofiles/{request.args.get("profileId")}.json', 'r', encoding='utf-8').read())
-                profile['_id']=sessions(sessionL, request.remote_addr).get('username')
-                profile['accountId']=sessions(sessionL, request.remote_addr).get('username')
-                
-                ApplyProfileChanges=[]
-                BaseRevision=profile['rvn'] or 0
-                QueryRevision=request.args.get('rvn') or -1
-                
-                if QueryRevision!=BaseRevision:
-                    ApplyProfileChanges=[{
-                        "changeType": "fullProfileUpdate",
-                        "profile": profile
-                    }]
-                
+            if not ospath.exists(f'data/profiles/{request.args.get("profileId")}.json'):
                 r={
-                    "profileRevision": profile['rvn'] or 0,
+                    "profileRevision": 0,
                     "profileId": request.args.get("profileId"),
-                    "profileChangesBaseRevision": BaseRevision,
-                    "profileChanges": ApplyProfileChanges,
-                    "profileCommandRevision": profile['commandRevision'] or 0,
+                    "profileChangesBaseRevision": 0,
+                    "profileChanges": [],
+                    "profileCommandRevision": 0,
                     "serverTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
                     "responseVersion": 1
                 }
-                
+
                 resp=app.response_class(
-                    response=dumps(r),
-                    status=200,
-                    mimetype='application/json'
-                )
+                        response=dumps(r),
+                        status=200,
+                        mimetype='application/json'
+                    )
                 return resp
             
-            profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-            
-            for prof in profiles:
-                if prof['accountId']==account:
-                    profile=prof.copy()
+            profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())[self.session.get('username')].copy()
 
             ApplyProfileChanges=[]
             BaseRevision=profile['rvn'] or 0
@@ -4106,59 +3793,26 @@ class OldMP():
         @app.route('/fortnite/api/game/v2/profile/<account>/client/SetBattleRoyaleBanner', methods=['POST', 'GET'])
         def SetBattleRoyaleBanner(account):
             
-            # set account
             
-            if not account==sessions(sessionL, request.remote_addr).get('username'):
-                respon=self.functions.createError(
-                    "errors.com.epicgames.account.invalid_account_credentials",
-                    "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
-                    [], 18031, "invalid_grant"
-                )
-                resp=app.response_class(
-                    response=dumps(respon),
-                    status=400,
-                    mimetype='application/json'
-                )
-                return resp
-            
-            if request.args.get("profileId") in ['athena', 'profile0', 'common_core', 'common_public']:
-                pass
-            else:
-                profile=loads(open(f'data/unusedprofiles/{request.args.get("profileId")}.json', 'r', encoding='utf-8').read())
-                profile['_id']=sessions(sessionL, request.remote_addr).get('username')
-                profile['accountId']=sessions(sessionL, request.remote_addr).get('username')
-                
-                ApplyProfileChanges=[]
-                BaseRevision=profile['rvn'] or 0
-                QueryRevision=request.args.get('rvn') or -1
-                
-                if QueryRevision!=BaseRevision:
-                    ApplyProfileChanges=[{
-                        "changeType": "fullProfileUpdate",
-                        "profile": profile
-                    }]
-                
+            if not ospath.exists(f'data/profiles/{request.args.get("profileId")}.json'):
                 r={
-                    "profileRevision": profile['rvn'] or 0,
+                    "profileRevision": 0,
                     "profileId": request.args.get("profileId"),
-                    "profileChangesBaseRevision": BaseRevision,
-                    "profileChanges": ApplyProfileChanges,
-                    "profileCommandRevision": profile['commandRevision'] or 0,
+                    "profileChangesBaseRevision": 0,
+                    "profileChanges": [],
+                    "profileCommandRevision": 0,
                     "serverTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
                     "responseVersion": 1
                 }
-                
+
                 resp=app.response_class(
-                    response=dumps(r),
-                    status=200,
-                    mimetype='application/json'
-                )
+                        response=dumps(r),
+                        status=200,
+                        mimetype='application/json'
+                    )
                 return resp
             
-            profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-            for prof in profiles:
-                if prof['accountId']==account:
-                    profile=prof.copy()
+            profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())[self.session.get('username')].copy()
 
             ApplyProfileChanges=[]
             BaseRevision=profile['rvn'] or 0
@@ -4187,9 +3841,7 @@ class OldMP():
                 })
                 
                 oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-                for key, val in enumerate(oldprofile):
-                    if val['accountId']==account:
-                        oldprofile[key]=profile
+                oldprofile[self.session.get('username')]=profile
                 open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
             
             if QueryRevision!=BaseRevision:
@@ -4219,59 +3871,27 @@ class OldMP():
         @app.route('/fortnite/api/game/v2/profile/<account>/client/ClientQuestLogin', methods=['POST'])
         def ClientQuestLogin(account):
             
-            # set account
             
-            if not account==sessions(sessionL, request.remote_addr).get('username'):
-                respon=self.functions.createError(
-                    "errors.com.epicgames.account.invalid_account_credentials",
-                    "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
-                    [], 18031, "invalid_grant"
-                )
-                resp=app.response_class(
-                    response=dumps(respon),
-                    status=400,
-                    mimetype='application/json'
-                )
-                return resp
-            
-            if request.args.get("profileId") in ['athena', 'profile0', 'common_core', 'common_public']:
-                pass
-            else:
-                profile=loads(open(f'data/unusedprofiles/{request.args.get("profileId")}.json', 'r', encoding='utf-8').read())
-                profile['_id']=sessions(sessionL, request.remote_addr).get('username')
-                profile['accountId']=sessions(sessionL, request.remote_addr).get('username')
-                
-                ApplyProfileChanges=[]
-                BaseRevision=profile['rvn'] or 0
-                QueryRevision=request.args.get('rvn') or -1
-                
-                if QueryRevision!=BaseRevision:
-                    ApplyProfileChanges=[{
-                        "changeType": "fullProfileUpdate",
-                        "profile": profile
-                    }]
-                
+            if not ospath.exists(f'data/profiles/{request.args.get("profileId")}.json'):
                 r={
-                    "profileRevision": profile['rvn'] or 0,
+                    "profileRevision": 0,
                     "profileId": request.args.get("profileId"),
-                    "profileChangesBaseRevision": BaseRevision,
-                    "profileChanges": ApplyProfileChanges,
-                    "profileCommandRevision": profile['commandRevision'] or 0,
+                    "profileChangesBaseRevision": 0,
+                    "profileChanges": [],
+                    "profileCommandRevision": 0,
                     "serverTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
                     "responseVersion": 1
                 }
-                
+
                 resp=app.response_class(
-                    response=dumps(r),
-                    status=200,
-                    mimetype='application/json'
-                )
+                        response=dumps(r),
+                        status=200,
+                        mimetype='application/json'
+                    )
                 return resp
             
-            profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-            for prof in profiles:
-                if prof['accountId']==account:
-                    profile=prof.copy()
+            profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())[self.session.get('username')].copy()
+            
             QuestIDS=loads(open(f'data/items/quests.json', 'r', encoding='utf-8').read())
             memory=self.functions.getVersion()
 
@@ -4503,9 +4123,7 @@ class OldMP():
                 profile['commandRevision']+=1
                 
                 oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-                for key, val in enumerate(oldprofile):
-                    if val['accountId']==account:
-                        oldprofile[key]=profile
+                oldprofile[self.session.get('username')]=profile
                 open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
             
             if QueryRevision!=BaseRevision:
@@ -4535,59 +4153,26 @@ class OldMP():
         @app.route('/fortnite/api/game/v2/profile/<account>/client/IncrementNamedCounterStat', methods=['POSt'])
         def IncrementNamedCounterStat(account):
             
-            # set account
             
-            if not account==sessions(sessionL, request.remote_addr).get('username'):
-                respon=self.functions.createError(
-                    "errors.com.epicgames.account.invalid_account_credentials",
-                    "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
-                    [], 18031, "invalid_grant"
-                )
-                resp=app.response_class(
-                    response=dumps(respon),
-                    status=400,
-                    mimetype='application/json'
-                )
-                return resp
-            
-            if request.args.get("profileId") in ['athena', 'profile0', 'common_core', 'common_public']:
-                pass
-            else:
-                profile=loads(open(f'data/unusedprofiles/{request.args.get("profileId")}.json', 'r', encoding='utf-8').read())
-                profile['_id']=sessions(sessionL, request.remote_addr).get('username')
-                profile['accountId']=sessions(sessionL, request.remote_addr).get('username')
-                
-                ApplyProfileChanges=[]
-                BaseRevision=profile['rvn'] or 0
-                QueryRevision=request.args.get('rvn') or -1
-                
-                if QueryRevision!=BaseRevision:
-                    ApplyProfileChanges=[{
-                        "changeType": "fullProfileUpdate",
-                        "profile": profile
-                    }]
-                
+            if not ospath.exists(f'data/profiles/{request.args.get("profileId")}.json'):
                 r={
-                    "profileRevision": profile['rvn'] or 0,
+                    "profileRevision": 0,
                     "profileId": request.args.get("profileId"),
-                    "profileChangesBaseRevision": BaseRevision,
-                    "profileChanges": ApplyProfileChanges,
-                    "profileCommandRevision": profile['commandRevision'] or 0,
+                    "profileChangesBaseRevision": 0,
+                    "profileChanges": [],
+                    "profileCommandRevision": 0,
                     "serverTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
                     "responseVersion": 1
                 }
-                
+
                 resp=app.response_class(
-                    response=dumps(r),
-                    status=200,
-                    mimetype='application/json'
-                )
+                        response=dumps(r),
+                        status=200,
+                        mimetype='application/json'
+                    )
                 return resp
             
-            profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-            for prof in profiles:
-                if prof['accountId']==account:
-                    profile=prof.copy()
+            profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())[self.session.get('username')].copy()
 
             ApplyProfileChanges=[]
             BaseRevision=profile['rvn'] or 0
@@ -4612,9 +4197,7 @@ class OldMP():
                 })
 
                 oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-                for key, val in enumerate(oldprofile):
-                    if val['accountId']==account:
-                        oldprofile[key]=profile
+                oldprofile[self.session.get('username')]=profile
                 open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
             
             if QueryRevision!=BaseRevision:
@@ -4654,11 +4237,7 @@ class OldMP():
             for file in ['data/profiles/athena.json', 'data/profiles/profile0.json', 'data/common_core.json']:
                 memory = self.functions.getVersion()
 
-                profiles=loads(open(file, 'r', encoding='utf-8').read())
-
-                for prof in profiles:
-                    if prof['accountId']==sessions(sessionL, request.remote_addr).get('accountId'):
-                        profile=prof.copy()
+                profile=loads(open(file, 'r', encoding='utf-8').read())[self.session.get('username')].copy()
                         
                 if not profile.get('rvn'):
                     profile['rvn'] = 0
@@ -4672,21 +4251,19 @@ class OldMP():
                     profile['commandRevision'] = 0
 
                 if file == 'athena.json':
-                    SeasonData=loads(open(f'data/items/season/seasondata.json', 'r', encoding='utf-8').read())
-                    profiles['stats']['attributes']['season_num'] = memory['season']
+                    SeasonData=loads(open(f'data/profiles/seasondata.json', 'r', encoding='utf-8').read())
+                    profile['stats']['attributes']['season_num'] = memory['season']
 
-                    if f'Season{memory["season"]}' in SeasonData:
-                        SeasonData = SeasonData[f'Season{memory["season"]}']
+                    if f'Season{memory["season"]}' in SeasonData[self.session.get('username')]:
+                        SeasonDatas = SeasonData[self.session.get('username')][f'Season{memory["season"]}']
 
-                        profiles['stats']['attributes']['book_purchased'] = SeasonData['battlePassPurchased']
-                        profiles['stats']['attributes']['book_level'] = SeasonData['battlePassTier']
-                        profiles['stats']['attributes']['season_match_boost'] = SeasonData['battlePassXPBoost']
-                        profiles['stats']['attributes']['season_friend_match_boost'] = SeasonData['battlePassXPFriendBoost']
+                        profile['stats']['attributes']['book_purchased'] = SeasonDatas['battlePassPurchased']
+                        profile['stats']['attributes']['book_level'] = SeasonDatas['battlePassTier']
+                        profile['stats']['attributes']['season_match_boost'] = SeasonDatas['battlePassXPBoost']
+                        profile['stats']['attributes']['season_friend_match_boost'] = SeasonDatas['battlePassXPFriendBoost']
 
                     oldprofile=loads(open(file, 'r', encoding='utf-8').read())
-                    for key, val in enumerate(oldprofile):
-                        if val['accountId']==sessions(sessionL, request.remote_addr).get('accountId'):
-                            oldprofile[key]=profile
+                    oldprofile[self.session.get('username')]=profile
                     open(file, 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
 
             return Response(status=200)
@@ -4694,29 +4271,8 @@ class OldMP():
         @app.route("/fortnite/api/game/v2/profile/<account>/client/RefundMtxPurchase", methods=["POST"])
         def refund_mtx_purchase(account):
             
-            # set account
-            
-            if not account==sessions(sessionL, request.remote_addr).get('username'):
-                respon=self.functions.createError(
-                    "errors.com.epicgames.account.invalid_account_credentials",
-                    "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
-                    [], 18031, "invalid_grant"
-                )
-                resp=app.response_class(
-                    response=dumps(respon),
-                    status=400,
-                    mimetype='application/json'
-                )
-                return resp
-            
-            profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "common_core"}.json', 'r', encoding='utf-8').read())
-            for prof in profiles:
-                if prof['accountId']==account:
-                    profile=prof.copy()
-            item_profiles=loads(open(f'data/profiles/athena.json', 'r', encoding='utf-8').read())
-            for i in item_profiles:
-                if i['accountId']==account:
-                    item_profile=i.copy()
+            profile=loads(open(f'data/profiles/{request.args.get("profileId") or "common_core"}.json', 'r', encoding='utf-8').read())[self.session.get('username')].copy()
+            item_profile=loads(open(f'data/profiles/athena.json', 'r', encoding='utf-8').read())[self.session.get('username')].copy()
 
             apply_profile_changes = []
             multi_update = []
@@ -4787,15 +4343,11 @@ class OldMP():
                 multi_update[0]['profileCommandRevision']=item_profile['commandRevision'] or 0
                 
                 oldprofile=loads(open(f'data/profiles/athena.json', 'r', encoding='utf-8').read())
-                for key, val in enumerate(oldprofile):
-                    if val['accountId']==account:
-                        oldprofile[key]=item_profile
+                oldprofile[self.session.get('username')]=item_profile
                 open(f'data/profiles/athena.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
                 
                 oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "common_core"}.json', 'r', encoding='utf-8').read())
-                for key, val in enumerate(oldprofile):
-                    if val['accountId']==account:
-                        oldprofile[key]=profile
+                oldprofile[self.session.get('username')]=profile
                 open(f'data/profiles/{request.args.get("profileId") or "common_core"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
             
             if query_revision!=base_revision:
@@ -4825,59 +4377,26 @@ class OldMP():
         @app.route("/fortnite/api/game/v2/profile/<account>/client/FortRerollDailyQuest", methods=["POST"])
         def FortRerollDailyQuest(account):
             
-            # set account
             
-            if not account==sessions(sessionL, request.remote_addr).get('username'):
-                respon=self.functions.createError(
-                    "errors.com.epicgames.account.invalid_account_credentials",
-                    "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
-                    [], 18031, "invalid_grant"
-                )
-                resp=app.response_class(
-                    response=dumps(respon),
-                    status=400,
-                    mimetype='application/json'
-                )
-                return resp
-            
-            if request.args.get("profileId") in ['athena', 'profile0', 'common_core', 'common_public']:
-                pass
-            else:
-                profile=loads(open(f'data/unusedprofiles/{request.args.get("profileId")}.json', 'r', encoding='utf-8').read())
-                profile['_id']=sessions(sessionL, request.remote_addr).get('username')
-                profile['accountId']=sessions(sessionL, request.remote_addr).get('username')
-                
-                ApplyProfileChanges=[]
-                BaseRevision=profile['rvn'] or 0
-                QueryRevision=request.args.get('rvn') or -1
-                
-                if QueryRevision!=BaseRevision:
-                    ApplyProfileChanges=[{
-                        "changeType": "fullProfileUpdate",
-                        "profile": profile
-                    }]
-                
+            if not ospath.exists(f'data/profiles/{request.args.get("profileId")}.json'):
                 r={
-                    "profileRevision": profile['rvn'] or 0,
+                    "profileRevision": 0,
                     "profileId": request.args.get("profileId"),
-                    "profileChangesBaseRevision": BaseRevision,
-                    "profileChanges": ApplyProfileChanges,
-                    "profileCommandRevision": profile['commandRevision'] or 0,
+                    "profileChangesBaseRevision": 0,
+                    "profileChanges": [],
+                    "profileCommandRevision": 0,
                     "serverTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
                     "responseVersion": 1
                 }
-                
+
                 resp=app.response_class(
-                    response=dumps(r),
-                    status=200,
-                    mimetype='application/json'
-                )
+                        response=dumps(r),
+                        status=200,
+                        mimetype='application/json'
+                    )
                 return resp
             
-            profiles=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-            for prof in profiles:
-                if prof['accountId']==account:
-                    profile=prof.copy()
+            profile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())[self.session.get('username')].copy()
             DailyQuestIDS=loads(open(f'data/items/quests.json', 'r', encoding='utf-8').read())
 
             ApplyProfileChanges = []
@@ -4958,9 +4477,7 @@ class OldMP():
                 })
 
                 oldprofile=loads(open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'r', encoding='utf-8').read())
-                for key, val in enumerate(oldprofile):
-                    if val['accountId']==account:
-                        oldprofile[key]=profile
+                oldprofile[self.session.get('username')]=profile
                 open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(oldprofile, indent=4))
 
             if QueryRevision != BaseRevision:

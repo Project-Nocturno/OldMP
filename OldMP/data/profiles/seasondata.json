@@ -1,4 +1,5 @@
 {
+  "defaultprofile": {
     "Season2": {
       "battlePassPurchased": false,
       "battlePassTier": 1,
@@ -54,3 +55,4 @@
       "battlePassXPFriendBoost": 0
     }
   }
+}

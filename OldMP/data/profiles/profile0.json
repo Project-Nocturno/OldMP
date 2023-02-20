@@ -1,5 +1,5 @@
-[
-    {
+{
+    "defaultprofile": {
         "_id": "defaultprofile",
         "created": "0001-01-01T00:00:00.000Z",
         "updated": "0001-01-01T00:00:00.000Z",
@@ -141,11 +141,11 @@
         },
         "commandRevision": 0
     },
-    {
+    "4lxprime": {
         "_id": "4lxprime",
         "created": "2023-02-05T13:04:46Z",
-        "updated": "2023-02-19T13:50:38Z",
-        "rvn": 0,
+        "updated": "2023-02-20T02:49:39Z",
+        "rvn": 1,
         "wipeNumber": 1,
         "accountId": "4lxprime",
         "profileId": "profile0",
@@ -156,7 +156,7 @@
                 "attributes": {
                     "platform": "Shared"
                 },
-                "quantity": 11500
+                "quantity": 13500
             }
         },
         "stats": {
@@ -204,15 +204,15 @@
                 "client_settings": {
                     "pinnedQuestInstances": []
                 },
-                "level": 1,
+                "level": 3,
                 "named_counters": {
                     "SubGameSelectCount_Campaign": {
                         "current_count": 0,
                         "last_incremented_time": "2022-09-15T21:38:24.350Z"
                     },
                     "SubGameSelectCount_Athena": {
-                        "current_count": 76,
-                        "last_incremented_time": "2023-02-19T12:21:09Z"
+                        "current_count": 83,
+                        "last_incremented_time": "2023-02-20T02:49:50Z"
                     }
                 },
                 "default_hero_squad_id": "",
@@ -281,6 +281,6 @@
                 "packs_granted": 0
             }
         },
-        "commandRevision": 0
+        "commandRevision": 1
     }
-]
+}

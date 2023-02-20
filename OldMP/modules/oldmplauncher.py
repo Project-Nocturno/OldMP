@@ -32,6 +32,7 @@ class OldMPLauncher():
         self.api_url=api_url
         self.proxy=proxy
         self.NLogs(logsapp, "OmdMPLauncher started!")
+        self.session=sessions(session=sessionL, req=request)
         
         @applaunch.before_request
         def checkrps():
@@ -133,11 +134,11 @@ class OldMPLauncher():
                     rg=get(f'{self.api_url}/get/check.php?user={username}&pass={password}')
                     
                 if not 'ok' in rg:
-                    sessions(sessionL, request.remote_addr).put('username', username)
-                    sessions(sessionL, request.remote_addr).put('password', password)
-                    sessions(sessionL, request.remote_addr).put('deviceId', str(uuid4()).replace("-", ""))
-                    sessions(sessionL, request.remote_addr).put('sessionId', str(uuid4()).replace("-", ""))
-                    sessions(sessionL, request.remote_addr).put('launcher', True)
+                    self.session.put('username', username)
+                    self.session.put('password', password)
+                    self.session.put('deviceId', str(uuid4()).replace("-", ""))
+                    self.session.put('sessionId', str(uuid4()).replace("-", ""))
+                    self.session.put('launcher', True)
                 
                 else:
                     respon=self.functions.createError(
@@ -169,7 +170,7 @@ class OldMPLauncher():
                     )
                     return resp
                 
-                if not username==sessions(sessionL, request.remote_addr).get('username') and password==sessions(sessionL, request.remote_addr).get('password'):
+                if not username==self.session.get('username') and password==self.session.get('password'):
                     respon=self.functions.createError(
                         "errors.com.epicgames.account.invalid_account_credentials",
                         "Your username and/or password are incorrect. Please verify your account on our website: https://www.nocturno.games/", 
@@ -183,10 +184,10 @@ class OldMPLauncher():
                     return resp
             
             r={
-                'accountId': sessions(sessionL, request.remote_addr).get('username'),
-                'display_name': sessions(sessionL, request.remote_addr).get('username'),
-                'device_id': sessions(sessionL, request.remote_addr).get('deviceId'),
-                'session_id': sessions(sessionL, request.remote_addr).get('sessionId'),
+                'accountId': self.session.get('username'),
+                'display_name': self.session.get('username'),
+                'device_id': self.session.get('deviceId'),
+                'session_id': self.session.get('sessionId'),
                 'expire_in': 14400,
                 'expire_at': self.functions.createDate(4)
             }
@@ -200,20 +201,20 @@ class OldMPLauncher():
         
         @self.applaunch.route("/launcher/rpc/", methods=['GET'])
         def rpc():
-            if sessions(sessionL, request.remote_addr).get('InGame')==True:
+            if self.session.get('InGame')==True:
                 r={
-                    'username': sessions(sessionL, request.remote_addr).get('username'),
-                    'character': sessions(sessionL, request.remote_addr).get('character'),
+                    'username': self.session.get('username'),
+                    'character': self.session.get('character'),
                     'party': {
-                        'mapName': sessions(sessionL, request.remote_addr).get('mapName'),
-                        'playerLeft': sessions(sessionL, request.remote_addr).get('partyPlayerLeft')
+                        'mapName': self.session.get('mapName'),
+                        'playerLeft': self.session.get('partyPlayerLeft')
                     }
                 }
                 
             else:
                 r={
-                    'username': sessions(sessionL, request.remote_addr).get('username'),
-                    'character': sessions(sessionL, request.remote_addr).get('character'),
+                    'username': self.session.get('username'),
+                    'character': self.session.get('character'),
                     'party': {
                         'mapName': 'Lobby',
                         'playerLeft': 0

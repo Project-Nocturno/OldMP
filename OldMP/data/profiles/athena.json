@@ -1,5 +1,5 @@
-[
-    {
+{
+    "defaultprofile": {
         "_id": "defaultprofile",
         "created": "0001-01-01T00:00:00.000Z",
         "updated": "0001-01-01T00:00:00.000Z",
@@ -170,10 +170,10 @@
         },
         "commandRevision": 0
     },
-    {
+    "4lxprime": {
         "_id": "4lxprime",
         "created": "2023-02-05T13:04:46Z",
-        "updated": "2023-02-19T13:50:38Z",
+        "updated": "2023-02-20T02:49:39Z",
         "rvn": 0,
         "wipeNumber": 1,
         "accountId": "4lxprime",
@@ -1051,13 +1051,13 @@
                 "purchased_bp_offers": [],
                 "favorite_loadingscreen": "",
                 "book_purchased": false,
-                "lifetime_wins": 0,
+                "lifetime_wins": 2,
                 "favorite_hat": "",
-                "level": 1,
+                "level": 3,
                 "favorite_battlebus": "",
                 "favorite_mapmarker": "",
                 "favorite_vehicledeco": "",
-                "accountLevel": 1,
+                "accountLevel": 3,
                 "favorite_backpack": "",
                 "favorite_dance": "",
                 "inventory_limit_bonus": 0,
@@ -1085,4 +1085,4 @@
         },
         "commandRevision": 0
     }
-]
+}
