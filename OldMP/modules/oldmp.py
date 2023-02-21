@@ -270,12 +270,36 @@ class OldMP():
 
         @app.route('/fortnite/api/game/v2/leaderboards/cohort/<account>', methods=['GET'])
         def fortniteapileaderboards(account):
+            
+            playlist=request.args.get('playlist')
+            
+            if playlist=='pc_m0_p2': # solo
+                pass
+            
+            elif playlist=='pc_m0_p10': # duo
+                pass
+            
+            elif playlist=='pc_m0_p9': # section
+                pass
+            
             resp=app.response_class(
                 response=dumps([]),
                 status=200,
                 mimetype='application/json'
             )
             return resp
+
+        @app.route('/fortnite/api/leaderboards/type/group/stat/br_placetop<place>_pc_m0_p2/window/weekly', methods=['POST'])
+        def leaderbordssolo(place):
+            pass
+
+        @app.route('/fortnite/api/leaderboards/type/group/stat/br_placetop<place>_pc_m0_p10/window/weekly', methods=['POST'])
+        def leaderbordsduos(place):
+            pass
+        
+        @app.route('/fortnite/api/leaderboards/type/group/stat/br_placetop<place>_pc_m0_p9/window/weekly', methods=['POST'])
+        def leaderbordssquad(place):
+            pass
 
         @app.route('/fortnite/api/game/v2/homebase/allowed-name-chars', methods=['GET'])
         def fortniteapihomebaseallowed():

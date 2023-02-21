@@ -658,6 +658,22 @@ class OldMPFunc():
             }, indent=4
         ))
         
+        seasondata=loads(open('data/profiles/seasondata.json', 'r', encoding='utf-8').read())
+        
+        seasondata[username]={}
+        for i in range(9):
+            nb=i+2
+            seasondata[username].update({
+                f"Season{nb}": {
+                    "battlePassPurchased": False,
+                    "battlePassTier": 1,
+                    "battlePassXPBoost": 0,
+                    "battlePassXPFriendBoost": 0
+                }
+            })
+        
+        open('data/profiles/seasondata.json', 'w', encoding='utf-8').write(dumps(seasondata, indent=4))
+        
         for i in ['athena.json', 'profile0.json', 'common_core.json', 'common_public.json']:
             file=loads(open(f'data/profiles/{i}', 'r', encoding='utf-8').read())
             

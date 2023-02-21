@@ -47,6 +47,42 @@ class Session():
         
         return len(self.session)
     
+    def list(self, key: str):
+        
+        exist=False
+        for i in self.session:
+            if i==self.ip:
+                exist=True
+        
+        if not exist:
+            self.session.update({
+                self.ip: {}
+            })
+            
+        try: return [self.session[i][key] for i in self.session]
+        except: 
+            print(f'\nbadinfos key-{key}\n')
+            return []
+        
+    def found(self, key: str):
+        
+        exist=False
+        for i in self.session:
+            if i==self.ip:
+                exist=True
+        
+        if not exist:
+            self.session.update({
+                self.ip: {}
+            })
+        
+        for i in self.session:
+            if self.session[i][key]=='':
+                return self.session[i]
+        
+        print(f'\nkey not found-{key}')
+        return {}
+    
     def clear(self):
         
         exist=False
