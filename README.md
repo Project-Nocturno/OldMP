@@ -111,7 +111,9 @@ et si il est in-game:
 }
 ```  
 Un systeme de status avec l'url `/launcher/status` qui retourne (`online`, `maintenance` ou `offline`) au format text.
-Un systeme de news avec l'url `/launcher/news` qui vas retourner les news au format text.  
+Un systeme de news avec l'url `/launcher/content/news` qui vas retourner les news au format text pour le launcher.  
+Un systeme de patch avec l'url `/launcher/content/patchnotes` qui vas retourner les patch au format text pour le launcher.  
+Un systeme de patch avec l'url `/launcher/content/fnsolo` qui vas retourner le texte du solo au format text pour le launcher.  
 Le ratelimite pour ce service est de `5` rps  
 Le code est [ici](https://github.com/Project-Nocturno/OldMP/blob/main/OldMP/modules/oldmplauncher.py)
 # Versions compatibles

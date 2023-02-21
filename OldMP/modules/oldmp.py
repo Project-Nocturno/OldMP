@@ -1975,38 +1975,7 @@ class OldMP():
         @app.route('/fortnite/api/game/v2/world/info', methods=['GET'])
         def apigamev2wotldinfo():
             
-            theater=loads(open('data/content/worldstw.json', 'r', encoding='utf-8').read())
-            # memory=self.functions.getVersion()
-            # date=datetime.now().strftime("%Y-%m-%d")
-            
-            # try:
-            #     if memory['season']>=9:
-            #         date=f"{date}T23:59:59.999Z"
-                
-            #     else:
-            #         if date<f"{date}T05:59:59.999Z":
-            #             date=f"{date}T05:59:59.999Z"
-                    
-            #         elif date<f"{date}T11:59:59.999Z":
-            #             date=f"{date}T11:59:59.999Z"
-                        
-            #         elif date<f"{date}T17:59:59.999Z":
-            #             date=f"{date}T17:59:59.999Z"
-                        
-            #         elif date<f"{date}T23:59:59.999Z":
-            #             date=f"{date}T23:59:59.999Z"
-                
-            # except:
-            #     pass
-            
-            # theater=theater.replace('2017-07-25T23:59:59.999Z', date)
-            
-            resp=app.response_class(
-                response=dumps(theater),
-                status=200,
-                mimetype='application/json'
-            )
-            return resp
+            return send_from_directory('data/content/', 'worldstw.json')
 
         @app.route('/fortnite/api/game/v2/profile/<account>/client/PurchaseCatalogEntry', methods=['POST'])
         def PurchaseCatalogEntry(account):

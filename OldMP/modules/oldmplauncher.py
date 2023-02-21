@@ -1,4 +1,4 @@
-from flask import Flask, request, send_file
+from flask import Flask, request, send_file, send_from_directory
 from .func import OldMPFunc as func
 from json import dumps, loads
 from requests import get
@@ -94,7 +94,7 @@ class OldMPLauncher():
             )
             return resp
         
-        @self.applaunch.route("/launcher/news", methods=['GET'])
+        @self.applaunch.route("/launcher/content/news", methods=['GET'])
         def getnews():
 
             news="Tu peux rejouer à l'ancien Fortnite&#xD;&#xA;grâce au Project Nocturno, tout ça&#xD;&#xA;gratuitement ! Le Project Nocturno&#xD;&#xA;reprends à l'identique l'ancien&#xD;&#xA;Fortnite: (Les skins, les niveaux,&#xD;&#xA;les v-bucks et la boutique). &#xD;&#xA;Tu pourras aussi avoir des amis et&#xD;&#xA;jouer avec eux !&#xA;"
@@ -105,6 +105,35 @@ class OldMPLauncher():
                 mimetype='text/plain'
             )
             return resp
+        
+        @self.applaunch.route("/launcher/content/patchnotes", methods=['GET'])
+        def getpatch():
+
+            patch="Lancement du projet Nocturno&#xD;&#xA;le 22 fevrier a 18h!&#xD;&#xA;"
+
+            resp=self.applaunch.response_class(
+                response=patch,
+                status=200,
+                mimetype='text/plain'
+            )
+            return resp
+        
+        @self.applaunch.route("/launcher/content/fnsolo", methods=['GET'])
+        def getfnsolo():
+
+            solo="Fortnite Solo est bientôt disponible!&#xD;&#xA;"
+
+            resp=self.applaunch.response_class(
+                response=solo,
+                status=200,
+                mimetype='text/plain'
+            )
+            return resp
+        
+        @self.applaunch.route("/launcher/dll/client/download", methods=['GET'])
+        def sendclient():
+
+            return send_from_directory('data/files/', 'client.dll')
         
         @self.applaunch.route("/launcher/auth", methods=['GET'])
         def authsys():

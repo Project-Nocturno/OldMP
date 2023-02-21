@@ -173,7 +173,7 @@
     "4lxprime": {
         "_id": "4lxprime",
         "created": "2023-02-05T13:04:46Z",
-        "updated": "2023-02-21T00:52:31Z",
+        "updated": "2023-02-21T17:54:43Z",
         "rvn": 0,
         "wipeNumber": 1,
         "accountId": "4lxprime",
@@ -1039,7 +1039,7 @@
                 "favorite_consumableemote": "",
                 "banner_color": "DefaultColor14",
                 "favorite_callingcard": "",
-                "favorite_character": "AthenaCharacter:CID_050_Athena_Commando_M_HolidayNutcracker",
+                "favorite_character": "AthenaCharacter:CID_030_Athena_Commando_M_Halloween",
                 "favorite_spray": [],
                 "book_xp": 0,
                 "battlestars": 0,
@@ -1080,7 +1080,7 @@
                     "",
                     ""
                 ],
-                "fortnite_character": "AthenaCharacter:CID_050_Athena_Commando_M_HolidayNutcracker"
+                "fortnite_character": "AthenaCharacter:CID_030_Athena_Commando_M_Halloween"
             }
         },
         "commandRevision": 0
