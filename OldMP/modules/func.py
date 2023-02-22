@@ -478,9 +478,7 @@ class OldMPFunc():
     def loadProfile(self, username: str):
         
         if self.checkProfile(username):
-            pass
-        else:
-            return True
+            return
         
         stats=self.req(f"SELECT top1 FROM stat WHERE username='{username}'")
         stats2=self.req(f"SELECT mtx, item, level, exp FROM users WHERE username='{username}'")
@@ -492,17 +490,27 @@ class OldMPFunc():
             level=int(stats2[0][2])
             xp=int(stats2[0][3])
             top1=int(stats[0][0])
+            if not favorites==[]:
+                f_char=favorites[0][0]
+                f_back=favorites[0][1]
+                f_pic=favorites[0][2]
+                f_glid=favorites[0][3]
+                f_sky=favorites[0][4]
+                f_music=favorites[0][5]
+                f_load=favorites[0][6]
+                f_dance=favorites[0][7]
+            else:
+                f_char=""
+                f_back=""
+                f_pic=""
+                f_glid=""
+                f_sky=""
+                f_music=""
+                f_load=""
+                f_dance=""
             
-            f_char=favorites[0][0]
-            f_back=favorites[0][1]
-            f_pic=favorites[0][2]
-            f_glid=favorites[0][3]
-            f_sky=favorites[0][4]
-            f_music=favorites[0][5]
-            f_load=favorites[0][6]
-            f_dance=favorites[0][7]
-            
-        except:
+        except Exception as e:
+            print(e)
             self.NLogs(self.logsapp, "error")
             respon=self.createError(
                 "errors.com.epicgames.account.invalid_profile",
@@ -518,7 +526,7 @@ class OldMPFunc():
         
         for i in ['athena.json', 'profile0.json', 'common_core.json', 'common_public.json']:
             profiles=loads(open(f'data/profiles/{i}', 'r', encoding='utf-8').read())
-                    
+                          
             if i.replace('.json', '')=='athena':
                 
                 newitems=self.new_items.copy()
@@ -601,14 +609,24 @@ class OldMPFunc():
             xp=int(stats2[0][3])
             top1=int(stats[0][0])
             
-            f_char=favorites[0][0]
-            f_back=favorites[0][1]
-            f_pic=favorites[0][2]
-            f_glid=favorites[0][3]
-            f_sky=favorites[0][4]
-            f_music=favorites[0][5]
-            f_load=favorites[0][6]
-            f_dance=favorites[0][7]
+            if not favorites==[]:
+                f_char=favorites[0][0]
+                f_back=favorites[0][1]
+                f_pic=favorites[0][2]
+                f_glid=favorites[0][3]
+                f_sky=favorites[0][4]
+                f_music=favorites[0][5]
+                f_load=favorites[0][6]
+                f_dance=favorites[0][7]
+            else:
+                f_char=""
+                f_back=""
+                f_pic=""
+                f_glid=""
+                f_sky=""
+                f_music=""
+                f_load=""
+                f_dance=""
             
         except:
             respon=self.createError(
@@ -759,21 +777,16 @@ class OldMPFunc():
             
             open(f'data/profiles/{i}', 'w', encoding='utf-8').write(dumps(file, indent=4))
     
+        return True
+    
     def checkProfile(self, accountId):
         athena=loads(open('data/profiles/athena.json', 'r', encoding='utf-8').read())
-        ext=False
         try:
-            if athena[accountId]:
-                print('ext')
-                ext=True
-            if not ext:
-                self.createProfile(accountId)
-                return False
+            athena[accountId]
             return True
         
         except:
             self.createProfile(accountId)
-            return False
     
     def logs(self, logst: bool, msg):
         if logst:

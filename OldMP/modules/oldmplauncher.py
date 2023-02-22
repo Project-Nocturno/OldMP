@@ -3,6 +3,7 @@ from .func import OldMPFunc as func
 from json import dumps, loads
 from uuid import uuid4
 from hashlib import sha256, sha512
+import urllib.parse
 
 from modules.session import Session as sessions
 
@@ -97,7 +98,7 @@ class OldMPLauncher():
         @self.applaunch.route("/launcher/content/news", methods=['GET'])
         def getnews():
 
-            news="Tu peux rejouer à l'ancien Fortnite&#xD;&#xA;grâce au Project Nocturno, tout ça&#xD;&#xA;gratuitement ! Le Project Nocturno&#xD;&#xA;reprends à l'identique l'ancien&#xD;&#xA;Fortnite: (Les skins, les niveaux,&#xD;&#xA;les v-bucks et la boutique). &#xD;&#xA;Tu pourras aussi avoir des amis et&#xD;&#xA;jouer avec eux !&#xA;"
+            news=loads(open('conf.json', 'r', encoding='utf-8').read())['Content']['LauncherMsg']['news']
 
             resp=self.applaunch.response_class(
                 response=news,
@@ -109,7 +110,7 @@ class OldMPLauncher():
         @self.applaunch.route("/launcher/content/patchnotes", methods=['GET'])
         def getpatch():
 
-            patch="Lancement du projet Nocturno&#xD;&#xA;le 22 fevrier a 18h!&#xD;&#xA;"
+            patch=loads(open('conf.json', 'r', encoding='utf-8').read())['Content']['LauncherMsg']['patchnotes']
 
             resp=self.applaunch.response_class(
                 response=patch,
@@ -121,7 +122,7 @@ class OldMPLauncher():
         @self.applaunch.route("/launcher/content/fnsolo", methods=['GET'])
         def getfnsolo():
 
-            solo="Fortnite Solo est bientôt disponible!&#xD;&#xA;"
+            solo=loads(open('conf.json', 'r', encoding='utf-8').read())['Content']['LauncherMsg']['fnsolo']
 
             resp=self.applaunch.response_class(
                 response=solo,
@@ -134,6 +135,16 @@ class OldMPLauncher():
         def sendclient():
 
             return send_from_directory('data/files/', 'client.dll')
+        
+        @self.applaunch.route("/launcher/patchunk/stats/download/pak", methods=['GET'])
+        def packstatsdownloadpak():
+
+            return send_from_directory('data/files/pack/stats/', 'patchunkStats-WindowsClient.pak')
+        
+        @self.applaunch.route("/launcher/patchunk/stats/download/sig", methods=['GET'])
+        def packstatsdownloadsig():
+
+            return send_from_directory('data/files/pack/stats/', 'patchunkStats-WindowsClient.sig')
         
         @self.applaunch.route("/launcher/auth", methods=['GET'])
         def authsys():
@@ -157,10 +168,10 @@ class OldMPLauncher():
                     )
                     return resp
                 
-                passwd=self.functions.req(f"SELECT password FROM users WHERE username='{username}' AND password='{password}'")
-                passw=sha512(sha256(password.encode()).hexdigest().encode()).hexdigest()
-                    
-                if passwd==passw:
+                passwd=self.functions.req(f"SELECT password FROM users WHERE username='{username}'")
+                passw=sha512(sha256(urllib.parse.unquote(password).encode()).hexdigest().encode()).hexdigest()
+                
+                if passwd[0][0]==passw:
                     self.session.put('username', username)
                     self.session.put('password', password)
                     self.session.put('deviceId', str(uuid4()).replace("-", ""))

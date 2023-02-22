@@ -16,6 +16,11 @@
         "port": 3553
     },
     "Content": {
+        "LauncherMsg": {
+            "news": "Tu peux rejouer à l'ancien Fortnite\ngrâce au Project Nocturno, tout ça\ngratuitement ! Le Project Nocturno\nreprends à l'identique l'ancien\nFortnite: (Les skins, les niveaux,\nles v-bucks et la boutique). \nTu pourras aussi avoir des amis et\njouer avec eux !\n",
+            "patchnotes": "Project Nocturno:\n\nLe Project Nocturno revient le 22 !\nDes mise à jours vont arriver\npour patch certain bug.",
+            "fnsolo": "Nocturno Solo est bientôt\n disponible!\n"
+        },
         "loadEmergency": true,
         "emergencymsg": {
             "v2": {
