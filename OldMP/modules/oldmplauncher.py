@@ -1,8 +1,8 @@
 from flask import Flask, request, send_file, send_from_directory
 from .func import OldMPFunc as func
 from json import dumps, loads
-from requests import get
 from uuid import uuid4
+from hashlib import sha256, sha512
 
 from modules.session import Session as sessions
 
@@ -157,12 +157,10 @@ class OldMPLauncher():
                     )
                     return resp
                 
-                if startWithProxy:
-                    rg=get(f'{self.api_url}/get/check.php?user={username}&pass={password}', proxies=self.proxy)
-                else:
-                    rg=get(f'{self.api_url}/get/check.php?user={username}&pass={password}')
+                passwd=self.functions.req(f"SELECT password FROM users WHERE username='{username}' AND password='{password}'")
+                passw=sha512(sha256(password.encode()).hexdigest().encode()).hexdigest()
                     
-                if not 'ok' in rg:
+                if passwd==passw:
                     self.session.put('username', username)
                     self.session.put('password', password)
                     self.session.put('deviceId', str(uuid4()).replace("-", ""))

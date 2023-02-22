@@ -46,6 +46,10 @@ class Xmpp():
             data+='</presence>'
             self.send(socket, data, False)
 
+    def sendMessageToAll(self, client, data):
+        for socket in sessions(self.sessionL, client).list('socket'):
+            self.send(socket, '''/''')
+
     def main(self):
         sock=socket.socket()
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
@@ -73,6 +77,7 @@ class Xmpp():
             sessions(self.sessionL, client).put('ID', uuid4())
             sessions(self.sessionL, client).put('auth', False)
             sessions(self.sessionL, client).put('tls', False)
+            sessions(self.sessionL, client).put('socket', client)
         else:
             pass
                 
@@ -121,21 +126,25 @@ class Xmpp():
             id=self.find(msg, 'id')[1]
             type=self.find(msg, 'type')[1]
             
-            if id=='6': # resource
-                if type=='set':
-                    sessions(self.sessionL, client).put('resource', self.find(msg, 'xmlns')[1].split('resource')[1])
-                    sessions(self.sessionL, client).put('jid', f'{sessions(self.sessionL, client).get("username")}@oldmp.software/{sessions(self.sessionL, client).get("resource")}')
-                    self.send(client, f'''<?xml version='1.0' encoding='UTF-8'?><stream:stream xmlns:stream="http://etherx.jabber.org/streams" xmlns="jabber:client" from="127.0.0.1" id="{sessions(self.sessionL, client).get("id")}" xml:lang="und" version="1.0"><stream:features><compression xmlns="http://jabber.org/features/compress"><method>zlib</method></compression><ver xmlns="urn:xmpp:features:rosterver"/><bind xmlns="urn:ietf:params:xml:ns:xmpp-bind"/><session xmlns="urn:ietf:params:xml:ns:xmpp-session"><optional/></session></stream:features>á2·¤¦Df♀9ïs◄''')
-                    self.send(client, f'''<iq type="result" id="{id}" to="127.0.0.1/{sessions(self.sessionL, client).get("id")}"><bind xmlns="urn:ietf:params:xml:ns:xmpp-bind"><jid>{sessions(self.sessionL, client).get("jid")}</jid></bind></iq><stream:features><compression xmlns="http://jabber.org/features/compress"><method>zlib</method></compression><ver xmlns="urn:xmpp:features:rosterver"/><bind xmlns="urn:ietf:params:xml:ns:xmpp-bind"/><session xmlns="urn:ietf:params:xml:ns:xmpp-session"><optional/></session></stream:features>á2·¤¦Df♀9ïs◄''')
+            if type=='error':
+                pass # send firts message ?
             
-            elif id=='7': # session
-                if type=='set':
-                    self.send(client, f'''<iq type="result" id="6" to="127.0.0.1/{sessions(self.sessionL, client).get("id")}"><bind xmlns="urn:ietf:params:xml:ns:xmpp-bind"><jid>{sessions(self.sessionL, client).get("jid")}</jid></bind></iq><stream:features><compression xmlns="http://jabber.org/features/compress"><method>zlib</method></compression><ver xmlns="urn:xmpp:features:rosterver"/><bind xmlns="urn:ietf:params:xml:ns:xmpp-bind"/><session xmlns="urn:ietf:params:xml:ns:xmpp-session"><optional/></session></stream:features>á2·¤¦Df♀9ïs◄''')
-                    self.send(client, f'''<iq type="result" id="7" from="{sessions(self.sessionL, client).get("username")}@oldmp.software" to="{sessions(self.sessionL, client).get("jid")}"/>{sessions(self.sessionL, client).get("resource")}</jid></bind></iq><stream:features><compression xmlns="http://jabber.org/features/compress"><method>zlib</method></compression><ver xmlns="urn:xmpp:features:rosterver"/><bind xmlns="urn:ietf:params:xml:ns:xmpp-bind"/><session xmlns="urn:ietf:params:xml:ns:xmpp-session"><optional/></session></stream:features>á2·¤¦Df♀9ïs◄''')
+            else:
+                if id=='6': # resource
+                    if type=='set':
+                        sessions(self.sessionL, client).put('resource', self.find(msg, 'xmlns')[1].split('resource')[1])
+                        sessions(self.sessionL, client).put('jid', f'{sessions(self.sessionL, client).get("username")}@oldmp.software/{sessions(self.sessionL, client).get("resource")}')
+                        self.send(client, f'''<?xml version='1.0' encoding='UTF-8'?><stream:stream xmlns:stream="http://etherx.jabber.org/streams" xmlns="jabber:client" from="127.0.0.1" id="{sessions(self.sessionL, client).get("id")}" xml:lang="und" version="1.0"><stream:features><compression xmlns="http://jabber.org/features/compress"><method>zlib</method></compression><ver xmlns="urn:xmpp:features:rosterver"/><bind xmlns="urn:ietf:params:xml:ns:xmpp-bind"/><session xmlns="urn:ietf:params:xml:ns:xmpp-session"><optional/></session></stream:features>á2·¤¦Df♀9ïs◄''')
+                        self.send(client, f'''<iq type="result" id="{id}" to="127.0.0.1/{sessions(self.sessionL, client).get("id")}"><bind xmlns="urn:ietf:params:xml:ns:xmpp-bind"><jid>{sessions(self.sessionL, client).get("jid")}</jid></bind></iq><stream:features><compression xmlns="http://jabber.org/features/compress"><method>zlib</method></compression><ver xmlns="urn:xmpp:features:rosterver"/><bind xmlns="urn:ietf:params:xml:ns:xmpp-bind"/><session xmlns="urn:ietf:params:xml:ns:xmpp-session"><optional/></session></stream:features>á2·¤¦Df♀9ïs◄''')
                 
-            elif id=='8': # ping
-                if type=='get':
-                    pass
+                elif id=='7': # session
+                    if type=='set':
+                        self.send(client, f'''<iq type="result" id="6" to="127.0.0.1/{sessions(self.sessionL, client).get("id")}"><bind xmlns="urn:ietf:params:xml:ns:xmpp-bind"><jid>{sessions(self.sessionL, client).get("jid")}</jid></bind></iq><stream:features><compression xmlns="http://jabber.org/features/compress"><method>zlib</method></compression><ver xmlns="urn:xmpp:features:rosterver"/><bind xmlns="urn:ietf:params:xml:ns:xmpp-bind"/><session xmlns="urn:ietf:params:xml:ns:xmpp-session"><optional/></session></stream:features>á2·¤¦Df♀9ïs◄''')
+                        self.send(client, f'''<iq type="result" id="7" from="{sessions(self.sessionL, client).get("username")}@oldmp.software" to="{sessions(self.sessionL, client).get("jid")}"/>{sessions(self.sessionL, client).get("resource")}</jid></bind></iq><stream:features><compression xmlns="http://jabber.org/features/compress"><method>zlib</method></compression><ver xmlns="urn:xmpp:features:rosterver"/><bind xmlns="urn:ietf:params:xml:ns:xmpp-bind"/><session xmlns="urn:ietf:params:xml:ns:xmpp-session"><optional/></session></stream:features>á2·¤¦Df♀9ïs◄''')
+                    
+                elif id=='8': # ping
+                    if type=='get':
+                        pass
                 
         elif key=='presence':
             corrid=self.find(msg, 'corr-id')[1].split('status')[0]
@@ -152,6 +161,12 @@ class Xmpp():
             
             elif status['Properties'][0]['Name']=='FortBasicInfo': #list all users ?
                 self.sendPresence(client, status)
-
+        
+        elif key=='message':
+            type=self.find(msg, 'type')[1]
+            
+            if type=='groupchat':
+                pass
+                
 
 Xmpp(3556, {}).main()

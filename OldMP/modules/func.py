@@ -3,6 +3,7 @@ from json import loads, dumps
 from datetime import datetime, timedelta
 import mysql.connector
 from os import mkdir as osmkdir
+from os import path as ospath
 
 class OldMPFunc():
     def __init__(
@@ -622,7 +623,9 @@ class OldMPFunc():
             )
             return resp
         
-        osmkdir(f'data/friends/{username}')
+        if not ospath.exists(f'data/friends/{username}'):
+            osmkdir(f'data/friends/{username}')
+            
         open(f'data/friends/{username}/friendslist.json', 'w', encoding='utf-8').write(dumps(
             [
                 {
@@ -678,9 +681,12 @@ class OldMPFunc():
             file=loads(open(f'data/profiles/{i}', 'r', encoding='utf-8').read())
             
             basicprofile=file['defaultprofile'].copy()
-                    
-            if file[username]:
+            
+            try:
+                if file[username]:
                     return False
+            except:
+                pass
             
             if basicprofile['profileId']=='athena':
                 
@@ -756,13 +762,18 @@ class OldMPFunc():
     def checkProfile(self, accountId):
         athena=loads(open('data/profiles/athena.json', 'r', encoding='utf-8').read())
         ext=False
-        if athena[accountId]:
-            print('ext')
-            ext=True
-        if not ext:
+        try:
+            if athena[accountId]:
+                print('ext')
+                ext=True
+            if not ext:
+                self.createProfile(accountId)
+                return False
+            return True
+        
+        except:
             self.createProfile(accountId)
             return False
-        return True
     
     def logs(self, logst: bool, msg):
         if logst:

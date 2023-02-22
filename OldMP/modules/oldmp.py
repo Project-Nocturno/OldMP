@@ -3,12 +3,12 @@ from os import mkdir as osmkdir
 from os import stat as osstat
 from json import loads, dumps
 import random
-from requests import get
 from flask import Flask, request, Response, send_from_directory
 from uuid import uuid4
 from datetime import datetime
 from hashlib import sha256, sha1
 import base64
+from hashlib import sha256, sha512
 
 from modules.func import OldMPFunc as func
 from modules.session import Session as sessions
@@ -1764,12 +1764,10 @@ class OldMP():
                 username=str(request.get_data().decode()).split("&")[1].split('=')[1]
                 password=str(request.get_data().decode()).split("&")[2].split('=')[1]
                 
-                if startWithProxy:
-                    r=get(f'{api_url}/get/check.php?user={username}&pass={password}', verify=False, proxies=proxy).text
-                else:
-                    r=get(f'{api_url}/get/check.php?user={username}&pass={password}', verify=False).text
-                    
-                if not 'ok' in r:
+                passwd=self.functions.req(f"SELECT password FROM users WHERE username='{username}' AND password='{password}'")
+                passw=sha512(sha256(password.encode()).hexdigest().encode()).hexdigest()
+                
+                if not passwd==passw:
                     self.NLogs(logsapp, "Clients bad logins")
                     respon=self.functions.createError(
                         "errors.com.epicgames.account.invalid_account_credentials",

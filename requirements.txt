@@ -1,5 +1,5 @@
 flask
 uuid
-random
 datetime
-os
+mysql-connector-python
+pillow
