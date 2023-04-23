@@ -10,13 +10,22 @@
         <title>OldMP</title>
         <style>
             @import url("https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900&display=swap");
-            * {
-                text-align: center;
-                font-family: roboto,sans-serif;
+            @import url("https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800;900&display=swap");
+            
+            :root
+            {
                 --mainclr: rgb(16, 16, 16)
             }
 
-            body {
+            * 
+            {
+                text-align: center;
+                font-family: "Rubik", sans-serif;
+                font-size: clamp(1rem, 2vw, 1.125rem);
+            }
+
+            body 
+            {
                 height: 100%;
                 margin: 0;
                 background-repeat: no-repeat;
@@ -24,23 +33,20 @@
                 background: linear-gradient(70deg, rgb(47, 13, 217), rgb(8, 2, 20));
             }
 
-            .first {
+            /*text*/
+            .first 
+            {
                 z-index: -1;
+                padding-top: 60px;
+                margin-top: 60px;
                 font-size: 100px;
                 font-weight: 800;
                 text-decoration: none;
-                margin-top: 25px;
                 line-height: 30px;
                 letter-spacing: 2px;
                 text-transform: uppercase;
                 color: white;
                 -webkit-text-stroke: 1px rgba(255, 255, 255, 0.5);
-            }
-
-            .first::selection {
-                color: transparent;
-                -webkit-text-stroke: 1px rgba(255, 255, 255, 0.5);
-                background: rgba(255, 255, 255, 0.1);
             }
 
             .copy {
@@ -55,17 +61,15 @@
                 -webkit-text-stroke: 1px rgba(255, 255, 255, 0.5);
             }
 
-            .copy::selection {
+            .presence 
+            {
+                display: none;
                 color: white;
-                -webkit-text-stroke: 1px rgba(255, 255, 255, 0.5);
-                background: rgba(255, 255, 255, 0.1);
             }
 
-            .title {
-                margin: 50px;
-            }
-
-            .footer {
+            /*footer*/
+            .footer 
+            {
                 z-index: 10;
                 position: fixed;
                 left: 0;
@@ -77,51 +81,65 @@
                 text-align: center;
             }
 
-            .presence {
-                color: white;
-            }
-
-            .footer a {
+            .footer a 
+            {
                 text-decoration: none;
                 color: white;
-                text-align: right;
             }
 
-            .footer a:hover {
+            .footer a:hover 
+            {
                 text-decoration: none;
                 color: rgba(255, 255, 255, 0.5);
                 transition: 0.5s;
             }
 
-            ::selection {
+            /*selection*/
+            ::selection 
+            {
                 background: rgba(255, 255, 255, 0.1);
             }
-            .card {
-                font-size: 32px;
-                font-weight: 600;
+            .copy::selection 
+            {
+                color: white;
+                -webkit-text-stroke: 1px rgba(255, 255, 255, 0.5);
+                background: rgba(255, 255, 255, 0.1);
+            }
+            .first::selection 
+            {
+                color: transparent;
+                -webkit-text-stroke: 1px rgba(255, 255, 255, 0.5);
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+            /*card*/
+            .card 
+            {
                 background: rgba(16, 16, 16, 0.3);
                 border-radius: 10px;
                 border: 1px solid rgba(255, 255, 255, 0.4);
                 position: relative;
-                width: 350px;
-                height: 450px;
+                min-height: 400px;
+                max-height: 450px;
+                min-width: 300px;
+                max-width: 350px;
+                width: 100%;
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 box-sizing: border-box;
-                margin: 70px;
+                margin: 50px;
                 padding: 10px;
                 overflow: hidden;
                 z-index: 2;
-                width: 100%;
-                max-width: 350px;
             }
             
-            .card::before {
+            .card::before 
+            {
                 z-index: 1;
                 content: '';
                 font-size: 3em;
-                font-weight: 900;
+                font-weight: 800;
                 text-transform: uppercase;
                 color: transparent;
                 -webkit-text-stroke: 1px rgba(255, 255, 255, 0.65);
@@ -135,50 +153,348 @@
                 transform: skewx(var(--deg));
             }
             
-            .card p {
+            .card p 
+            {
                 z-index: 3;
+                font-size: 32px;
                 margin-bottom: 8px;
+                font-weight: 600;
                 line-height: 1.2em;
             }
             
-            .card h2 {
+            .card h2 
+            {
                 font-size: 2em;
             }
-            .mainc {
+            .mainc 
+            {
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 flex-wrap: wrap;
                 padding: 40px 0;
                 color: white;
+            }
+            .nav-bar 
+            {
+                margin: auto;
+            }
+            /*header*/
+            header 
+            {
+                margin-top: -60px;
+                z-index: 15;
+                overflow: hidden;
+                position: fixed;
+                background-color: var(--mainclr);
+                width: 100%;
+                color: white;
+            }
+            header h2 
+            {
+                font-size: 30px;
+                font-weight: 600;
+                float: left;
+                padding-left: 15px;
+                display: inline-block;
+            }
+            header button
+            {
+                background: var(--mainclr);
+                border-radius: 8px;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                color: white;
+                padding: 10px;
+                font-size: 20px;
+                font-weight: 600;
+                float: right;
+                margin-right: 20px;
                 margin-top: 20px;
+                display: inline-block;
+            }
+            header button
+            {
+                display: none;
+                background: var(--mainclr);
+                border-radius: 8px;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                color: white;
+                padding: 10px;
+                font-size: 20px;
+                font-weight: 600;
+                float: right;
+                margin-right: 20px;
+                margin-top: 20px;
+            }
+            header div
+            {
+                display: inline-block;
+                text-align: center;
+                margin-top: 30px;
+                margin-left: -280px;
+            }
+            header div a 
+            {
+                text-decoration: none;
+                color: white;
+                padding: 20px;
+                font-weight: 400;
+                font-size: 22px;
+            }
+
+            /*menu*/
+            .menu_ul 
+            {
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                gap: 40px;
+            }
+            .menu_ul li 
+            {
+                position: relative;
+                list-style: none;
+            }
+            .menu_ul li a 
+            {
+                display: inline;
+                text-align: left;
+                font-size: 80px;
+                font-weight: 800;
+                text-decoration: none;
+                line-height: 1em;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                color: transparent;
+                -webkit-text-stroke: 1px rgba(255, 255, 255, 0.5);
+            }
+            .menu_ul li a::before 
+            {
+                content: attr(data-text);
+                position: absolute;
+                color: var(--clr);
+                width: 0;
+                overflow: hidden;
+                transition: 1s;
+                -webkit-text-stroke: 1px var(--clr);
+            }
+            .menu_ul li a:hover::before 
+            {
+                width: 100%;
+                filter: drop-shadow(0 0 25px var(--clr));
+            }
+            .full-screen-nav 
+            {
+                font-family: "Poppins", sans-serif;
+                text-align: left;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                transition: 0.5s ease-in-out;
+                display: none;
+                z-index: 2000;  
+            }
+            .open-nav 
+            {
+                opacity: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                opacity: 1;
+                visibility: visible;
+            }
+            .backdrop 
+            {
+                position: absolute;
+                width: 100%;
+                height: 330%;
+                background: rgba(0, 0, 0, 0.8);
+                cursor: pointer;
+                animation: fadeIn 0.35s ease-in-out forwards;
+            }
+            .trigger 
+            {
+                float: right;
+                margin: 20px;
+                z-index: 1000;
+            }
+
+            /*for 1000px screen*/
+            @media (max-width: 1000px)
+            {
+                header div
+                {
+                    margin-left: 0px;
+                }
+            }
+
+            /*for 640px screen (mobile)*/
+            @media (max-width: 640px)
+            {
+                /*nav bar mobile*/
+                .nav-bar 
+                {
+                    display: none;
+                    position: absolute;
+                    top: 3.7rem;
+                    left: 0;
+                    width: 100%;
+                    background-color: var(--mainclr);
+                    text-align: center;
+                }
+                
+                .nav-bar.responsive 
+                {
+                    display: block;
+                }
+                
+                .nav-bar a 
+                {
+                    display: block;
+                }
+
+                /*presence*/
+                .presence 
+                {
+                    display: none;
+                    color: white;
+                }
+
+                /*text*/
+                .first 
+                {
+                    padding-top: 60px;
+                    z-index: -1;
+                    font-size: 90px;
+                    font-weight: 800;
+                    text-decoration: none;
+                    line-height: 30px;
+                    letter-spacing: 2px;
+                    text-transform: uppercase;
+                    color: white;
+                    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.5);
+                }
+    
+                .copy 
+                {
+                    display: none;
+                    z-index: -1;
+                    font-size: 70px;
+                    font-weight: 800;
+                    text-decoration: none;
+                    line-height: 20px;
+                    letter-spacing: 2px;
+                    text-transform: uppercase;
+                    color: transparent;
+                    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.5);
+                }
+
+                /*card*/
+                .card p 
+                {
+                    z-index: 3;
+                    margin-bottom: 5px;
+                    line-height: 1em;
+                }
+                .mainc 
+                {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    flex-wrap: wrap;
+                    padding: 10px;
+                    color: white;
+                    margin-bottom: 30px;
+                }
+                .card 
+                {
+                    margin: 20px;
+                    min-height: 300px;
+                    max-height: 450px;
+                    min-width: 300px;
+                    max-width: 350px;
+                }
+
+                /*header*/
+                header button
+                {
+                    display: inline-block;
+                }
+                header div
+                {
+                    display: none;
+                }
             }
         </style>
     </head>
     <body>
-        {% if presence %}
+        <header>
+            <h2>Project Nocturno</h2>
+            <div>
+                <a href="#">home</a>
+                <a href="http://oldmp.software/players">players</a>
+                <a href="http://oldmp.software/content/files/listall">files</a>
+            </div>
+            <button class="trigger">Menu</button>
+        </header>
+
+        <nav class="full-screen-nav">
+            <div class="backdrop"></div>
+            <ul class="menu_ul">
+                <li style="--clr:rgba(255, 255, 255, 0.95);">
+                    <a class="menu_a" href="#" data-text="home">home</a>
+                </li>
+                <li style="--clr:rgba(255, 255, 255, 0.95);">
+                    <a class="menu_a" href="http://oldmp.software/players" data-text="players">players</a>
+                </li>
+                <li style="--clr:rgba(255, 255, 255, 0.95);">
+                    <a class="menu_a" href="http://oldmp.software/content/files/listall" data-text="files">files</a>
+                </li>
+            </ul>
+        </nav>
+
+        <script>
+
+            const trigger=document.querySelector('.trigger');
+            const nav=document.querySelector('.full-screen-nav');
+            const backdrop=document.querySelector('.backdrop');
+            const text=document.querySelector('.menu_ul');
+            
+            trigger.addEventListener("click", () => nav.classList.add('open-nav'));
+            backdrop.addEventListener('click', () => nav.classList.remove('open-nav'));
+            text.addEventListener('click', () => nav.classList.remove('open-nav'));
+
+        </script>
+
+        <!--{% if presence %}
             <p class="presence">You are In-game</p>
         {% else %}
             <p class="presence">You are not In-game</p>
-        {% endif %}
+        {% endif %}-->
+
         <div class="title">
             <h1 class="first">OldMP</h1>
             <h1 class="copy">OldMP</h1>
             <h1 class="copy">OldMP</h1>
         </div>
+
         <div class="mainc">
             <div class="card" style="--deg: -10deg">
-                <p>OldMP est testés et compatible sur les versions: 1.8, 1.9, 1.11, 2.4.2, 2.5, 3.5, 4.5, 5.41, 6.21, 7.30 de Fortnite</p>
+                <p>OldMP is tested and compatible with Fortnite versions: 1.8, 1.9, 1.11, 2.4.2, 2.5, 3.5, 4.5, 5.41, 6.21, 7.30, 8.40</p>
             </div>
             <div class="card" style="--deg: -10deg">
-                <p>OldMP est un backend pour Fortnite développer en python par le Projet Nocturno</p>
+                <p>OldMP is a backend for Fortnite developed in python by Project Nocturno</p>
             </div>
             <div class="card" style="--deg: -10deg">
-                <p>OldMP a été developper par 4lxprime#7714, basé sur LawinServer (fichiers JSON)</p>
+                <p>OldMP was developed by 4lxprime#7714, based on LawinServer (JSON files)</p>
             </div>
         </div>
+
         <div class="footer">
             By <a href="https://www.nocturno.games" target="_blank">Project Nocturno</a> (Oldmp: 4lxprime#7714)
         </div>
+        
     </body>
 </html>

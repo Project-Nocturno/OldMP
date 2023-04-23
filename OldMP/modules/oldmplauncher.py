@@ -1,4 +1,4 @@
-from flask import Flask, request, send_file, send_from_directory
+from flask import Flask, request, send_file, send_from_directory, abort
 from .func import OldMPFunc as func
 from json import dumps, loads
 from uuid import uuid4
@@ -23,42 +23,117 @@ class OldMPLauncher():
         },
         startWithProxy: bool=False,
         sessionL: dict={},
-        rps: dict={}
+        rps: dict={},
+        whitelist: list=[],
+        blacklist: dict={}
     ):
         
-        self.version='0.1'
         self.applaunch=applaunch
-        self.functions=func(request=request, app=applaunch, cnx=cnx)
+        self.functions=func(request=request, app=applaunch, cnx=cnx, whitelist=whitelist, blacklist=blacklist)
         self.NLogs=self.functions.logs
-        self.api_url=api_url
         self.proxy=proxy
         self.NLogs(logsapp, "OmdMPLauncher started!")
         self.session=sessions(session=sessionL, req=request)
         
         @applaunch.before_request
         def checkrps():
+            if not self.functions.find(blacklist, request.remote_addr):
+                blacklist.update({request.remote_addr: 0})
+            else:
+                if blacklist[request.remote_addr]>=8:
+                    abort(403)
             exist=False
             for i in rps:
                 if i==request.remote_addr:
                     exist=True
             if exist:
-                if rps[request.remote_addr]>=5:
-                    respon=self.functions.createError(
-                        "errors.com.epicgames.account.too_many_requests",
-                        "You have made more than the limited number of requests", 
-                        [], 18031, "too_many_requests"
-                    )
-                    resp=applaunch.response_class(
-                        response=dumps(respon),
-                        status=400,
-                        mimetype='application/json'
-                    )
-                    return resp
+                if rps[request.remote_addr]>=loads(open('conf.json', 'r', encoding='utf-8').read())['rps']['launcher']:
+                    abort(403)
                 else:
                     rps[request.remote_addr]+=1
             else:
                 rps.update({request.remote_addr: 0})
         
+        @applaunch.errorhandler(404)
+        def error404(e):
+            self.functions.addLog(request, 404, "oldmplaunch")
+            resp=applaunch.response_class(
+                response=dumps({
+                    'error': {
+                        'code': 404, 
+                        'content': f'Bad request: {request.url}'
+                    }
+                }),
+                status=404,
+                mimetype='application/json'
+            )
+            return resp
+
+        @applaunch.errorhandler(401)
+        def error401(e):
+            self.functions.addLog(request, 401, "oldmplaunch")
+            resp=applaunch.response_class(
+                response=dumps({
+                    'error': {
+                        'code': 401, 
+                        'content': "Nope sorry this isn't for you..."
+                    }
+                }),
+                status=401,
+                mimetype='application/json'
+            )
+            return resp
+
+        @applaunch.errorhandler(403)
+        def error403(e):
+            self.functions.addLog(request, 403, "oldmplaunch")
+            resp=applaunch.response_class(
+                response=dumps({
+                    'error': {
+                        'code': 403, 
+                        'content': "You are permanently or temporarily banned"
+                    }
+                }),
+                status=403,
+                mimetype='application/json'
+            )
+            return resp
+                
+        @applaunch.errorhandler(405)
+        def error405(e):
+            resp=applaunch.response_class(
+                response=dumps({
+                    'error': {
+                        'code': 405, 
+                        'content': f'Method {request.method} does not work'
+                    }
+                }),
+                status=405,
+                mimetype='application/json'
+            )
+            return resp
+
+        @applaunch.errorhandler(500)
+        def error500(e):
+            self.functions.addLog(request, 500, "oldmplaunch")
+            resp=applaunch.response_class(
+                response=dumps({
+                    'error': {
+                        'code': 500, 
+                        'content': 'The server encountered an error'
+                    }
+                }),
+                status=500,
+                mimetype='application/json'
+            )
+            return resp
+
+        @self.applaunch.route('/favicon.ico')
+        def favicon():
+            return send_file('data/content/images/logo.ico', mimetype='image/ico')
+        
+
+
         @self.applaunch.route("/", methods=['GET'])
         def baseroute():
 
@@ -69,15 +144,13 @@ class OldMPLauncher():
             )
             return resp
         
-        @self.applaunch.route('/favicon.ico')
-        def favicon():
-            return send_file('data/content/images/logo.ico', mimetype='image/ico')
-        
         @self.applaunch.route("/launcher/versioncheck", methods=['GET'])
         def versioncheck():
 
+            version=loads(open('conf.json', 'r', encoding='utf-8').read())['Content']['LauncherMsg']['version']
+
             resp=self.applaunch.response_class(
-                response=self.version,
+                response=version,
                 status=200,
                 mimetype='text/plain'
             )
@@ -90,6 +163,19 @@ class OldMPLauncher():
 
             resp=self.applaunch.response_class(
                 response=status,
+                status=200,
+                mimetype='text/plain'
+            )
+            return resp
+
+        @self.applaunch.route("/launcher/<user>/grade", methods=['GET'])
+        def getgradeuser(user):
+
+            grade=self.functions.req(f"SELECT grade FROM users WHERE username='{user}'")[0][0]
+            print(grade)
+
+            resp=self.applaunch.response_class(
+                response=grade,
                 status=200,
                 mimetype='text/plain'
             )
@@ -169,7 +255,7 @@ class OldMPLauncher():
                     return resp
                 
                 passwd=self.functions.req(f"SELECT password FROM users WHERE username='{username}'")
-                passw=sha512(sha256(urllib.parse.unquote(password).encode()).hexdigest().encode()).hexdigest()
+                passw=sha256(urllib.parse.unquote(password).encode()).hexdigest().encode()
                 
                 if passwd[0][0]==passw:
                     self.session.put('username', username)
@@ -194,6 +280,7 @@ class OldMPLauncher():
             elif grant_type=='refresh':
                 username=request.args.get('username')
                 password=request.args.get('password')
+                password=sha256(urllib.parse.unquote(password).encode()).hexdigest().encode()
                 
                 if not username or not password:
                     respon=self.functions.createError(

@@ -1,6 +1,8 @@
 from flask import Flask
+#from flask_mysqldb import MySQL
+import psycopg2
+#import mysql.connector #
 from cryptography.fernet import Fernet
-import mysql.connector
 from threading import Thread
 from time import sleep
 
@@ -15,17 +17,28 @@ websiteP=80 # base web port
 launcherP=4971 # launcher port
 # 20228
 
+#list
+blacklist={}
+whitelist=[]
+
 playerscoords=[]
 session={}
 rps={}
 
 # db conn
-cnx=mysql.connector.connect(
-    user='doadmin',
-    password='AVNS_-j7sW3k0hYO3J6dIq_q',
-    host='db-mysql-tor1-84534-do-user-12821157-0.b.db.ondigitalocean.com',
-    database='nocturnoDB',
-    port='25060'
+#cnxx=mysql.connector.connect( #
+#    user='doadmin',
+#    password='AVNS_nXyKDgrPe47nLv5q43k',
+#    host='db-mysql-fra1-71731-do-user-13276156-0.b.db.ondigitalocean.com',
+#    database='nocturnoDB2',
+#    port='25060'
+#)
+cnx = psycopg2.connect(
+    host="db-postgresql-fra1-29006-nocturno-do-user-13276156-0.b.db.ondigitalocean.com",
+    port=25060,
+    database="nocturnoDB",
+    user="doadmin",
+    password="AVNS_EAUVPPgoAPAk4mDd8QC"
 )
 
 # proxy parameters
@@ -50,6 +63,29 @@ app=Flask("OldMP") # lobby emulator conf
 appweb=Flask("OldMPWeb") # website conf
 applaunch=Flask("OldMPLauncher") # launcher backend services conf
 
+# db conn
+#app.config['MYSQL_HOST'] = 'db-mysql-fra1-71731-do-user-13276156-0.b.db.ondigitalocean.com'
+#app.config['MYSQL_PORT'] = 25060
+#app.config['MYSQL_USER'] = 'doadmin'
+#app.config['MYSQL_PASSWORD'] = 'AVNS_nXyKDgrPe47nLv5q43k'
+#app.config['MYSQL_DB'] = 'nocturnoDB2'
+
+#appweb.config['MYSQL_HOST'] = 'db-mysql-fra1-71731-do-user-13276156-0.b.db.ondigitalocean.com'
+#appweb.config['MYSQL_PORT'] = 25060
+#appweb.config['MYSQL_USER'] = 'doadmin'
+#appweb.config['MYSQL_PASSWORD'] = 'AVNS_nXyKDgrPe47nLv5q43k'
+#appweb.config['MYSQL_DB'] = 'nocturnoDB2'
+
+#applaunch.config['MYSQL_HOST'] = 'db-mysql-fra1-71731-do-user-13276156-0.b.db.ondigitalocean.com'
+#applaunch.config['MYSQL_PORT'] = 25060
+#applaunch.config['MYSQL_USER'] = 'doadmin'
+#applaunch.config['MYSQL_PASSWORD'] = 'AVNS_nXyKDgrPe47nLv5q43k'
+#applaunch.config['MYSQL_DB'] = 'nocturnoDB2'
+
+#mysql = MySQL(app)
+#mysqlweb = MySQL(appweb)
+#mysqllaunch = MySQL(applaunch)
+
 # start all the back services
 tl=Thread(target=loops(playerscoords, rps).makemap)
 tl.setDaemon(True)
@@ -61,13 +97,16 @@ tl.start()
 
 tweb=Thread( # thread for the website services
     target=oldmpweb, args=(
+        #mysqlweb,
         cnx,
         logsapp,
         playerscoords,
         appweb,
         websiteP,
         rps,
-        session
+        session,
+        whitelist,
+        blacklist
     )
 )
 tweb.setDaemon(True)
@@ -78,6 +117,7 @@ tlaunch=Thread( # thread for the launcher backend services
     target=oldmplauncher, args=(
         enc,
         dec,
+        #mysqllaunch,
         cnx,
         logsapp,
         applaunch,
@@ -86,7 +126,9 @@ tlaunch=Thread( # thread for the launcher backend services
         proxy,
         startWithProxy,
         session,
-        rps
+        rps,
+        whitelist,
+        blacklist
     )
 )
 tlaunch.setDaemon(True)
@@ -94,6 +136,7 @@ tlaunch.start()
 
 sleep(1)
 oldmp( # start the main backend service
+    #mysql,
     cnx,
     dec,
     enc,
@@ -105,5 +148,7 @@ oldmp( # start the main backend service
     backendP,
     session,
     rps,
-    playerscoords
+    playerscoords,
+    whitelist,
+    blacklist
 )

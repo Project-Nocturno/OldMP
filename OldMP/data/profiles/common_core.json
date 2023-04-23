@@ -14,15 +14,47 @@
                 "attributes": {
                     "platform": "EpicPC"
                 },
-                "quantity": 500
+                "quantity": 35383773
             },
             "Token:FounderChatUnlock": {
                 "templateId": "Token:FounderChatUnlock",
                 "attributes": {
                     "max_level_bonus": 0,
-                    "level": 1,
+                    "level": 0,
                     "item_seen": true,
-                    "xp": 1,
+                    "xp": 0,
+                    "favorite": false
+                },
+                "quantity": 1
+            }
+        },
+        "stats": {},
+        "commandRevision": 0
+    },
+    "4lxprime": {
+        "_id": "4lxprime",
+        "created": "2023-04-20T19:55:55Z",
+        "updated": "2023-04-23T12:34:01Z",
+        "rvn": 0,
+        "wipeNumber": 1,
+        "accountId": "4lxprime",
+        "profileId": "common_core",
+        "version": "no_version",
+        "items": {
+            "Currency": {
+                "templateId": "Currency:MtxPurchased",
+                "attributes": {
+                    "platform": "EpicPC"
+                },
+                "quantity": 35383773
+            },
+            "Token:FounderChatUnlock": {
+                "templateId": "Token:FounderChatUnlock",
+                "attributes": {
+                    "max_level_bonus": 0,
+                    "level": 0,
+                    "item_seen": true,
+                    "xp": 0,
                     "favorite": false
                 },
                 "quantity": 1

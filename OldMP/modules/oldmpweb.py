@@ -1,4 +1,4 @@
-from flask import Flask, request, send_file, render_template
+from flask import Flask, request, send_file, render_template, abort
 from .func import OldMPFunc as func
 from json import dumps, loads
 from os import listdir as oslistdir
@@ -16,39 +16,112 @@ class OldMPWeb():
         port: int=80,
         rps: dict={},
         sessionL: dict={},
+        whitelist: list=[],
+        blacklist: dict={}
     ):
         
         self.appweb=appweb
-        self.functions=func(request=request, app=appweb, cnx=cnx)
+        self.functions=func(request=request, app=appweb, cnx=cnx, whitelist=whitelist, blacklist=blacklist)
         self.NLogs=self.functions.logs
         self.session=sessions(session=sessionL, req=request)
 
         self.NLogs(logsapp, "OmdMPWeb started!")
         
-        @appweb.before_request
+        @self.appweb.before_request
         def checkrps():
+            if not self.functions.find(blacklist, request.remote_addr):
+                blacklist.update({request.remote_addr: 0})
+            else:
+                if blacklist[request.remote_addr]>=8:
+                    abort(403)
             exist=False
             for i in rps:
                 if i==request.remote_addr:
                     exist=True
             if exist:
-                if rps[request.remote_addr]>=5:
-                    respon=self.functions.createError(
-                        "errors.com.epicgames.account.too_many_requests",
-                        "You have made more than the limited number of requests", 
-                        [], 18031, "too_many_requests"
-                    )
-                    resp=appweb.response_class(
-                        response=dumps(respon),
-                        status=400,
-                        mimetype='application/json'
-                    )
-                    return resp
+                if rps[request.remote_addr]>=loads(open('conf.json', 'r', encoding='utf-8').read())['rps']['website']:
+                    abort(403)
                 else:
                     rps[request.remote_addr]+=1
             else:
                 rps.update({request.remote_addr: 0})
         
+        @self.appweb.errorhandler(404)
+        def error404(e):
+            resp=self.appweb.response_class(
+                response=dumps({
+                    'error': {
+                        'code': 404, 
+                        'content': f'Bad request: {request.url}'
+                    }
+                }),
+                status=404,
+                mimetype='application/json'
+            )
+            return resp
+
+        @self.appweb.errorhandler(401)
+        def error401(e):
+            resp=self.appweb.response_class(
+                response=dumps({
+                    'error': {
+                        'code': 401, 
+                        'content': "Nope sorry this isn't for you..."
+                    }
+                }),
+                status=401,
+                mimetype='application/json'
+            )
+            return resp
+
+        @self.appweb.errorhandler(403)
+        def error403(e):
+            resp=self.appweb.response_class(
+                response=dumps({
+                    'error': {
+                        'code': 403, 
+                        'content': "You are permanently or temporarily banned"
+                    }
+                }),
+                status=403,
+                mimetype='application/json'
+            )
+            return resp
+                
+        @self.appweb.errorhandler(405)
+        def error405(e):
+            resp=self.appweb.response_class(
+                response=dumps({
+                    'error': {
+                        'code': 405, 
+                        'content': f'Method {request.method} does not work'
+                    }
+                }),
+                status=405,
+                mimetype='application/json'
+            )
+            return resp
+
+        @self.appweb.errorhandler(500)
+        def error500(e):
+            resp=self.appweb.response_class(
+                response=dumps({
+                    'error': {
+                        'code': 500, 
+                        'content': 'The server encountered an error'
+                    }
+                }),
+                status=500,
+                mimetype='application/json'
+            )
+            return resp
+
+        @self.appweb.route('/favicon.ico')
+        def favicon():
+            return send_file('data/content/images/logo.ico', mimetype='image/ico')
+
+
+
         @self.appweb.route("/", methods=['GET', 'POST'])
         def baseroute():
             
@@ -73,7 +146,7 @@ class OldMPWeb():
         @self.appweb.route('/status')
         def getstatus():
             
-            status=loads(open('conf.json', 'r', encoding='utf-8').read())['Status']['backend']
+            status=loads(open('conf.json', 'r', encoding='utf-8').read())['Status']['website']
             
             resp=self.appweb.response_class(
                 response=dumps({'status': status}),
@@ -81,14 +154,82 @@ class OldMPWeb():
                 mimetype='application/json'
             )
             return resp
-        
-        @self.appweb.route('/favicon.ico')
-        def favicon():
-            return send_file('data/content/images/logo.ico', mimetype='image/ico')
 
+        @self.appweb.route('/logs')
+        def getlogs():
+            
+            if not request.args.get('urlkey'):
+                respon=self.functions.createError(
+                    "errors.com.epicgames.account.invalid_key",
+                    "Your admin urlkey is incorrect",
+                    [], 18031, "invalid_grant"
+                )
+                resp=self.appweb.response_class(
+                    response=dumps(respon),
+                    status=400,
+                    mimetype='application/json'
+                )
+            if request.args.get('urlkey')!='DE1NOCTURNOBZCOSMOSETDE2NOCTURNOISBETTER':
+                respon=self.functions.createError(
+                    "errors.com.epicgames.account.invalid_key",
+                    "Your admin urlkey is incorrect",
+                    [], 18031, "invalid_grant"
+                )
+                resp=self.appweb.response_class(
+                    response=dumps(respon),
+                    status=400,
+                    mimetype='application/json'
+                )
+                
+            else:
+                logs=loads(open('logs.json', 'r', encoding='utf-8').read())
+                
+                resp=self.appweb.response_class(
+                    response=dumps({'logs': logs}, indent=4),
+                    status=200,
+                    mimetype='application/json'
+                )
+                return resp
+            
+        @self.appweb.route('/blacklist')
+        def getbl():
+            
+            if not request.args.get('urlkey'):
+                respon=self.functions.createError(
+                    "errors.com.epicgames.account.invalid_key",
+                    "Your admin urlkey is incorrect",
+                    [], 18031, "invalid_grant"
+                )
+                resp=self.appweb.response_class(
+                    response=dumps(respon),
+                    status=400,
+                    mimetype='application/json'
+                )
+            if request.args.get('urlkey')!='DE1NOCTURNOBZCOSMOSETDE2NOCTURNOISBETTERETDE3ONBZCOSMOS':
+                respon=self.functions.createError(
+                    "errors.com.epicgames.account.invalid_key",
+                    "Your admin urlkey is incorrect",
+                    [], 18031, "invalid_grant"
+                )
+                resp=self.appweb.response_class(
+                    response=dumps(respon),
+                    status=400,
+                    mimetype='application/json'
+                )
+            else:
+
+                logs=loads(open('logs.json', 'r', encoding='utf-8').read())
+                
+                resp=self.appweb.response_class(
+                    response=dumps({'blacklist': blacklist}, indent=4),
+                    status=200,
+                    mimetype='application/json'
+                )
+                return resp
+        
         @self.appweb.route('/help', methods=['GET', 'POST'])
         def helppage():
-            pass
+            return '', 200
 
         @self.appweb.route('/content/images/<file>', methods=['GET', 'POST'])
         def getcontentimage(file):
@@ -169,7 +310,7 @@ class OldMPWeb():
             )
             return resp
 
-        @self.appweb.route('/map', methods=['GET', 'POST'])
+        #@self.appweb.route('/map', methods=['GET', 'POST'])
         def spawnmap():
             
             presence=self.session.exist()
@@ -190,26 +331,6 @@ class OldMPWeb():
             
             # else:
             #     return send_file('data/content/images/MiniMapAthena.png', mimetype='image/png')
-            
-        @self.appweb.route('/map/setcoords', methods=['POST'])
-        def mapsetcoords():
-            if request.args.get('acceskey')=="zEnc087zzsO3oHKmVymVIDb51wn_FqqsTM1BxKRcm7g=":
-                x: int=request.args.get('x')
-                z: int=request.args.get('z')
-                playerscoords.append((x/1, z/1))
-                
-            else:
-                respon=self.functions.createError(
-                    "errors.com.epicgames.account.invalid_grants",
-                    "Your acces key is incorrect",
-                    [], 18031, "invalid_grant"
-                )
-                resp=self.appweb.response_class(
-                    response=dumps(respon),
-                    status=400,
-                    mimetype='application/json'
-                )
-                return resp
 
         @self.appweb.route('/adminacc', methods=['GET'])
         def adminacc():
@@ -253,9 +374,12 @@ class OldMPWeb():
                     mimetype='application/json'
                 )
                 return resp
-            
+
             resp=self.appweb.response_class(
-                response=dumps(sessionL),
+                response=dumps({
+                    'players': self.session.len(),
+                    'clients': sessionL
+                }, indent=4),
                 status=200,
                 mimetype='application/json'
             )

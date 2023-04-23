@@ -8,18 +8,29 @@
         "website": "online"
     },
     "GameServer": {
-        "ip": "127.0.0.1",
+        "ip": "host.nocturno.games",
         "port": 7777
     },
     "MatchMaking": {
-        "ip": "127.0.0.1",
+        "ip": "matchmaker.oldmp.software",
         "port": 3553
+    },
+    "OldMP": {
+        "ip": "oldmp.software",
+        "port": 3551,
+        "displayDatarouter": true
+    },
+    "rps": {
+        "launcher": 10,
+        "website": 5,
+        "oldmp": 20
     },
     "Content": {
         "LauncherMsg": {
+            "version": "0.8.6",
             "news": "Tu peux rejouer à l'ancien Fortnite\ngrâce au Project Nocturno, tout ça\ngratuitement ! Le Project Nocturno\nreprends à l'identique l'ancien\nFortnite: (Les skins, les niveaux,\nles v-bucks et la boutique). \nTu pourras aussi avoir des amis et\njouer avec eux !\n",
-            "patchnotes": "Project Nocturno:\n\nLe Project Nocturno revient le 22 !\nDes mise à jours vont arriver\npour patch certain bug.",
-            "fnsolo": "Nocturno Solo est bientôt\n disponible!\n"
+            "patchnotes": "Project Nocturno:\n\nLe Project Nocturno est là !\nDes mise à jours vont arriver\npour patch certain bugs.",
+            "fnsolo": "Nocturno Solo est bientôt\ndisponible!\n"
         },
         "loadEmergency": true,
         "emergencymsg": {
@@ -37,7 +48,7 @@
                                 "hidden": false,
                                 "_type": "CommonUI Emergency Notice Base",
                                 "title": "Project Nocturno",
-                                "body": "Le projet Nocturno est fonctionnel!\nune mise a jour est prévue le 10/02/2023"
+                                "body": "Le projet Nocturno est fonctionnel!\nune mise a jour est prévue le 24/02/2023"
                             }
                         ]
                     },
@@ -55,28 +66,12 @@
                                 "hidden": true,
                                 "_type": "CommonUI Simple Message Base",
                                 "title": "Project Nocturno",
-                                "body": "Le projet Nocturno est fonctionnel!\nune mise a jour est prévue le 10/02/2023",
+                                "body": "Le projet Nocturno est fonctionnel!\nune mise a jour est prévue le 24/02/2023",
                                 "spotlight": true
                             }
                         ]
                     }
                 }
-            }
-        },
-        "loginmess": {
-            "loginmessage": {
-                "_title": "LoginMessage",
-                "loginmessage": {
-                    "_type": "CommonUI Simple Message",
-                    "message": {
-                        "_type": "CommonUI Simple Message Base",
-                        "title": "Project Nocturno",
-                        "body": "Bienvenue sur Nocturno !\n\n\nPatch Notes:\nImportant:\n\n - Creation du NocturnoBack (serveur backend)\n - Creation du gameserver 1.8 (serveur de jeux)\n - Creation du site Nocturno (www.nocturno.games)\n - Creation du launcher Nocturno\n\nDiscord: https://discord.gg/nocturno\nTiktok: project.nocturno"
-                    }
-                },
-                "_activeDate": "2017-07-19T13:14:04.490Z",
-                "lastModified": "2018-03-15T07:10:22.222Z",
-                "_locale": "en-US"
             }
         }
     }

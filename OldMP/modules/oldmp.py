@@ -3,12 +3,12 @@ from os import mkdir as osmkdir
 from os import stat as osstat
 from json import loads, dumps
 import random
-from flask import Flask, request, Response, send_from_directory
+from flask import Flask, request, Response, send_from_directory, abort, send_file
 from uuid import uuid4
 from datetime import datetime
 from hashlib import sha256, sha1
 import base64
-from hashlib import sha256, sha512
+from hashlib import sha256
 import urllib.parse
 
 from modules.func import OldMPFunc as func
@@ -32,40 +32,112 @@ class OldMP():
         port: int=3551,
         sessionL: dict={},
         rps: dict={}, 
-        playerscoords: list=[]
+        playerscoords: list=[],
+        whitelist: list=[],
+        blacklist: dict={}
     ):
 
         self.playerscoords=playerscoords
-        self.functions=func(request=request, app=app, cnx=cnx)
+        self.functions=func(request=request, app=app, cnx=cnx, whitelist=whitelist, blacklist=blacklist)
         self.NLogs=self.functions.logs
         self.NLogs(logsapp, "OmdMP started!")
         self.session=sessions(session=sessionL, req=request)
 
-        @app.before_request
+        #@app.before_request
         def checkrps():
+            if not self.functions.find(blacklist, request.remote_addr):
+                blacklist.update({request.remote_addr: 0})
+            else:
+                if blacklist[request.remote_addr]>=8:
+                    abort(403)
             exist=False
             for i in rps:
                 if i==request.remote_addr:
                     exist=True
             if exist:
-                if rps[request.remote_addr]>=20:
-                    respon=self.functions.createError(
-                        "errors.com.epicgames.account.too_many_requests",
-                        "You have made more than the limited number of requests", 
-                        [], 18031, "too_many_requests"
-                    )
-                    resp=app.response_class(
-                        response=dumps(respon),
-                        status=400,
-                        mimetype='application/json'
-                    )
-                    return resp
+                if rps[request.remote_addr]>=loads(open('conf.json', 'r', encoding='utf-8').read())['rps']['oldmp']:
+                    abort(403)
                 else:
                     rps[request.remote_addr]+=1
             else:
                 rps.update({request.remote_addr: 0})
-            
-            
+        
+        @app.errorhandler(404)
+        def error404(e):
+            resp=app.response_class(
+                response=dumps({
+                    'error': {
+                        'code': 404, 
+                        'content': f'Bad request: {request.url}'
+                    }
+                }),
+                status=404,
+                mimetype='application/json'
+            )
+            return resp
+
+        @app.errorhandler(401)
+        def error401(e):
+            resp=app.response_class(
+                response=dumps({
+                    'error': {
+                        'code': 401, 
+                        'content': "Nope sorry this isn't for you..."
+                    }
+                }),
+                status=401,
+                mimetype='application/json'
+            )
+            return resp
+
+
+        @app.errorhandler(403)
+        def error403(e):
+            resp=app.response_class(
+                response=dumps({
+                    'error': {
+                        'code': 403, 
+                        'content': "You are permanently or temporarily banned"
+                    }
+                }),
+                status=403,
+                mimetype='application/json'
+            )
+            return resp
+                
+        @app.errorhandler(405)
+        def error405(e):
+            resp=app.response_class(
+                response=dumps({
+                    'error': {
+                        'code': 405, 
+                        'content': f'Method {request.method} does not work'
+                    }
+                }),
+                status=405,
+                mimetype='application/json'
+            )
+            return resp
+
+        @app.errorhandler(500)
+        def error500(e):
+            resp=app.response_class(
+                response=dumps({
+                    'error': {
+                        'code': 500, 
+                        'content': 'The server encountered an error'
+                    }
+                }),
+                status=500,
+                mimetype='application/json'
+            )
+            return resp
+
+        @app.route('/favicon.ico')
+        def favicon():
+            return send_file('data/content/images/logo.ico', mimetype='image/ico')
+        
+        
 
         @app.route('/clearitemsforshop', methods=['GET'])
         def cleanitemforshop():
@@ -86,6 +158,7 @@ class OldMP():
                 athena['rvn']+=1
                 athena['commandRevision']+=1
                 
+                athena[self.session.get('username')]=athena
                 open(f'data/profiles/{request.args.get("profileId") or "athena"}.json', 'w', encoding='utf-8').write(dumps(athena, indent=4))
                 
                 resp=app.response_class(
@@ -636,9 +709,6 @@ class OldMP():
                 ParsedFile=open(f'data/cloudstorage/{name}', 'r', encoding="utf-8").read()
                 mtime=ospath.getmtime(f'data/cloudstorage/{name}')
                 
-                if name=='DefaultEngine.ini':
-                    ParsedFile.replace('ws://', 'tcp://')
-                
                 CloudFiles.append({
                     "uniqueFilename": name,
                     "filename": name,
@@ -689,22 +759,15 @@ class OldMP():
             currentBuildID=memory['CL']
             season=memory['season']
             
-            if int(season)<3:
+            if ospath.exists(f'data/clientsettings/{self.session.get("username")}/ClientSettings-{currentBuildID}.Sav'):
+                return send_from_directory(f'data/clientsettings/{self.session.get("username")}/', f'ClientSettings-{currentBuildID}.Sav')
+            else:
                 resp=Response()
                 resp.status_code=204
                 return resp
-            else:
-                if ospath.exists(f'data/clientsettings/{self.session.get("username")}/ClientSettings-{currentBuildID}.Sav'):
-                    return send_from_directory(f'data/clientsettings/{self.session.get("username")}/', f'ClientSettings-{currentBuildID}.Sav')
-                
-                else:
-                    resp=Response()
-                    resp.status_code=204
-                    return resp
 
         @app.route(f'/fortnite/api/cloudstorage/user/<accountId>', methods=['GET'])
         def cloudstorageaccid(accountId):
-            
             
             if not ospath.exists(f'data/clientsettings/{self.session.get("username")}/'):
                 osmkdir(f'data/clientsettings/{self.session.get("username")}/')
@@ -803,8 +866,16 @@ class OldMP():
             memory=self.functions.getVersion()
             friendslist=loads(open(f'data/friends/{self.session.get("username")}/friendslist.json', 'r', encoding='utf-8').read())
             friendslist2=loads(open(f'data/friends/{self.session.get("username")}/friendslist2.json', 'r', encoding='utf-8').read())
-
-            if not any(i['accountId']==request.args.get('accountId') for i in friendslist):
+            
+            exists=False
+            for i in friendslist:
+                print(i['accountId'], accountId)
+                if i['accountId']==accountId:
+                    exists=True
+            print(exists)
+            
+            if not any(i['accountId']==accountId for i in friendslist):
+                print("\nFRIEND NOT EXIST\n")
                 FriendObject={
                     "accountId": self.session.get("username"),
                     "status": "ACCEPTED",
@@ -843,7 +914,7 @@ class OldMP():
                 friends=friendslist.copy()
                 print(friends + "dsfiughiuhjd<qfbvhuhijdsfguhhdsfiuhjgh")
                 for i in friends:
-                    if i['accountId']==request.args.get('accountId'):
+                    if i['accountId']==accountId:
                         friends.remove(i)
                 resp=app.response_class(
                     response=dumps(friends),
@@ -866,7 +937,8 @@ class OldMP():
             friendslist=loads(open(f'data/friends/{self.session.get("username")}/friendslist.json', 'r', encoding='utf-8').read())
             friendslist2=loads(open(f'data/friends/{self.session.get("username")}/friendslist2.json', 'r', encoding='utf-8').read())
 
-            if not any(i['accountId']==request.args.get('accountId') for i in friendslist2['friends']):
+            if not any(i['accountId']==accountId for i in friendslist2['friends']):
+                print("\nFRIEND NOT EXIST SUMMARY\n")
                 FriendObject={
                     "accountId": self.session.get("username"),
                     "groups": [],
@@ -909,6 +981,16 @@ class OldMP():
 
             resp=app.response_class(
                 response=dumps(friendslist),
+                status=200,
+                mimetype='application/json'
+            )
+            return resp
+
+        @app.route('/persona/api/public/account/lookup', methods=['GET'])
+        def lookupfriend():
+            accountId=request.args.get("q")
+            resp=app.response_class(
+                response=dumps({}),
                 status=200,
                 mimetype='application/json'
             )
@@ -968,7 +1050,7 @@ class OldMP():
         @app.route('/lightswitch/api/service/bulk/status', methods=['GET'])
         def lightswitchservicebulkstatus():
             
-            stat=self.functions.req(f"SELECT status FROM users WHERE `ip`='{request.remote_addr}'")
+            stat=self.functions.req(f"SELECT status FROM users WHERE ip='{request.remote_addr}'")
             status=False
             if stat==[]:
                 pass
@@ -1080,97 +1162,102 @@ class OldMP():
             memory=self.functions.getVersion()
             
             activeEvents=[
-            {
-                "eventType": f'EventFlag.Season{memory["season"]}',
-                "activeUntil": "9999-12-31T00:00:00.000Z",
-                "activeSince": "0001-01-01T00:00:00.000Z"
-            },
-            {
-                "eventType": f'EventFlag.{memory["lobby"]}',
-                "activeUntil": "9999-12-31T00:00:00.000Z",
-                "activeSince": "0001-01-01T00:00:00.000Z"
-            }]
-            
-            if memory["season"]==3:
-                activeEvents.append({
-                    "eventType": "EventFlag.Spring2018Phase1",
-                    "activeUntil": self.functions.createDate(9999),
+                {
+                    "eventType": f'EventFlag.Season{memory["season"]}',
+                    "activeUntil": "9999-12-31T00:00:00.000Z",
                     "activeSince": "0001-01-01T00:00:00.000Z"
-                })
-                if memory['build']>=3.1:
+                },
+                {
+                    "eventType": f'EventFlag.{memory["lobby"]}',
+                    "activeUntil": "9999-12-31T00:00:00.000Z",
+                    "activeSince": "0001-01-01T00:00:00.000Z"
+                }
+            ]
+            
+            if memory['season']>=3:
+                if memory["season"]==3:
                     activeEvents.append({
-                        "eventType": "EventFlag.Spring2018Phase2",
+                        "eventType": "EventFlag.Spring2018Phase1",
                         "activeUntil": self.functions.createDate(9999),
                         "activeSince": "0001-01-01T00:00:00.000Z"
                     })
-                if memory['build']>=3.3:
+                    if memory['build']>=3.1:
+                        activeEvents.append({
+                            "eventType": "EventFlag.Spring2018Phase2",
+                            "activeUntil": self.functions.createDate(9999),
+                            "activeSince": "0001-01-01T00:00:00.000Z"
+                        })
+                    elif memory['build']>=3.3:
+                        activeEvents.append({
+                            "eventType": "EventFlag.Spring2018Phase3",
+                            "activeUntil": "9999-12-31T00:00:00.000Z",
+                            "activeSince": "0001-01-01T00:00:00.000Z"
+                        })
+                    elif memory['build']>=3.4:
+                        activeEvents.append({
+                            "eventType": "EventFlag.Spring2018Phase4",
+                            "activeUntil": "9999-12-31T00:00:00.000Z",
+                            "activeSince": "0001-01-01T00:00:00.000Z"
+                        })
+                elif memory["season"]==4:
                     activeEvents.append({
-                        "eventType": "EventFlag.Spring2018Phase3",
+                        "eventType": "EventFlag.Blockbuster2018",
+                        "activeUntil": "9999-12-31T00:00:00.000Z",
+                        "activeSince": "0001-01-01T00:00:00.000Z"
+                    },
+                    {
+                        "eventType": "EventFlag.Blockbuster2018Phase1",
                         "activeUntil": "9999-12-31T00:00:00.000Z",
                         "activeSince": "0001-01-01T00:00:00.000Z"
                     })
-                if memory['build']>=3.4:
+                    if memory['build']>=4.3:
+                        activeEvents.append({
+                            "eventType": "EventFlag.Blockbuster2018Phase2",
+                            "activeUntil": "9999-12-31T00:00:00.000Z",
+                            "activeSince": "0001-01-01T00:00:00.000Z"
+                        })
+                    elif memory['build']>=4.4:
+                        activeEvents.append({
+                            "eventType": "EventFlag.Blockbuster2018Phase3",
+                            "activeUntil": "9999-12-31T00:00:00.000Z",
+                            "activeSince": "0001-01-01T00:00:00.000Z"
+                        })
+                    elif memory['build']>=4.5:
+                        activeEvents.append({
+                            "eventType": "EventFlag.Blockbuster2018Phase4",
+                            "activeUntil": "9999-12-31T00:00:00.000Z",
+                            "activeSince": "0001-01-01T00:00:00.000Z"
+                        })
+                elif memory["season"]==5:
                     activeEvents.append({
-                        "eventType": "EventFlag.Spring2018Phase4",
+                        "eventType": "EventFlag.RoadTrip2018",
+                        "activeUntil": "9999-12-31T00:00:00.000Z",
+                        "activeSince": "0001-01-01T00:00:00.000Z"
+                    },
+                    {
+                        "eventType": "EventFlag.Horde",
+                        "activeUntil": "9999-12-31T00:00:00.000Z",
+                        "activeSince": "0001-01-01T00:00:00.000Z"
+                    },
+                    {
+                        "eventType": "EventFlag.Anniversary2018_BR",
+                        "activeUntil": "9999-12-31T00:00:00.000Z",
+                        "activeSince": "0001-01-01T00:00:00.000Z"
+                    },
+                    {
+                        "eventType": "EventFlag.LTM_Heist",
                         "activeUntil": "9999-12-31T00:00:00.000Z",
                         "activeSince": "0001-01-01T00:00:00.000Z"
                     })
-            if memory["season"]==4:
-                activeEvents.append({
-                    "eventType": "EventFlag.Blockbuster2018",
-                    "activeUntil": "9999-12-31T00:00:00.000Z",
-                    "activeSince": "0001-01-01T00:00:00.000Z"
-                },
-                {
-                    "eventType": "EventFlag.Blockbuster2018Phase1",
-                    "activeUntil": "9999-12-31T00:00:00.000Z",
-                    "activeSince": "0001-01-01T00:00:00.000Z"
-                })
-                if memory['build']>=4.3:
+                elif memory['build']==5.10:
                     activeEvents.append({
-                        "eventType": "EventFlag.Blockbuster2018Phase2",
+                        "eventType": "EventFlag.BirthdayBattleBus",
                         "activeUntil": "9999-12-31T00:00:00.000Z",
                         "activeSince": "0001-01-01T00:00:00.000Z"
                     })
-                if memory['build']>=4.4:
-                    activeEvents.append({
-                        "eventType": "EventFlag.Blockbuster2018Phase3",
-                        "activeUntil": "9999-12-31T00:00:00.000Z",
-                        "activeSince": "0001-01-01T00:00:00.000Z"
-                    })
-                if memory['build']>=4.5:
-                    activeEvents.append({
-                        "eventType": "EventFlag.Blockbuster2018Phase4",
-                        "activeUntil": "9999-12-31T00:00:00.000Z",
-                        "activeSince": "0001-01-01T00:00:00.000Z"
-                    })
-            if memory["season"]==5:
-                activeEvents.append({
-                    "eventType": "EventFlag.RoadTrip2018",
-                    "activeUntil": "9999-12-31T00:00:00.000Z",
-                    "activeSince": "0001-01-01T00:00:00.000Z"
-                },
-                {
-                    "eventType": "EventFlag.Horde",
-                    "activeUntil": "9999-12-31T00:00:00.000Z",
-                    "activeSince": "0001-01-01T00:00:00.000Z"
-                },
-                {
-                    "eventType": "EventFlag.Anniversary2018_BR",
-                    "activeUntil": "9999-12-31T00:00:00.000Z",
-                    "activeSince": "0001-01-01T00:00:00.000Z"
-                },
-                {
-                    "eventType": "EventFlag.LTM_Heist",
-                    "activeUntil": "9999-12-31T00:00:00.000Z",
-                    "activeSince": "0001-01-01T00:00:00.000Z"
-                })
-            if memory['build']==5.10:
-                activeEvents.append({
-                    "eventType": "EventFlag.BirthdayBattleBus",
-                    "activeUntil": "9999-12-31T00:00:00.000Z",
-                    "activeSince": "0001-01-01T00:00:00.000Z"
-                })
+
+            else:
+                pass
 
             r={
                 "channels": {
@@ -1222,24 +1309,32 @@ class OldMP():
                     accountId=accountId
                     if "@" in accountId:
                         accountId=accountId.split("@")[0]
-                        
-                    response.append({
-                        "id": accountId,
-                        "displayName": accountId,
-                        "externalAuths": {}
-                    })
+                    
+                    for i in response:
+                        if i['id']==accountId:
+                            pass
+                        else:
+                            response.append({
+                                "id": accountId,
+                                "displayName": accountId,
+                                "externalAuths": {}
+                            })
                 
-                if isinstance(accountId, list):
+                elif isinstance(accountId, list):
                     for x in accountId:
                         accountId=accountId[x]
                         if "@" in accountId:
                             accountId=accountId.split("@")[0]
                         
-                        response.append({
-                            "id": accountId,
-                            "displayName": accountId,
-                            "externalAuths": {}
-                        })
+                        for i in response:
+                            if i['id']==accountId:
+                                pass
+                            else:
+                                response.append({
+                                    "id": accountId,
+                                    "displayName": accountId,
+                                    "externalAuths": {}
+                                })
 
             resp=app.response_class(
                 response=dumps(response),
@@ -1298,7 +1393,7 @@ class OldMP():
             token=dec(tkn).decode()
 
             username=self.session.get('username')
-            password=self.session.get('password')
+            password=sha256(urllib.parse.unquote(self.session.get('password')).encode()).hexdigest().encode()
             
             if username and password:
                 pass
@@ -1553,7 +1648,8 @@ class OldMP():
         def datarouterapipublicdata():
 
             data=request.stream.read()
-            print(data)
+            if loads(open('conf.json', 'r', encoding='utf-8').read())['OldMP']['displayDatarouter']:
+                print(data)
             for events in loads(data.decode())['Events']:
                 for event in events:
                     if event=='PlayerLocation':
@@ -1563,12 +1659,11 @@ class OldMP():
                             print(events[event])
                             coords=str(events[event]).split(',')
                             print(coords)
-                            x=int(round(coords[0]))
-                            y=int(round(coords[1]))
+                            x=int(coords[0].split('.')[0])
+                            y=int(coords[1].split('.')[0])
                             self.playerscoords.append((x, y))
                         
                     elif event=='AthenaPlayersLeft':
-                        print(events[event])
                         self.session.put('partyPlayerLeft', int(events[event]))
                         
                     elif event=='Location':
@@ -1578,17 +1673,22 @@ class OldMP():
                             self.session.put('InGame', False)
                     
                     elif event=='AthenaMapName':
-                        print(events[event])
                         self.session.put('mapName', events[event])
                     
+                    elif event=='GameDifficulty':
+                        self.session.put('GameDifficulty', int(events[event].split('.')[0]))
+
                     elif event=='EventName':
                         if events[event]=='SessionEnd':
                             print('session clear')
-                            self.session.clear()
-
-            resp=Response()
-            resp.status_code=204
-            return resp
+                            self.session.kill()
+            
+            if self.session.get('kill'):
+                abort(403)
+            else:
+                resp=Response()
+                resp.status_code=204
+                return resp
 
         @app.route('/fortnite/api/matchmaking/session/<sessionId>/join', methods=['POST'])
         def fortnitematchmakingjoin(sessionId):
@@ -1720,6 +1820,7 @@ class OldMP():
         def accountoauthtoken():
 
             ip=request.remote_addr
+            self.session.put('kill', False)
 
             try:
                 clientId=base64.b64decode(request.headers["authorization"].split(" ")[1]).decode().split(":")[0]
@@ -1766,11 +1867,12 @@ class OldMP():
                 password=str(request.get_data().decode()).split("&")[2].split('=')[1]
                 
                 passwd=self.functions.req(f"SELECT password FROM users WHERE username='{username}'")
-                passw=sha512(sha256(urllib.parse.unquote(password).encode()).hexdigest().encode()).hexdigest()
+                passw=sha256(urllib.parse.unquote(password).encode()).hexdigest().encode()
                 
-                print(passwd)
+                print(passwd[0][0])
+                print(passw.decode())
                 
-                if not passwd[0][0]==passw:
+                if not passwd[0][0]==passw.decode():
                     self.NLogs(logsapp, "Clients bad logins")
                     respon=self.functions.createError(
                         "errors.com.epicgames.account.invalid_account_credentials",
@@ -1800,7 +1902,7 @@ class OldMP():
                 self.functions.loadProfile(username)
 
                 self.session.put('username', username)
-                self.session.put('password', password)
+                self.session.put('password', sha256(urllib.parse.unquote(password).encode()).hexdigest().encode())
                 self.session.put('clientId', clientId)
                 
             elif granttype=="refresh_token":
@@ -1898,13 +2000,13 @@ class OldMP():
             self.NLogs(logsapp, f"Kill type: {killType}")
             
             if killType=='ALL':
-                self.session.clear()
+                self.session.kill()
             
             elif killType=='OTHERS':
                 pass
             
             elif killType=='ALL_ACCOUNT_CLIENT':
-                self.session.clear()
+                self.session.kill()
             
             elif killType=='OTHERS_ACCOUNT_CLIENT':
                 pass
@@ -1918,7 +2020,7 @@ class OldMP():
                     "A valid killType is required.",
                     [], 1013, "invalid_request"
                 )
-                self.session.clear()
+                self.session.kill()
                 resp=app.response_class(
                     response=dumps(respon),
                     status=400,
@@ -1933,7 +2035,7 @@ class OldMP():
         @app.route('/account/api/oauth/sessions/kill/<token>', methods=['DELETE'])
         def accountoauthsessionskillall(token):
             
-            self.session.clear()
+            self.session.kill()
             
             resp=Response()
             resp.status_code=204
@@ -3502,7 +3604,7 @@ class OldMP():
                 
                 slotNameJ=loads(request.get_data())['slotName']
                 itemToSlotJ=loads(request.get_data())['itemToSlot']
-                self.functions.req(f"UPDATE favorites SET `{slotNameJ.lower()}`='{itemToSlotJ}' WHERE `username`='{self.session.get('username')}'")
+                self.functions.req2(f"UPDATE favorites SET {slotNameJ.lower()}='{itemToSlotJ}' WHERE username='{self.session.get('username')}'")
                 
                 if slotNameJ=="Character":
                     self.session.put('character', itemToSlotJ)
@@ -3628,12 +3730,25 @@ class OldMP():
                 print('pass')
                 pass
             else:
-                profile=loads(open(f'data/unusedprofiles/{request.args.get("profileId")}.json', 'r', encoding='utf-8').read())
-                profile['_id']=self.session.get('username')
-                profile['accountId']=self.session.get('username')
+                #profile=loads(open(f'data/unusedprofiles/{request.args.get("profileId")}.json', 'r', encoding='utf-8').read())
+                profile={
+                    "_id": self.session.get('username'),
+                    "created": "0001-01-01T00:00:00.000Z",
+                    "updated": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
+                    "rvn": 0,
+                    "wipeNumber": 1,
+                    "accountId": self.session.get('username'),
+                    "profileId": request.args.get('profileId'),
+                    "version": "no_version",
+                    "items": {},
+                    "stats": {
+                        "attributes": {}
+                    },
+                    "commandRevision": 0
+                }
                 
                 ApplyProfileChanges=[]
-                BaseRevision=profile['rvn'] or 0
+                BaseRevision=0
                 QueryRevision=request.args.get('rvn') or -1
                 
                 if QueryRevision!=BaseRevision:
@@ -3643,11 +3758,11 @@ class OldMP():
                     }]
                 
                 r={
-                    "profileRevision": profile['rvn'] or 0,
+                    "profileRevision": 0,
                     "profileId": request.args.get("profileId"),
                     "profileChangesBaseRevision": BaseRevision,
                     "profileChanges": ApplyProfileChanges,
-                    "profileCommandRevision": profile['commandRevision'] or 0,
+                    "profileCommandRevision": 0,
                     "serverTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
                     "responseVersion": 1
                 }

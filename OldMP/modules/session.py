@@ -49,6 +49,19 @@ class Session():
         
         return len(self.session)
     
+    def kill(self):
+
+        exist=False
+        for i in self.session:
+            if i==self.request.remote_addr:
+                exist=True
+                
+        if not exist:
+            pass
+        else:
+            self.clear()
+            self.put('kill', True)
+
     def clear(self):
         
         exist=False

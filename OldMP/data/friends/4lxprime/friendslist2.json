@@ -1,0 +1,92 @@
+{
+    "friends": [
+        {
+            "accountId": "defaultprofile",
+            "groups": [],
+            "mutual": 0,
+            "alias": "",
+            "note": "",
+            "favorite": false,
+            "created": "0001-01-01T00:00:00.000Z"
+        },
+        {
+            "accountId": "4lxprime",
+            "groups": [],
+            "mutual": 0,
+            "alias": "",
+            "note": "",
+            "favorite": false,
+            "created": "2023-04-20T19:56:02Z"
+        },
+        {
+            "accountId": "4lxprime",
+            "groups": [],
+            "mutual": 0,
+            "alias": "",
+            "note": "",
+            "favorite": false,
+            "created": "2023-04-20T19:57:51Z"
+        },
+        {
+            "accountId": "4lxprime",
+            "groups": [],
+            "mutual": 0,
+            "alias": "",
+            "note": "",
+            "favorite": false,
+            "created": "2023-04-20T20:01:21Z"
+        },
+        {
+            "accountId": "4lxprime",
+            "groups": [],
+            "mutual": 0,
+            "alias": "",
+            "note": "",
+            "favorite": false,
+            "created": "2023-04-20T20:03:38Z"
+        },
+        {
+            "accountId": "4lxprime",
+            "groups": [],
+            "mutual": 0,
+            "alias": "",
+            "note": "",
+            "favorite": false,
+            "created": "2023-04-20T20:04:55Z"
+        },
+        {
+            "accountId": "4lxprime",
+            "groups": [],
+            "mutual": 0,
+            "alias": "",
+            "note": "",
+            "favorite": false,
+            "created": "2023-04-21T19:28:42Z"
+        },
+        {
+            "accountId": "4lxprime",
+            "groups": [],
+            "mutual": 0,
+            "alias": "",
+            "note": "",
+            "favorite": false,
+            "created": "2023-04-23T12:17:27Z"
+        },
+        {
+            "accountId": "4lxprime",
+            "groups": [],
+            "mutual": 0,
+            "alias": "",
+            "note": "",
+            "favorite": false,
+            "created": "2023-04-23T12:31:16Z"
+        }
+    ],
+    "incoming": [],
+    "outgoing": [],
+    "suggested": [],
+    "blocklist": [],
+    "settings": {
+        "acceptInvites": "public"
+    }
+}

@@ -11,8 +11,12 @@ class OldMPFunc():
         request,
         app: Flask,
         logsapp: bool=True,
-        cnx: mysql.connector=mysql.connector.connect()
+        cnx: mysql.connector=mysql.connector.connect(),
+        whitelist: list=[],
+        blacklist: dict={}
     ):
+        self.whitelist=whitelist
+        self.blacklist=blacklist
         self.request=request
         self.app=app
         self.cnx=cnx
@@ -200,6 +204,11 @@ class OldMPFunc():
         results=cursor.fetchall()
         cursor.close()
         return results
+    
+    def req2(self, sql: str):
+        cursor=self.cnx.cursor()
+        cursor.execute(sql)
+        cursor.close()
     
     def getVersion(self):
         memory={
@@ -442,13 +451,35 @@ class OldMPFunc():
         
         return contentpage
     
+    def addLog(self, request, code: int, service: str):
+        if not request.remote_addr in self.whitelist: #wl
+            if not self.find(self.blacklist, request.remote_addr):
+                self.blacklist.update({request.remote_addr: 0})
+            else:
+                if self.blacklist[request.remote_addr]>=8:
+                    pass
+                else:
+                    self.blacklist[request.remote_addr]+=1
+            lfile=loads(open('logs.json', 'r', encoding='utf-8').read())
+            lfile[service].update({
+                datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"): {
+                    'ip': request.remote_addr,
+                    'url': request.url,
+                    'methods': request.method,
+                    'code': code,
+                    'headers': f"{request.headers}"
+                }
+            })
+            open('logs.json', 'w', encoding='utf-8').write(dumps(lfile, indent=4))
+
     def sendXmppMessageToAll(self, req):
         pass
     
-    def find(self, pred, iterable):
-        for element in iterable:
-            if pred(element):
-                return element
+    def find(self, lists, arg):
+        for i in lists:
+            for z in i:
+                if z==arg:
+                    return i
         return None
     
     def genToken(self, ip: str, clientId, enc):
@@ -475,14 +506,19 @@ class OldMPFunc():
         dt=dt+timedelta(hours=hour, minutes=min, seconds=sec)
         return dt.strftime("%Y-%m-%dT%H:%M:%SZ")
     
+    def shopDate(self):
+        dt=datetime.now().strftime("%H:%M:%S").split(':')
+        date=datetime.now()+timedelta(hours=24-int(date[0]), minutes=60-int(date[1]), seconds=60-int(date[2]))
+        pass
+
     def loadProfile(self, username: str):
         
         if self.checkProfile(username):
-            return
+            pass
         
         stats=self.req(f"SELECT top1 FROM stat WHERE username='{username}'")
         stats2=self.req(f"SELECT mtx, item, level, exp FROM users WHERE username='{username}'")
-        favorites=self.req(f"SELECT * FROM favorites WHERE username='{username}'")
+        #favorites=self.req(f"SELECT * FROM favorites WHERE username='{username}'")
         
         try:
             mtx=int(stats2[0][0])
@@ -490,24 +526,28 @@ class OldMPFunc():
             level=int(stats2[0][2])
             xp=int(stats2[0][3])
             top1=int(stats[0][0])
-            if not favorites==[]:
-                f_char=favorites[0][0]
-                f_back=favorites[0][1]
-                f_pic=favorites[0][2]
-                f_glid=favorites[0][3]
-                f_sky=favorites[0][4]
-                f_music=favorites[0][5]
-                f_load=favorites[0][6]
-                f_dance=favorites[0][7]
-            else:
-                f_char=""
-                f_back=""
-                f_pic=""
-                f_glid=""
-                f_sky=""
-                f_music=""
-                f_load=""
-                f_dance=""
+            #if not favorites==[]:
+            #    f_char=favorites[0][0]
+            #    f_back=favorites[0][1]
+            #    f_pic=favorites[0][2]
+            #    f_glid=favorites[0][3]
+            #    if not f_pic:
+            #        f_pic='AthenaPickaxe:DefaultPickaxe'
+            #    if not f_glid:
+            #        f_glid='AthenaGlider:DefaultGlider'
+            #    f_sky=favorites[0][4]
+            #    f_music=favorites[0][5]
+            #    f_load=favorites[0][6]
+            #    f_dance=favorites[0][7]
+            #else:
+            #    f_char=""
+            #    f_back=""
+            #    f_pic="AthenaPickaxe:DefaultPickaxe"
+            #    f_glid="AthenaGlider:DefaultGlider"
+            #    f_sky=""
+            #    f_music=""
+            #    f_load=""
+            #    f_dance=""
             
         except Exception as e:
             print(e)
@@ -568,15 +608,19 @@ class OldMPFunc():
                 profiles[username]['stats']['attributes']['book_xp']=0
                 profiles[username]['stats']['attributes']['book_purchased']=False
                 
-                profiles[username]['stats']['attributes']['favorite_character']=f_char
-                profiles[username]['stats']['attributes']['favorite_loadingscreen']=f_load
-                profiles[username]['stats']['attributes']['favorite_backpack']=f_back
-                profiles[username]['stats']['attributes']['favorite_dance']=f_dance
-                profiles[username]['stats']['attributes']['favorite_skydivecontrail']=f_sky
-                profiles[username]['stats']['attributes']['favorite_pickaxe']=f_pic
-                profiles[username]['stats']['attributes']['favorite_glider']=f_glid
-                profiles[username]['stats']['attributes']['favorite_musicpack']=f_music
-                profiles[username]['stats']['attributes']['fortnite_character']=f_char
+                #profiles[username]['stats']['attributes']['favorite_character']=f_char
+                #profiles[username]['stats']['attributes']['favorite_loadingscreen']=f_load
+                #profiles[username]['stats']['attributes']['favorite_backpack']=f_back
+                #profiles[username]['stats']['attributes']['favorite_dance']=f_dance
+                #profiles[username]['stats']['attributes']['favorite_skydivecontrail']=f_sky
+                #profiles[username]['stats']['attributes']['favorite_pickaxe']=f_pic
+                #profiles[username]['stats']['attributes']['favorite_glider']=f_glid
+                #profiles[username]['stats']['attributes']['favorite_musicpack']=f_music
+                #profiles[username]['stats']['attributes']['fortnite_character']=f_char
+                if not profiles[username]['stats']['attributes']['favorite_glider']:
+                    profiles[username]['stats']['attributes']['favorite_glider']="AthenaGlider:DefaultGlider"
+                if not profiles[username]['stats']['attributes']['favorite_pickaxe']:
+                    profiles[username]['stats']['attributes']['favorite_pickaxe']="AthenaPickaxe:DefaultPickaxe"
             
             elif i.replace('.json', '')=='common_core':
                 profiles[username]['items']['Currency']['quantity']=mtx
@@ -600,7 +644,7 @@ class OldMPFunc():
         
         stats=self.req(f"SELECT top1 FROM stat WHERE username='{username}'")
         stats2=self.req(f"SELECT mtx, item, level, exp FROM users WHERE username='{username}'")
-        favorites=self.req(f"SELECT * FROM favorites WHERE username='{username}'")
+        #favorites=self.req(f"SELECT * FROM favorites WHERE username='{username}'")
         
         try:
             mtx=int(stats2[0][0])
@@ -609,24 +653,28 @@ class OldMPFunc():
             xp=int(stats2[0][3])
             top1=int(stats[0][0])
             
-            if not favorites==[]:
-                f_char=favorites[0][0]
-                f_back=favorites[0][1]
-                f_pic=favorites[0][2]
-                f_glid=favorites[0][3]
-                f_sky=favorites[0][4]
-                f_music=favorites[0][5]
-                f_load=favorites[0][6]
-                f_dance=favorites[0][7]
-            else:
-                f_char=""
-                f_back=""
-                f_pic=""
-                f_glid=""
-                f_sky=""
-                f_music=""
-                f_load=""
-                f_dance=""
+            #if not favorites==[]:
+            #    f_char=favorites[0][0]
+            #    f_back=favorites[0][1]
+            #    f_pic=favorites[0][2]
+            #    f_glid=favorites[0][3]
+            #    if not f_pic:
+            #        f_pic='AthenaPickaxe:DefaultPickaxe'
+            #    if not f_glid:
+            #        f_glid='AthenaGlider:DefaultGlider'
+            #    f_sky=favorites[0][4]
+            #    f_music=favorites[0][5]
+            #    f_load=favorites[0][6]
+            #    f_dance=favorites[0][7]
+            #else:
+            #    f_char=""
+            #    f_back=""
+            #    f_pic="AthenaPickaxe:DefaultPickaxe"
+            #    f_glid="AthenaGlider:DefaultGlider"
+            #    f_sky=""
+            #    f_music=""
+            #    f_load=""
+            #    f_dance=""
             
         except:
             respon=self.createError(
@@ -746,15 +794,19 @@ class OldMPFunc():
                 basicprofile['stats']['attributes']['lifetime_wins']=top1
                 basicprofile['stats']['attributes']['book_xp']=0
                 
-                basicprofile['stats']['attributes']['favorite_character']=f_char
-                basicprofile['stats']['attributes']['favorite_loadingscreen']=f_load
-                basicprofile['stats']['attributes']['favorite_backpack']=f_back
-                basicprofile['stats']['attributes']['favorite_dance']=f_dance
-                basicprofile['stats']['attributes']['favorite_skydivecontrail']=f_sky
-                basicprofile['stats']['attributes']['favorite_pickaxe']=f_pic
-                basicprofile['stats']['attributes']['favorite_glider']=f_glid
-                basicprofile['stats']['attributes']['favorite_musicpack']=f_music
-                basicprofile['stats']['attributes']['fortnite_character']=f_char
+                #basicprofile['stats']['attributes']['favorite_character']=f_char
+                #basicprofile['stats']['attributes']['favorite_loadingscreen']=f_load
+                #basicprofile['stats']['attributes']['favorite_backpack']=f_back
+                #basicprofile['stats']['attributes']['favorite_dance']=f_dance
+                #basicprofile['stats']['attributes']['favorite_skydivecontrail']=f_sky
+                #basicprofile['stats']['attributes']['favorite_pickaxe']=f_pic
+                #basicprofile['stats']['attributes']['favorite_glider']=f_glid
+                #basicprofile['stats']['attributes']['favorite_musicpack']=f_music
+                #basicprofile['stats']['attributes']['fortnite_character']=f_char
+                if not basicprofile['stats']['attributes']['favorite_glider']:
+                    basicprofile['stats']['attributes']['favorite_glider']="AthenaGlider:DefaultGlider"
+                if not basicprofile['stats']['attributes']['favorite_pickaxe']:
+                    basicprofile['stats']['attributes']['favorite_pickaxe']="AthenaPickaxe:DefaultPickaxe"
             
             elif basicprofile['profileId']=='common_core':
                 basicprofile['items']['Currency']['quantity']=mtx
