@@ -1,81 +1,101 @@
 # OldMP (S1-S8)
-OldMP est un ensemble de services dont un emulateur de lobby pour fortnite aussi appeler serveur backend, une interface web et un service de backend pour un launcher.
-Les parametres updatable quand il est lancer sont dans [conf.json](https://github.com/Project-Nocturno/OldMP/blob/main/OldMP/conf.json), les parametres principaux des differents services sont dans [main.py](https://github.com/Project-Nocturno/OldMP/blob/main/OldMP/main.py). Les services OldMP sont situés dans les [modules](https://github.com/Project-Nocturno/OldMP/tree/main/OldMP/modules).  
-Les differents services backend ont un ratelimite pour eviter des attaques bruteforce ou ddos:
-```py
-@app.before_request                             # s'execute avant chaque requete
+
+[French Version](#README_FR.md)
+
+## Introduction
+OldMP is a set of services including a lobby emulator for Fortnite (backend server), a web interface, and a backend service for a launcher. This project supports Fortnite versions from Season 1 to Season 8.
+
+## Configuration
+The parameters that can be modified during runtime are found in the [conf.json](https://github.com/Project-Nocturno/OldMP/blob/main/OldMP/conf.json) file. The main parameters for the different services are defined in [main.py](https://github.com/Project-Nocturno/OldMP/blob/main/OldMP/main.py). The OldMP services are located in the [modules](https://github.com/Project-Nocturno/OldMP/tree/main/OldMP/modules) folder.
+
+## Security
+The different backend services have a rate limiting system to prevent brute force or DDoS attacks. Here's an example of the optimized implementation:
+
+```python
+@app.before_request
 def checkrps():
-    exist=False
-    for i in rps:                               # savoir si l'ip est deja enregistrer
-        if i==request.remote_addr:
-            exist=True
-    if exist:                                   # si elle est enregistrer:
-        if rps[request.remote_addr]>=20:        # si le nombre de requete par seconde est en dessous de 20
-            respon=self.functions.createError(  # creer un message d'erreur si il y a trop de requetes
-                "errors.com.epicgames.account.too_many_requests",
-                "You have made more than the limited number of requests", 
-                [], 18031, "too_many_requests"
-            )
-            resp=app.response_class(            # creer une erreur
-                response=dumps(respon),
-                status=400,
-                mimetype='application/json'
-            )
-            return resp                         # envoyer l'erreur au client
-        else:
-            rps[request.remote_addr]+=1         # sinon ajouter 1 au nombre de requetes/s
-    else:
-        rps.update({request.remote_addr: 0})    # si l'ip n'existe pas la creer
+    # Check if the IP is already registered
+    if request.remote_addr not in self.functions.rps:
+        self.functions.rps[request.remote_addr] = 0
+    
+    # Check if the number of requests per second exceeds the limit
+    if self.functions.rps[request.remote_addr] >= config['rps']['service']:
+        # Create an error message if too many requests
+        error = self.functions.createError(
+            "errors.com.epicgames.account.too_many_requests",
+            "You have made more than the limited number of requests", 
+            [], 18031, "too_many_requests"
+        )
+        
+        # Return the error to the client
+        return app.response_class(
+            response=dumps(error),
+            status=429,  # Appropriate HTTP code for too many requests
+            mimetype='application/json'
+        )
+    
+    # Increment the request counter
+    self.functions.rps[request.remote_addr] += 1
 ```
 
-## OldMP
-Le service backend principal est par defaut sur le port 3551, il sert a faire fonctionner le jeux, il est connecter a une DB et il effectue des requetes vers une API. Le code est [ici](https://github.com/Project-Nocturno/OldMP/blob/main/OldMP/modules/oldmp.py)  
-Pour recuperer des informations sur la partie ou le jeux, OldMP utilise la requete `/datarouter/api/v1/public/data`:
-```py
+## Services
+
+### OldMP (Main Backend)
+The main backend service runs by default on port 3551. It is responsible for the game's operation, connects to a database, and makes requests to an API. The source code is available [here](https://github.com/Project-Nocturno/OldMP/blob/main/OldMP/modules/oldmp.py).
+
+To retrieve information about the game or match, OldMP uses the `/datarouter/api/v1/public/data` request:
+
+```python
 @app.route('/datarouter/api/v1/public/data', methods=['POST'])
 def datarouterapipublicdata():
-
-    data=request.stream.read()
-    for events in loads(data.decode())['Events']:
-        for event in events:
-            if event=='PlayerLocation': # recuperer les coordonnées des joueurs pour la map
-                coords=str(events[event]).split(',')
-                x: int=coords[0]
-                y: int=coords[1]
+    data = request.stream.read()
+    events_data = loads(data.decode())['Events']
+    
+    for events in events_data:
+        for event, value in events.items():
+            if event == 'PlayerLocation':
+                # Get player coordinates for the map
+                coords = str(value).split(',')
+                x, y = int(coords[0]), int(coords[1])
                 self.playerscoords.append((x, y))
                 
-            elif event=='AthenaPlayersLeft': # connaitre le nombre de joueurs restants
-                sessions(sessionL, request.remote_addr).put('partyPlayerLeft', int(events[event]))
+            elif event == 'AthenaPlayersLeft':
+                # Get the number of remaining players
+                self.session.put('partyPlayerLeft', int(value))
                 
-            elif event=='Location': # savoir si le joueur est en jeux
-                if events[event]=='InGame':
-                    sessions(sessionL, request.remote_addr).put('InGame', True)
-                else:
-                    sessions(sessionL, request.remote_addr).put('InGame', False)
+            elif event == 'Location':
+                # Check if the player is in-game
+                self.session.put('InGame', value == 'InGame')
             
-            elif event=='AthenaMapName': # recuperer le nom de la map actuelle
-                sessions(sessionL, request.remote_addr).put('mapName', events[event])
+            elif event == 'AthenaMapName':
+                # Get the current map name
+                self.session.put('mapName', value)
             
-            elif event=='EventName':
-                if events[event]=='SessionEnd': # savoir si l'utilisateur a quitter la partie en 1.8
-                    sessions(sessionL, request.remote_addr).clear()
+            elif event == 'EventName' and value == 'SessionEnd':
+                # Check if the user left the game in 1.8
+                self.session.clear()
 
-    resp=Response()
-    resp.status_code=204
-    return resp # retourne un code 204
-```  
-Le ratelimite pour ce service est de `20` rps  
+    return Response(status=204)
+```
 
-## OldMPWeb
-Le site web de OldMP est par defaut sur le port 80, il permet d'apporter une interface web pour les administarteurs et pour les utilisateurs, il y a egalement un systeme de carte (avec les emplacements de tous les joueurs de la partie) qui as été developper sur l'url `/map`.  
-Il y a differentes fonctions qui permettent de recuperer les contents publiques (images et fichiers json) comme `/content/files/<file>` pour des fichiers json ou `/content/images/<file>` pour des images, pour lister tous les fichiers on utilise la commande `listall` a la place de `<file>`.  
-Le ratelimite pour ce service est de `5` rps  
-Le code est [ici](https://github.com/Project-Nocturno/OldMP/blob/main/OldMP/modules/oldmpweb.py)
+The rate limit for this service is `20` requests per second.
 
-## OldMPLauncher
+### OldMPWeb (Web Interface)
+The OldMP website runs by default on port 80. It provides a web interface for administrators and users, as well as a map system displaying the locations of all players in the game, accessible via the `/map` URL.
 
-Le backend launcher est par defaut sur le port 4971, il propose un systeme d'authentification (la requete: `/launcher/auth` qui necessite un argument `grant_type`, `username`, `password`). 
-le code retourner si il n'y a pas d'erreur est: 
+Different functions allow retrieving public content:
+- `/content/files/<file>` for JSON files
+- `/content/images/<file>` for images
+- Use `listall` instead of `<file>` to list all available files
+
+The rate limit for this service is `5` requests per second.
+
+The source code is available [here](https://github.com/Project-Nocturno/OldMP/blob/main/OldMP/modules/oldmpweb.py).
+
+### OldMPLauncher (Launcher Backend)
+The launcher backend runs by default on port 4971. It offers:
+
+1. **Authentication system** via the `/launcher/auth` request (requires the parameters `grant_type`, `username`, `password`). Example response:
 ```json
 {
     "accountId": "<account_id>",
@@ -83,48 +103,65 @@ le code retourner si il n'y a pas d'erreur est:
     "device_id": "<device_id>",
     "session_id": "<session_id>",
     "expire_in": 14400,
-    "expire_at": "<date_dans_4h>"
-}
-```  
-Un systeme de verification de MAJ avec la requete: `/launcher/versioncheck` qui retourne la bonne version  
-Un systeme de rpc avec la requete: `/launcher/rpc/` qui vas retourner au format json:  
-ce code si il est au lobby:
-```json
-{
-    "username": "<username>",
-    "character": "<skin>",
-    "party": {
-        "mapName": "Lobby",
-        "playerLeft": 0
-    }
+    "expire_at": "<expiration_date_in_4h>"
 }
 ```
-et si il est in-game:
-```json
-{
-    "username": "<username>",
-    "character": "<skin>",
-    "party": {
-        "mapName": "<map_name>",
-        "playerLeft": "<nombre_de_joueurs_restants>"
-    }
-}
-```  
-Un systeme de status avec l'url `/launcher/status` qui retourne (`online`, `maintenance` ou `offline`) au format text.
-Un systeme de news avec l'url `/launcher/content/news` qui vas retourner les news au format text pour le launcher.  
-Un systeme de patch avec l'url `/launcher/content/patchnotes` qui vas retourner les patch au format text pour le launcher.  
-Un systeme de patch avec l'url `/launcher/content/fnsolo` qui vas retourner le texte du solo au format text pour le launcher.  
-Le ratelimite pour ce service est de `5` rps  
-Le code est [ici](https://github.com/Project-Nocturno/OldMP/blob/main/OldMP/modules/oldmplauncher.py)
-# Versions compatibles
-## Versions:
- - 1.8
- - 1.9
- - 1.11
- - 2.4.2
- - 2.5
- - 3.5
- - 4.5
- - 6.21
- - 7.30
- - 8.40
+
+2. **Update verification** via `/launcher/versioncheck`
+
+3. **RPC system** via `/launcher/rpc/` which returns information about the player:
+   - In the lobby:
+   ```json
+   {
+       "username": "<username>",
+       "character": "<skin>",
+       "party": {
+           "mapName": "Lobby",
+           "playerLeft": 0
+       }
+   }
+   ```
+   - In-game:
+   ```json
+   {
+       "username": "<username>",
+       "character": "<skin>",
+       "party": {
+           "mapName": "<map_name>",
+           "playerLeft": "<number_of_remaining_players>"
+       }
+   }
+   ```
+
+4. **Status system** via `/launcher/status` (returns `online`, `maintenance`, or `offline`)
+
+5. **Information system** via:
+   - `/launcher/content/news` (news)
+   - `/launcher/content/patchnotes` (update notes)
+   - `/launcher/content/fnsolo` (information about solo mode)
+
+The rate limit for this service is `5` requests per second.
+
+The source code is available [here](https://github.com/Project-Nocturno/OldMP/blob/main/OldMP/modules/oldmplauncher.py).
+
+## Compatible Versions
+OldMP supports the following Fortnite versions:
+- 1.8
+- 1.9
+- 1.11
+- 2.4.2
+- 2.5
+- 3.5
+- 4.5
+- 6.21
+- 7.30
+- 8.40
+
+## Recent Optimizations
+The services have been optimized to improve performance:
+- Implementation of an advanced logging system
+- Caching for frequently used data
+- Optimization of image processing in the loops module
+- Improved session management
+- Use of more efficient data structures
+- Enabling threaded mode in Flask for better concurrency

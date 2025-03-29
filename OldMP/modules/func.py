@@ -218,59 +218,67 @@ class OldMPFunc():
             "lobby": ""
         }
         
-        if self.request.headers["user-agent"]:
-            try:
-                BuildID=str(self.request.headers["user-agent"]).split("-")[3].split(",")[0]
-                if not isinstance(BuildID, int):
-                    if " " in BuildID:
-                        CL=BuildID.split(' ')[0]
-                    else:
-                        CL=BuildID
-                    
-                else:
-                    BuildID=str(self.request.headers["user-agent"]).split("-")[3].split(" ")[0]
-                    if not isinstance(BuildID, int):
-                        if " " in BuildID:
-                            CL=BuildID.split(' ')[0]
-                        else:
-                            CL=BuildID
-            except:
+        if not hasattr(self, 'user_agent_cache') or not self.user_agent_cache.get(self.request.headers.get("user-agent", "")):
+            if "user-agent" in self.request.headers:
                 try:
-                    BuildID=str(self.request.headers["user-agent"]).split("-")[1].split("+")[0]
-                    if not isinstance(BuildID, int):
-                        if " " in BuildID:
-                            CL=BuildID.split(' ')[0]
+                    # Extract BuildID
+                    user_agent = self.request.headers["user-agent"]
+                    CL = ""
+                    
+                    # Try to extract from format 1
+                    try:
+                        BuildID = user_agent.split("-")[3].split(",")[0]
+                        if not isinstance(BuildID, int):
+                            CL = BuildID.split(' ')[0] if " " in BuildID else BuildID
+                    except (IndexError, AttributeError):
+                        # Try format 2
+                        try:
+                            BuildID = user_agent.split("-")[1].split("+")[0]
+                            if not isinstance(BuildID, int):
+                                CL = BuildID.split(' ')[0] if " " in BuildID else BuildID
+                        except (IndexError, AttributeError):
+                            pass
+                    
+                    # Extract Build version
+                    try:
+                        Build = user_agent.split("Release-")[1].split("-")[0]
+                        if len(Build.split(".")) == 3:
+                            Value = Build.split(".")
+                            Build = Value[0] + "." + Value[1] + Value[2]
+                        
+                        season = float(Build.split(".")[0])
+                        
+                        memory['season'] = int(season)
+                        memory['build'] = float(Build)
+                        memory['CL'] = CL
+                        memory['lobby'] = f"LobbySeason{int(memory['season'])}"
+                        
+                        if isinstance(season, int):
+                            memory['season'] = 2
+                            memory['build'] = 2.0
+                            memory['CL'] = CL
+                            memory['lobby'] = "LobbyWinterDecor"
                         else:
-                            CL=BuildID
-                except:
-                    pass
+                            memory['season'] = 2
+                            memory['build'] = 2.0
+                            memory['CL'] = CL
+                            memory['lobby'] = "LobbyWinterDecor"
+                    
+                    # Cache the result
+                    if not hasattr(self, 'user_agent_cache'):
+                        self.user_agent_cache = {}
+                    self.user_agent_cache[user_agent] = memory
+                except Exception as e:
+                    # Default values in case of any error
+                    memory['season'] = 2
+                    memory['build'] = 2.0
+                    memory['CL'] = ""
+                    memory['lobby'] = "LobbyWinterDecor"
             
-            try:
-                Build=str(self.request.headers["user-agent"]).split("Release-")[1].split("-")[0]
-                if len(Build.split("."))==3:
-                    Value=Build.split(".")
-                    Build=Value[0]+"."+Value[1]+Value[2]
-                    
-                season=float(Build.split(".")[0])
-
-                memory['season']=int(season)
-                memory['build']=float(Build)
-                memory['CL']=CL
-                memory['lobby']=f"LobbySeason{int(memory['season'])}"
-                
-                if isinstance(season, int):
-                    memory['season']=2
-                    memory['build']=2.0
-                    memory['CL']=CL
-                    memory['lobby']="LobbyWinterDecor"
-                    
-            except:
-                memory['season']=2
-                memory['build']=2.0
-                memory['CL']=CL
-                memory['lobby']="LobbyWinterDecor"
-
-        return memory
+            return memory
+        else:
+            # Return cached result
+            return self.user_agent_cache[self.request.headers["user-agent"]]
 
 
 

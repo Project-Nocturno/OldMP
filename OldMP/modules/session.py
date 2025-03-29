@@ -6,18 +6,12 @@ class Session():
         self.request=req
         
     def put(self, key: str, value):
-        
-        exist=False
-        for i in self.session:
-            if i==self.request.remote_addr:
-                exist=True
-                
-        if not exist:
-            self.session.update({
-                self.request.remote_addr: {}
-            })
+        """Store a value in the session for the current request's IP address"""
+        # Use get method with default empty dict to avoid multiple checks
+        if self.request.remote_addr not in self.session:
+            self.session[self.request.remote_addr] = {}
             
-        self.session[self.request.remote_addr][key]=value
+        self.session[self.request.remote_addr][key] = value
         
     def get(self, key: str):
         
